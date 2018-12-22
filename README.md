@@ -11,6 +11,14 @@ Internationalization by Using JSON Files .
 
 ### Configuration
 
+add 
+
+```yaml
+
+easy_localization: ^0.0.1
+
+```
+
 you must create a folder in your project's root: the `path`. Some examples:
 
 > /assets/"langs" , "i18n", "locale" or anyname ...
