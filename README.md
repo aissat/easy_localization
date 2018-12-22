@@ -1,13 +1,17 @@
 # easy_localization
 
-Easy and Fast internationalizing your Flutter Apps
+Easy and Fast internationalizing your Flutter Apps,
+this package simplify the internationalizing process using Json file 
 
-## Getting Started
 
-## Why easy_localization?
+### Why easy_localization?
 
 simplify the internationalizing process in Flutter .
+
 Internationalization by Using JSON Files .
+
+
+## Getting Started
 
 ### Configuration
 
@@ -15,7 +19,7 @@ add
 
 ```yaml
 
-easy_localization: ^0.0.1
+easy_localization: ^1.0.0
 
 ```
 
