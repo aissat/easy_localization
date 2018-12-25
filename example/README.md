@@ -72,10 +72,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
- int clicked = 0;
+ int counter = 0;
   incrementCounter() {
     setState(() {
-      clicked++;
+      counter++;
     });
   }
   @override
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Text(AppLocalizations.of(context).trans('msg',arg: 'aissat')),
-              new Text(AppLocalizations.of(context).plural('clicked',clicked)),
+              new Text(AppLocalizations.of(context).plural('clicked',counter)),
               new FlatButton(
                   onPressed: () async {
                     incrementCounter();
@@ -133,5 +133,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
 ```

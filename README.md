@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Text(AppLocalizations.of(context).trans('msg',arg: 'aissat')),
-              new Text(AppLocalizations.of(context).plural('clicked',clicked)),
+              new Text(AppLocalizations.of(context).plural('clicked',counter)),
               new FlatButton(
                   onPressed: () async {
                     incrementCounter();
@@ -151,7 +151,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
 ```
 
 ## Screenshots
