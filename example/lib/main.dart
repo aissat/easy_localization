@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() => runApp(LocaleInherited(child: MyApp()));
+void main() => runApp(EasyLocalization(child: MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var data = LocaleProvider.of(context).data;
-    return LocaleProvider(
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
       data: data,
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
-          EasylocalizationDelegate(
+          EasylocaLizationDelegate(
               locale: data.locale ?? Locale('en'), path: 'resources/langs'),
         ],
         supportedLocales: [Locale('en'), Locale('ar')],
@@ -40,10 +40,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+ int counter = 0;
+  incrementCounter() {
+    setState(() {
+      counter++;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    var data = LocaleProvider.of(context).data;
-    return LocaleProvider(
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
         appBar: AppBar(
@@ -76,8 +82,21 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         body: Center(
-          child: Text(AppLocalizations.of(context).trans('msg')),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text(AppLocalizations.of(context).trans('msg',arg: 'aissat')),
+              new Text(AppLocalizations.of(context).plural('clicked',clicked)),
+              new FlatButton(
+                  onPressed: () async {
+                    incrementCounter();
+                  },
+                  child: new Text(AppLocalizations.of(context).trans('clickMe')),)
+            
+            ],
+          ),
         ),
+        floatingActionButton: FloatingActionButton(onPressed: incrementCounter,child: Text('+1'),),
       ),
     );
   }

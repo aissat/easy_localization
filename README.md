@@ -10,6 +10,10 @@ simplify the internationalizing process in Flutter .
 
 Internationalization by Using JSON Files .
 
+## Changelog
+### [1.0.2] 
+  - Added string pluralisation .
+  - Added Argument to trans function.
 
 ## Getting Started
 
@@ -19,7 +23,7 @@ add
 
 ```yaml
 
-easy_localization: ^1.0.0
+easy_localization: ^1.0.2
 
 ```
 
@@ -48,13 +52,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() => runApp(LocaleInherited(child: MyApp()));
+void main() => runApp(EasyLocalization(child: MyApp()));
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var data = LocaleProvider.of(context).data;
-    return LocaleProvider(
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
       data: data,
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -62,7 +66,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
-          EasylocalizationDelegate(
+          EasylocaLizationDelegate(
               locale: data.locale ?? Locale('en'), path: 'resources/langs'),
         ],
         supportedLocales: [Locale('en'), Locale('ar')],
@@ -86,10 +90,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+ int counter = 0;
+  incrementCounter() {
+    setState(() {
+      counter++;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    var data = LocaleProvider.of(context).data;
-    return LocaleProvider(
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(
       data: data,
       child: Scaffold(
         appBar: AppBar(
@@ -122,8 +132,21 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         body: Center(
-          child: Text(AppLocalizations.of(context).trans('msg')),
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text(AppLocalizations.of(context).trans('msg',arg: 'aissat')),
+              new Text(AppLocalizations.of(context).plural('clicked',clicked)),
+              new FlatButton(
+                  onPressed: () async {
+                    incrementCounter();
+                  },
+                  child: new Text(AppLocalizations.of(context).trans('clickMe')),)
+            
+            ],
+          ),
         ),
+        floatingActionButton: FloatingActionButton(onPressed: incrementCounter,child: Text('+1'),),
       ),
     );
   }
@@ -134,19 +157,9 @@ class _MyHomePageState extends State<MyHomePage> {
 ## Screenshots
 
 <td style="text-align: center">
-<img alt="Arbic RTL" src="screenshots/Screenshot_1545485741.png" width="300" />
+<img alt="Arbic RTL" src="screenshots/Screenshot_ar.png" width="200" />
 </td>
 
 <td style="text-align: center">
-<img alt="English LTR" src="screenshots/Screenshot_1545485746.png" width="300" />
+<img alt="English LTR" src="screenshots/Screenshot_en.png" width="200" />
 </td>
-
-
-This project is a starting point for a Dart
-[package](https://flutter.io/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.io/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
