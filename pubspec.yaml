@@ -1,6 +1,6 @@
 name: easy_localization
-description: Easy Json Localization.
-version: 1.0.2
+description: Easy and Fast internationalizing and localization your Flutter Apps, this package simplify the internationalizing process using Json file.
+version: 1.0.2+2
 author: AISSAT abdelwahab <mr.aissat@gmail.com>
 homepage: https://github.com/aissat/easy_localization
 

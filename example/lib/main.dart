@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
       data: data,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).trans('title')),
+          title: Text(AppLocalizations.of(context).tr('title')),
           actions: <Widget>[
             FlatButton(
               child: Text("English"),
@@ -85,13 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(AppLocalizations.of(context).trans('msg',arg: 'aissat')),
+              new Text(AppLocalizations.of(context).tr('msg',arg: 'aissat')),
               new Text(AppLocalizations.of(context).plural('clicked',counter)),
               new FlatButton(
                   onPressed: () async {
                     incrementCounter();
                   },
-                  child: new Text(AppLocalizations.of(context).trans('clickMe')),)
+                  child: new Text(AppLocalizations.of(context).tr('clickMe')),)
             
             ],
           ),

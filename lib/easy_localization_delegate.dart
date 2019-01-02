@@ -27,7 +27,7 @@ class AppLocalizations {
     return true;
   }
 
-  String trans(String key,{String arg = '' }) {
+  String tr(String key,{String arg = '' }) {
     String res = this._sentences[key].toString();
     return res.replaceFirst(RegExp(r'{}'), '$arg');
   }
