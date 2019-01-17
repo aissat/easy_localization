@@ -1,6 +1,6 @@
 {
   "title": "Hello",
-  "msg":"Hello {}",
+  "msg":"Hello {} in the {} world ",
   "clickMe":"Click me",
   "clicked": {
     "zero": "You clicked {} times!",

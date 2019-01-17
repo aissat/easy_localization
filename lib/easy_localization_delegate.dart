@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
@@ -28,9 +27,14 @@ class AppLocalizations {
     return true;
   }
 
-  String tr(String key,{String arg = '' }) {
+  String tr(String key, {List<String> args}) {
     String res = this._sentences[key].toString();
-    return res.replaceFirst(RegExp(r'{}'), '$arg');
+    if (args != null) {
+      args.forEach((String str) {
+        res = res.replaceFirst(RegExp(r'{}'), str);
+      });
+    }
+    return res;
   }
 
   String plural(String key, dynamic value) {
@@ -42,7 +46,7 @@ class AppLocalizations {
     } else {
       res = this._sentences[key]['other'];
     }
-    return  res.replaceFirst(RegExp(r'{}'), '$value');
+    return res.replaceFirst(RegExp(r'{}'), '$value');
   }
 }
 
