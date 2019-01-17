@@ -11,9 +11,12 @@ simplify the internationalizing process in Flutter .
 Internationalization by Using JSON Files .
 
 ## Changelog
+### [1.0.3] 
+  - Updated `tr()` function added Multi Argument
 ### [1.0.2] 
   - Added string pluralisation .
-  - Added Argument to trans function.
+  - Added Argument to `tr()` function.
+
 
 ## Getting Started
 
@@ -135,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(AppLocalizations.of(context).tr('msg',arg: 'aissat')),
+              new Text(AppLocalizations.of(context).tr('msg',args: ['aissat','flutter'])),
               new Text(AppLocalizations.of(context).plural('clicked',counter)),
               new FlatButton(
                   onPressed: () async {

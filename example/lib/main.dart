@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(AppLocalizations.of(context).tr('msg',arg: 'aissat')),
+              new Text(AppLocalizations.of(context).tr('msg',args: ['aissat','Flutter'])),
               new Text(AppLocalizations.of(context).plural('clicked',counter)),
               new FlatButton(
                   onPressed: () async {

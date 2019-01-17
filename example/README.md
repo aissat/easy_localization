@@ -5,7 +5,7 @@
 ```json
 {
   "title": "السلام",
-  "msg":"السلام عليكم يا {}",
+  "msg":"السلام عليكم يا {} في عالم {}",
   "clickMe":"إضغط هنا",
   "clicked": {
     "zero": "{} نقرة!",
@@ -18,7 +18,7 @@
 ```json
 {
   "title": "Hello",
-  "msg":"Hello {}",
+  "msg":"Hello {} in the {} world ",
   "clickMe":"Click me",
   "clicked": {
     "zero": "You clicked {} times!",
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(AppLocalizations.of(context).tr('msg',arg: 'aissat')),
+              new Text(AppLocalizations.of(context).tr('msg',args: ['aissat','Flutter'])),
               new Text(AppLocalizations.of(context).plural('clicked',counter)),
               new FlatButton(
                   onPressed: () async {
