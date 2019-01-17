@@ -23,7 +23,7 @@ add
 
 ```yaml
 
-easy_localization: ^1.0.2
+easy_localization: <last_version>
 
 ```
 

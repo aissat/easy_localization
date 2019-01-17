@@ -17,7 +17,6 @@ class EasyLocalizationProvider extends InheritedWidget {
   }
 }
 
-
 class EasyLocalization extends StatefulWidget {
   final Widget child;
   EasyLocalization({this.child});
