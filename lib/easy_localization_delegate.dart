@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 class AppLocalizations {
   AppLocalizations(this.locale, this.path);
 
-  final Locale locale;
+  Locale locale;
   final String path;
 
   static AppLocalizations of(BuildContext context) {
@@ -15,8 +15,12 @@ class AppLocalizations {
   Map<String, dynamic> _sentences;
 
   Future<bool> load() async {
-    String data =
-        await rootBundle.loadString('$path/${this.locale.languageCode}.json');
+
+    String data;
+    if (this.locale.languageCode == null || this.locale.countryCode == null) {
+      this.locale = Locale("en","US");
+    }
+    data = await rootBundle.loadString('$path/${this.locale.languageCode}-${this.locale.countryCode}.json');
     Map<String, dynamic> _result = json.decode(data);
 
     this._sentences = new Map();
