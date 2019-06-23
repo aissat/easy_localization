@@ -30,6 +30,8 @@ easy_localization: <last_version>
 
 ```
 
+
+
 you must create a folder in your project's root: the `path`. Some examples:
 
 > /assets/"langs" , "i18n", "locale" or anyname ...
@@ -38,14 +40,23 @@ you must create a folder in your project's root: the `path`. Some examples:
 
 Inside this folder, must put the _json_ files containing the translated keys :
 
-> `path`/{languageCode}.json
+> `path`/${languageCode}-${countryCode}.json
+
+
+
+example:
+  - en.json to en-US.json
+  - ar.json to ar-DZ.json
+  - zh.json to zh-CN.json
+  - zh.json to zh-TW.json
+
 
 must declare the subtree in your **_pubspec.yaml_** as assets:
 
 ```yaml
 flutter:
   assets:
-    - {`path`/{languageCode}.json}
+    - {`path`/{languageCode}-{countryCode}.json}
 ```
 
 The next step :
