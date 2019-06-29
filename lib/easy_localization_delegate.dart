@@ -15,12 +15,12 @@ class AppLocalizations {
   Map<String, dynamic> _sentences;
 
   Future<bool> load() async {
-
     String data;
     if (this.locale.languageCode == null || this.locale.countryCode == null) {
-      this.locale = Locale("en","US");
+      this.locale = Locale("en", "US");
     }
-    data = await rootBundle.loadString('$path/${this.locale.languageCode}-${this.locale.countryCode}.json');
+    data = await rootBundle.loadString(
+        '$path/${this.locale.languageCode}-${this.locale.countryCode}.json');
     Map<String, dynamic> _result = json.decode(data);
 
     this._sentences = new Map();
