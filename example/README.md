@@ -1,6 +1,6 @@
 # example
 
-### example/resources/langs/ar.json
+### example/resources/langs/ar-DZ.json
 
 ```json
 {
@@ -14,7 +14,7 @@
   }
 }
 ```
-### example/resources/langs/ar.json
+### example/resources/langs/en-US.json
 ```json
 {
   "title": "Hello",
@@ -49,9 +49,9 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasylocaLizationDelegate(
-              locale: data.locale ?? Locale('en'), path: 'resources/langs'),
+              locale: data.locale ?? Locale('en','US'), path: 'resources/langs'),
         ],
-        supportedLocales: [Locale('en'), Locale('ar')],
+        supportedLocales: [Locale('en','US'), Locale('ar','DZ')],
         locale: data.locale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
