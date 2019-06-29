@@ -11,6 +11,8 @@ simplify the internationalizing process in Flutter .
 Internationalization by Using JSON Files .
 
 ## Changelog
+### [1.0.4] 
+  - Added Support country codes
 ### [1.0.3] 
   - Updated `tr()` function added Multi Argument
 ### [1.0.2] 
