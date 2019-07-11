@@ -32,7 +32,7 @@ class AppLocalizations {
   }
 
   String tr(String key, {List<String> args}) {
-    String res = this._sentences[key].toString();
+    String res = this._resolve(key, this._sentences);
     if (args != null) {
       args.forEach((String str) {
         res = res.replaceFirst(RegExp(r'{}'), str);
@@ -51,6 +51,23 @@ class AppLocalizations {
       res = this._sentences[key]['other'];
     }
     return res.replaceFirst(RegExp(r'{}'), '$value');
+  }
+
+  String _resolve(String path, dynamic obj) {
+    List<String> keys = path.split('.');
+
+    if (keys.length > 1) {
+      for (int index = 0; index <= keys.length; index++) {
+        if (obj.containsKey(keys[index]) && obj[keys[index]] is! String) {
+          return _resolve(
+              keys.sublist(index + 1, keys.length).join('.'), obj[keys[index]]);
+        }
+
+        return obj[path] ?? path;
+      }
+    }
+
+    return obj[path] ?? path;
   }
 }
 
