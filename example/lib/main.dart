@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             FlatButton(
-              child: Text("عربى"),
+              child: Text("عربي"),
               color: Localizations.localeOf(context).languageCode == "ar"
                   ? Colors.lightBlueAccent
                   : Colors.blue,
