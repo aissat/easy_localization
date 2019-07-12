@@ -11,6 +11,32 @@ simplify the internationalizing process in Flutter .
 Internationalization by Using JSON Files .
 
 ## Changelog
+### [1.2.0]
+  - Added property resolver for nested key translations
+  - return translate key if the element or path not exist
+  ```
+{
+  "title": "Hello",
+  "msg": "Hello {} in the {} world ",
+  "clickMe": "Click me",
+  "profile": {
+    "reset_password": {
+      "title": "Reset Password",
+      "username": "Username",
+      "password": "password"
+    }
+  },
+  "clicked": {
+    "zero": "You clicked {} times!",
+    "one": "You clicked {} time!",
+    "other": "You clicked {} times!"
+  }
+}
+
+new Text(
+  AppLocalizations.of(context).tr('profile.reset_password.title'),
+ ),
+```
 ### [1.0.4] 
   - Added Support country codes
 ### [1.0.3] 
@@ -178,3 +204,8 @@ class _MyHomePageState extends State<MyHomePage> {
 <td style="text-align: center">
 <img alt="English LTR" src="https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true" width="200" />
 </td>
+
+## Contributors thanks!
+
+  - [iwansugiarto] (https://github.com/javico2609)
+  - [javico2609] (https://github.com/iwansugiarto)
