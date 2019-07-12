@@ -7,6 +7,13 @@
   "title": "السلام",
   "msg":"السلام عليكم يا {} في عالم {}",
   "clickMe":"إضغط هنا",
+  "profile": {
+    "reset_password": {
+      "title": "اعادة تعين كلمة السر",
+      "username": "المستخدم",
+      "password": "كلمة السر"
+    }
+  },
   "clicked": {
     "zero": "{} نقرة!",
     "one": "{} نقرة!",
@@ -18,14 +25,22 @@
 ```json
 {
   "title": "Hello",
-  "msg":"Hello {} in the {} world ",
-  "clickMe":"Click me",
+  "msg": "Hello {} in the {} world ",
+  "clickMe": "Click me",
+  "profile": {
+    "reset_password": {
+      "title": "Reset Password",
+      "username": "Username",
+      "password": "password"
+    }
+  },
   "clicked": {
     "zero": "You clicked {} times!",
     "one": "You clicked {} time!",
     "other": "You clicked {} times!"
   }
 }
+
 ```
 
 ### example/lib/main.dart
@@ -49,9 +64,9 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasylocaLizationDelegate(
-              locale: data.locale ?? Locale('en','US'), path: 'resources/langs'),
+              locale: data.locale ?? Locale('en'), path: 'resources/langs'),
         ],
-        supportedLocales: [Locale('en','US'), Locale('ar','DZ')],
+        supportedLocales: [Locale('en'), Locale('ar')],
         locale: data.locale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -117,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(AppLocalizations.of(context).tr('msg',args: ['aissat','Flutter'])),
+              new Text(AppLocalizations.of(context).tr('msg',args: ['aissat','flutter'])),
               new Text(AppLocalizations.of(context).plural('clicked',counter)),
               new FlatButton(
                   onPressed: () async {
