@@ -207,5 +207,5 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ## Contributors thanks!
 
-  - [iwansugiarto] (https://github.com/javico2609)
-  - [javico2609] (https://github.com/iwansugiarto)
+  - [iwansugiarto](https://github.com/javico2609)
+  - [javico2609](https://github.com/iwansugiarto)
