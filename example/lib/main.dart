@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasylocaLizationDelegate(
-              locale: data.locale,
+              locale: data.locale ??Locale('en', 'US'),
               path: 'resources/langs'),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
