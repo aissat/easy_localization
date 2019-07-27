@@ -62,7 +62,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   Widget build(BuildContext context) => EasyLocalizationProvider(
-      data: this,
-      child: widget.child,
-    );
+        data: this,
+        child: widget.child,
+      );
 }
