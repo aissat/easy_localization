@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppLocalizations {
   AppLocalizations(this.locale, this.path);
@@ -16,11 +17,21 @@ class AppLocalizations {
 
   Future<bool> load() async {
     String data;
-    if (this.locale.languageCode == null || this.locale.countryCode == null) {
-      this.locale = Locale("en", "US");
+
+    final SharedPreferences _preferences =
+        await SharedPreferences.getInstance();
+
+    var _codeLang = await _preferences.getString('codeL');
+    var _codeCoun = await _preferences.getString('codeC');
+    if (_codeLang == null || _codeCoun == null) {
+      this.locale = Locale(this.locale.languageCode,
+          this.locale.countryCode); // Locale("en", "US");
+      await _preferences.setString('codeC', this.locale.countryCode);
+      await _preferences.setString('codeL', this.locale.languageCode);
     }
-    data = await rootBundle.loadString(
-        '$path/${this.locale.languageCode}-${this.locale.countryCode}.json');
+    this.locale = Locale(_codeLang, _codeCoun);
+
+    data = await rootBundle.loadString('$path/${_codeLang}-${_codeCoun}.json');
     Map<String, dynamic> _result = json.decode(data);
 
     this._sentences = new Map();
@@ -82,9 +93,13 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
+    final SharedPreferences _preferences =
+        await SharedPreferences.getInstance();
+    var _codeLang = await _preferences.getString('codeL');
+    var _codeCoun = await _preferences.getString('codeC');
+    locale = Locale(_codeLang, _codeCoun);
     AppLocalizations localizations = AppLocalizations(locale, path);
     await localizations.load();
-    // print("Load ${locale.languageCode}");
     return localizations;
   }
 
