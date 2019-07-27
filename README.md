@@ -112,11 +112,11 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasylocaLizationDelegate(
-              locale: data.locale ?? Locale('en', 'US'),
+              locale: data.locale,
               path: 'resources/langs'),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.locale,
+        locale: data.savedLocale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("en"));
+                  data.changeLocale(Locale("en","US"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -171,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("ar"));
+                  data.changeLocale(Locale("ar","DZ"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
