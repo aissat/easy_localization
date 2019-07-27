@@ -40,8 +40,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('codeC', value.countryCode);
     await preferences.setString('codeL', value.languageCode);
-    var _codeLang = await preferences.getString('codeL');
-    var _codeCoun = await preferences.getString('codeC');
+    var _codeLang = preferences.getString('codeL');
+    var _codeCoun = preferences.getString('codeC');
     setState(() {
       _locale = Locale(_codeLang, _codeCoun);
       _savedLocale = Locale(_codeLang, _codeCoun);
@@ -51,8 +51,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   void saveLocale() async {
     final SharedPreferences _preferences =
         await SharedPreferences.getInstance();
-    var _codeLang = await _preferences.getString('codeL');
-    var _codeCoun = await _preferences.getString('codeC');
+    var _codeLang = _preferences.getString('codeL');
+    var _codeCoun = _preferences.getString('codeC');
     if (_codeLang != null || _codeCoun != null) {
       setState(() {
         _savedLocale = Locale(_codeLang, _codeCoun);
@@ -61,10 +61,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return EasyLocalizationProvider(
+  Widget build(BuildContext context) => EasyLocalizationProvider(
       data: this,
       child: widget.child,
     );
-  }
 }

@@ -21,8 +21,8 @@ class AppLocalizations {
     final SharedPreferences _preferences =
         await SharedPreferences.getInstance();
 
-    var _codeLang = await _preferences.getString('codeL');
-    var _codeCoun = await _preferences.getString('codeC');
+    var _codeLang = _preferences.getString('codeL');
+    var _codeCoun = _preferences.getString('codeC');
     // if (_codeLang == null || _codeCoun == null) {
     //   this.locale = Locale(this.locale.languageCode,
     //       this.locale.countryCode); // Locale("en", "US");
@@ -31,7 +31,7 @@ class AppLocalizations {
     // }
     this.locale = Locale(_codeLang, _codeCoun);
 
-    data = await rootBundle.loadString('$path/${_codeLang}-${_codeCoun}.json');
+    data = await rootBundle.loadString('$path/$_codeLang-$_codeCoun.json');
     Map<String, dynamic> _result = json.decode(data);
 
     this._sentences = new Map();
@@ -95,8 +95,8 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   Future<AppLocalizations> load(Locale value) async {
     final SharedPreferences _preferences =
         await SharedPreferences.getInstance();
-    var _codeLang = await _preferences.getString('codeL');
-    var _codeCoun = await _preferences.getString('codeC');
+    var _codeLang = _preferences.getString('codeL');
+    var _codeCoun = _preferences.getString('codeC');
     if (_codeLang == null || _codeCoun == null) {
       //value = Locale(this.locale.languageCode, this.locale.countryCode);
       await _preferences.setString('codeC', value.countryCode);
