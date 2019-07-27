@@ -26,8 +26,15 @@ class EasyLocalization extends StatefulWidget {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   Locale _locale;
+  Locale _savedLocale;
 
   Locale get locale => _locale;
+  Locale get savedLocale => _savedLocale;
+  @override
+  void initState() {
+    super.initState();
+    saveLocale();
+  }
 
   void changeLocale(Locale value) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -37,7 +44,20 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     var _codeCoun = await preferences.getString('codeC');
     setState(() {
       _locale = Locale(_codeLang, _codeCoun);
+      _savedLocale = Locale(_codeLang, _codeCoun);
     });
+  }
+
+  void saveLocale() async {
+    final SharedPreferences _preferences =
+        await SharedPreferences.getInstance();
+    var _codeLang = await _preferences.getString('codeL');
+    var _codeCoun = await _preferences.getString('codeC');
+    if (_codeLang != null || _codeCoun != null) {
+      setState(() {
+        _savedLocale = Locale(_codeLang, _codeCoun);
+      });
+    }
   }
 
   @override

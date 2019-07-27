@@ -92,18 +92,18 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   bool isSupported(Locale locale) => locale != null;
 
   @override
-  Future<AppLocalizations> load(Locale locale) async {
+  Future<AppLocalizations> load(Locale value) async {
     final SharedPreferences _preferences =
         await SharedPreferences.getInstance();
     var _codeLang = await _preferences.getString('codeL');
     var _codeCoun = await _preferences.getString('codeC');
     if (_codeLang == null || _codeCoun == null) {
-      locale = Locale(this.locale.languageCode, this.locale.countryCode);
-      await _preferences.setString('codeC', locale.countryCode);
-      await _preferences.setString('codeL', locale.languageCode);
+      //value = Locale(this.locale.languageCode, this.locale.countryCode);
+      await _preferences.setString('codeC', value.countryCode);
+      await _preferences.setString('codeL', value.languageCode);
     } else
-      locale = Locale(_codeLang, _codeCoun);
-    AppLocalizations localizations = AppLocalizations(locale, path);
+      value = Locale(_codeLang, _codeCoun);
+    AppLocalizations localizations = AppLocalizations(value, path);
     await localizations.load();
     return localizations;
   }
