@@ -17,11 +17,11 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasylocaLizationDelegate(
-              locale: data.locale ??Locale('en', 'US'),
+              locale: data.locale,
               path: 'resources/langs'),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.locale,
+        locale: data.savedLocale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
