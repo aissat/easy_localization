@@ -11,6 +11,9 @@ simplify the internationalizing process in Flutter .
 Internationalization by Using JSON Files .
 
 ## Changelog
+### [1.2.1]
+  - supported shared_preferences
+  - Save selected localization
 ### [1.2.0]
   - Added property resolver for nested key translations
   - return translate key if the element or path not exist
