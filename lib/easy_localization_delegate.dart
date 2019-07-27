@@ -23,12 +23,12 @@ class AppLocalizations {
 
     var _codeLang = await _preferences.getString('codeL');
     var _codeCoun = await _preferences.getString('codeC');
-    if (_codeLang == null || _codeCoun == null) {
-      this.locale = Locale(this.locale.languageCode,
-          this.locale.countryCode); // Locale("en", "US");
-      await _preferences.setString('codeC', this.locale.countryCode);
-      await _preferences.setString('codeL', this.locale.languageCode);
-    }
+    // if (_codeLang == null || _codeCoun == null) {
+    //   this.locale = Locale(this.locale.languageCode,
+    //       this.locale.countryCode); // Locale("en", "US");
+    //   await _preferences.setString('codeC', this.locale.countryCode);
+    //   await _preferences.setString('codeL', this.locale.languageCode);
+    // }
     this.locale = Locale(_codeLang, _codeCoun);
 
     data = await rootBundle.loadString('$path/${_codeLang}-${_codeCoun}.json');
@@ -97,7 +97,12 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
         await SharedPreferences.getInstance();
     var _codeLang = await _preferences.getString('codeL');
     var _codeCoun = await _preferences.getString('codeC');
-    locale = Locale(_codeLang, _codeCoun);
+    if (_codeLang == null || _codeCoun == null) {
+      locale = Locale(this.locale.languageCode, this.locale.countryCode);
+      await _preferences.setString('codeC', locale.countryCode);
+      await _preferences.setString('codeL', locale.languageCode);
+    } else
+      locale = Locale(_codeLang, _codeCoun);
     AppLocalizations localizations = AppLocalizations(locale, path);
     await localizations.load();
     return localizations;
