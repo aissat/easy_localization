@@ -221,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
 Donations
 ---------
 
-This project needs you! If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, feel free to donate. Your donation is highly appreciated (and I love food, coffee and beer). Thank you!
+This project needs you! If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, feel free to donate. Your donation is highly appreciated (and I love food and coffee). Thank you!
 **PayPal**
 
 * **[Donate $5](https://paypal.me/aissatabdelwahab/5)**: Thank's for creating this project, here's a coffee for you!
