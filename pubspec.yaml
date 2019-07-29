@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  http:
   
   shared_preferences: ^0.5.3+4
   
