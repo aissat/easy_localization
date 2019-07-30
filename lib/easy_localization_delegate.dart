@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AppLocalizations {
-  AppLocalizations(this.locale, this.path);
+  AppLocalizations(this.locale, {this.path, this.loadPath});
 
   Locale locale;
   final String path;
+  final String loadPath;
 
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
@@ -31,7 +33,14 @@ class AppLocalizations {
     // }
     this.locale = Locale(_codeLang, _codeCoun);
 
-    data = await rootBundle.loadString('$path/$_codeLang-$_codeCoun.json');
+    if (path != null) {
+      data = await rootBundle.loadString('$path/$_codeLang-$_codeCoun.json');
+    } else if (loadPath != null) {
+      data = await http
+          .get('$loadPath/$_codeLang-$_codeCoun')
+          .then((response) => response.body.toString());
+    }
+
     Map<String, dynamic> _result = json.decode(data);
 
     this._sentences = new Map();
@@ -85,8 +94,9 @@ class AppLocalizations {
 class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   final Locale locale;
   final String path;
+  final String loadPath;
 
-  EasylocaLizationDelegate({@required this.locale, @required this.path});
+  EasylocaLizationDelegate({@required this.locale, this.path, this.loadPath});
 
   @override
   bool isSupported(Locale locale) => locale != null;
@@ -103,7 +113,8 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
       await _preferences.setString('codeL', value.languageCode);
     } else
       value = Locale(_codeLang, _codeCoun);
-    AppLocalizations localizations = AppLocalizations(value, path);
+    AppLocalizations localizations =
+        AppLocalizations(value, path: path, loadPath: loadPath);
     await localizations.load();
     return localizations;
   }

@@ -17,8 +17,10 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasylocaLizationDelegate(
-              locale: data.locale,
-              path: 'resources/langs'),
+            locale: data.locale,
+            path: 'resources/langs',
+            // loadPath: 'https://floating-tundra-49673.herokuapp.com'
+          ),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
         locale: data.savedLocale,
@@ -64,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("en","US"));
+                  data.changeLocale(Locale("en", "US"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -76,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("ar","DZ"));
+                  data.changeLocale(Locale("ar", "DZ"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
