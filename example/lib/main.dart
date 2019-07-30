@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           EasylocaLizationDelegate(
             locale: data.locale,
             path: 'resources/langs',
-            // loadPath: 'https://floating-tundra-49673.herokuapp.com'
+            // loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
           ),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
