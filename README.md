@@ -11,6 +11,9 @@ simplify the internationalizing process in Flutter .
 Internationalization by Using JSON Files .
 
 ## Changelog
+### [1.3.0]
+  - Load translations from remote or backend
+  - fixed many issues
 ### [1.2.1]
   - supported shared_preferences
   - Save selected localization
@@ -216,14 +219,12 @@ You need to have backend endpoint (`loadPath`) where resources get loaded from a
 example:
 
 ```dart
-String loadPath = 'https://floating-tundra-49673.herokuapp.com'
+String loadPath = 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
 ```
 > '${`loadPath`}/${languageCode}-${countryCode}'
 
-  - 'https://floating-tundra-49673.herokuapp.com/en-US'
-  - 'https://floating-tundra-49673.herokuapp.com/ar-DZ'
-  - 'https://floating-tundra-49673.herokuapp.com/zh-CN'
-  - 'https://floating-tundra-49673.herokuapp.com/zh-TW'
+  - 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/en-US.json'
+  - 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/ar-DZ.json'
 
 
 The next step :
@@ -249,7 +250,7 @@ class MyApp extends StatelessWidget {
           //app-specific localization
           EasylocaLizationDelegate(
               locale: data.locale,
-              loadPath: 'https://floating-tundra-49673.herokuapp.com'),
+              loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
         locale: data.savedLocale,
@@ -369,3 +370,4 @@ Of course, you can also choose what you want to donate, all donations are awesom
 
   - [iwansugiarto](https://github.com/javico2609)
   - [javico2609](https://github.com/iwansugiarto)
+  - [Taym95](https://github.com/Taym95)
