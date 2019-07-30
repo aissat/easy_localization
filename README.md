@@ -221,7 +221,7 @@ example:
 ```dart
 String loadPath = 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
 ```
-> '${`loadPath`}/${languageCode}-${countryCode}'
+> '${`loadPath`}/${languageCode}-${countryCode}.json'
 
   - 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/en-US.json'
   - 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/ar-DZ.json'
