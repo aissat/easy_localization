@@ -37,7 +37,7 @@ class AppLocalizations {
       data = await rootBundle.loadString('$path/$_codeLang-$_codeCoun.json');
     } else if (loadPath != null) {
       data = await http
-          .get('$loadPath/$_codeLang-$_codeCoun')
+          .get('$loadPath/$_codeLang-$_codeCoun.json')
           .then((response) => response.body.toString());
     }
 
