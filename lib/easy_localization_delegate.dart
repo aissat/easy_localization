@@ -5,11 +5,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class AppLocalizations {
-  AppLocalizations(this.locale, {this.path, this.loadPath});
+  AppLocalizations(
+    this.locale, {
+    this.path,
+    this.loadPath,
+    this.useOnlyLangCode = false,
+  });
 
   Locale locale;
   final String path;
   final String loadPath;
+
+  /// use only the lang code to generate i18n file path like en.json or ar.json
+  final bool useOnlyLangCode;
 
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
@@ -25,19 +33,18 @@ class AppLocalizations {
 
     var _codeLang = _preferences.getString('codeL');
     var _codeCoun = _preferences.getString('codeC');
-    // if (_codeLang == null || _codeCoun == null) {
-    //   this.locale = Locale(this.locale.languageCode,
-    //       this.locale.countryCode); // Locale("en", "US");
-    //   await _preferences.setString('codeC', this.locale.countryCode);
-    //   await _preferences.setString('codeL', this.locale.languageCode);
-    // }
+
     this.locale = Locale(_codeLang, _codeCoun);
 
+    var basePath = path != null ? path : loadPath;
+    var localePath = '$basePath/$_codeLang';
+    localePath += useOnlyLangCode ? '.json' : '-$_codeCoun.json';
+
     if (path != null) {
-      data = await rootBundle.loadString('$path/$_codeLang-$_codeCoun.json');
+      data = await rootBundle.loadString(localePath);
     } else if (loadPath != null) {
       data = await http
-          .get('$loadPath/$_codeLang-$_codeCoun.json')
+          .get(localePath)
           .then((response) => response.body.toString());
     }
 
@@ -96,7 +103,15 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   final String path;
   final String loadPath;
 
-  EasylocaLizationDelegate({@required this.locale, this.path, this.loadPath});
+  ///  * use only the lang code to generate i18n file path like en.json or ar.json
+  final bool useOnlyLangCode;
+
+  EasylocaLizationDelegate({
+    @required this.locale,
+    this.path,
+    this.loadPath,
+    this.useOnlyLangCode = false,
+  });
 
   @override
   bool isSupported(Locale locale) => locale != null;
@@ -113,8 +128,8 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
       await _preferences.setString('codeL', value.languageCode);
     } else
       value = Locale(_codeLang, _codeCoun);
-    AppLocalizations localizations =
-        AppLocalizations(value, path: path, loadPath: loadPath);
+    AppLocalizations localizations = AppLocalizations(value,
+        path: path, loadPath: loadPath, useOnlyLangCode: useOnlyLangCode);
     await localizations.load();
     return localizations;
   }

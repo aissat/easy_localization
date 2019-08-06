@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
           EasylocaLizationDelegate(
             locale: data.locale,
             path: 'resources/langs',
+            //useOnlyLangCode: true,
             // loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
           ),
         ],

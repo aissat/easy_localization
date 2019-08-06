@@ -1,0 +1,17 @@
+{
+  "title": "Hello",
+  "msg": "Hello {} in the {} world ",
+  "clickMe": "Click me",
+  "profile": {
+    "reset_password": {
+      "title": "Reset Password only lang code",
+      "username": "Username",
+      "password": "password"
+    }
+  },
+  "clicked": {
+    "zero": "You clicked {} times!",
+    "one": "You clicked {} time!",
+    "other": "You clicked {} times!"
+  }
+}
