@@ -7,6 +7,13 @@
   "title": "السلام",
   "msg":"السلام عليكم يا {} في عالم {}",
   "clickMe":"إضغط هنا",
+  "profile": {
+    "reset_password": {
+      "title": "اعادة تعين كلمة السر",
+      "username": "المستخدم",
+      "password": "كلمة السر"
+    }
+  },
   "clicked": {
     "zero": "{} نقرة!",
     "one": "{} نقرة!",
@@ -18,14 +25,22 @@
 ```json
 {
   "title": "Hello",
-  "msg":"Hello {} in the {} world ",
-  "clickMe":"Click me",
+  "msg": "Hello {} in the {} world ",
+  "clickMe": "Click me",
+  "profile": {
+    "reset_password": {
+      "title": "Reset Password",
+      "username": "Username",
+      "password": "password"
+    }
+  },
   "clicked": {
     "zero": "You clicked {} times!",
     "one": "You clicked {} time!",
     "other": "You clicked {} times!"
   }
 }
+
 ```
 
 ### example/lib/main.dart
@@ -49,10 +64,11 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasylocaLizationDelegate(
-              locale: data.locale ?? Locale('en','US'), path: 'resources/langs'),
+              locale: data.locale,
+              path: 'resources/langs'),
         ],
-        supportedLocales: [Locale('en','US'), Locale('ar','DZ')],
-        locale: data.locale,
+        supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+        locale: data.savedLocale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -72,12 +88,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
- int counter = 0;
+  int counter = 0;
   incrementCounter() {
     setState(() {
       counter++;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     var data = EasyLocalizationProvider.of(context).data;
@@ -94,19 +111,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("en"));
+                  data.changeLocale(Locale("en","US"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
             ),
             FlatButton(
-              child: Text("عربى"),
+              child: Text("عربي"),
               color: Localizations.localeOf(context).languageCode == "ar"
                   ? Colors.lightBlueAccent
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("ar"));
+                  data.changeLocale(Locale("ar","DZ"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -117,20 +134,28 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(AppLocalizations.of(context).tr('msg',args: ['aissat','Flutter'])),
-              new Text(AppLocalizations.of(context).plural('clicked',counter)),
+              new Text(AppLocalizations.of(context)
+                  .tr('msg', args: ['aissat', 'Flutter'])),
+              new Text(AppLocalizations.of(context).plural('clicked', counter)),
               new FlatButton(
-                  onPressed: () async {
-                    incrementCounter();
-                  },
-                  child: new Text(AppLocalizations.of(context).tr('clickMe')),)
-            
+                onPressed: () async {
+                  incrementCounter();
+                },
+                child: new Text(AppLocalizations.of(context).tr('clickMe')),
+              ),
+              new Text(
+                AppLocalizations.of(context).tr('profile.reset_password.title'),
+              ),
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(onPressed: incrementCounter,child: Text('+1'),),
+        floatingActionButton: FloatingActionButton(
+          onPressed: incrementCounter,
+          child: Text('+1'),
+        ),
       ),
     );
   }
 }
+
 ```

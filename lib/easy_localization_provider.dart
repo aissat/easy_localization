@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EasyLocalizationProvider extends InheritedWidget {
   EasyLocalizationProvider({Key key, this.child, this.data})
@@ -25,20 +26,43 @@ class EasyLocalization extends StatefulWidget {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   Locale _locale;
+  Locale _savedLocale;
 
   Locale get locale => _locale;
+  Locale get savedLocale => _savedLocale;
+  @override
+  void initState() {
+    super.initState();
+    saveLocale();
+  }
 
-  void changeLocale(Locale value) {
+  void changeLocale(Locale value) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setString('codeC', value.countryCode);
+    await preferences.setString('codeL', value.languageCode);
+    var _codeLang = preferences.getString('codeL');
+    var _codeCoun = preferences.getString('codeC');
     setState(() {
-      _locale = value;
+      _locale = Locale(_codeLang, _codeCoun);
+      _savedLocale = Locale(_codeLang, _codeCoun);
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return EasyLocalizationProvider(
-      data: this,
-      child: widget.child,
-    );
+  void saveLocale() async {
+    final SharedPreferences _preferences =
+        await SharedPreferences.getInstance();
+    var _codeLang = _preferences.getString('codeL');
+    var _codeCoun = _preferences.getString('codeC');
+    if (_codeLang != null || _codeCoun != null) {
+      setState(() {
+        _savedLocale = Locale(_codeLang, _codeCoun);
+      });
+    }
   }
+
+  @override
+  Widget build(BuildContext context) => EasyLocalizationProvider(
+        data: this,
+        child: widget.child,
+      );
 }
