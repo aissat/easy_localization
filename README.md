@@ -11,6 +11,8 @@ simplify the internationalizing process in Flutter .
 Internationalization by Using JSON Files .
 
 ## Changelog
+### [1.3.1]
+  - add useOnlyLangCode flag
 ### [1.3.0]
   - Load translations from remote or backend
   - fixed many issues
