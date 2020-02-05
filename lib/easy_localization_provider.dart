@@ -53,7 +53,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
         await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeL');
     var _codeCoun = _preferences.getString('codeC');
-    if (_codeLang != null || _codeCoun != null) {
+    if (_codeLang?.isNotEmpty == true) {
       setState(() {
         _savedLocale = Locale(_codeLang, _codeCoun);
       });
