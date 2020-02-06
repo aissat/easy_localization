@@ -98,7 +98,7 @@ class AppLocalizations {
   }
 }
 
-class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
+class EasyLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   final Locale locale;
   final String path;
   final String loadPath;
@@ -106,7 +106,7 @@ class EasylocaLizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   final bool useOnlyLangCode;
 
-  EasylocaLizationDelegate({
+  EasyLocalizationDelegate({
     @required this.locale,
     this.path,
     this.loadPath,
