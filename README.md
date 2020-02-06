@@ -11,6 +11,31 @@ Internationalization by Using JSON Files .
 
 ## Changelog
 
+### [1.3.2]
+
+- `plural()` added property resolver for nested key translations
+
+    ``` json
+  {
+  "text": {
+    "day": {
+      "zero": "day",
+      "one": "day",
+      "other": "days"
+      }
+    }
+  }
+
+  ```
+
+  ``` dart
+  new Text(
+    AppLocalizations.of(context).plural("text.day", 2),
+  ),
+  ```
+
+- fixed many issues
+
 ### [1.3.1]
 
 - add useOnlyLangCode flag
