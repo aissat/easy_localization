@@ -1,28 +1,36 @@
 # easy_localization
 
 Easy and Fast internationalizing your Flutter Apps,
-this package simplify the internationalizing process using Json file 
+this package simplify the internationalizing process using Json file
 
-
-### Why easy_localization?
+## Why easy_localization
 
 simplify the internationalizing process in Flutter .
 
 Internationalization by Using JSON Files .
 
 ## Changelog
+
 ### [1.3.1]
-  - add useOnlyLangCode flag
+
+- add useOnlyLangCode flag
+
 ### [1.3.0]
-  - Load translations from remote or backend
-  - fixed many issues
+
+- Load translations from remote or backend
+- fixed many issues
+
 ### [1.2.1]
-  - supported shared_preferences
-  - Save selected localization
+
+- supported shared_preferences
+- Save selected localization
+
 ### [1.2.0]
-  - Added property resolver for nested key translations
-  - return translate key if the element or path not exist
-  ```
+
+- Added property resolver for nested key translations
+- return translate key if the element or path not exist
+
+``` json
 {
   "title": "Hello",
   "msg": "Hello {} in the {} world ",
@@ -45,20 +53,25 @@ new Text(
   AppLocalizations.of(context).tr('profile.reset_password.title'),
  ),
 ```
-### [1.0.4] 
-  - Added Support country codes
-### [1.0.3] 
-  - Updated `tr()` function added Multi Argument
-### [1.0.2] 
-  - Added string pluralisation .
-  - Added Argument to `tr()` function.
 
+### [1.0.4]
+
+- Added Support country codes
+
+### [1.0.3]
+
+- Updated `tr()` function added Multi Argument
+
+### [1.0.2]
+
+- Added string pluralisation .
+- Added Argument to `tr()` function.
 
 ## Getting Started
 
 ### Configuration
 
-add 
+add
 
 ```yaml
 
@@ -66,8 +79,7 @@ easy_localization: <last_version>
 
 ```
 
-#### Load translations from local assets : 
-
+#### Load translations from local assets
 
 You must create a folder in your project's root: the `path`. Some examples:
 
@@ -79,14 +91,12 @@ Inside this folder, must put the _json_ files containing the translated keys :
 
 > `path`/${languageCode}-${countryCode}.json
 
-
-
 example:
-  - en.json to en-US.json
-  - ar.json to ar-DZ.json
-  - zh.json to zh-CN.json
-  - zh.json to zh-TW.json
 
+- en.json to en-US.json
+- ar.json to ar-DZ.json
+- zh.json to zh-CN.json
+- zh.json to zh-TW.json
 
 must declare the subtree in your **_pubspec.yaml_** as assets:
 
@@ -213,21 +223,21 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-#### Load translations from backend : 
+#### Load translations from backend
 
 You need to have backend endpoint (`loadPath`) where resources get loaded from and your endpoint must containing the translated keys.
-
 
 example:
 
 ```dart
 String loadPath = 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
+
 ```
+
 > '${`loadPath`}/${languageCode}-${countryCode}.json'
 
-  - 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/en-US.json'
-  - 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/ar-DZ.json'
-
+- '<https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/en-US.json'>
+- '<https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/ar-DZ.json'>
 
 The next step :
 
@@ -356,8 +366,8 @@ class _MyHomePageState extends State<MyHomePage> {
 <img alt="English LTR" src="https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true" width="200" />
 </td>
 
+### Donations
 
-Donations
 ---------
 
 This project needs you! If you would like to support this project's further development, the creator of this project or the continuous maintenance of this project, feel free to donate. Your donation is highly appreciated (and I love food and coffee). Thank you!
@@ -368,8 +378,9 @@ This project needs you! If you would like to support this project's further deve
 * **[Donate $15](https://paypal.me/aissatabdelwahab/15)**: I really appreciate your work, let's grab some lunch!
 * **[Donate $25](https://paypal.me/aissatabdelwahab/25)**: That's some awesome stuff you did right there, dinner is on me!
 Of course, you can also choose what you want to donate, all donations are awesome!
-## Contributors thanks!
 
-  - [iwansugiarto](https://github.com/javico2609)
-  - [javico2609](https://github.com/iwansugiarto)
-  - [Taym95](https://github.com/Taym95)
+## Contributors thanks
+
+- [iwansugiarto](https://github.com/javico2609)
+- [javico2609](https://github.com/iwansugiarto)
+- [Taym95](https://github.com/Taym95)
