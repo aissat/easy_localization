@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
-          EasylocaLizationDelegate(
+          EasyLocalizationDelegate(
             locale: data.locale,
             path: 'resources/langs',
             //useOnlyLangCode: true,
