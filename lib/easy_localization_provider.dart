@@ -8,7 +8,8 @@ class EasyLocalizationProvider extends InheritedWidget {
   final Widget child;
 
   static EasyLocalizationProvider of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<EasyLocalizationProvider>();
+    return context
+        .dependOnInheritedWidgetOfExactType<EasyLocalizationProvider>();
   }
 
   @override

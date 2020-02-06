@@ -69,13 +69,12 @@ class AppLocalizations {
   }
 
   String plural(String key, dynamic value) {
-
     if (value == 0) {
-      key  += '.zero';
+      key += '.zero';
     } else if (value == 1) {
-      key  += '.one';
+      key += '.one';
     } else {
-      key  += '.other';
+      key += '.other';
     }
     final res = this._resolve(key, this._sentences);
     return res.replaceFirst(RegExp(r'{}'), '$value');
