@@ -1,6 +1,6 @@
 # example
 
-### example/resources/langs/ar-DZ.json
+## example/resources/langs/ar-DZ.json
 
 ```json
 {
@@ -21,7 +21,9 @@
   }
 }
 ```
-### example/resources/langs/en-US.json
+
+## example/resources/langs/en-US.json
+
 ```json
 {
   "title": "Hello",
@@ -44,6 +46,7 @@
 ```
 
 ### example/lib/main.dart
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
