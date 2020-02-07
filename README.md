@@ -73,7 +73,9 @@ Internationalization by Using JSON Files .
     "other": "You clicked {} times!"
   }
 }
+```
 
+``` dart
 new Text(
   AppLocalizations.of(context).tr('profile.reset_password.title'),
  ),
