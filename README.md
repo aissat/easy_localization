@@ -154,7 +154,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
-          EasylocaLizationDelegate(
+          EasyLocalizationDelegate(
               locale: data.locale,
               path: 'resources/langs'),
         ],
@@ -287,7 +287,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
-          EasylocaLizationDelegate(
+          EasyLocalizationDelegate(
               locale: data.locale,
               loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'),
         ],
