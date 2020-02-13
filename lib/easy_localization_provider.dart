@@ -26,36 +26,31 @@ class EasyLocalization extends StatefulWidget {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   Locale _locale;
-  Locale _savedLocale;
-
+  SharedPreferences _preferences;
   Locale get locale => _locale;
-  Locale get savedLocale => _savedLocale;
+
   @override
   void initState() {
     super.initState();
-    saveLocale();
+    _saveLocale();
   }
 
   void changeLocale(Locale value) async {
-    final SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString('codeC', value.countryCode);
-    await preferences.setString('codeL', value.languageCode);
-    var _codeLang = preferences.getString('codeL');
-    var _codeCoun = preferences.getString('codeC');
+    _preferences = await SharedPreferences.getInstance();
+    await _preferences.setString('codeC', value.countryCode);
+    await _preferences.setString('codeL', value.languageCode);
     setState(() {
-      _locale = Locale(_codeLang, _codeCoun);
-      _savedLocale = Locale(_codeLang, _codeCoun);
+      _locale = value;
     });
   }
 
-  void saveLocale() async {
-    final SharedPreferences _preferences =
-        await SharedPreferences.getInstance();
+  void _saveLocale() async {
+    _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeL');
     var _codeCoun = _preferences.getString('codeC');
     if (_codeLang?.isNotEmpty == true) {
       setState(() {
-        _savedLocale = Locale(_codeLang, _codeCoun);
+        _locale = Locale(_codeLang, _codeCoun);
       });
     }
   }
