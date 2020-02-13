@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class AppLocalizations {
@@ -25,14 +24,11 @@ class AppLocalizations {
 
   Map<String, dynamic> _sentences;
 
-  Future<bool> load() async {
+  Future<bool> load(Locale locale) async {
     String data;
 
-    final SharedPreferences _preferences =
-        await SharedPreferences.getInstance();
-
-    var _codeLang = _preferences.getString('codeL');
-    var _codeCoun = _preferences.getString('codeC');
+    var _codeLang = locale.languageCode;
+    var _codeCoun = locale.countryCode;
 
     this.locale = Locale(_codeLang, _codeCoun);
 
@@ -118,19 +114,9 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   Future<AppLocalizations> load(Locale value) async {
-    final SharedPreferences _preferences =
-        await SharedPreferences.getInstance();
-    var _codeLang = _preferences.getString('codeL');
-    var _codeCoun = _preferences.getString('codeC');
-    if (_codeLang == null || _codeCoun == null) {
-      //value = Locale(this.locale.languageCode, this.locale.countryCode);
-      await _preferences.setString('codeC', value.countryCode);
-      await _preferences.setString('codeL', value.languageCode);
-    } else
-      value = Locale(_codeLang, _codeCoun);
     AppLocalizations localizations = AppLocalizations(value,
         path: path, loadPath: loadPath, useOnlyLangCode: useOnlyLangCode);
-    await localizations.load();
+    await localizations.load(value);
     return localizations;
   }
 
