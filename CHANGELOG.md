@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.3]
+
+- removed  `data.savedLocale` .
+- optimized and clean code
+- fixed many issues
+
 ## [1.3.2]
 
 - `plural()` added property resolver for nested key translations

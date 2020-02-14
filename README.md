@@ -11,11 +11,17 @@ Internationalization by Using JSON Files .
 
 ## Changelog
 
+### [1.3.3]
+
+- removed  `data.savedLocale`.
+- optimized and clean code
+- fixed many issues
+
 ### [1.3.2]
 
 - `plural()` added property resolver for nested key translations
 
-    ``` json
+  ``` json
   {
   "text": {
     "day": {
@@ -25,7 +31,6 @@ Internationalization by Using JSON Files .
       }
     }
   }
-
   ```
 
   ``` dart
@@ -159,7 +164,7 @@ class MyApp extends StatelessWidget {
               path: 'resources/langs'),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.savedLocale,
+        locale: data.locale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -292,7 +297,7 @@ class MyApp extends StatelessWidget {
               loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.savedLocale,
+        locale: data.locale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

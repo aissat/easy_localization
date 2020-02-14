@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
               path: 'resources/langs'),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.savedLocale,
+        locale: data.locale,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
