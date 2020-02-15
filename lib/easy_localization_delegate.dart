@@ -77,6 +77,14 @@ class AppLocalizations {
     return res.replaceFirst(RegExp(r'{}'), '$value');
   }
 
+  String gender(String key, dynamic value) {
+    final res = Intl.genderLogic(value,
+        female: this._resolve(key + '.female', this._sentences),
+        male: this._resolve(key + '.male', this._sentences),
+        locale: locale.languageCode);
+    return res.replaceFirst(RegExp(r'{}'), '$value');
+  }
+
   String _resolve(String path, dynamic obj) {
     List<String> keys = path.split('.');
 
