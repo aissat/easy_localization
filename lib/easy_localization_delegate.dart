@@ -66,16 +66,14 @@ class AppLocalizations {
   }
 
   String plural(String key, dynamic value) {
-    final res = Intl.pluralLogic(
-     value,
-     zero: this._resolve(key + '.zero', this._sentences),
-     one: this._resolve(key + '.one', this._sentences),
-     two: this._resolve(key + '.two', this._sentences),
-     few: this._resolve(key + '.few', this._sentences),
-     many: this._resolve(key + '.many', this._sentences),
-     other: this._resolve(key + '.other', this._sentences),
-     locale: locale.languageCode
-   );
+    final res = Intl.pluralLogic(value,
+        zero: this._resolve(key + '.zero', this._sentences),
+        one: this._resolve(key + '.one', this._sentences),
+        two: this._resolve(key + '.two', this._sentences),
+        few: this._resolve(key + '.few', this._sentences),
+        many: this._resolve(key + '.many', this._sentences),
+        other: this._resolve(key + '.other', this._sentences),
+        locale: locale.languageCode);
     return res.replaceFirst(RegExp(r'{}'), '$value');
   }
 
