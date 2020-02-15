@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.3+1]
+
+- updated  `plural()` thanks [shushper](https://github.com/shushper) .
+
+  ``` json
+  {
+    "text": {
+      "day": {
+        "zero":"{} дней",
+        "one": "{} день",
+        "two": "{} дня",
+        "few": "{} дня",
+        "many": "{} дней",
+        "other": "{} дней"
+      }
+    }
+  }
+  ```
+
 ## [1.3.3]
 
 - removed  `data.savedLocale` .
@@ -10,7 +29,7 @@
 
 - `plural()` added property resolver for nested key translations
 
-    ``` json
+  ``` json
   {
   "text": {
     "day": {

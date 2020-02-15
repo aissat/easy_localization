@@ -11,6 +11,25 @@ Internationalization by Using JSON Files .
 
 ## Changelog
 
+### [1.3.3+1]
+
+- updated  `plural()` thanks [shushper](https://github.com/shushper) .
+
+  ``` json
+  {
+    "text": {
+      "day": {
+        "zero":"{} дней",
+        "one": "{} день",
+        "two": "{} дня",
+        "few": "{} дня",
+        "many": "{} дней",
+        "other": "{} дней"
+      }
+    }
+  }
+  ```
+
 ### [1.3.3]
 
 - removed  `data.savedLocale`.
@@ -75,6 +94,9 @@ Internationalization by Using JSON Files .
   "clicked": {
     "zero": "You clicked {} times!",
     "one": "You clicked {} time!",
+    "two":"You clicked {} times!",
+    "few":"You clicked {} times!",
+    "many":"You clicked {} times!",
     "other": "You clicked {} times!"
   }
 }

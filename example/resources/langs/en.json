@@ -4,7 +4,7 @@
   "clickMe": "Click me",
   "profile": {
     "reset_password": {
-      "title": "Reset Password only lang code",
+      "title": "Reset Password",
       "username": "Username",
       "password": "password"
     }
@@ -12,6 +12,9 @@
   "clicked": {
     "zero": "You clicked {} times!",
     "one": "You clicked {} time!",
+    "two":"You clicked {} times!",
+    "few":"You clicked {} times!",
+    "many":"You clicked {} times!",
     "other": "You clicked {} times!"
   }
 }

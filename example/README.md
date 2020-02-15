@@ -14,9 +14,12 @@
       "password": "كلمة السر"
     }
   },
-  "clicked": {
+    "clicked": {
     "zero": "{} نقرة!",
     "one": "{} نقرة!",
+    "two":"{} نقرات!",
+    "few":"{} نقرات!",
+    "many":"{} نقرة!",
     "other": "{} نقرة!"
   }
 }
@@ -39,6 +42,9 @@
   "clicked": {
     "zero": "You clicked {} times!",
     "one": "You clicked {} time!",
+    "two":"You clicked {} times!",
+    "few":"You clicked {} times!",
+    "many":"You clicked {} times!",
     "other": "You clicked {} times!"
   }
 }
