@@ -16,5 +16,9 @@
     "few":"You clicked {} times!",
     "many":"You clicked {} times!",
     "other": "You clicked {} times!"
+  },
+  "switch":{
+    "male": "Hi man ;)",
+    "female": "Hello gril :)"
   }
 }
