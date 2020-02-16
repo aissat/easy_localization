@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.4]
+
+- adeed Gender [female,male]  `gender()`  .
+
+  ``` json
+  {
+    "switch":{
+      "male": "Hi man ;)",
+      "female": "Hello gril :)"
+    }
+  }
+  ```
+
+  ``` dart
+  new Text(
+    AppLocalizations.of(context).gender('switch', _gender ? "female" : "male"),
+  ),
+  `
+
 ## [1.3.3+1]
 
 - updated  `plural()` thanks [shushper](https://github.com/shushper) .

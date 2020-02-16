@@ -21,6 +21,10 @@
     "few":"{} نقرات!",
     "many":"{} نقرة!",
     "other": "{} نقرة!"
+  },
+  "switch":{
+    "male": " مرحبا يا رجل",
+    "female": " مرحبا بك يا فتاة"
   }
 }
 ```
@@ -46,6 +50,10 @@
     "few":"You clicked {} times!",
     "many":"You clicked {} times!",
     "other": "You clicked {} times!"
+  },
+  "switch":{
+    "male": "Hi man ;)",
+    "female": "Hello gril :)"
   }
 }
 
@@ -54,6 +62,7 @@
 ### example/lib/main.dart
 
 ```dart
+import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -73,8 +82,11 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           //app-specific localization
           EasyLocalizationDelegate(
-              locale: data.locale,
-              path: 'resources/langs'),
+            locale: data.locale,
+            path: 'resources/langs',
+            //useOnlyLangCode: true,
+            // loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
+          ),
         ],
         supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
         locale: data.locale,
@@ -98,9 +110,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int counter = 0;
+  bool _gender = true;
+
   incrementCounter() {
     setState(() {
       counter++;
+    });
+  }
+
+  switchGender(bool val) {
+    setState(() {
+      _gender = val;
     });
   }
 
@@ -120,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("en","US"));
+                  data.changeLocale(Locale("en", "US"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -132,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("ar","DZ"));
+                  data.changeLocale(Locale("ar", "DZ"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -140,20 +160,45 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         body: Center(
-          child: new Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text(AppLocalizations.of(context)
+              Spacer(
+                flex: 1,
+              ),
+              Text(
+                AppLocalizations.of(context)
+                    .gender('switch', _gender ? "female" : "male"),
+                style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(MyFlutterApp.male_1),
+                  Switch(value: _gender, onChanged: switchGender),
+                  Icon(MyFlutterApp.female_1),
+                ],
+              ),
+              Spacer(
+                flex: 1,
+              ),
+              Text(AppLocalizations.of(context)
                   .tr('msg', args: ['aissat', 'Flutter'])),
-              new Text(AppLocalizations.of(context).plural('clicked', counter)),
-              new FlatButton(
-                onPressed: () async {
+              Text(AppLocalizations.of(context).plural('clicked', counter)),
+              FlatButton(
+                onPressed: () {
                   incrementCounter();
                 },
-                child: new Text(AppLocalizations.of(context).tr('clickMe')),
+                child: Text(AppLocalizations.of(context).tr('clickMe')),
               ),
-              new Text(
+              Text(
                 AppLocalizations.of(context).tr('profile.reset_password.title'),
+              ),
+              Spacer(
+                flex: 2,
               ),
             ],
           ),
