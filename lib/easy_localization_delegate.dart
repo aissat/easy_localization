@@ -56,14 +56,13 @@ class AppLocalizations {
   }
 
   String tr(String key, {List<String> args, String gender}) {
-
     String res;
 
     if (gender != null) {
       res = _gender(key, gender: gender);
     }
 
-    if (res== null) {
+    if (res == null) {
       res = this._resolve(key, this._sentences);
     }
 
