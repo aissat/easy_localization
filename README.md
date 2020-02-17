@@ -5,9 +5,11 @@ this package simplify the internationalizing process using Json file
 
 ## Why easy_localization
 
-simplify the internationalizing process in Flutter .
-
-Internationalization by Using JSON Files .
+- simplify and easy the internationalizing process in Flutter .
+- Using JSON Files .
+- Load translations from remote or backend.
+- Supported `plural`
+- Supported `gender`
 
 ## Changelog
 
