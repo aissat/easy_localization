@@ -21,7 +21,7 @@ this package simplify the internationalizing process using Json file
   {
     "switch":{
       "male": "Hi man ;)",
-      "female": "Hello gril :)"
+      "female": "Hello girl :)"
     }
   }
   ```
@@ -38,7 +38,7 @@ this package simplify the internationalizing process using Json file
   {
     "switch":{
       "male": "Hi man ;) {}",
-      "female": "Hello gril :) {}"
+      "female": "Hello girl :) {}"
     }
   }
   ```
@@ -56,7 +56,7 @@ this package simplify the internationalizing process using Json file
   {
     "switch":{
       "male": "Hi man ;)",
-      "female": "Hello gril :)"
+      "female": "Hello girl :)"
     }
   }
   ```

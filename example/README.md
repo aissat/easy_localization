@@ -57,10 +57,10 @@
   },
   "switch":{
     "male": "Hi man ;) ",
-    "female": "Hello gril :)",
+    "female": "Hello girl :)",
     "with_arg":{
       "male": "Hi man ;) {}",
-      "female": "Hello gril :) {}"
+      "female": "Hello girl :) {}"
     }
   }
 }

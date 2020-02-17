@@ -8,7 +8,7 @@
   {
     "switch":{
       "male": "Hi man ;)",
-      "female": "Hello gril :)"
+      "female": "Hello girl :)"
     }
   }
   ```
@@ -25,7 +25,7 @@
   {
     "switch":{
       "male": "Hi man ;) {}",
-      "female": "Hello gril :) {}"
+      "female": "Hello girl :) {}"
     }
   }
   ```
@@ -43,7 +43,7 @@
   {
     "switch":{
       "male": "Hi man ;)",
-      "female": "Hello gril :)"
+      "female": "Hello girl :)"
     }
   }
   ```
