@@ -18,7 +18,11 @@
     "other": "You clicked {} times!"
   },
   "switch":{
-    "male": "Hi man ;)",
-    "female": "Hello gril :)"
+    "male": "Hi man ;) ",
+    "female": "Hello gril :)",
+    "with_arg":{
+      "male": "Hi man ;) {}",
+      "female": "Hello gril :) {}"
+    }
   }
 }
