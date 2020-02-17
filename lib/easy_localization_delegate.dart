@@ -75,7 +75,8 @@ class AppLocalizations {
     return res;
   }
 
-  String plural(String key, dynamic value) {
+  String plural(String key, dynamic value, {String formattedValue}) {
+    formattedValue = formattedValue ?? "$value";
     final res = Intl.pluralLogic(value,
         zero: this._resolve(key + '.zero', this._sentences),
         one: this._resolve(key + '.one', this._sentences),
@@ -84,7 +85,7 @@ class AppLocalizations {
         many: this._resolve(key + '.many', this._sentences),
         other: this._resolve(key + '.other', this._sentences),
         locale: locale.languageCode);
-    return res.replaceFirst(RegExp(r'{}'), '$value');
+    return res.replaceFirst(RegExp(r'{}'), '$formattedValue');
   }
 
   String _gender(String key, {String gender}) {
