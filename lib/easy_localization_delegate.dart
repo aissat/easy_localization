@@ -55,13 +55,24 @@ class AppLocalizations {
     return true;
   }
 
-  String tr(String key, {List<String> args}) {
-    String res = this._resolve(key, this._sentences);
+  String tr(String key, {List<String> args, String gender}) {
+
+    String res;
+
+    if (gender != null) {
+      res = _gender(key, gender: gender);
+    }
+
+    if (res== null) {
+      res = this._resolve(key, this._sentences);
+    }
+
     if (args != null) {
       args.forEach((String str) {
         res = res.replaceFirst(RegExp(r'{}'), str);
       });
     }
+
     return res;
   }
 
@@ -77,13 +88,13 @@ class AppLocalizations {
     return res.replaceFirst(RegExp(r'{}'), '$value');
   }
 
-  String gender(String key, dynamic value) {
-    final res = Intl.genderLogic(value,
+  String _gender(String key, {String gender}) {
+    final res = Intl.genderLogic(gender,
         female: this._resolve(key + '.female', this._sentences),
         male: this._resolve(key + '.male', this._sentences),
         other: this._resolve(key + '.male', this._sentences),
         locale: locale.languageCode);
-    return res.replaceFirst(RegExp(r'{}'), '$value');
+    return res;
   }
 
   String _resolve(String path, dynamic obj) {
