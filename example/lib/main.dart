@@ -104,10 +104,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 AppLocalizations.of(context)
-                    .gender('switch', _gender ? "female" : "male"),
+                    .tr('switch.with_arg', args: ["aissat"], gender:  _gender ? "female" : "male"),
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 19,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                AppLocalizations.of(context)
+                    .tr('switch', gender:  _gender ? "female" : "male"),
+                style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
               Row(
