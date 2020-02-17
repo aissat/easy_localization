@@ -11,6 +11,41 @@ Internationalization by Using JSON Files .
 
 ## Changelog
 
+### [1.3.5]
+
+- merge  `gender()`  and `tr()`  .
+
+  ``` json
+  {
+    "switch":{
+      "male": "Hi man ;)",
+      "female": "Hello gril :)"
+    }
+  }
+  ```
+
+  ``` dart
+  new Text(
+    AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
+  ),
+  ```
+
+- use parameters `args` for gender.
+  
+  ``` json
+  {
+    "switch":{
+      "male": "Hi man ;) {}",
+      "female": "Hello gril :) {}"
+    }
+  }
+  ```
+
+  ``` dart
+  new Text(
+    AppLocalizations.of(context).tr('switch', args:["Naama"] gender: _gender ? "female" : "male"),
+  ),
+
 ### [1.3.4]
 
 - adeed Gender [female,male]  `gender()`  .
@@ -288,10 +323,18 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 AppLocalizations.of(context)
-                    .gender('switch', _gender ? "female" : "male"),
+                    .tr('switch.with_arg', args: ["aissat"], gender:  _gender ? "female" : "male"),
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 19,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                AppLocalizations.of(context)
+                    .tr('switch', gender:  _gender ? "female" : "male"),
+                style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
               Row(
