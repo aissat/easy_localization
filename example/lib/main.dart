@@ -67,7 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
       data: data,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).tr('title')),
+          title: Text(tr("title")),
+          //Text(AppLocalizations.of(context).tr('title')),
           actions: <Widget>[
             FlatButton(
               child: Text("English"),
@@ -103,16 +104,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 1,
               ),
               Text(
-                AppLocalizations.of(context)
-                    .tr('switch.with_arg', args: ["aissat"], gender:  _gender ? "female" : "male"),
+                'switch.with_arg',
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),
-              ),
+              ).tr(args: ["aissat"], gender:  _gender ? "female" : "male"),
               Text(
-                AppLocalizations.of(context)
-                    .tr('switch', gender:  _gender ? "female" : "male"),
+                tr('switch', gender:  _gender ? "female" : "male"),
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 15,
@@ -129,18 +128,18 @@ class _MyHomePageState extends State<MyHomePage> {
               Spacer(
                 flex: 1,
               ),
-              Text(AppLocalizations.of(context)
-                  .tr('msg', args: ['aissat', 'Flutter'])),
-              Text(AppLocalizations.of(context).plural('clicked', counter)),
+              Text(tr('msg', args: ['aissat', 'Flutter'])),
+              // Text(plural('clicked', counter)),
+              Text('clicked').plural(counter),
               FlatButton(
                 onPressed: () {
                   incrementCounter();
                 },
-                child: Text(AppLocalizations.of(context).tr('clickMe')),
+                child: Text('clickMe').tr(),
               ),
-              Text(
-                AppLocalizations.of(context).tr('profile.reset_password.title'),
-              ),
+              // Text(
+              //   AppLocalizations.of(context).tr('profile.reset_password.title'),
+              // ),
               Spacer(
                 flex: 2,
               ),
