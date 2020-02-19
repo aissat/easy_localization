@@ -109,9 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.grey.shade600,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),
-              ).tr(args: ["aissat"], gender:  _gender ? "female" : "male"),
+              ).tr(args: ["aissat"], gender: _gender ? "female" : "male"),
               Text(
-                tr('switch', gender:  _gender ? "female" : "male"),
+                tr('switch', gender: _gender ? "female" : "male"),
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 15,
@@ -137,9 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text('clickMe').tr(),
               ),
-              // Text(
-              //   AppLocalizations.of(context).tr('profile.reset_password.title'),
-              // ),
+              Text('profile.reset_password.title').tr(),
               Spacer(
                 flex: 2,
               ),
