@@ -385,9 +385,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text('clickMe').tr(),
               ),
-              // Text(
-              //   AppLocalizations.of(context).tr('profile.reset_password.title'),
-              // ),
+              Text('profile.reset_password.title').tr(),
               Spacer(
                 flex: 2,
               ),
@@ -542,7 +540,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
  Arbic RTL | English LTR
 --- | ---
-![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ar.png?raw=true "Arbic RTL") | ![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true "English LTR")
+![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ar.png?raw=true "Arbic RTL")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true "English LTR")
 
 ### Donations
 
