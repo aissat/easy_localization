@@ -72,6 +72,12 @@ class AppLocalizations {
       });
     }
 
+    if (res == null) {
+      // User specified unmapped key, should show key itself
+      print(
+          '[easy_localization] Missing message: "$key" for locale: "${this.locale}", using key as fallback.');
+      return key;
+    }
     return res;
   }
 
@@ -82,7 +88,7 @@ class AppLocalizations {
         two: this._resolve(key + '.two', this._sentences),
         few: this._resolve(key + '.few', this._sentences),
         many: this._resolve(key + '.many', this._sentences),
-        other: this._resolve(key + '.other', this._sentences),
+        other: this._resolve(key + '.other', this._sentences) ?? key,
         locale: locale.languageCode);
     return res.replaceFirst(RegExp(r'{}'), '$value');
   }
@@ -91,7 +97,7 @@ class AppLocalizations {
     final res = Intl.genderLogic(gender,
         female: this._resolve(key + '.female', this._sentences),
         male: this._resolve(key + '.male', this._sentences),
-        other: this._resolve(key + '.male', this._sentences),
+        other: this._resolve(key + '.male', this._sentences) ?? key,
         locale: locale.languageCode);
     return res;
   }
@@ -106,11 +112,11 @@ class AppLocalizations {
               keys.sublist(index + 1, keys.length).join('.'), obj[keys[index]]);
         }
 
-        return obj[path] ?? path;
+        return obj[path];
       }
     }
 
-    return obj[path] ?? path;
+    return obj[path];
   }
 }
 

@@ -103,8 +103,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 1,
               ),
               Text(
-                AppLocalizations.of(context)
-                    .tr('switch.with_arg', args: ["aissat"], gender:  _gender ? "female" : "male"),
+                AppLocalizations.of(context).tr('switch.with_arg',
+                    args: ["aissat"], gender: _gender ? "female" : "male"),
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 19,
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 AppLocalizations.of(context)
-                    .tr('switch', gender:  _gender ? "female" : "male"),
+                    .tr('switch', gender: _gender ? "female" : "male"),
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 15,
@@ -140,6 +140,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 AppLocalizations.of(context).tr('profile.reset_password.title'),
+              ),
+              Text(
+                AppLocalizations.of(context).tr('this.key.does.not.exist'),
               ),
               Spacer(
                 flex: 2,
