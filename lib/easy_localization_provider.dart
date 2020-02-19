@@ -22,6 +22,8 @@ class EasyLocalization extends StatefulWidget {
   final Widget child;
   EasyLocalization({this.child});
   _EasyLocalizationState createState() => _EasyLocalizationState();
+  static EasyLocalization of(BuildContext context) =>
+      context.findAncestorWidgetOfExactType<EasyLocalization>();
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
