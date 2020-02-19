@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.4.0]
+
+- refactor code changed call ~~`AppLocalizations.of(context).tr()`~~ ~~`AppLocalizations.of(context).plural()`~~ to `tr()` and `plural()`
+
+  ``` dart
+  // after 1.4.0
+  Text(
+    tr('switch', gender: _gender ? "female" : "male"),
+  ),
+  ```
+
+  ``` dart
+  // before 1.4.0
+  Text(
+    AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
+  ),
+  ```
+
+- added Flutter extension for Text widget
+
+  ``` dart
+  // after 1.4.0
+  Text('switch').tr( gender: _gender ? "female" : "male"),
+  Text('counter').plural(counter),
+  ```
+
 ## [1.3.5]
 
 - merge  `gender()`  and `tr()`  .

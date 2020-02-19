@@ -5,13 +5,41 @@ this package simplify the internationalizing process using Json file
 
 ## Why easy_localization
 
-- simplify and easy the internationalizing process in Flutter .
+- simplify and easy the internationalizing process in Flutter.
 - Using JSON Files .
 - Load translations from remote or backend.
+- save App state.
 - Supported `plural`
 - Supported `gender`
+- Supported Flutter extension.
 
 ## Changelog
+
+### [1.4.0]
+
+- refactor code changed call ~~`AppLocalizations.of(context).tr()`~~ ~~`AppLocalizations.of(context).plural()`~~ to `tr()` and `plural()`
+
+  ``` dart
+  // after 1.4.0
+  Text(
+    tr('switch', gender: _gender ? "female" : "male"),
+  ),
+  ```
+
+  ``` dart
+  // before 1.4.0
+  Text(
+    AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
+  ),
+  ```
+
+- added Flutter extension for Text widget
+
+  ``` dart
+  // after 1.4.0
+  Text('switch').tr( gender: _gender ? "female" : "male"),
+  Text('counter').plural(counter),
+  ```
 
 ### [1.3.5]
 
@@ -27,7 +55,7 @@ this package simplify the internationalizing process using Json file
   ```
 
   ``` dart
-  new Text(
+  Text(
     AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
   ),
   ```
@@ -44,7 +72,7 @@ this package simplify the internationalizing process using Json file
   ```
 
   ``` dart
-  new Text(
+  Text(
     AppLocalizations.of(context).tr('switch', args:["Naama"] gender: _gender ? "female" : "male"),
   ),
 
@@ -62,7 +90,7 @@ this package simplify the internationalizing process using Json file
   ```
 
   ``` dart
-  new Text(
+  Text(
     AppLocalizations.of(context).gender('switch', _gender ? "female" : "male"),
   ),
   ```
@@ -288,7 +316,7 @@ class _MyHomePageState extends State<MyHomePage> {
       data: data,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).tr('title')),
+          title: Text(tr("title")),
           actions: <Widget>[
             FlatButton(
               child: Text("English"),
@@ -324,16 +352,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 flex: 1,
               ),
               Text(
-                AppLocalizations.of(context)
-                    .tr('switch.with_arg', args: ["aissat"], gender:  _gender ? "female" : "male"),
+                'switch.with_arg',
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 19,
                     fontWeight: FontWeight.bold),
-              ),
+              ).tr(args: ["aissat"], gender:  _gender ? "female" : "male"),
               Text(
-                AppLocalizations.of(context)
-                    .tr('switch', gender:  _gender ? "female" : "male"),
+                tr('switch', gender:  _gender ? "female" : "male"),
                 style: TextStyle(
                     color: Colors.grey.shade600,
                     fontSize: 15,
@@ -350,18 +376,18 @@ class _MyHomePageState extends State<MyHomePage> {
               Spacer(
                 flex: 1,
               ),
-              Text(AppLocalizations.of(context)
-                  .tr('msg', args: ['aissat', 'Flutter'])),
-              Text(AppLocalizations.of(context).plural('clicked', counter)),
+              Text(tr('msg', args: ['aissat', 'Flutter'])),
+              // Text(plural('clicked', counter)),
+              Text('clicked').plural(counter),
               FlatButton(
                 onPressed: () {
                   incrementCounter();
                 },
-                child: Text(AppLocalizations.of(context).tr('clickMe')),
+                child: Text('clickMe').tr(),
               ),
-              Text(
-                AppLocalizations.of(context).tr('profile.reset_password.title'),
-              ),
+              // Text(
+              //   AppLocalizations.of(context).tr('profile.reset_password.title'),
+              // ),
               Spacer(
                 flex: 2,
               ),
@@ -455,7 +481,7 @@ class _MyHomePageState extends State<MyHomePage> {
       data: data,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context).tr('title')),
+          title: Text(tr('title')),
           actions: <Widget>[
             FlatButton(
               child: Text("English"),
@@ -489,15 +515,15 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               new Text(AppLocalizations.of(context)
                   .tr('msg', args: ['aissat', 'Flutter'])),
-              new Text(AppLocalizations.of(context).plural('clicked', counter)),
+              new Text(plural('clicked', counter)),
               new FlatButton(
                 onPressed: () async {
                   incrementCounter();
                 },
-                child: new Text(AppLocalizations.of(context).tr('clickMe')),
+                child: new Text(tr('clickMe')),
               ),
               new Text(
-                AppLocalizations.of(context).tr('profile.reset_password.title'),
+                tr('profile.reset_password.title'),
               ),
             ],
           ),
@@ -514,13 +540,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ## Screenshots
 
-<td style="text-align: center">
-<img alt="Arbic RTL" src="https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ar.png?raw=true" width="200" />
-</td>
-
-<td style="text-align: center">
-<img alt="English LTR" src="https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true" width="200" />
-</td>
+ Arbic RTL | English LTR
+--- | ---
+![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ar.png?raw=true "Arbic RTL") | ![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true "English LTR")
 
 ### Donations
 
