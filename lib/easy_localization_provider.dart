@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:intl/intl.dart';
 class EasyLocalizationProvider extends InheritedWidget {
   EasyLocalizationProvider({Key key, this.child, this.data})
       : super(key: key, child: child);
@@ -34,27 +34,37 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   void initState() {
     super.initState();
-    _saveLocale();
+    // SharedPreferences.setMockInitialValues({});
+    changeLocale();
   }
 
-  void changeLocale(Locale value) async {
-    _preferences = await SharedPreferences.getInstance();
-    await _preferences.setString('codeC', value.countryCode);
-    await _preferences.setString('codeL', value.languageCode);
-    setState(() {
-      _locale = value;
-    });
-  }
+  void changeLocale({Locale locale}) async {
+    var _defaultLocal ;
+    print("================== changeLocale ===================");
+    try {
+      _preferences = await SharedPreferences.getInstance();
+      if (locale == null) {
+        var _codeLang = _preferences.getString('codeLa');
+        var _codeCoun = _preferences.getString('codeCa');
+        if (_codeLang == null) {
+          var currentLocale= Intl.getCurrentLocale().split("_");
+          _defaultLocal = Locale(currentLocale[0],currentLocale[1]);
+        } else {
+          _defaultLocal = Locale(_codeLang,_codeCoun);
+        }
+      } else _defaultLocal = locale;
+      await _preferences.setString('codeCa', _defaultLocal.countryCode);
+      await _preferences.setString('codeLa', _defaultLocal.languageCode);
 
-  void _saveLocale() async {
-    _preferences = await SharedPreferences.getInstance();
-    var _codeLang = _preferences.getString('codeL');
-    var _codeCoun = _preferences.getString('codeC');
-    if (_codeLang?.isNotEmpty == true) {
+      print(_defaultLocal.toString());
+
       setState(() {
-        _locale = Locale(_codeLang, _codeCoun);
-      });
+          _locale = _defaultLocal;
+        });
+    } catch (e) {
+      print(e);
     }
+    print("================== changeLocale //===================");
   }
 
   @override

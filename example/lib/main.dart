@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("en", "US"));
+                  data.changeLocale(locale: Locale("en", "US"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(Locale("ar", "DZ"));
+                  data.changeLocale(locale:Locale("ar", "DZ"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -128,8 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Spacer(
                 flex: 1,
               ),
-              Text(tr('msg', args: ['aissat', 'Flutter'])),
-              // Text(plural('clicked', counter)),
+              Text('msg').tr(args: ['aissat', 'Flutter']),
               Text('clicked').plural(counter),
               FlatButton(
                 onPressed: () {
