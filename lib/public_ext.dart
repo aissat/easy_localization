@@ -1,5 +1,7 @@
-import 'localization.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+
+import 'localization.dart';
 
 extension TranslateExtension on Text {
   Text tr({List<String> args, String gender}) =>
@@ -16,8 +18,8 @@ extension TranslateExtension on Text {
           maxLines: this.maxLines,
           semanticsLabel: this.semanticsLabel,
           textWidthBasis: this.textWidthBasis);
-  Text plural(dynamic value) =>
-      Text(Localization.instance.plural(this.data, value),
+  Text plural(dynamic value, {NumberFormat format}) =>
+      Text(Localization.instance.plural(this.data, value, format:format),
           key: this.key,
           style: this.style,
           strutStyle: this.strutStyle,
@@ -34,5 +36,5 @@ extension TranslateExtension on Text {
 
 extension LocalizationPretty on String {
   tr({List<String> args, String gender}) => Localization.instance.tr(this, args: args, gender: gender);
-  plural(dynamic value) => Localization.instance.plural(this, value);
+  plural(dynamic value, {NumberFormat format}) => Localization.instance.plural(this, value, format: format);
 }

@@ -75,7 +75,7 @@ class Localization {
     return res;
   }
 
-  String plural(String key, dynamic value) {
+  String plural(String key, dynamic value, {NumberFormat format} ) {
     final res = Intl.pluralLogic(value,
         zero: this._resolve(key + '.zero', this._sentences),
         one: this._resolve(key + '.one', this._sentences),
@@ -84,7 +84,7 @@ class Localization {
         many: this._resolve(key + '.many', this._sentences),
         other: this._resolve(key + '.other', this._sentences),
         locale: _locale.languageCode);
-    return res.replaceFirst(RegExp(r'{}'), '$value');
+    return res.replaceFirst(RegExp(r'{}'), (format==null) ? '$value' :format.format(value) );
   }
 
   String _gender(String key, {String gender}) {
