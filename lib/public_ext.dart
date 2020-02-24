@@ -31,3 +31,8 @@ extension TranslateExtension on Text {
           semanticsLabel: this.semanticsLabel,
           textWidthBasis: this.textWidthBasis);
 }
+
+extension LocalizationPretty on String {
+  tr({List<String> args, String gender}) => Localization.instance.tr(this, args: args, gender: gender);
+  plural(dynamic value) => Localization.instance.plural(this, value);
+}
