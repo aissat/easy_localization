@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'dart:ui';
 
+
+import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class Localization {
@@ -12,9 +16,38 @@ class Localization {
   static Localization get instance =>
       _instance ?? (_instance = Localization._());
 
-  static void load(Map<String, dynamic> sentences, Locale locale) {
-    instance._sentences = sentences;
-    instance._locale = locale;
+  // static void load(Map<String, dynamic> sentences, Locale locale) {
+  //   instance._sentences = sentences;
+  //   instance._locale = locale;
+  // }
+
+  static Future<bool> load(Locale locale,{String path, String loadPath, bool useOnlyLangCode}) async {
+    String data;
+
+    var _codeLang = locale.languageCode;
+    var _codeCoun = locale.countryCode;
+
+    instance._locale = Locale(_codeLang, _codeCoun);
+
+    var basePath = path != null ? path : loadPath;
+    var localePath = '$basePath/$_codeLang';
+    localePath += useOnlyLangCode ? '.json' : '-$_codeCoun.json';
+
+    if (path != null) {
+      data = await rootBundle.loadString(localePath);
+    } else if (loadPath != null) {
+      data = await http
+          .get(localePath)
+          .then((response) => response.body.toString());
+    }
+
+    Map<String, dynamic> _result = json.decode(data);
+
+    instance._sentences = new Map();
+    _result.forEach((String key, dynamic value) {
+      instance._sentences[key] = value;
+    });
+    return true;
   }
 
   String tr(String key, {List<String> args, String gender}) {
