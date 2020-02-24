@@ -10,12 +10,20 @@
     }
   },
   "clicked": {
-    "zero": "You clicked {} times!",
+    "zero": "You clicked {} s!",
     "one": "You clicked {} time!",
     "two":"You clicked {} times!",
     "few":"You clicked {} times!",
     "many":"You clicked {} times!",
     "other": "You clicked {} times!"
+  },
+  "amount": {
+    "zero": "Your amount : {} ",
+    "one": "Your amount : {} ",
+    "two":"Your amount : {} ",
+    "few":"Your amount : {} ",
+    "many":"Your amount : {} ",
+    "other": "Your amount : {} "
   },
   "switch":{
     "male": "Hi man ;) ",
