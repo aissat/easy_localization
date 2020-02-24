@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -17,12 +16,13 @@ class Localization {
   static Localization get instance =>
       _instance ?? (_instance = Localization._());
 
-  // static void load(Map<String, dynamic> sentences, Locale locale) {
-  //   instance._sentences = sentences;
-  //   instance._locale = locale;
-  // }
-
-  static Future<bool> load(Locale locale,{String path, String loadPath, bool useOnlyLangCode, bool useDocumentStorage}) async {
+  static Future<bool> load(
+    Locale locale, {
+    String path,
+    String loadPath,
+    bool useOnlyLangCode,
+    bool useDocumentStorage,
+  }) async {
     String data;
 
     var _codeLang = locale.languageCode;

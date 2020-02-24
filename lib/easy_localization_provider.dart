@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+
 class EasyLocalizationProvider extends InheritedWidget {
   EasyLocalizationProvider({Key key, this.child, this.data})
       : super(key: key, child: child);
@@ -39,7 +40,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   }
 
   void changeLocale({Locale locale}) async {
-    var _defaultLocal ;
+    var _defaultLocal;
     print("================== changeLocale ===================");
     try {
       _preferences = await SharedPreferences.getInstance();
@@ -47,20 +48,21 @@ class _EasyLocalizationState extends State<EasyLocalization> {
         var _codeLang = _preferences.getString('codeLa');
         var _codeCoun = _preferences.getString('codeCa');
         if (_codeLang == null) {
-          var currentLocale= Intl.getCurrentLocale().split("_");
-          _defaultLocal = Locale(currentLocale[0],currentLocale[1]);
+          var currentLocale = Intl.getCurrentLocale().split("_");
+          _defaultLocal = Locale(currentLocale[0], currentLocale[1]);
         } else {
-          _defaultLocal = Locale(_codeLang,_codeCoun);
+          _defaultLocal = Locale(_codeLang, _codeCoun);
         }
-      } else _defaultLocal = locale;
+      } else
+        _defaultLocal = locale;
       await _preferences.setString('codeCa', _defaultLocal.countryCode);
       await _preferences.setString('codeLa', _defaultLocal.languageCode);
 
       print(_defaultLocal.toString());
 
       setState(() {
-          _locale = _defaultLocal;
-        });
+        _locale = _defaultLocal;
+      });
     } catch (e) {
       print(e);
     }
@@ -73,35 +75,3 @@ class _EasyLocalizationState extends State<EasyLocalization> {
         child: widget.child,
       );
 }
-// class AppLanguage extends ChangeNotifier {
-//   Locale _appLocale = Locale('en');
-
-//   Locale get appLocal => _appLocale ?? Locale("en");
-//   fetchLocale() async {
-//     var prefs = await SharedPreferences.getInstance();
-//     if (prefs.getString('language_code') == null) {
-//       _appLocale = Locale('en');
-//       return Null;
-//     }
-//     _appLocale = Locale(prefs.getString('language_code'));
-//     return Null;
-//   }
-
-
-//   void changeLanguage(Locale type) async {
-//     var prefs = await SharedPreferences.getInstance();
-//     if (_appLocale == type) {
-//       return;
-//     }
-//     if (type == Locale("ar")) {
-//       _appLocale = Locale("ar");
-//       await prefs.setString('language_code', 'ar');
-//       await prefs.setString('countryCode', '');
-//     } else {
-//       _appLocale = Locale("en");
-//       await prefs.setString('language_code', 'en');
-//       await prefs.setString('countryCode', 'US');
-//     }
-//     notifyListeners();
-//   }
-// }

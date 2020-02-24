@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import 'localization.dart';
 
 String tr(String key, {List<String> args, String gender}) {
