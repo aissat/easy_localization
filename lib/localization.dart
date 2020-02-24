@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 
@@ -21,7 +22,7 @@ class Localization {
   //   instance._locale = locale;
   // }
 
-  static Future<bool> load(Locale locale,{String path, String loadPath, bool useOnlyLangCode}) async {
+  static Future<bool> load(Locale locale,{String path, String loadPath, bool useOnlyLangCode, bool useDocumentStorage}) async {
     String data;
 
     var _codeLang = locale.languageCode;
@@ -34,7 +35,12 @@ class Localization {
     localePath += useOnlyLangCode ? '.json' : '-$_codeCoun.json';
 
     if (path != null) {
-      data = await rootBundle.loadString(localePath);
+      if (useDocumentStorage) {
+        File file = File(localePath);
+        data = await file.readAsString();
+      } else {
+        data = await rootBundle.loadString(localePath);
+      }
     } else if (loadPath != null) {
       data = await http
           .get(localePath)
