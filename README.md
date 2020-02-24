@@ -15,6 +15,19 @@ this package simplify the internationalizing process using Json file
 
 ## Changelog
 
+### [1.4.1]
+
+- optimized and clean code
+- fixed many issues
+- added extension for Strings
+
+  ``` dart
+  // after 1.4.1
+  Text('title'.tr()),
+  Text('switch'.tr( gender: _gender ? "female" : "male")),
+  Text('counter'.plural(counter)),
+  ```
+
 ### [1.4.0]
 
 - refactor code changed call ~~`AppLocalizations.of(context).tr()`~~ ~~`AppLocalizations.of(context).plural()`~~ to `tr()` and `plural()`
