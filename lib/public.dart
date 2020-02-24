@@ -7,3 +7,9 @@ String tr(String key, {List<String> args, String gender}) {
 String plural(String key, dynamic value) {
   return Localization.instance.plural(key, value);
 }
+
+extension LocalizationPretty on String {
+  String get localized {
+    return tr(this);
+  }
+}
