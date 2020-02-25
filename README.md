@@ -7,7 +7,7 @@ this package simplify the internationalizing process using Json file
 
 - simplify and easy the internationalizing process in Flutter.
 - Using JSON Files .
-- Load translations from remote or backend.
+- Load locale from remote or backend.
 - save App state.
 - Supported `plural`
 - Supported `gender`
