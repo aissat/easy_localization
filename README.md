@@ -565,6 +565,6 @@ Of course, you can also choose what you want to donate. All donations are very m
 
 ## Contributors thanks
 
-- [iwansugiarto](https://github.com/javico2609)
-- [javico2609](https://github.com/iwansugiarto)
-- [Taym95](https://github.com/Taym95)
+<a href="https://github.com/aissat/easy_localization/graphs/contributors">
+  <img src="https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization" />
+</a>
