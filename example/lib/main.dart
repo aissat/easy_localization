@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Colors.blue,
               onPressed: () {
                 this.setState(() {
-                  data.changeLocale(locale:Locale("ar", "DZ"));
+                  data.changeLocale(locale: Locale("ar", "DZ"));
                   print(Localizations.localeOf(context).languageCode);
                 });
               },
@@ -136,6 +136,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text('clickMe').tr(),
               ),
+              SizedBox(height: 15,),
+              Text(
+                plural('amount', counter,
+                    format: NumberFormat.currency(
+                        locale: Localizations.localeOf(context).toString(),
+                        symbol: "€")),
+                style: TextStyle(
+                    color: Colors.grey.shade900,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)
+              ),
+              SizedBox(height: 20,),
               Text('profile.reset_password.title').tr(),
               Spacer(
                 flex: 2,

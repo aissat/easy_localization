@@ -5,6 +5,7 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final Locale locale;
   final String path;
   final String loadPath;
+  final bool useDocumentStorage;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   final bool useOnlyLangCode;
@@ -14,6 +15,7 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
     this.path,
     this.loadPath,
     this.useOnlyLangCode = false,
+    this.useDocumentStorage = false,
   });
 
   @override
@@ -21,8 +23,13 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale value) async {
-    await Localization.load(value,
-        path: path, loadPath: loadPath, useOnlyLangCode: useOnlyLangCode);
+    await Localization.load(
+      value,
+      path: path,
+      loadPath: loadPath,
+      useOnlyLangCode: useOnlyLangCode,
+      useDocumentStorage: useDocumentStorage,
+    );
 
     return Localization.instance;
   }

@@ -7,13 +7,26 @@ this package simplify the internationalizing process using Json file
 
 - simplify and easy the internationalizing process in Flutter.
 - Using JSON Files .
-- Load translations from remote or backend.
+- Load locale from remote or backend.
 - save App state.
 - Supported `plural`
 - Supported `gender`
 - Supported Flutter extension.
 
 ## Changelog
+
+### [1.4.1]
+
+- optimized and clean code
+- fixed many issues
+- added extension for Strings
+
+  ``` dart
+  // after 1.4.1
+  Text('title'.tr()),
+  Text('switch'.tr( gender: _gender ? "female" : "male")),
+  Text('counter'.plural(counter)),
+  ```
 
 ### [1.4.0]
 
@@ -209,11 +222,16 @@ new Text(
 
 ### Configuration
 
-add
+Add this to your package's pubspec.yaml file:
 
 ```yaml
+dependencies:
+  # stable version install from https://pub.dev/packages
+  easy_localization: <last_version>
 
-easy_localization: <last_version>
+  # Dev version install from git REPO
+  easy_localization:
+    git: https://github.com/aissat/easy_localization.git
 
 ```
 
@@ -385,6 +403,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text('clickMe').tr(),
               ),
+              SizedBox(height: 15,),
+              Text(
+                plural('amount', counter,
+                    format: NumberFormat.currency(
+                        locale: Localizations.localeOf(context).toString(),
+                        symbol: "€")),
+                style: TextStyle(
+                    color: Colors.grey.shade900,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)
+              ),
+              SizedBox(height: 20,),
               Text('profile.reset_password.title').tr(),
               Spacer(
                 flex: 2,

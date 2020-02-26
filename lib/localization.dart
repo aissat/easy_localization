@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
-
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
@@ -16,12 +16,13 @@ class Localization {
   static Localization get instance =>
       _instance ?? (_instance = Localization._());
 
-  // static void load(Map<String, dynamic> sentences, Locale locale) {
-  //   instance._sentences = sentences;
-  //   instance._locale = locale;
-  // }
-
-  static Future<bool> load(Locale locale,{String path, String loadPath, bool useOnlyLangCode}) async {
+  static Future<bool> load(
+    Locale locale, {
+    String path,
+    String loadPath,
+    bool useOnlyLangCode,
+    bool useDocumentStorage,
+  }) async {
     String data;
 
     var _codeLang = locale.languageCode;
@@ -34,7 +35,12 @@ class Localization {
     localePath += useOnlyLangCode ? '.json' : '-$_codeCoun.json';
 
     if (path != null) {
-      data = await rootBundle.loadString(localePath);
+      if (useDocumentStorage) {
+        File file = File(localePath);
+        data = await file.readAsString();
+      } else {
+        data = await rootBundle.loadString(localePath);
+      }
     } else if (loadPath != null) {
       data = await http
           .get(localePath)
@@ -69,7 +75,7 @@ class Localization {
     return res;
   }
 
-  String plural(String key, dynamic value) {
+  String plural(String key, dynamic value, {NumberFormat format} ) {
     final res = Intl.pluralLogic(value,
         zero: this._resolve(key + '.zero', this._sentences),
         one: this._resolve(key + '.one', this._sentences),
@@ -78,7 +84,7 @@ class Localization {
         many: this._resolve(key + '.many', this._sentences),
         other: this._resolve(key + '.other', this._sentences),
         locale: _locale.languageCode);
-    return res.replaceFirst(RegExp(r'{}'), '$value');
+    return res.replaceFirst(RegExp(r'{}'), (format==null) ? '$value' :format.format(value) );
   }
 
   String _gender(String key, {String gender}) {
