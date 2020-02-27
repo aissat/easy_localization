@@ -40,6 +40,7 @@ class Localization {
       data = await assetLoader.load(localePath);
     } catch (e) {
       print(e);
+      return false;
     }
 
     Map<String, dynamic> _result = json.decode(data);
