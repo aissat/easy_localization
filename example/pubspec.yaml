@@ -26,7 +26,6 @@ dependencies:
   easy_localization:
     path: ../
   flutter_icons: ^1.0.0+1
-  http: ^0.12.0+2
 
 dev_dependencies:
   flutter_test:
