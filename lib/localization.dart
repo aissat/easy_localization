@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import 'asset_loader.dart';
@@ -35,14 +32,8 @@ class Localization {
     var basePath = path != null ? path : loadPath;
     var localePath = '$basePath/$_codeLang';
     localePath += useOnlyLangCode ? '.json' : '-$_codeCoun.json';
-
-    try {
-      data = await assetLoader.load(localePath);
-    } catch (e) {
-      print(e);
-      return false;
-    }
-
+    
+    data = await assetLoader.load(localePath);
     Map<String, dynamic> _result = json.decode(data);
 
     instance._sentences = new Map();
