@@ -1,3 +1,4 @@
+import 'package:easy_localization/asset_loader.dart';
 import 'package:flutter/widgets.dart';
 import 'localization.dart';
 
@@ -5,7 +6,7 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final Locale locale;
   final String path;
   final String loadPath;
-  final bool useDocumentStorage;
+  final AssetLoader assetLoader;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   final bool useOnlyLangCode;
@@ -15,7 +16,7 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
     this.path,
     this.loadPath,
     this.useOnlyLangCode = false,
-    this.useDocumentStorage = false,
+    this.assetLoader = const RootBundleAssetLoader(),
   });
 
   @override
@@ -26,9 +27,8 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
     await Localization.load(
       value,
       path: path,
-      loadPath: loadPath,
       useOnlyLangCode: useOnlyLangCode,
-      useDocumentStorage: useDocumentStorage,
+      assetLoader: assetLoader,
     );
 
     return Localization.instance;
