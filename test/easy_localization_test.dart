@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as ezl;
 import 'package:easy_localization/localization.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -160,7 +160,7 @@ void main() {
       test('with number format', () {
         expect(
             Localization.instance
-                .plural("day", 3, format: NumberFormat.currency()),
+                .plural("day", 3, format: ezl.NumberFormat.currency()),
             "USD3.00 other days");
       });
     });
