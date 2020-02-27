@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
+import 'package:easy_localization/asset_loader.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 class Localization {
@@ -16,13 +15,10 @@ class Localization {
   static Localization get instance =>
       _instance ?? (_instance = Localization._());
 
-  static Future<bool> load(
-    Locale locale, {
-    String path,
-    String loadPath,
-    bool useOnlyLangCode,
-    bool useDocumentStorage,
-  }) async {
+  static Future<bool> load(Locale locale,
+      {@required String path,
+      @required bool useOnlyLangCode,
+      @required AssetLoader assetLoader}) async {
     String data;
 
     var _codeLang = locale.languageCode;
@@ -30,22 +26,10 @@ class Localization {
 
     instance._locale = Locale(_codeLang, _codeCoun);
 
-    var basePath = path != null ? path : loadPath;
-    var localePath = '$basePath/$_codeLang';
+    var localePath = '$path/$_codeLang';
     localePath += useOnlyLangCode ? '.json' : '-$_codeCoun.json';
 
-    if (path != null) {
-      if (useDocumentStorage) {
-        File file = File(localePath);
-        data = await file.readAsString();
-      } else {
-        data = await rootBundle.loadString(localePath);
-      }
-    } else if (loadPath != null) {
-      data = await http
-          .get(localePath)
-          .then((response) => response.body.toString());
-    }
+    data = await assetLoader.load(localePath);
 
     Map<String, dynamic> _result = json.decode(data);
 
@@ -75,7 +59,7 @@ class Localization {
     return res;
   }
 
-  String plural(String key, dynamic value, {NumberFormat format} ) {
+  String plural(String key, dynamic value, {NumberFormat format}) {
     final res = Intl.pluralLogic(value,
         zero: this._resolve(key + '.zero', this._sentences),
         one: this._resolve(key + '.one', this._sentences),
@@ -84,7 +68,8 @@ class Localization {
         many: this._resolve(key + '.many', this._sentences),
         other: this._resolve(key + '.other', this._sentences),
         locale: _locale.languageCode);
-    return res.replaceFirst(RegExp(r'{}'), (format==null) ? '$value' :format.format(value) );
+    return res.replaceFirst(
+        RegExp(r'{}'), (format == null) ? '$value' : format.format(value));
   }
 
   String _gender(String key, {String gender}) {
