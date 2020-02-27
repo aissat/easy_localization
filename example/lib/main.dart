@@ -1,50 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:http/http.dart' as http;
+
 
 void main() => runApp(EasyLocalization(child: MyApp()));
-
-class StringAssetLoader extends AssetLoader {
-  @override
-  Future<String> load(String localePath) {
-    return Future.value('''{"title" : "Hello"}''');
-  }
-}
-
-class FileAssetLoader extends AssetLoader {
-  @override
-  Future<String> load(String localePath) {
-    File file = File(localePath);
-    return file.readAsString();
-  }
-}
-
-class NetworkAssetLoader extends AssetLoader {
-  @override
-  Future<String> load(String localePath) async {
-    String url =
-        "https://raw.githubusercontent.com/aissat/easy_localization/master/example/$localePath";
-    return http.get(url).then((response) => response.body.toString());
-  }
-}
-
-// asset loader to be used when doing integration tests
-// default AssetLoader suffers from this issue
-// https://github.com/flutter/flutter/issues/44182
-class TestsAssetLoader extends AssetLoader {
-  @override
-  Future<String> load(String localePath) async {
-    final ByteData byteData = await rootBundle.load(localePath);
-    return utf8.decode(byteData.buffer.asUint8List());
-  }
-}
 
 class MyApp extends StatelessWidget {
   @override
@@ -62,8 +22,8 @@ class MyApp extends StatelessWidget {
             locale: data.locale,
             path: 'resources/langs',
             // useOnlyLangCode: true,
-
             // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+            // assetLoader: RootBundleAssetLoader()
             // assetLoader: NetworkAssetLoader()
             // assetLoader: TestsAssetLoader()
             // assetLoader: FileAssetLoader()
