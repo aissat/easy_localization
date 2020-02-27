@@ -11,20 +11,25 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   final bool useOnlyLangCode;
 
-  EasyLocalizationDelegate(
-      {@required this.locale,
-      this.path,
-      this.loadPath,
-      this.useOnlyLangCode = false,
-      this.assetLoader = const RootBundleAssetLoader()});
+  EasyLocalizationDelegate({
+    @required this.locale,
+    this.path,
+    this.loadPath,
+    this.useOnlyLangCode = false,
+    this.assetLoader = const RootBundleAssetLoader(),
+  });
 
   @override
   bool isSupported(Locale locale) => locale != null;
 
   @override
   Future<Localization> load(Locale value) async {
-    await Localization.load(value,
-        path: path, useOnlyLangCode: useOnlyLangCode, assetLoader: assetLoader);
+    await Localization.load(
+      value,
+      path: path,
+      useOnlyLangCode: useOnlyLangCode,
+      assetLoader: assetLoader,
+    );
 
     return Localization.instance;
   }
