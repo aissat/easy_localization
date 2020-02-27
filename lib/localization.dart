@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
-import 'package:easy_localization/asset_loader.dart';
-import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+
+import 'asset_loader.dart';
 
 class Localization {
   Map<String, dynamic> _sentences;
@@ -15,10 +18,13 @@ class Localization {
   static Localization get instance =>
       _instance ?? (_instance = Localization._());
 
-  static Future<bool> load(Locale locale,
-      {@required String path,
-      @required bool useOnlyLangCode,
-      @required AssetLoader assetLoader}) async {
+  static Future<bool> load(
+    Locale locale, {
+    String path,
+    String loadPath,
+    bool useOnlyLangCode,
+    AssetLoader assetLoader = const RootBundleAssetLoader(),
+  }) async {
     String data;
 
     var _codeLang = locale.languageCode;
@@ -26,10 +32,15 @@ class Localization {
 
     instance._locale = Locale(_codeLang, _codeCoun);
 
-    var localePath = '$path/$_codeLang';
+    var basePath = path != null ? path : loadPath;
+    var localePath = '$basePath/$_codeLang';
     localePath += useOnlyLangCode ? '.json' : '-$_codeCoun.json';
 
-    data = await assetLoader.load(localePath);
+    try {
+      data = await assetLoader.load(localePath);
+    } catch (e) {
+      print(e);
+    }
 
     Map<String, dynamic> _result = json.decode(data);
 
