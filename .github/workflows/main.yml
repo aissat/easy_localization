@@ -1,0 +1,20 @@
+on: push
+name: Flutter Tester
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'dev' # or: 'dev' or 'beta'
+    - name: Install flutter dependencies
+      run: flutter pub get
+    - name: Install packages dependencies
+      run: flutter packages get
+    - name: Run tests
+      run: pub run test
