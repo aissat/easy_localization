@@ -2,8 +2,22 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flat/flat.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+
+//
+//
+//
+//
+class CachedBundleAssetLoader extends AssetLoader {
+  const CachedBundleAssetLoader();
+  @override
+  Future<String> load(String localePath) async {
+    String data = await rootBundle.loadString(localePath);
+    return  json.encode(flatten(json.decode(data)));
+  }
+}
 
 //
 //
