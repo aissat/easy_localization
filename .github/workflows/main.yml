@@ -1,8 +1,8 @@
 on: push
 name: Flutter Tester
 jobs:
-  build:
-    name: Build APK
+  test:
+    name: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
