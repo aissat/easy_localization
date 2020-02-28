@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             path: 'resources/langs',
             // useOnlyLangCode: true,
             // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-            assetLoader: CachedBundleAssetLoader()
+            assetLoader: FlatJsonBundleAssetLoader()
             // assetLoader: NetworkAssetLoader()
             // assetLoader: TestsAssetLoader()
             // assetLoader: FileAssetLoader()

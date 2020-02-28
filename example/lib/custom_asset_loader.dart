@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 //
 //
 //
-class CachedBundleAssetLoader extends AssetLoader {
-  const CachedBundleAssetLoader();
+class FlatJsonBundleAssetLoader extends AssetLoader {
+  const FlatJsonBundleAssetLoader();
   @override
   Future<String> load(String localePath) async {
     String data = await rootBundle.loadString(localePath);
