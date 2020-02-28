@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                   plural('amount', counter,
                       format: NumberFormat.currency(
-                          locale: Localizations.localeOf(context).toString(),
+                          locale: Intl.defaultLocale,
                           symbol: "€")),
                   style: TextStyle(
                       color: Colors.grey.shade900,

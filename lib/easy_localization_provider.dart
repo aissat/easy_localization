@@ -44,9 +44,11 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     print("================== changeLocale ===================");
     try {
       _preferences = await SharedPreferences.getInstance();
+
       if (locale == null) {
         var _codeLang = _preferences.getString('codeLa');
         var _codeCoun = _preferences.getString('codeCa');
+
         if (_codeLang == null) {
           var currentLocale = Intl.getCurrentLocale().split("_");
           _defaultLocal = Locale(currentLocale[0], currentLocale[1]);
@@ -55,14 +57,14 @@ class _EasyLocalizationState extends State<EasyLocalization> {
         }
       } else
         _defaultLocal = locale;
-      await _preferences.setString('codeCa', _defaultLocal.countryCode);
-      await _preferences.setString('codeLa', _defaultLocal.languageCode);
-
-      print(_defaultLocal.toString());
 
       setState(() {
-        _locale = _defaultLocal;
+        Intl.defaultLocale = _defaultLocal?.toString();
+        this._locale = _defaultLocal;
       });
+
+      await _preferences.setString('codeCa', _defaultLocal.countryCode);
+      await _preferences.setString('codeLa', _defaultLocal.languageCode);
     } catch (e) {
       print(e);
     }
