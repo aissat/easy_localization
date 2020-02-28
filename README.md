@@ -3,15 +3,14 @@
 Easy and Fast internationalizing your Flutter Apps,
 this package simplify the internationalizing process using Json file
 
-![Pub Version](https://img.shields.io/pub/v/easy_localization)
+![Pub Version](https://img.shields.io/pub/v/easy_localization?style=flat-square)
 ![Code Climate issues](https://img.shields.io/github/issues/aissat/easy_localization?style=flat-square)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/aissat/easy_localization?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 ![GitHub contributors](https://img.shields.io/github/contributors/aissat/easy_localization?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/aissat/easy_localization?style=flat-square)
 ![GitHub followers](https://img.shields.io/github/followers/aissat?style=flat-square)
-![GitHub forks](https://img.shields.io/github/forks/aissat/easy_localization?style=flat-square?style=flat-square)
-![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/aissat/easy_localization?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
 ![GitHub watchers](https://img.shields.io/github/watchers/aissat/easy_localization?style=flat-square)
 
