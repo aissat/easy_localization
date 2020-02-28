@@ -3,6 +3,18 @@
 Easy and Fast internationalizing your Flutter Apps,
 this package simplify the internationalizing process using Json file
 
+![Pub Version](https://img.shields.io/pub/v/easy_localization)
+![Code Climate issues](https://img.shields.io/github/issues/aissat/easy_localization?style=flat-square)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/aissat/easy_localization?style=flat-square)
+![GitHub](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/aissat/easy_localization?style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/aissat/easy_localization?style=flat-square)
+![GitHub followers](https://img.shields.io/github/followers/aissat?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/aissat/easy_localization?style=flat-square?style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
+![GitHub watchers](https://img.shields.io/github/watchers/aissat/easy_localization?style=flat-square)
+
 ## Why easy_localization
 
 - simplify and easy the internationalizing process in Flutter.
@@ -594,7 +606,6 @@ We need your support. Projects like this can not be successful without support f
 Of course, you can also choose what you want to donate. All donations are very much appreciated!
 
 ## Contributors thanks
-
+![Donate $25](https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization)
 <a href="https://github.com/aissat/easy_localization/graphs/contributors">
-  <img src="https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization" />
 </a>
