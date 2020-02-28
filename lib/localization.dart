@@ -69,7 +69,7 @@ class Localization {
         two: this._resolve(key + '.two', this._sentences),
         few: this._resolve(key + '.few', this._sentences),
         many: this._resolve(key + '.many', this._sentences),
-        other: this._resolve(key + '.other', this._sentences),
+        other: this._resolve(key + '.other', this._sentences) ?? key,
         locale: _locale.languageCode);
     return res.replaceFirst(
         RegExp(r'{}'), (format == null) ? '$value' : format.format(value));
@@ -86,18 +86,17 @@ class Localization {
 
   String _resolve(String path, dynamic obj) {
     List<String> keys = path.split('.');
-
-    if (keys.length > 1) {
-      for (int index = 0; index <= keys.length; index++) {
-        if (obj.containsKey(keys[index]) && obj[keys[index]] is! String) {
-          return _resolve(
-              keys.sublist(index + 1, keys.length).join('.'), obj[keys[index]]);
+    if (keys.length > 0){
+      for (int index = 0; index < keys.length; index++) {
+        if (obj.containsKey(keys[index]) && keys.length >1 ) {
+          return _resolve(keys.sublist(index + 1, keys.length).join('.'), obj[keys[index]]);
+        }else if(obj[path] ==null){
+          print('[easy_localization] Missing message: "$path" for locale: "${this._locale}", using key as fallback.');
+          return path;
         }
-
-        return obj[path] ?? path;
+        return obj[path];
       }
     }
-
-    return obj[path] ?? path;
+    return "";
   }
 }
