@@ -15,8 +15,12 @@ class FlatJsonBundleAssetLoader extends AssetLoader {
   @override
   Future<String> load(String localePath) async {
     String data = await rootBundle.loadString(localePath);
-    return  json.encode(flatten(json.decode(data)));
+    return json.encode(flatten(json.decode(data)));
   }
+
+  @override
+  Future<bool> localeExists(String localePath) =>
+      rootBundle.load(localePath).then((v) => true).catchError((e) => false);
 }
 
 //

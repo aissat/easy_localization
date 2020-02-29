@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-<<<<<<< HEAD
-import 'custom_asset_loader.dart';
 
-=======
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
->>>>>>> 555fcb4ffb39d66a5f669f2f1c6c40525f4bee50
+
 
   // load
   await EasyLocalization.loadSavedLocale();
@@ -32,35 +29,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(
-      data: data,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          //app-specific localization
-          EasyLocalizationDelegate(
-            locale: data.locale,
-            path: 'resources/langs',
-            // useOnlyLangCode: true,
-            // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-            assetLoader: FlatJsonBundleAssetLoader()
-            // assetLoader: NetworkAssetLoader()
-            // assetLoader: TestsAssetLoader()
-            // assetLoader: FileAssetLoader()
-            // assetLoader: StringAssetLoader()
-          ),
-        ],
-        supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.locale,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: MyHomePage(title: 'Easy localization'),
-=======
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: [
@@ -77,7 +45,6 @@ class MyApp extends StatelessWidget {
       locale: EasyLocalization.of(context).locale,
       theme: ThemeData(
         primarySwatch: Colors.blue,
->>>>>>> 555fcb4ffb39d66a5f669f2f1c6c40525f4bee50
       ),
       home: MyHomePage(title: 'Easy localization'),
     );
@@ -191,56 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         locale: Localizations.localeOf(context).toString(),
                         symbol: "€")),
                 style: TextStyle(
-<<<<<<< HEAD
-                    color: Colors.grey.shade600,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(MyFlutterApp.male_1),
-                  Switch(value: _gender, onChanged: switchGender),
-                  Icon(MyFlutterApp.female_1),
-                ],
-              ),
-              Spacer(
-                flex: 1,
-              ),
-              Text('msg').tr(args: ['aissat', 'Flutter']),
-              Text('clicked').plural(counter),
-              FlatButton(
-                onPressed: () {
-                  incrementCounter();
-                },
-                child: Text('clickMe').tr(),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                  plural('amount', counter,
-                      format: NumberFormat.currency(
-                          locale: Intl.defaultLocale,
-                          symbol: "€")),
-                  style: TextStyle(
-                      color: Colors.grey.shade900,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold)),
-              SizedBox(
-                height: 20,
-              ),
-              Text('profile.reset_password.title').tr(),
-              Spacer(
-                flex: 2,
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: incrementCounter,
-          child: Text('+1'),
-=======
                     color: Colors.grey.shade900,
                     fontSize: 18,
                     fontWeight: FontWeight.bold)),
@@ -252,7 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 2,
             ),
           ],
->>>>>>> 555fcb4ffb39d66a5f669f2f1c6c40525f4bee50
         ),
       ),
       floatingActionButton: FloatingActionButton(
