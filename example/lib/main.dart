@@ -3,19 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() => runApp(EasyLocalization(
-      child: MyApp(),
-      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-      fallbackLocale: Locale('en', 'US'),
-      path: 'resources/langs',
-      // useOnlyLangCode: true,
-      // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-      // assetLoader: RootBundleAssetLoader()
-      // assetLoader: NetworkAssetLoader()
-      // assetLoader: TestsAssetLoader()
-      // assetLoader: FileAssetLoader()
-      // assetLoader: StringAssetLoader()
-    ));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // load
+  await EasyLocalization.loadSavedLocale();
+
+  runApp(EasyLocalization(
+    child: MyApp(),
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    fallbackLocale: Locale('en', 'US'),
+    path: 'resources/langs',
+    // useOnlyLangCode: true,
+    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // assetLoader: RootBundleAssetLoader()
+    // assetLoader: NetworkAssetLoader()
+    // assetLoader: TestsAssetLoader()
+    // assetLoader: FileAssetLoader()
+    // assetLoader: StringAssetLoader()
+  ));
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -81,8 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 : Colors.blue,
             onPressed: () {
               this.setState(() {
-                EasyLocalization.of(context)
-                    .changeLocale(locale: Locale("en", "US"));
+                EasyLocalization.of(context).changeLocale(Locale("en", "US"));
                 print(Localizations.localeOf(context).languageCode);
               });
             },
@@ -94,8 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 : Colors.blue,
             onPressed: () {
               this.setState(() {
-                EasyLocalization.of(context)
-                    .changeLocale(locale: Locale("ar", "DZ"));
+                EasyLocalization.of(context).changeLocale(Locale("ar", "DZ"));
                 print(Localizations.localeOf(context).languageCode);
               });
             },
