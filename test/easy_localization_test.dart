@@ -1,10 +1,21 @@
+import 'dart:async';
 import 'dart:ui';
 
-import 'package:easy_localization/easy_localization.dart' as ezl;
-import 'package:easy_localization/localization.dart';
+import 'package:easy_localization/src/localization.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 import 'utils/test_asset_loaders.dart';
+
+var printLog = [];
+overridePrint(testFn()) => () {
+      var spec = new ZoneSpecification(print: (_, __, ___, String msg) {
+        // Add to log instead of printing to stdout
+        printLog.add(msg);
+      });
+      return Zone.current.fork(specification: spec).run(testFn);
+    };
 
 void main() {
   group('localization', () {
@@ -23,7 +34,7 @@ void main() {
       expect(
           await Localization.load(
             Locale('en'),
-            path: null,
+            path: "path",
             useOnlyLangCode: true,
             assetLoader: StringAssetLoader(),
           ),
@@ -69,7 +80,7 @@ void main() {
     group('tr', () {
       setUpAll(() async {
         await Localization.load(Locale('en'),
-            path: null,
+            path: "path",
             useOnlyLangCode: true,
             assetLoader: StringAssetLoader());
       });
@@ -77,14 +88,41 @@ void main() {
         expect(Localization.instance.tr("test"), "test");
       });
 
+      test('can resolve resource in any nest level', () {
+        expect(
+          Localization.instance.tr("nested.super.duper.nested"),
+          "nested.super.duper.nested",
+        );
+      });
+      test('can resolve resource that has a key with dots', () {
+        expect(
+          Localization.instance.tr("nested.but.not.nested"),
+          "nested but not nested",
+        );
+      });
+
       test('returns missing resource as provided', () {
         expect(Localization.instance.tr("test_missing"), "test_missing");
       });
+
+      test('reports missing resource', overridePrint(() {
+        printLog = [];
+        expect(Localization.instance.tr("test_missing"), "test_missing");
+        expect(printLog.first,
+            '[easy_localization] Missing message: "test_missing" for locale: "en", using key as fallback.');
+      }));
 
       test('returns resource and replaces argument', () {
         expect(
           Localization.instance.tr("test_replace_one", args: ['one']),
           "test replace one",
+        );
+      });
+      test('returns resource and replaces argument in any nest level', () {
+        expect(
+          Localization.instance
+              .tr("nested.super.duper.nested_with_arg", args: ['what a nest']),
+          "nested.super.duper.nested_with_arg what a nest",
         );
       });
 
@@ -129,7 +167,7 @@ void main() {
     group('plural', () {
       setUpAll(() async {
         await Localization.load(Locale('en-US'),
-            path: null,
+            path: "path",
             useOnlyLangCode: true,
             assetLoader: StringAssetLoader());
       });
@@ -160,7 +198,7 @@ void main() {
       test('with number format', () {
         expect(
             Localization.instance
-                .plural("day", 3, format: ezl.NumberFormat.currency()),
+                .plural("day", 3, format: NumberFormat.currency()),
             "USD3.00 other days");
       });
     });
@@ -168,7 +206,7 @@ void main() {
     group('extensions', () {
       setUpAll(() async {
         await Localization.load(Locale('en'),
-            path: null,
+            path: "path",
             useOnlyLangCode: true,
             assetLoader: StringAssetLoader());
       });
