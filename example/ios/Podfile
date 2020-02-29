@@ -35,7 +35,11 @@ end
 target 'Runner' do
   use_frameworks!
   use_modular_headers!
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 555fcb4ffb39d66a5f669f2f1c6c40525f4bee50
   # Flutter Pod
 
   copied_flutter_dir = File.join(__dir__, 'Flutter')

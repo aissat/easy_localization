@@ -1,4 +1,4 @@
-import 'package:easy_localization/asset_loader.dart';
+import 'package:easy_localization/src/asset_loader.dart';
 
 class StringAssetLoader extends AssetLoader {
   @override
@@ -24,8 +24,20 @@ class StringAssetLoader extends AssetLoader {
         "many": "{} many days",
         "other": "{} other days"
       },
+      "nested.but.not.nested" : "nested but not nested",
+      "nested" : {
+        "super" : {
+          "duper" : {
+            "nested" : "nested.super.duper.nested",
+            "nested_with_arg" : "nested.super.duper.nested_with_arg {}"
+          }
+        }
+      },
       "path" : "$localePath"
     }
     ''');
   }
+
+  @override
+  Future<bool> localeExists(String localePath) => Future.value(true);
 }
