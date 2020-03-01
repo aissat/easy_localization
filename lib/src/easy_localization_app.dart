@@ -23,7 +23,10 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
   })  : assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
-            path: path, supportedLocales: supportedLocales);
+          path: path,
+          supportedLocales: supportedLocales,
+          useOnlyLangCode: useOnlyLangCode,
+        );
 
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
