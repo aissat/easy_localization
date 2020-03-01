@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:ui';
 
-import 'package:easy_localization/src/translations.dart';
 import 'package:intl/intl.dart';
 
 import 'asset_loader.dart';
+import 'translations.dart';
 
 class Localization {
   Translations _translations;
