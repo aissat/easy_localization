@@ -55,7 +55,9 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
     if (_locale != null)
       Intl.defaultLocale = Intl.canonicalizedLocale(
-          l.countryCode.isEmpty ? l.languageCode : l.toString());
+          l.countryCode == null || l.countryCode.isEmpty
+              ? l.languageCode
+              : l.toString());
 
     _saveLocale(_locale);
 
