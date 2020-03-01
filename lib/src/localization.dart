@@ -35,16 +35,16 @@ class Localization {
     instance.useOnlyLangCode = useOnlyLangCode;
 
     String localePath = instance.getLocalePath();
-    String data = await assetLoader.load(localePath);
-    instance._translations = Translations(json.decode(data));
+    Map<String, dynamic> data = await assetLoader.load(localePath);
+    instance._translations = Translations(data);
 
     return true;
   }
 
   String getLocalePath() {
-    String _codeLang = _locale.languageCode;
-    String _codeCoun = _locale.countryCode;
-    String localePath = '$path/$_codeLang';
+    final String _codeLang = _locale.languageCode;
+    final String _codeCoun = _locale.countryCode;
+    final String localePath = '$path/$_codeLang';
 
     return useOnlyLangCode ? '$localePath.json' : '$localePath-$_codeCoun.json';
   }
@@ -93,7 +93,7 @@ class Localization {
       );
 
   String _resolve(String key) {
-    String resource = this._translations.get(key);
+    final String resource = this._translations.get(key);
     if (resource == null) {
       print(
           '[easy_localization] Missing message: "$key" for locale: "${this._locale.languageCode}", using key as fallback.');

@@ -36,7 +36,7 @@ void main() {
             Locale('en'),
             path: "path",
             useOnlyLangCode: true,
-            assetLoader: StringAssetLoader(),
+            assetLoader: JsonAssetLoader(),
           ),
           true);
     });
@@ -47,7 +47,7 @@ void main() {
             Locale('en'),
             path: "path",
             useOnlyLangCode: true,
-            assetLoader: StringAssetLoader(),
+            assetLoader: JsonAssetLoader(),
           ),
           true);
 
@@ -60,7 +60,7 @@ void main() {
             Locale('en', 'us'),
             path: "path",
             useOnlyLangCode: true,
-            assetLoader: StringAssetLoader(),
+            assetLoader: JsonAssetLoader(),
           ),
           true);
 
@@ -71,7 +71,7 @@ void main() {
             Locale('en', 'us'),
             path: "path",
             useOnlyLangCode: false,
-            assetLoader: StringAssetLoader(),
+            assetLoader: JsonAssetLoader(),
           ),
           true);
       expect(Localization.instance.tr("path"), "path/en-us.json");
@@ -82,7 +82,7 @@ void main() {
         await Localization.load(Locale('en'),
             path: "path",
             useOnlyLangCode: true,
-            assetLoader: StringAssetLoader());
+            assetLoader: JsonAssetLoader());
       });
       test('finds and returns resource', () {
         expect(Localization.instance.tr("test"), "test");
@@ -169,7 +169,7 @@ void main() {
         await Localization.load(Locale('en-US'),
             path: "path",
             useOnlyLangCode: true,
-            assetLoader: StringAssetLoader());
+            assetLoader: JsonAssetLoader());
       });
 
       test('zero', () {
@@ -208,7 +208,7 @@ void main() {
         await Localization.load(Locale('en'),
             path: "path",
             useOnlyLangCode: true,
-            assetLoader: StringAssetLoader());
+            assetLoader: JsonAssetLoader());
       });
       group('string', () {
         test('tr', () {
