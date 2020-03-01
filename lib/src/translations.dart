@@ -1,13 +1,13 @@
 class Translations {
   final Map<String, dynamic> _translations;
-  final Map<String, dynamic> _cachedNestedKeys;
+  final Map<String, dynamic> _nestedKeysCache;
 
-  Translations(this._translations) : this._cachedNestedKeys = {};
+  Translations(this._translations) : this._nestedKeysCache = {};
   String get(String key) =>
       (isNestedKey(key) ? getNested(key) : _translations[key]);
 
   String getNested(String key) {
-    if (isNestedCached(key)) return _cachedNestedKeys[key];
+    if (isNestedCached(key)) return _nestedKeysCache[key];
 
     List<String> keys = key.split('.');
     String kHead = keys.first;
@@ -25,13 +25,13 @@ class Translations {
       ? getNested(key) != null
       : _translations.containsKey(key);
 
-  bool isNestedCached(String key) => _cachedNestedKeys.containsKey(key);
+  bool isNestedCached(String key) => _nestedKeysCache.containsKey(key);
 
   cacheNestedKey(String key, String value) {
     if (!isNestedKey(key))
       throw new Exception("Cannot cache a key that is not nested.");
 
-    _cachedNestedKeys[key] = value;
+    _nestedKeysCache[key] = value;
   }
 
   bool isNestedKey(String key) =>
