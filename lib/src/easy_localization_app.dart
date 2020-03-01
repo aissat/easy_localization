@@ -7,21 +7,6 @@ import 'localization.dart';
 // :( see line 55
 Locale _savedLocale;
 
-class _EasyLocalizationProvider extends InheritedWidget {
-  _EasyLocalizationProvider({Key key, this.child, this.data})
-      : super(key: key, child: child);
-  final _EasyLocalizationState data;
-  final Widget child;
-
-  static _EasyLocalizationProvider of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
-  }
-
-  @override
-  bool updateShouldNotify(_EasyLocalizationProvider oldWidget) => true;
-}
-
 class EasyLocalization extends StatefulWidget {
   final Widget child;
   final List<Locale> supportedLocales;
@@ -64,6 +49,12 @@ class EasyLocalization extends StatefulWidget {
 class _EasyLocalizationState extends State<EasyLocalization> {
   Locale _locale;
   Locale get locale => _locale;
+  set locale(Locale l) {
+    _locale = l;
+    Intl.defaultLocale = Intl.canonicalizedLocale(
+        l.countryCode.isEmpty ? l.languageCode : l.toString());
+  }
+
   List<Locale> get supportedLocales => widget.supportedLocales;
   _EasyLocalizationDelegate get delegate => widget.delegate;
 
@@ -79,7 +70,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   // if fallbackLocale is same as saved one the state won't rebuild.
   loadSavedAppLocale() async {
-    Locale savedLocale = await getSavedLocale();
+    final Locale savedLocale = await getSavedLocale();
     if (savedLocale != null) {
       setState(() {
         _locale = savedLocale;
@@ -95,11 +86,10 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   Future<Locale> getSavedLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    var _codeLang = _preferences.getString('codeLa');
-    var _codeCoun = _preferences.getString('codeCa');
+    final String _codeLang = _preferences.getString('codeLa');
+    final String _codeCoun = _preferences.getString('codeCa');
 
     if (_codeLang != null) return null;
-
     return Locale(_codeLang, _codeCoun);
   }
 
@@ -110,7 +100,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       Locale locale, Iterable<Locale> supportedLocales) {
     if (supportedLocales != widget.supportedLocales)
       throw new Exception(
-          "You haven't given EasyLocalization.supportedLocales to MaterialApp ssupportedLocales property");
+          "You haven't given EasyLocalization.supportedLocales to MaterialApp supportedLocales property");
 
     if (supportedLocales.contains(locale)) return locale;
 
@@ -132,9 +122,23 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       );
 }
 
+class _EasyLocalizationProvider extends InheritedWidget {
+  _EasyLocalizationProvider({Key key, this.child, this.data})
+      : super(key: key, child: child);
+  final _EasyLocalizationState data;
+  final Widget child;
+
+  static _EasyLocalizationProvider of(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
+  }
+
+  @override
+  bool updateShouldNotify(_EasyLocalizationProvider oldWidget) => true;
+}
+
 class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final String path;
-  final String loadPath;
   final AssetLoader assetLoader;
   final List<Locale> supportedLocales;
 
@@ -142,10 +146,9 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final bool useOnlyLangCode;
 
   _EasyLocalizationDelegate({
-    this.path,
-    this.loadPath,
+    @required this.path,
+    @required this.supportedLocales,
     this.useOnlyLangCode = false,
-    this.supportedLocales,
     this.assetLoader = const RootBundleAssetLoader(),
   });
 
