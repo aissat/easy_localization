@@ -5,9 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'asset_loader.dart';
 import 'localization.dart';
 
-// :( see line 55
-Locale _savedLocale;
-
 class EasyLocalization extends StatefulWidget {
   final Widget child;
   final List<Locale> supportedLocales;
@@ -33,65 +30,77 @@ class EasyLocalization extends StatefulWidget {
   static _EasyLocalizationState of(BuildContext context) =>
       _EasyLocalizationProvider.of(context).data;
 
-  // that is a hack :P
-  // @TODO is there a better way to initialize the saved locale so that the app
-  // initializes with the last choosen locale.
-  // Right now developer needs to call this in main and if a saved locale is found
-  // we save it on a global variable in this field.
-  static loadSavedLocale() async {
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
-    var _codeLang = _preferences.getString('codeLa');
-    var _codeCoun = _preferences.getString('codeCa');
-
-    if (_codeLang != null) _savedLocale = Locale(_codeLang, _codeCoun);
-  }
+  /// ensureInitialized needs to be called in main
+  /// so that savedLocale is loaded and used from the
+  /// start.
+  static ensureInitialized() async =>
+      await _EasyLocalizationLocale.initSavedAppLocale();
 }
 
-class _EasyLocalizationState extends State<EasyLocalization> {
+class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
+  static Locale _savedLocale;
+
+  // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
+  // _savedLocale is set.
+  _EasyLocalizationLocale(Locale fallbackLocale)
+      : this._locale = _savedLocale ?? fallbackLocale;
+
   Locale get locale => _locale;
   set locale(Locale l) {
     _locale = l;
-    Intl.defaultLocale = Intl.canonicalizedLocale(
-        l.countryCode.isEmpty ? l.languageCode : l.toString());
+
+    if (_locale != null)
+      Intl.defaultLocale = Intl.canonicalizedLocale(
+          l.countryCode.isEmpty ? l.languageCode : l.toString());
+
+    _saveLocale(_locale);
+
+    notifyListeners();
   }
 
-  List<Locale> get supportedLocales => widget.supportedLocales;
-  _EasyLocalizationDelegate get delegate => widget.delegate;
-
-  _EasyLocalizationState() {
-    _locale = _savedLocale ?? widget.fallbackLocale;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadSavedAppLocale();
-  }
-
-  // if fallbackLocale is same as saved one the state won't rebuild.
-  loadSavedAppLocale() async {
-    final Locale savedLocale = await getSavedLocale();
-    if (savedLocale != null) {
-      setState(() {
-        _locale = savedLocale;
-      });
-    }
-  }
-
-  saveLocale(Locale locale) async {
+  _saveLocale(Locale locale) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
   }
 
-  Future<Locale> getSavedLocale() async {
+  static initSavedAppLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     final String _codeLang = _preferences.getString('codeLa');
     final String _codeCoun = _preferences.getString('codeCa');
 
-    if (_codeLang != null) return null;
-    return Locale(_codeLang, _codeCoun);
+    _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
+  }
+}
+
+class _EasyLocalizationState extends State<EasyLocalization> {
+  _EasyLocalizationLocale _locale;
+  Locale get locale => _locale.locale;
+
+  set locale(Locale l) {
+    if (!supportedLocales.contains(l))
+      throw new Exception("Locale $l is not supported by this app.");
+
+    _locale.locale = l;
+  }
+
+  List<Locale> get supportedLocales => widget.supportedLocales;
+  _EasyLocalizationDelegate get delegate => widget.delegate;
+
+  @override
+  void initState() {
+    _locale = _EasyLocalizationLocale(widget.fallbackLocale);
+    _locale.addListener(() {
+      if (mounted) setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _locale.dispose();
+    super.dispose();
   }
 
   // locale is either the deviceLocale or the MaterialApp widget locale.
@@ -105,15 +114,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
     if (supportedLocales.contains(locale)) return locale;
 
-    return _locale;
-  }
-
-  void changeLocale(Locale locale) async {
-    if (!supportedLocales.contains(locale))
-      throw new Exception("Locale $locale is not supported by this app.");
-    _locale = locale;
-    await saveLocale(locale);
-    setState(() {});
+    return _locale.locale;
   }
 
   @override
@@ -129,10 +130,8 @@ class _EasyLocalizationProvider extends InheritedWidget {
   final _EasyLocalizationState data;
   final Widget child;
 
-  static _EasyLocalizationProvider of(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
-  }
+  static _EasyLocalizationProvider of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
 
   @override
   bool updateShouldNotify(_EasyLocalizationProvider oldWidget) => true;
