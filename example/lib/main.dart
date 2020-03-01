@@ -1,3 +1,5 @@
+
+import 'package:example/language_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -6,11 +8,6 @@ import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-
-  // load
-  await EasyLocalization.loadSavedLocale();
-
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
@@ -83,30 +80,12 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("title").tr(),
         //Text(AppLocalizations.of(context).tr('title')),
         actions: <Widget>[
-          FlatButton(
-            child: Text("English"),
-            color: Localizations.localeOf(context).languageCode == "en"
-                ? Colors.lightBlueAccent
-                : Colors.blue,
-            onPressed: () {
-              this.setState(() {
-                EasyLocalization.of(context).changeLocale(Locale("en", "US"));
-                print(Localizations.localeOf(context).languageCode);
-              });
-            },
-          ),
-          FlatButton(
-            child: Text("عربي"),
-            color: Localizations.localeOf(context).languageCode == "ar"
-                ? Colors.lightBlueAccent
-                : Colors.blue,
-            onPressed: () {
-              this.setState(() {
-                EasyLocalization.of(context).changeLocale(Locale("ar", "DZ"));
-                print(Localizations.localeOf(context).languageCode);
-              });
-            },
-          )
+           FlatButton(
+              child: Icon(Icons.language),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => LanguageView(), fullscreenDialog: true));
+              },
+            ),
         ],
       ),
       body: Center(
