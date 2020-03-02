@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flat/flat.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,24 +9,12 @@ import 'package:http/http.dart' as http;
 //
 //
 //
-class FlatJsonBundleAssetLoader extends AssetLoader {
-  const FlatJsonBundleAssetLoader();
+class JsonAssetLoader extends AssetLoader {
   @override
-  Future<String> load(String localePath) async {
-    String data = await rootBundle.loadString(localePath);
-    return  json.encode(flatten(json.decode(data)));
-  }
-}
+  Future<Map<String, dynamic>> load(String string) => Future.value({});
 
-//
-//
-//
-//
-class StringAssetLoader extends AssetLoader {
   @override
-  Future<String> load(String string) {
-    return Future.value(string);
-  }
+  Future<bool> localeExists(String localePath) => Future.value(true);
 }
 
 //
@@ -36,10 +23,13 @@ class StringAssetLoader extends AssetLoader {
 //
 class FileAssetLoader extends AssetLoader {
   @override
-  Future<String> load(String localePath) {
+  Future<Map<String, dynamic>> load(String localePath) async {
     File file = File(localePath);
-    return file.readAsString();
+    return json.decode(await file.readAsString());
   }
+
+  @override
+  Future<bool> localeExists(String localePath) => File(localePath).exists();
 }
 
 //
@@ -48,9 +38,14 @@ class FileAssetLoader extends AssetLoader {
 //
 class NetworkAssetLoader extends AssetLoader {
   @override
-  Future<String> load(String localePath) async {
-    return http.get(localePath).then((response) => response.body.toString());
+  Future<Map<String, dynamic>> load(String localePath) async {
+    return http
+        .get(localePath)
+        .then((response) => json.decode(response.body.toString()));
   }
+
+  @override
+  Future<bool> localeExists(String localePath) => Future.value(true);
 }
 
 // asset loader to be used when doing integration tests
@@ -58,8 +53,12 @@ class NetworkAssetLoader extends AssetLoader {
 // https://github.com/flutter/flutter/issues/44182
 class TestsAssetLoader extends AssetLoader {
   @override
-  Future<String> load(String localePath) async {
+  Future<Map<String, dynamic>> load(String localePath) async {
     final ByteData byteData = await rootBundle.load(localePath);
-    return utf8.decode(byteData.buffer.asUint8List());
+    return json.decode(utf8.decode(byteData.buffer.asUint8List()));
   }
+
+  @override
+  Future<bool> localeExists(String localePath) =>
+      rootBundle.load(localePath).then((v) => true).catchError((e) => false);
 }
