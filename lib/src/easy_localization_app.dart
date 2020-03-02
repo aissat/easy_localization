@@ -17,11 +17,11 @@ class EasyLocalization extends StatefulWidget {
   EasyLocalization({
     @required this.child,
     @required this.supportedLocales,
-    @required this.fallbackLocale,
     @required this.path,
+    this.fallbackLocale,
     this.useOnlyLangCode = false,
     this.assetLoader = const RootBundleAssetLoader(),
-  })  : assert(supportedLocales.contains(fallbackLocale)),
+  }) : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
           path: path,
           supportedLocales: supportedLocales,
@@ -43,11 +43,15 @@ class EasyLocalization extends StatefulWidget {
 class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
   static Locale _savedLocale;
+  // Get default OS Locale
+  static final _osCurrentLocale = Intl.getCurrentLocale().split("_");
 
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(Locale fallbackLocale)
-      : this._locale = _savedLocale ?? fallbackLocale;
+      // if _savedLocale and fallbackLocale null init by default OS Locale
+      : this._locale = (_savedLocale ?? fallbackLocale) ??
+            Locale(_osCurrentLocale[0], _osCurrentLocale[1]);
 
   Locale get locale => _locale;
   set locale(Locale l) {
