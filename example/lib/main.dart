@@ -1,3 +1,4 @@
+import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,8 +15,8 @@ void main() async {
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-    fallbackLocale: Locale('en', 'US'),
     path: 'resources/langs',
+    // fallbackLocale: Locale('en', 'US'),
     // useOnlyLangCode: true,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // assetLoader: RootBundleAssetLoader()
@@ -84,29 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
         //Text(AppLocalizations.of(context).tr('title')),
         actions: <Widget>[
           FlatButton(
-            child: Text("English"),
-            color: Localizations.localeOf(context).languageCode == "en"
-                ? Colors.lightBlueAccent
-                : Colors.blue,
+            child: Icon(Icons.language),
             onPressed: () {
-              this.setState(() {
-                EasyLocalization.of(context).locale = Locale("en", "US");
-                print(Localizations.localeOf(context).languageCode);
-              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => LanguageView(), fullscreenDialog: true),
+              );
             },
           ),
-          FlatButton(
-            child: Text("عربي"),
-            color: Localizations.localeOf(context).languageCode == "ar"
-                ? Colors.lightBlueAccent
-                : Colors.blue,
-            onPressed: () {
-              this.setState(() {
-                EasyLocalization.of(context).locale = Locale("ar", "DZ");
-                print(Localizations.localeOf(context).languageCode);
-              });
-            },
-          )
         ],
       ),
       body: Center(
