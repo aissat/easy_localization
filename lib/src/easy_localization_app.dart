@@ -45,13 +45,15 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   static Locale _savedLocale;
   // Get default OS Locale
   static final _osCurrentLocale = Intl.getCurrentLocale().split("_");
+  static Locale _osLocal = Locale(_osCurrentLocale[0], _osCurrentLocale[1]);
 
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
-  _EasyLocalizationLocale(Locale fallbackLocale)
-      // if _savedLocale and fallbackLocale null init by default OS Locale
+  _EasyLocalizationLocale(Locale fallbackLocale, List<Locale> supportedLocales)
+  // if _savedLocale and fallbackLocale null and default OS Locale in supportedLocales 
+  // init by default OS Locale else init by supportedLocales[0]
       : this._locale = (_savedLocale ?? fallbackLocale) ??
-            Locale(_osCurrentLocale[0], _osCurrentLocale[1]);
+      supportedLocales.firstWhere((local) => local ==_osLocal, orElse: () => supportedLocales.first); 
 
   Locale get locale => _locale;
   set locale(Locale l) {
@@ -99,7 +101,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void initState() {
-    _locale = _EasyLocalizationLocale(widget.fallbackLocale);
+    _locale = _EasyLocalizationLocale(widget.fallbackLocale,this.supportedLocales);
     _locale.addListener(() {
       if (mounted) setState(() {});
     });
