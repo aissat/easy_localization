@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class LanguageView extends StatefulWidget {
-  @override
-  _LanguageViewState createState() => _LanguageViewState();
-}
-
-class _LanguageViewState extends State<LanguageView> {
+class LanguageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +45,9 @@ class _LanguageViewState extends State<LanguageView> {
             ),
             buildDivider(),
             buildSwitchListTileMenuItem(
-              context: context,
+                context: context,
                 title: "عربي",
-                subtitle:"عربي" ,
+                subtitle: "عربي",
                 locale: Locale("ar", "DZ")),
             buildDivider(),
             buildSwitchListTileMenuItem(
@@ -77,8 +72,7 @@ class _LanguageViewState extends State<LanguageView> {
       );
 
   Container buildSwitchListTileMenuItem(
-      {BuildContext context,String title, String subtitle, Locale locale}) {
-    
+      {BuildContext context, String title, String subtitle, Locale locale}) {
     return Container(
       margin: EdgeInsets.only(
         left: 10,
@@ -95,9 +89,7 @@ class _LanguageViewState extends State<LanguageView> {
             subtitle,
           ),
           onTap: () {
-            setState(() {
-              EasyLocalization.of(context).locale =locale;
-            });
+            EasyLocalization.of(context).locale = locale;
           }),
     );
   }
