@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("title").tr(),
+        title: Text("title").tr(context: context),
         //Text(AppLocalizations.of(context).tr('title')),
         actions: <Widget>[
           FlatButton(

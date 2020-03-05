@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 import 'asset_loader.dart';
@@ -18,6 +19,8 @@ class Localization {
   static Localization _instance;
   static Localization get instance =>
       _instance ?? (_instance = Localization._());
+  static Localization of(BuildContext context) =>
+      Localizations.of<Localization>(context, Localization);
 
   static Future<bool> load(
     Locale locale, {
