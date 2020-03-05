@@ -32,17 +32,10 @@ class EasyLocalization extends StatefulWidget {
 
   static _EasyLocalizationState of(BuildContext context) =>
       _EasyLocalizationProvider.of(context).data;
-
-  /// ensureInitialized needs to be called in main
-  /// so that savedLocale is loaded and used from the
-  /// start.
-  static ensureInitialized() async =>
-      await _EasyLocalizationLocale.initSavedAppLocale();
 }
 
 class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
-  static Locale _savedLocale;
   // Get default OS Locale
   static final _osCurrentLocale = Intl.getCurrentLocale().split("_");
   static Locale _osLocal = Locale(_osCurrentLocale[0], _osCurrentLocale[1]);
@@ -50,10 +43,11 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(Locale fallbackLocale, List<Locale> supportedLocales)
-  // if _savedLocale and fallbackLocale null and default OS Locale in supportedLocales 
+  // if fallbackLocale null and default OS Locale in supportedLocales
   // init by default OS Locale else init by supportedLocales[0]
-      : this._locale = (_savedLocale ?? fallbackLocale) ??
-      supportedLocales.firstWhere((local) => local ==_osLocal, orElse: () => supportedLocales.first); 
+  : this._locale =  fallbackLocale ??
+        supportedLocales.firstWhere((local) => local == _osLocal,
+            orElse: () => supportedLocales.first);
 
   Locale get locale => _locale;
   set locale(Locale l) {
@@ -76,12 +70,13 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     await _preferences.setString('codeLa', locale.languageCode);
   }
 
-  static initSavedAppLocale() async {
+  initSavedAppLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    final String _codeLang = _preferences.getString('codeLa');
-    final String _codeCoun = _preferences.getString('codeCa');
+    var _codeLang = _preferences.getString('codeLa');
+    var _codeCoun = _preferences.getString('codeCa');
 
-    _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
+    this.locale =
+        _codeLang != null ? Locale(_codeLang, _codeCoun) : this._locale;
   }
 }
 
@@ -101,7 +96,10 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void initState() {
-    _locale = _EasyLocalizationLocale(widget.fallbackLocale,this.supportedLocales);
+    _locale =
+        _EasyLocalizationLocale(widget.fallbackLocale, this.supportedLocales);
+    _locale.initSavedAppLocale();
+
     _locale.addListener(() {
       if (mounted) setState(() {});
     });
@@ -129,10 +127,12 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   }
 
   @override
-  Widget build(BuildContext context) => _EasyLocalizationProvider(
-        data: this,
-        child: widget.child,
-      );
+  Widget build(BuildContext context) {
+    return _EasyLocalizationProvider(
+      data: this,
+      child: widget.child,
+    );
+  }
 }
 
 class _EasyLocalizationProvider extends InheritedWidget {

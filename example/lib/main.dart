@@ -4,13 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() async {
+void main(){
   WidgetsFlutterBinding.ensureInitialized();
-
-  // ensureInitialized ensures that the last used locale is loaded from SharedPrefs
-  // and that the app will have the correct locale from 1st frame.
-  // Omitting this will result in the app always using the fallbackLocale
-  await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
     child: MyApp(),
