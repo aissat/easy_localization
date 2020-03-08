@@ -1,4 +1,6 @@
-import 'package:flutter/widgets.dart';
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,6 +38,7 @@ class EasyLocalization extends StatefulWidget {
 
 class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
+  static Locale _savedLocale;
   // Get default OS Locale
   static final _osCurrentLocale = Intl.getCurrentLocale().split("_");
   static Locale _osLocal = Locale(_osCurrentLocale[0], _osCurrentLocale[1]);
@@ -43,11 +46,13 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(Locale fallbackLocale, List<Locale> supportedLocales)
-  // if fallbackLocale null and default OS Locale in supportedLocales
-  // init by default OS Locale else init by supportedLocales[0]
-  : this._locale =  fallbackLocale ??
-        supportedLocales.firstWhere((local) => local == _osLocal,
-            orElse: () => supportedLocales.first);
+      // if fallbackLocale null and default OS Locale in supportedLocales
+      // init by default OS Locale else init by supportedLocales[0]
+      : this._locale = (_savedLocale ?? fallbackLocale) ??
+            supportedLocales.firstWhere((local) => local == _osLocal,
+                orElse: () => supportedLocales.first) {
+    locale = this._locale;
+  }
 
   Locale get locale => _locale;
   set locale(Locale l) {
@@ -70,13 +75,15 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     await _preferences.setString('codeLa', locale.languageCode);
   }
 
-  initSavedAppLocale() async {
+  static Future<_EasyLocalizationLocale> initSavedAppLocale(
+      Locale fallbackLocale, List<Locale> supportedLocales) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeLa');
     var _codeCoun = _preferences.getString('codeCa');
 
-    this.locale =
-        _codeLang != null ? Locale(_codeLang, _codeCoun) : this._locale;
+    _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
+    log(_savedLocale.toString(), name: "initSavedAppLocale");
+    return _EasyLocalizationLocale(fallbackLocale, supportedLocales);
   }
 }
 
@@ -93,22 +100,15 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   List<Locale> get supportedLocales => widget.supportedLocales;
   _EasyLocalizationDelegate get delegate => widget.delegate;
+  Locale get fallbackLocale => widget.fallbackLocale;
 
   @override
   void initState() {
-    _locale =
-        _EasyLocalizationLocale(widget.fallbackLocale, this.supportedLocales);
-    _locale.initSavedAppLocale();
-
-    _locale.addListener(() {
-      if (mounted) setState(() {});
-    });
     super.initState();
   }
 
   @override
   void dispose() {
-    _locale.dispose();
     super.dispose();
   }
 
@@ -128,9 +128,25 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   Widget build(BuildContext context) {
-    return _EasyLocalizationProvider(
-      data: this,
-      child: widget.child,
+    return FutureBuilder<_EasyLocalizationLocale>(
+      future: _EasyLocalizationLocale.initSavedAppLocale(
+          fallbackLocale, supportedLocales),
+      builder: (BuildContext context,
+          AsyncSnapshot<_EasyLocalizationLocale> snapshot) {
+        if (snapshot.hasData) {
+          if (this._locale == null) this._locale = snapshot.data;
+          snapshot.data.addListener(() {
+            if (mounted) setState(() {});
+          });
+          return _EasyLocalizationProvider(
+            data: this,
+            child: widget.child,
+          );
+        } else {
+          // TODO implement [load, error] widget when init locale
+          return Container();
+        }
+      },
     );
   }
 }
@@ -168,6 +184,10 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale value) async {
+    log("++++++++++++++++++++++++++++++++++++++++", name: this.toString());
+    log(value.toString(), name: this.toString());
+    log(path.toString(), name: this.toString());
+    log("++++++++++++++++++++++++++++++++++++++++", name: this.toString());
     await Localization.load(
       value,
       path: path,

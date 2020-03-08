@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 void main(){
+  
   WidgetsFlutterBinding.ensureInitialized();
+  //await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
     child: MyApp(),
@@ -25,6 +29,8 @@ void main(){
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    log( EasyLocalization.of(context).locale.toString(), name: this.toString()+"# locale" );
+    log( Intl.defaultLocale.toString(), name: this.toString()+"# Intl.defaultLocale" );
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: [
@@ -36,8 +42,8 @@ class MyApp extends StatelessWidget {
       // locale is either the deviceLocale or the MaterialApp widget locale.
       // This function is responsible for returning a locale that is supported by your app
       // if the app is opened for the first time and we only have the deviceLocale information.
-      localeResolutionCallback:
-          EasyLocalization.of(context).localeResolutionCallback,
+      // localeResolutionCallback:
+      //     EasyLocalization.of(context).localeResolutionCallback,
       locale: EasyLocalization.of(context).locale,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -74,6 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    log(tr("title"), name: this.toString() );
     return Scaffold(
       appBar: AppBar(
         title: Text("title").tr(context: context),

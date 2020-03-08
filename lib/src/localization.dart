@@ -14,11 +14,11 @@ class Localization {
   bool useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
 
-  Localization._();
+  Localization();
 
   static Localization _instance;
   static Localization get instance =>
-      _instance ?? (_instance = Localization._());
+      _instance ?? (_instance = Localization());
   static Localization of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
