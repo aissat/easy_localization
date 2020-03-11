@@ -17,8 +17,7 @@ class Localization {
   Localization();
 
   static Localization _instance;
-  static Localization get instance =>
-      _instance ?? (_instance = Localization());
+  static Localization get instance => _instance ?? (_instance = Localization());
   static Localization of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
@@ -37,10 +36,12 @@ class Localization {
     instance.useOnlyLangCode = useOnlyLangCode;
 
     String localePath = instance.getLocalePath();
-    Map<String, dynamic> data = await assetLoader.load(localePath);
-    instance._translations = Translations(data);
-
-    return true;
+    if (await assetLoader.localeExists(localePath) == true) {
+      Map<String, dynamic> data = await assetLoader.load(localePath);
+      instance._translations = Translations(data);
+      return true;
+    } else
+      return false;
   }
 
   String getLocalePath() {

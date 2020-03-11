@@ -15,20 +15,22 @@ class EasyLocalization extends StatefulWidget {
   final bool useOnlyLangCode;
   final String path;
   final AssetLoader assetLoader;
-
   EasyLocalization({
+    Key key,
     @required this.child,
     @required this.supportedLocales,
     @required this.path,
     this.fallbackLocale,
     this.useOnlyLangCode = false,
-    this.assetLoader = const RootBundleAssetLoader(),
-  }) : //assert(supportedLocales.contains(fallbackLocale)),
+    this.assetLoader =  const RootBundleAssetLoader(),
+  })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
           path: path,
           supportedLocales: supportedLocales,
           useOnlyLangCode: useOnlyLangCode,
-        );
+          assetLoader: assetLoader
+        ),
+        super(key: key);
 
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
@@ -94,7 +96,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   set locale(Locale l) {
     if (!supportedLocales.contains(l))
       throw new Exception("Locale $l is not supported by this app.");
-
     _locale.locale = l;
   }
 
@@ -176,7 +177,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
     @required this.path,
     @required this.supportedLocales,
     this.useOnlyLangCode = false,
-    this.assetLoader = const RootBundleAssetLoader(),
+    this.assetLoader
   });
 
   @override
