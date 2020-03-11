@@ -9,226 +9,67 @@ this package simplify the internationalizing process using Json file
 ![GitHub](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 ![GitHub contributors](https://img.shields.io/github/contributors/aissat/easy_localization?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/aissat/easy_localization?style=flat-square)
-![GitHub followers](https://img.shields.io/github/followers/aissat?style=flat-square)
 ![GitHub forks](https://img.shields.io/github/forks/aissat/easy_localization?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
-![GitHub watchers](https://img.shields.io/github/watchers/aissat/easy_localization?style=flat-square)
 ![Coveralls github branch](https://img.shields.io/coveralls/github/aissat/easy_localization/dev?style=flat-square)
 
 ## Why easy_localization
 
-- simplify and easy the internationalizing process in Flutter.
-- Using JSON Files .
-- Load locale from remote or backend.
-- save App state.
-- Supported `plural`
-- Supported `gender`
-- Supported Flutter extension.
+- [x] simplify and easy the internationalizing process in Flutter.
+- [x] Using JSON Files .
+- [x] Load locale from remote or backend.
+- [x] Automatically save App state (save/restor the selected locale).
+- [x] Supported `plural`
+- [x] Supported `gender`
+- [x] Supported Flutter extension.
+- [x] Supported for RTL locales
+- [x] Supported for nesting
+- [x] Customization AssetLoader localizations
+- [x] Supported for context
+- [x] Testable and better maintenence
 
-## Changelog
+## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
-### [1.4.1]
+### [2.0.0]
 
-- optimized and clean code
+this version came on many updates, this is the most important point:
+
+- optimized and clean code more stability
 - fixed many issues
-- added extension for Strings
+- added Unite test
+- Customization AssetLoader localizations `assetLoader`
+- added `fallbackLocale` as optional
+- Hiding `EasyLocalizationProvider`
+- refactor and update approach localization for more details see [example:](https://github.com/aissat/easy_localization/tree/master/example)
 
   ``` dart
-  // after 1.4.1
-  Text('title'.tr()),
-  Text('switch'.tr( gender: _gender ? "female" : "male")),
-  Text('counter'.plural(counter)),
+  // Now V2.0.0
+  runApp(EasyLocalization(
+    child: MyApp(),
+    ...
+  ));
+
+  // after V2.0.0
+  runApp(EasyLocalization(
+    child: MyApp(),
+    ...
+  ));
+  ...
+  class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(...);
+  }}
   ```
 
-### [1.4.0]
+- added Support for context
 
-- refactor code changed call ~~`AppLocalizations.of(context).tr()`~~ ~~`AppLocalizations.of(context).plural()`~~ to `tr()` and `plural()`
+    ``` dart
+    tr("key", context: context),
+    plural("key", 1 , context: context),
+    ```
 
-  ``` dart
-  // after 1.4.0
-  Text(
-    tr('switch', gender: _gender ? "female" : "male"),
-  ),
-  ```
-
-  ``` dart
-  // before 1.4.0
-  Text(
-    AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
-  ),
-  ```
-
-- added Flutter extension for Text widget
-
-  ``` dart
-  // after 1.4.0
-  Text('switch').tr( gender: _gender ? "female" : "male"),
-  Text('counter').plural(counter),
-  ```
-
-### [1.3.5]
-
-- merge  `gender()`  and `tr()`  .
-
-  ``` json
-  {
-    "switch":{
-      "male": "Hi man ;)",
-      "female": "Hello girl :)"
-    }
-  }
-  ```
-
-  ``` dart
-  Text(
-    AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
-  ),
-  ```
-
-- use parameters `args` for gender.
-  
-  ``` json
-  {
-    "switch":{
-      "male": "Hi man ;) {}",
-      "female": "Hello girl :) {}"
-    }
-  }
-  ```
-
-  ``` dart
-  Text(
-    AppLocalizations.of(context).tr('switch', args:["Naama"] gender: _gender ? "female" : "male"),
-  ),
-
-### [1.3.4]
-
-- adeed Gender [female,male]  `gender()`  .
-
-  ``` json
-  {
-    "switch":{
-      "male": "Hi man ;)",
-      "female": "Hello girl :)"
-    }
-  }
-  ```
-
-  ``` dart
-  Text(
-    AppLocalizations.of(context).gender('switch', _gender ? "female" : "male"),
-  ),
-  ```
-
-### [1.3.3+1]
-
-- updated  `plural()` thanks [shushper](https://github.com/shushper) .
-
-  ``` json
-  {
-    "text": {
-      "day": {
-        "zero":"{} дней",
-        "one": "{} день",
-        "two": "{} дня",
-        "few": "{} дня",
-        "many": "{} дней",
-        "other": "{} дней"
-      }
-    }
-  }
-  ```
-
-### [1.3.3]
-
-- removed  `data.savedLocale`.
-- optimized and clean code
-- fixed many issues
-
-### [1.3.2]
-
-- `plural()` added property resolver for nested key translations
-
-  ``` json
-  {
-  "text": {
-    "day": {
-      "zero": "day",
-      "one": "day",
-      "other": "days"
-      }
-    }
-  }
-  ```
-
-  ``` dart
-  new Text(
-    AppLocalizations.of(context).plural("text.day", 2),
-  ),
-  ```
-
-- fixed many issues
-
-### [1.3.1]
-
-- add useOnlyLangCode flag
-
-### [1.3.0]
-
-- Load translations from remote or backend
-- fixed many issues
-
-### [1.2.1]
-
-- supported shared_preferences
-- Save selected localization
-
-### [1.2.0]
-
-- Added property resolver for nested key translations
-- return translate key if the element or path not exist
-
-``` json
-{
-  "title": "Hello",
-  "msg": "Hello {} in the {} world ",
-  "clickMe": "Click me",
-  "profile": {
-    "reset_password": {
-      "title": "Reset Password",
-      "username": "Username",
-      "password": "password"
-    }
-  },
-  "clicked": {
-    "zero": "You clicked {} times!",
-    "one": "You clicked {} time!",
-    "two":"You clicked {} times!",
-    "few":"You clicked {} times!",
-    "many":"You clicked {} times!",
-    "other": "You clicked {} times!"
-  }
-}
-```
-
-``` dart
-new Text(
-  AppLocalizations.of(context).tr('profile.reset_password.title'),
- ),
-```
-
-### [1.0.4]
-
-- Added Support country codes
-
-### [1.0.3]
-
-- Updated `tr()` function added Multi Argument
-
-### [1.0.2]
-
-- Added string pluralisation .
-- Added Argument to `tr()` function.
 
 ## Getting Started
 
@@ -259,7 +100,7 @@ Inside this folder, must put the _json_ files containing the translated keys :
 
 > `path`/${languageCode}-${countryCode}.json
 
-example:
+[example:](https://github.com/aissat/easy_localization/tree/master/example)
 
 - en.json to en-US.json
 - ar.json to ar-DZ.json
@@ -277,39 +118,46 @@ flutter:
 The next step :
 
 ```dart
+import 'dart:developer';
+
+import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() => runApp(EasyLocalization(child: MyApp()));
+void main(){
+  runApp(EasyLocalization(
+    child: MyApp(),
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    path: 'resources/langs',
+    // fallbackLocale: Locale('en', 'US'),
+    // useOnlyLangCode: true,
+    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // assetLoader: RootBundleAssetLoader()
+    // assetLoader: NetworkAssetLoader()
+    // assetLoader: TestsAssetLoader()
+    // assetLoader: FileAssetLoader()
+    // assetLoader: StringAssetLoader()
+  ));
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(
-      data: data,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          //app-specific localization
-          EasyLocalizationDelegate(
-            locale: data.locale,
-            path: 'resources/langs',
-            //useOnlyLangCode: true,
-            // loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
-          ),
-        ],
-        supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.locale,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: MyHomePage(title: 'Easy localization'),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        EasyLocalization.of(context).delegate,
+      ],
+      supportedLocales: EasyLocalization.of(context).supportedLocales,
+      locale: EasyLocalization.of(context).locale,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: MyHomePage(title: 'Easy localization'),
     );
   }
 }
@@ -341,241 +189,140 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(
-      data: data,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(tr("title")),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("English"),
-              color: Localizations.localeOf(context).languageCode == "en"
-                  ? Colors.lightBlueAccent
-                  : Colors.blue,
-              onPressed: () {
-                this.setState(() {
-                  data.changeLocale(Locale("en", "US"));
-                  print(Localizations.localeOf(context).languageCode);
-                });
-              },
+    log(tr("title"), name: this.toString() );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("title").tr(context: context),
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(Icons.language),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => LanguageView(), fullscreenDialog: true),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Spacer(
+              flex: 1,
             ),
+            Text(
+              'switch.with_arg',
+              style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold),
+            ).tr(args: ["aissat"], gender: _gender ? "female" : "male"),
+            Text(
+              tr('switch', gender: _gender ? "female" : "male"),
+              style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(MyFlutterApp.male_1),
+                Switch(value: _gender, onChanged: switchGender),
+                Icon(MyFlutterApp.female_1),
+              ],
+            ),
+            Spacer(
+              flex: 1,
+            ),
+            Text('msg').tr(args: ['aissat', 'Flutter']),
+            Text('clicked').plural(counter),
             FlatButton(
-              child: Text("عربي"),
-              color: Localizations.localeOf(context).languageCode == "ar"
-                  ? Colors.lightBlueAccent
-                  : Colors.blue,
               onPressed: () {
-                this.setState(() {
-                  data.changeLocale(Locale("ar", "DZ"));
-                  print(Localizations.localeOf(context).languageCode);
-                });
+                incrementCounter();
               },
-            )
-          ],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Spacer(
-                flex: 1,
-              ),
-              Text(
-                'switch.with_arg',
-                style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold),
-              ).tr(args: ["aissat"], gender:  _gender ? "female" : "male"),
-              Text(
-                tr('switch', gender:  _gender ? "female" : "male"),
-                style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(MyFlutterApp.male_1),
-                  Switch(value: _gender, onChanged: switchGender),
-                  Icon(MyFlutterApp.female_1),
-                ],
-              ),
-              Spacer(
-                flex: 1,
-              ),
-              Text(tr('msg', args: ['aissat', 'Flutter'])),
-              // Text(plural('clicked', counter)),
-              Text('clicked').plural(counter),
-              FlatButton(
-                onPressed: () {
-                  incrementCounter();
-                },
-                child: Text('clickMe').tr(),
-              ),
-              SizedBox(height: 15,),
-              Text(
+              child: Text('clickMe').tr(),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
                 plural('amount', counter,
                     format: NumberFormat.currency(
-                        locale: Localizations.localeOf(context).toString(),
+                        locale: Intl.defaultLocale,
                         symbol: "€")),
                 style: TextStyle(
                     color: Colors.grey.shade900,
                     fontSize: 18,
-                    fontWeight: FontWeight.bold)
-              ),
-              SizedBox(height: 20,),
-              Text('profile.reset_password.title').tr(),
-              Spacer(
-                flex: 2,
-              ),
-            ],
-          ),
+                    fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 20,
+            ),
+            Text('profile.reset_password.title').tr(),
+            Spacer(
+              flex: 2,
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: incrementCounter,
-          child: Text('+1'),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: incrementCounter,
+        child: Text('+1'),
       ),
     );
   }
 }
-
 ```
 
-#### Load translations from backend
+to change Locale
 
-You need to have backend endpoint (`loadPath`) where resources get loaded from and your endpoint must containing the translated keys.
+```dart
+EasyLocalization.of(context).locale = locale;
+```
+
+#### Load translations from Customization AssetLoader
+
+for example You need to have backend endpoint (`loadPath`) where resources get loaded from and your endpoint must containing the translated keys.
 
 example:
 
 ```dart
-String loadPath = 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
+class NetworkAssetLoader extends AssetLoader {
+  @override
+  Future<Map<String, dynamic>> load(String localePath) async {
+    return http
+        .get(localePath)
+        .then((response) => json.decode(response.body.toString()));
+  }
 
+  @override
+  Future<bool> localeExists(String localePath) => Future.value(true);
+}
 ```
-
-> '${`loadPath`}/${languageCode}-${countryCode}.json'
-
-- '<https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/en-US.json'>
-- '<https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs/ar-DZ.json'>
 
 The next step :
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:easy_localization/easy_localization.dart';
-
-void main() => runApp(EasyLocalization(child: MyApp()));
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(
-      data: data,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          //app-specific localization
-          EasyLocalizationDelegate(
-              locale: data.locale,
-              loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'),
-        ],
-        supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.locale,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: MyHomePage(title: 'Easy localization'),
-      ),
-    );
-  }
+...
+void main(){
+  runApp(EasyLocalization(
+    child: MyApp(),
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    path: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs',
+    assetLoader: NetworkAssetLoader()
+    // fallbackLocale: Locale('en', 'US'),
+    // useOnlyLangCode: true,
+    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // assetLoader: RootBundleAssetLoader()
+    // assetLoader: TestsAssetLoader()
+    // assetLoader: FileAssetLoader()
+    // assetLoader: StringAssetLoader()
+  ));
 }
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int counter = 0;
-  incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(
-      data: data,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(tr('title')),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("English"),
-              color: Localizations.localeOf(context).languageCode == "en"
-                  ? Colors.lightBlueAccent
-                  : Colors.blue,
-              onPressed: () {
-                this.setState(() {
-                  data.changeLocale(Locale("en","US"));
-                  print(Localizations.localeOf(context).languageCode);
-                });
-              },
-            ),
-            FlatButton(
-              child: Text("عربي"),
-              color: Localizations.localeOf(context).languageCode == "ar"
-                  ? Colors.lightBlueAccent
-                  : Colors.blue,
-              onPressed: () {
-                this.setState(() {
-                  data.changeLocale(Locale("ar","DZ"));
-                  print(Localizations.localeOf(context).languageCode);
-                });
-              },
-            )
-          ],
-        ),
-        body: Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Text(AppLocalizations.of(context)
-                  .tr('msg', args: ['aissat', 'Flutter'])),
-              new Text(plural('clicked', counter)),
-              new FlatButton(
-                onPressed: () async {
-                  incrementCounter();
-                },
-                child: new Text(tr('clickMe')),
-              ),
-              new Text(
-                tr('profile.reset_password.title'),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: incrementCounter,
-          child: Text('+1'),
-        ),
-      ),
-    );
-  }
-}
+...
 ```
 
 ## Screenshots
@@ -606,6 +353,6 @@ We need your support. Projects like this can not be successful without support f
 Of course, you can also choose what you want to donate. All donations are very much appreciated!
 
 ## Contributors thanks
-![Donate $25](https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization)
-<a href="https://github.com/aissat/easy_localization/graphs/contributors">
-</a>
+
+![contributors](https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization)
+<a href="https://github.com/aissat/easy_localization/graphs/contributors"></a>

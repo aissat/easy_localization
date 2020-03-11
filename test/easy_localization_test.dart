@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:easy_localization/src/localization.dart';
 import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
@@ -39,6 +40,20 @@ void main() {
             assetLoader: JsonAssetLoader(),
           ),
           true);
+    });
+
+    test('load() Failed assertion', () async {
+      try {
+        await Localization.load(
+            null,
+            path: null,
+            useOnlyLangCode: true,
+            assetLoader: JsonAssetLoader(),
+          );
+      } on AssertionError catch (e) {
+        // throw  AssertionError("Expected ArgumentError");
+        expect(e, isAssertionError);
+      }
     });
 
     test('load() correctly sets locale path', () async {
@@ -217,6 +232,23 @@ void main() {
 
         test('plural', () {
           expect("day".plural(0), "0 days");
+        });
+      });
+    });
+
+    group('extensions', () {
+      setUpAll(() async {
+        await Localization.load(Locale('en'),
+            path: "path",
+            useOnlyLangCode: true,
+            assetLoader: JsonAssetLoader());
+      });
+      group('string', () {
+        test('tr', () {
+          expect(tr("test"), "test");
+        });
+        test('plural', () {
+          expect(plural("day", 0), "0 days");
         });
       });
     });

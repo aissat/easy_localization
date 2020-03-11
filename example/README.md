@@ -67,42 +67,55 @@
 
 ```
 
-### example/lib/main.dart
+### [example/lib/main.dart](https://github.com/aissat/easy_localization/blob/master/example/lib/main.dart)
 
 ```dart
+import 'dart:developer';
+
+import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() => runApp(EasyLocalization(child: MyApp()));
+void main(){
+  
+  // WidgetsFlutterBinding.ensureInitialized();
+  //await EasyLocalization.ensureInitialized();
+
+  runApp(EasyLocalization(
+    child: MyApp(),
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    path: 'resources/langs',
+    // fallbackLocale: Locale('en', 'US'),
+    // useOnlyLangCode: true,
+    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // assetLoader: RootBundleAssetLoader()
+    // assetLoader: NetworkAssetLoader()
+    // assetLoader: TestsAssetLoader()
+    // assetLoader: FileAssetLoader()
+    // assetLoader: StringAssetLoader()
+  ));
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(
-      data: data,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          //app-specific localization
-          EasyLocalizationDelegate(
-            locale: data.locale,
-            path: 'resources/langs',
-            //useOnlyLangCode: true,
-            // loadPath: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs'
-          ),
-        ],
-        supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-        locale: data.locale,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: MyHomePage(title: 'Easy localization'),
+    log( EasyLocalization.of(context).locale.toString(), name: this.toString()+"# locale" );
+    log( Intl.defaultLocale.toString(), name: this.toString()+"# Intl.defaultLocale" );
+    return MaterialApp(
+      title: 'Flutter Demo',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        EasyLocalization.of(context).delegate,
+      ],
+      supportedLocales: EasyLocalization.of(context).supportedLocales,
+      locale: EasyLocalization.of(context).locale,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: MyHomePage(title: 'Easy localization'),
     );
   }
 }
@@ -134,93 +147,196 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(
-      data: data,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('title').tr(),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("English"),
-              color: Localizations.localeOf(context).languageCode == "en"
-                  ? Colors.lightBlueAccent
-                  : Colors.blue,
-              onPressed: () {
-                this.setState(() {
-                  data.changeLocale(Locale("en", "US"));
-                  print(Localizations.localeOf(context).languageCode);
-                });
-              },
+    log(tr("title"), name: this.toString() );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("title").tr(context: context),
+        //Text(AppLocalizations.of(context).tr('title')),
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(Icons.language),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => LanguageView(), fullscreenDialog: true),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Spacer(
+              flex: 1,
             ),
+            Text(
+              'switch.with_arg',
+              style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold),
+            ).tr(args: ["aissat"], gender: _gender ? "female" : "male"),
+            Text(
+              tr('switch', gender: _gender ? "female" : "male"),
+              style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(MyFlutterApp.male_1),
+                Switch(value: _gender, onChanged: switchGender),
+                Icon(MyFlutterApp.female_1),
+              ],
+            ),
+            Spacer(
+              flex: 1,
+            ),
+            Text('msg').tr(args: ['aissat', 'Flutter']),
+            Text('clicked').plural(counter),
             FlatButton(
-              child: Text("عربي"),
-              color: Localizations.localeOf(context).languageCode == "ar"
-                  ? Colors.lightBlueAccent
-                  : Colors.blue,
               onPressed: () {
-                this.setState(() {
-                  data.changeLocale(Locale("ar", "DZ"));
-                  print(Localizations.localeOf(context).languageCode);
-                });
+                incrementCounter();
               },
-            )
+              child: Text('clickMe').tr(),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+                plural('amount', counter,
+                    format: NumberFormat.currency(
+                        locale: Intl.defaultLocale,
+                        symbol: "€")),
+                style: TextStyle(
+                    color: Colors.grey.shade900,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 20,
+            ),
+            Text('profile.reset_password.title').tr(),
+            Spacer(
+              flex: 2,
+            ),
           ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Spacer(
-                flex: 1,
-              ),
-              Text('switch.with_arg',
-                style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold),
-              ).tr(args: ["aissat"], gender:  _gender ? "female" : "male"),
-              Text('switch',
-                style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ).tr(gender:  _gender ? "female" : "male"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(MyFlutterApp.male_1),
-                  Switch(value: _gender, onChanged: switchGender),
-                  Icon(MyFlutterApp.female_1),
-                ],
-              ),
-              Spacer(
-                flex: 1,
-              ),
-              Text('msg').tr(args: ['aissat', 'Flutter']),
-              Text('clicked').plural(counter),
-              FlatButton(
-                onPressed: () {
-                  incrementCounter();
-                },
-                child: Text('clickMe').tr(),
-              ),
-              Text(
-                'profile.reset_password.title',
-              ).tr(),
-              Spacer(
-                flex: 2,
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: incrementCounter,
-          child: Text('+1'),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: incrementCounter,
+        child: Text('+1'),
       ),
     );
   }
 }
 
+```
+
+### [example/lib/lang_view.dart](https://github.com/aissat/easy_localization/blob/master/example/lib/lang_view.dart)
+
+```dart
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+class LanguageView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "",
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+      ),
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 26),
+              margin: EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: Text(
+                "Language Menu",
+                style: TextStyle(
+                  color: Color.fromARGB(255, 166, 166, 166),
+                  fontFamily: "Montserrat",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 10,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 10, bottom: 25),
+              margin: EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: Text(
+                "language",
+              ),
+            ),
+            buildDivider(),
+            buildSwitchListTileMenuItem(
+                context: context,
+                title: "عربي",
+                subtitle: "عربي",
+                locale: Locale("ar", "DZ")),
+            buildDivider(),
+            buildSwitchListTileMenuItem(
+                context: context,
+                title: "English",
+                subtitle: "English",
+                locale: Locale("en", "US")),
+            buildDivider(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container buildDivider() => Container(
+        margin: EdgeInsets.symmetric(
+          horizontal: 24,
+        ),
+        child: Divider(
+          color: Colors.grey,
+        ),
+      );
+
+  Container buildSwitchListTileMenuItem(
+      {BuildContext context, String title, String subtitle, Locale locale}) {
+    return Container(
+      margin: EdgeInsets.only(
+        left: 10,
+        right: 10,
+        top: 5,
+      ),
+      child: ListTile(
+          dense: true,
+          // isThreeLine: true,
+          title: Text(
+            title,
+          ),
+          subtitle: Text(
+            subtitle,
+          ),
+          onTap: () {
+            log(locale.toString(), name: this.toString());
+            EasyLocalization.of(context).locale = locale;
+          }),
+    );
+  }
+}
 ```
