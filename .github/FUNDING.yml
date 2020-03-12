@@ -1,5 +1,4 @@
-# These are supported funding model platforms
-github:['aissat']
-liberapay:aissat
-open_collective:['aissat-abdelwahab']
+github: [aissat]
+liberapay: aissat
 custom: ['https://paypal.me/aissatabdelwahab','https://www.paypal.me/aissatabdo']
+open_collective: flutter_easy_localization
