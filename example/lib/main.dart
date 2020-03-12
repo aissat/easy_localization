@@ -1,21 +1,17 @@
+import 'dart:developer';
+
+import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // ensureInitialized ensures that the last used locale is loaded from SharedPrefs
-  // and that the app will have the correct locale from 1st frame.
-  // Omitting this will result in the app always using the fallbackLocale
-  await EasyLocalization.ensureInitialized();
-
+void main() {
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-    fallbackLocale: Locale('en', 'US'),
     path: 'resources/langs',
+    // fallbackLocale: Locale('en', 'US'),
     // useOnlyLangCode: true,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // assetLoader: RootBundleAssetLoader()
@@ -29,6 +25,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    log(EasyLocalization.of(context).locale.toString(),
+        name: this.toString() + "# locale");
+    log(Intl.defaultLocale.toString(),
+        name: this.toString() + "# Intl.defaultLocale");
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: [
@@ -37,11 +37,6 @@ class MyApp extends StatelessWidget {
         EasyLocalization.of(context).delegate,
       ],
       supportedLocales: EasyLocalization.of(context).supportedLocales,
-      // locale is either the deviceLocale or the MaterialApp widget locale.
-      // This function is responsible for returning a locale that is supported by your app
-      // if the app is opened for the first time and we only have the deviceLocale information.
-      localeResolutionCallback:
-          EasyLocalization.of(context).localeResolutionCallback,
       locale: EasyLocalization.of(context).locale,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -78,35 +73,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    log(tr("title"), name: this.toString());
     return Scaffold(
       appBar: AppBar(
-        title: Text("title").tr(),
+        title: Text("title").tr(context: context),
         //Text(AppLocalizations.of(context).tr('title')),
         actions: <Widget>[
           FlatButton(
-            child: Text("English"),
-            color: Localizations.localeOf(context).languageCode == "en"
-                ? Colors.lightBlueAccent
-                : Colors.blue,
+            child: Icon(Icons.language),
             onPressed: () {
-              this.setState(() {
-                EasyLocalization.of(context).locale = Locale("en", "US");
-                print(Localizations.localeOf(context).languageCode);
-              });
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => LanguageView(), fullscreenDialog: true),
+              );
             },
           ),
-          FlatButton(
-            child: Text("عربي"),
-            color: Localizations.localeOf(context).languageCode == "ar"
-                ? Colors.lightBlueAccent
-                : Colors.blue,
-            onPressed: () {
-              this.setState(() {
-                EasyLocalization.of(context).locale = Locale("ar", "DZ");
-                print(Localizations.localeOf(context).languageCode);
-              });
-            },
-          )
         ],
       ),
       body: Center(
@@ -155,8 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
                 plural('amount', counter,
                     format: NumberFormat.currency(
-                        locale: Localizations.localeOf(context).toString(),
-                        symbol: "€")),
+                        locale: Intl.defaultLocale, symbol: "€")),
                 style: TextStyle(
                     color: Colors.grey.shade900,
                     fontSize: 18,

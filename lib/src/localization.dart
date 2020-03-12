@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'asset_loader.dart';
@@ -13,11 +14,12 @@ class Localization {
   bool useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
 
-  Localization._();
+  Localization();
 
   static Localization _instance;
-  static Localization get instance =>
-      _instance ?? (_instance = Localization._());
+  static Localization get instance => _instance ?? (_instance = Localization());
+  static Localization of(BuildContext context) =>
+      Localizations.of<Localization>(context, Localization);
 
   static Future<bool> load(
     Locale locale, {
@@ -34,10 +36,13 @@ class Localization {
     instance.useOnlyLangCode = useOnlyLangCode;
 
     String localePath = instance.getLocalePath();
-    Map<String, dynamic> data = await assetLoader.load(localePath);
-    instance._translations = Translations(data);
 
-    return true;
+    if (await assetLoader.localeExists(localePath) == true) {
+      Map<String, dynamic> data = await assetLoader.load(localePath);
+      instance._translations = Translations(data);
+      return true;
+    } else
+      return false;
   }
 
   String getLocalePath() {

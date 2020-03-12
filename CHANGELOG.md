@@ -1,5 +1,45 @@
 # Changelog
 
+## [2.0.0]
+
+this version came on many updates, this is the most important:
+
+- optimized and clean code more stability
+- fixed many issues
+- added Unite test
+- Customization AssetLoader localizations `assetLoader` for more details see [custom assetLoader](https://github.com/aissat/easy_localization/blob/dev/example/lib/custom_asset_loader.dart)
+- added `fallbackLocale` as optional
+- Hiding `EasyLocalizationProvider`
+- refactor and update approach localization for more details see [example:](https://github.com/aissat/easy_localization/tree/master/example)
+
+  ``` dart
+  // Now V2.0.0
+  runApp(EasyLocalization(
+    child: MyApp(),
+    ...
+  ));
+
+  // after V2.0.0
+  runApp(EasyLocalization(
+    child: MyApp(),
+    ...
+  ));
+  ...
+  class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var data = EasyLocalizationProvider.of(context).data;
+    return EasyLocalizationProvider(...);
+  }}
+  ```
+
+- added Support for context
+
+    ``` dart
+    tr("key", context: context),
+    plural("key", 1 , context: context),
+    ```
+
 ## [1.4.1]
 
 - optimized and clean code

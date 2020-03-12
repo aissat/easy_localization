@@ -620,3 +620,5 @@ MigrationBackup/
 example/.metadata
 .idea/workspace.xml
 *.lock
+test/.test_coverage.dart
+coverage/lcov.info
