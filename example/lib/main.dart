@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+
 void main() {
+
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
@@ -25,10 +27,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    log(EasyLocalization.of(context).locale.toString(),
-        name: this.toString() + "# locale");
-    log(Intl.defaultLocale.toString(),
-        name: this.toString() + "# Intl.defaultLocale");
+    log( EasyLocalization.of(context).locale.toString(), name: this.toString()+"# locale" );
+    log( Intl.defaultLocale.toString(), name: this.toString()+"# Intl.defaultLocale" );
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: [
@@ -137,7 +137,8 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
                 plural('amount', counter,
                     format: NumberFormat.currency(
-                        locale: Intl.defaultLocale, symbol: "€")),
+                        locale: Intl.defaultLocale,
+                        symbol: "€")),
                 style: TextStyle(
                     color: Colors.grey.shade900,
                     fontSize: 18,

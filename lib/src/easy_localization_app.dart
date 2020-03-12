@@ -24,13 +24,13 @@ class EasyLocalization extends StatefulWidget {
     this.useOnlyLangCode = false,
     this.assetLoader = const RootBundleAssetLoader(),
   })  : //assert(supportedLocales.contains(fallbackLocale)),
-
         delegate = _EasyLocalizationDelegate(
             path: path,
             supportedLocales: supportedLocales,
             useOnlyLangCode: useOnlyLangCode,
             assetLoader: assetLoader),
         super(key: key);
+
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
   static _EasyLocalizationState of(BuildContext context) =>
@@ -54,6 +54,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
                 orElse: () => supportedLocales.first) {
     locale = this._locale;
   }
+
   Locale get locale => _locale;
   set locale(Locale l) {
     _locale = l;

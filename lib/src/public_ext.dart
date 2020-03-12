@@ -18,7 +18,6 @@ extension TextTranslateExtension on Text {
           maxLines: this.maxLines,
           semanticsLabel: this.semanticsLabel,
           textWidthBasis: this.textWidthBasis);
-
   Text plural(dynamic value, {BuildContext context, NumberFormat format}) =>
       Text(ez.plural(this.data, value, context: context, format: format),
           key: this.key,
