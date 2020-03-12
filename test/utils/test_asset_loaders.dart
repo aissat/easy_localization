@@ -2,6 +2,7 @@ import 'package:easy_localization/src/asset_loader.dart';
 
 class JsonAssetLoader extends AssetLoader {
   const JsonAssetLoader();
+
   @override
   Future<Map<String, dynamic>> load(String localePath) {
     return Future.value({
