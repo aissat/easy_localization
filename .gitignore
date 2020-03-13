@@ -622,3 +622,4 @@ example/.metadata
 *.lock
 test/.test_coverage.dart
 coverage/lcov.info
+pubspec.lock
