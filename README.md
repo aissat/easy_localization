@@ -11,6 +11,7 @@ this package simplify the internationalizing process using Json file
 ![GitHub repo size](https://img.shields.io/github/repo-size/aissat/easy_localization?style=flat-square)
 ![GitHub forks](https://img.shields.io/github/forks/aissat/easy_localization?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aissat/easy_localization/Flutter%20Tester?style=flat-square)
 ![Coveralls github branch](https://img.shields.io/coveralls/github/aissat/easy_localization/dev?style=flat-square)
 
 ## Why easy_localization
