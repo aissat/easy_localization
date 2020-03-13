@@ -2,7 +2,7 @@
 
 ## [2.0.0]
 
-this version came on many updates, this is the most important:
+this version came with many updates, here are the main ones:
 
 - optimized and clean code more stability
 - fixed many issues

@@ -11,28 +11,29 @@ this package simplify the internationalizing process using Json file
 ![GitHub repo size](https://img.shields.io/github/repo-size/aissat/easy_localization?style=flat-square)
 ![GitHub forks](https://img.shields.io/github/forks/aissat/easy_localization?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aissat/easy_localization/Flutter%20Tester?style=flat-square)
 ![Coveralls github branch](https://img.shields.io/coveralls/github/aissat/easy_localization/dev?style=flat-square)
 
 ## Why easy_localization
 
-- [x] simplify and easy the internationalizing process in Flutter.
+- [x] simplifying and making easy the internationalizing process in Flutter.
 - [x] Using JSON Files .
 - [x] Load locale from remote or backend.
-- [x] Automatically save App state (save/restor the selected locale).
-- [x] Supported `plural`
-- [x] Supported `gender`
-- [x] Supported Flutter extension.
-- [x] Supported for RTL locales
-- [x] Supported for nesting
+- [x] Automatically saving App state (save/restor the selected locale).
+- [x] Supports `plural`
+- [x] Supports `gender`
+- [x] Supports Flutter extension.
+- [x] Supports for RTL locales
+- [x] Supports for nesting
 - [x] Customization AssetLoader localizations
-- [x] Supported for context
-- [x] Testable and better maintenence
+- [x] Support for context
+- [x] Testable and easy maintenence
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
 ### [2.0.0]
 
-this version came on many updates, this is the most important point:
+this version came with many updates, here are the main ones:
 
 - optimized and clean code more stability
 - fixed many issues
@@ -69,7 +70,6 @@ this version came on many updates, this is the most important point:
     tr("key", context: context),
     plural("key", 1 , context: context),
     ```
-
 
 ## Getting Started
 
