@@ -168,8 +168,6 @@ void main() {
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
         expect(Intl.defaultLocale, Locale("en", "US").toString());
 
-        
-
         l = Locale("ar", "DZ");
         expect(
           ()=>{EasyLocalization.of(_context).locale = l},
@@ -202,34 +200,47 @@ testWidgets(
         await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
         await tester.pumpAndSettle();
+
+        expect(Localization.of(_context), isInstanceOf<Localization>());
+        expect(EasyLocalization.of(_context).supportedLocales,[Locale("en", "US"), Locale("ar","DZ")]);
+        expect(EasyLocalization.of(_context).locale,Locale("en", "US"));
+
         var trFinder = find.text('test');
         expect(trFinder, findsOneWidget);
         var pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
-        expect(Localization.of(_context), isInstanceOf<Localization>());
+
         expect(tr("test", context: _context), "test");
         expect(plural("day", 1, context: _context), "1 day");
         expect(plural("day", 2, context: _context), "2 days");
         expect(plural("day", 3, context: _context), "3 other days");
-        expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-        expect(Intl.defaultLocale, Locale("en", "US").toString());
 
         var l = Locale("en", "US");
         EasyLocalization.of(_context).locale = l;
         expect(EasyLocalization.of(_context).locale, l);
+        expect(Intl.defaultLocale, l.toString());
+
+        l = Locale("ar", "DZ");
+        EasyLocalization.of(_context).locale = l;
+        expect(EasyLocalization.of(_context).locale, l);
+        expect(Intl.defaultLocale, l.toString());
+
+
+        l = Locale("en", "US");
+        EasyLocalization.of(_context).locale = l;
+        expect(EasyLocalization.of(_context).locale, l);
+        expect(Intl.defaultLocale, l.toString());
+
+        l = Locale("ar", "DZ");
+        EasyLocalization.of(_context).locale = l;
+        expect(EasyLocalization.of(_context).locale, l);
+
 
         l = Locale("en", "UK");
         expect(
           ()=>{EasyLocalization.of(_context).locale = l},
           throwsException
         );
-
-        expect(EasyLocalization.of(_context).supportedLocales,[Locale("en", "US"), Locale("ar","DZ")]);
-        expect(EasyLocalization.of(_context).locale,Locale("en", "US"));
-
-        l = Locale("ar", "DZ");
-        EasyLocalization.of(_context).locale = l;
-        expect(EasyLocalization.of(_context).locale, l);
 
 
       });
