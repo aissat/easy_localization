@@ -113,20 +113,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     super.dispose();
   }
 
-  // locale is either the deviceLocale or the MaterialApp widget locale.
-  // This function is responsible for returning a locale that is supported by your app
-  // if the app is opened for the first time and we only have the deviceLocale information.
-  Locale localeResolutionCallback(
-      Locale locale, Iterable<Locale> supportedLocales) {
-    if (supportedLocales != widget.supportedLocales)
-      throw new Exception(
-          "You haven't given EasyLocalization.supportedLocales to MaterialApp supportedLocales property");
-
-    if (supportedLocales.contains(locale)) return locale;
-
-    return _locale.locale;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<_EasyLocalizationLocale>(
