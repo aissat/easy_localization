@@ -12,6 +12,6 @@ String tr(String key,
 String plural(String key, dynamic value,
     {BuildContext context, NumberFormat format}) {
   return context == null
-      ? Localization.instance.plural(key, value, format: format)
-      : Localization.of(context).plural(key, value, format: format);
+  ? Localization.instance.plural(key, value, format: format)
+  : Localization.of(context).plural(key, value, format: format);
 }

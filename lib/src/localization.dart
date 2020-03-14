@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 import 'asset_loader.dart';
@@ -36,7 +36,6 @@ class Localization {
     instance.useOnlyLangCode = useOnlyLangCode;
 
     String localePath = instance.getLocalePath();
-
     if (await assetLoader.localeExists(localePath) == true) {
       Map<String, dynamic> data = await assetLoader.load(localePath);
       instance._translations = Translations(data);

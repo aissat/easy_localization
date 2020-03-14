@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-
-void main() {
-
+void main(){
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
@@ -73,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    log(tr("title"), name: this.toString());
+    log(tr("title"), name: this.toString() );
     return Scaffold(
       appBar: AppBar(
         title: Text("title").tr(context: context),
