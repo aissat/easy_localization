@@ -53,7 +53,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
       : this._locale = (_savedLocale ?? fallbackLocale) ??
             supportedLocales.firstWhere((local) => local == _osLocal,
                 orElse: () => supportedLocales.first) {
-    locale = this._locale;
+    if(Intl.defaultLocale == null) locale = _locale;
   }
 
   Locale get locale => _locale;
@@ -75,6 +75,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
+    log(locale.toString(), name:this.toString()+ "_saveLocale");
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
@@ -84,7 +85,6 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     var _codeCoun = _preferences.getString('codeCa');
 
     _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
-    log(_savedLocale.toString(), name: "initSavedAppLocale");
     return _EasyLocalizationLocale(fallbackLocale, supportedLocales);
   }
 }
@@ -110,21 +110,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void dispose() {
+    _locale.dispose();
     super.dispose();
-  }
-
-  // locale is either the deviceLocale or the MaterialApp widget locale.
-  // This function is responsible for returning a locale that is supported by your app
-  // if the app is opened for the first time and we only have the deviceLocale information.
-  Locale localeResolutionCallback(
-      Locale locale, Iterable<Locale> supportedLocales) {
-    if (supportedLocales != widget.supportedLocales)
-      throw new Exception(
-          "You haven't given EasyLocalization.supportedLocales to MaterialApp supportedLocales property");
-
-    if (supportedLocales.contains(locale)) return locale;
-
-    return _locale.locale;
   }
 
   @override
@@ -185,10 +172,6 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale value) async {
-    log("++++++++++++++++++++++++++++++++++++++++", name: this.toString());
-    log(value.toString(), name: this.toString());
-    log(path.toString(), name: this.toString());
-    log("++++++++++++++++++++++++++++++++++++++++", name: this.toString());
     await Localization.load(
       value,
       path: path,
