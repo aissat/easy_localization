@@ -111,6 +111,7 @@ void main() {
           child: MyApp(),
           path: "i18n",
           supportedLocales: [Locale("en", "US")],
+
         ));
         await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -125,6 +126,7 @@ void main() {
         expect(trFinder, findsOneWidget);
         final pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
+
 
         expect(tr("test", context: _context), "test");
         expect(plural("day", 1, context: _context), "1 day");
@@ -161,6 +163,7 @@ void main() {
         expect(trFinder, findsOneWidget);
         final pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
+
         expect(tr("test", context: _context), "test");
         expect(plural("day", 1, context: _context), "1 day");
         expect(plural("day", 2, context: _context), "2 days");
@@ -340,6 +343,7 @@ testWidgets(
       });
     },
   );
+
 
 
 
