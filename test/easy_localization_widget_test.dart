@@ -284,6 +284,63 @@ testWidgets(
   );
 
 
+testWidgets(
+    "[EasyLocalization] fallbackLocale with doesn't saveLocale test",
+    (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        await tester.pumpWidget(EasyLocalization(
+          child: MyApp(),
+          path: "i18n",
+          saveLocale: false,
+          useOnlyLangCode: true,
+          supportedLocales: [Locale("en"),Locale("ar") ],// Locale("en", "US"), Locale("ar","DZ")
+          fallbackLocale:Locale("en"),// Locale("ar","DZ"),
+        ));
+        await tester.idle();
+        // The async delegator load will require build on the next frame. Thus, pump
+        await tester.pumpAndSettle();
+
+        expect(EasyLocalization.of(_context).supportedLocales,[Locale("en"), Locale("ar")]);
+        expect(EasyLocalization.of(_context).locale,Locale("en"));
+        expect(Intl.defaultLocale, Locale("en").toString());
+        expect(Intl.defaultLocale, EasyLocalization.of(_context).locale.toString());
+
+        var l = Locale("en");
+        EasyLocalization.of(_context).locale = l;
+        expect(EasyLocalization.of(_context).locale, l);
+      });
+    },
+  );
+
+testWidgets(
+    "[EasyLocalization] fallbackLocale=null with doesn't saveLocale test",
+    (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        await tester.pumpWidget(EasyLocalization(
+          child: MyApp(),
+          path: "i18n",
+          saveLocale: false,
+          useOnlyLangCode: true,
+          supportedLocales: [Locale("en"),Locale("ar") ],// Locale("en", "US"), Locale("ar","DZ")
+        ));
+        await tester.idle();
+        // The async delegator load will require build on the next frame. Thus, pump
+        await tester.pumpAndSettle();
+
+        expect(EasyLocalization.of(_context).supportedLocales,[Locale("en"), Locale("ar")]);
+        expect(EasyLocalization.of(_context).locale,Locale("en"));
+        expect(EasyLocalization.of(_context).fallbackLocale,null);
+
+        expect(Intl.defaultLocale, Locale("en").toString());
+        expect(Intl.defaultLocale, EasyLocalization.of(_context).locale.toString());
+
+        var l = Locale("en");
+        EasyLocalization.of(_context).locale = l;
+        expect(EasyLocalization.of(_context).locale, l);
+      });
+    },
+  );
+
 
 
 
