@@ -16,6 +16,7 @@ class EasyLocalization extends StatefulWidget {
   final bool useOnlyLangCode;
   final String path;
   final AssetLoader assetLoader;
+  final bool saveLocale;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -24,6 +25,7 @@ class EasyLocalization extends StatefulWidget {
     this.fallbackLocale,
     this.useOnlyLangCode = false,
     this.assetLoader =  const RootBundleAssetLoader(),
+    this.saveLocale = true,
   })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
             path: path,
@@ -43,11 +45,13 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
   static Locale _savedLocale;
   static Locale _osLocal;
+  bool saveLocale;
 
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales) {
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale) {
+        this.saveLocale = saveLocale;
     _init(fallbackLocale, supportedLocales);
   }
 
@@ -56,7 +60,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     // Get Device Locale
     _osLocal = await _getDeviceLocale();
     // If saved locale then get
-    if (_savedLocale != null) {
+    if (_savedLocale != null && this.saveLocale) {
       locale = _savedLocale;
       log('easy localization: Load saved locale ${_savedLocale.toString()}');
     } else {
@@ -106,7 +110,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
               ? l.languageCode
               : l.toString());
 
-    _saveLocale(_locale);
+    if (this.saveLocale) _saveLocale(_locale);
 
     notifyListeners();
   }
@@ -119,18 +123,19 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales) async {
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeLa');
     var _codeCoun = _preferences.getString('codeCa');
 
     _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
-    return _EasyLocalizationLocale(fallbackLocale, supportedLocales);
+    return _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale);
   }
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
+  
   Locale get locale => _locale.locale;
 
   set locale(Locale l) {
@@ -142,6 +147,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   List<Locale> get supportedLocales => widget.supportedLocales;
   _EasyLocalizationDelegate get delegate => widget.delegate;
   Locale get fallbackLocale => widget.fallbackLocale;
+  bool get saveLocale => widget.saveLocale;
 
   @override
   void initState() {
@@ -158,7 +164,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   Widget build(BuildContext context) {
     return FutureBuilder<_EasyLocalizationLocale>(
       future: _EasyLocalizationLocale.initSavedAppLocale(
-          fallbackLocale, supportedLocales),
+          fallbackLocale, supportedLocales, saveLocale),
       builder: (BuildContext context,
           AsyncSnapshot<_EasyLocalizationLocale> snapshot) {
         if (snapshot.hasData) {
