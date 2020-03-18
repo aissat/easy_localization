@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import "package:intl/intl_standalone.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'asset_loader.dart';
@@ -25,9 +26,9 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader =  const RootBundleAssetLoader(),
   })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
-          path: path,
-          supportedLocales: supportedLocales,
-          useOnlyLangCode: useOnlyLangCode,
+            path: path,
+            supportedLocales: supportedLocales,
+            useOnlyLangCode: useOnlyLangCode,
           assetLoader: assetLoader
         ),
         super(key: key);
@@ -41,19 +42,58 @@ class EasyLocalization extends StatefulWidget {
 class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
   static Locale _savedLocale;
-  // Get default OS Locale
-  static final _osCurrentLocale = Intl.getCurrentLocale().split("_");
-  static Locale _osLocal = Locale(_osCurrentLocale[0], _osCurrentLocale[1]);
+  static Locale _osLocal;
 
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
-  _EasyLocalizationLocale(Locale fallbackLocale, List<Locale> supportedLocales)
-      // if fallbackLocale null and default OS Locale in supportedLocales
-      // init by default OS Locale else init by supportedLocales[0]
-      : this._locale = (_savedLocale ?? fallbackLocale) ??
-            supportedLocales.firstWhere((local) => local == _osLocal,
-                orElse: () => supportedLocales.first) {
-    if(Intl.defaultLocale == null) locale = _locale;
+  _EasyLocalizationLocale(
+      Locale fallbackLocale, List<Locale> supportedLocales) {
+    _init(fallbackLocale, supportedLocales);
+  }
+
+  //Initialize _EasyLocalizationLocale
+  _init(Locale fallbackLocale, List<Locale> supportedLocales) async {
+    // Get Device Locale
+    _osLocal = await _getDeviceLocale();
+    // If saved locale then get
+    if (_savedLocale != null) {
+      locale = _savedLocale;
+      log('easy localization: Load saved locale ${_savedLocale.toString()}');
+    } else {
+      locale = supportedLocales.firstWhere(
+          (local) => _checkInitLocale(local, _osLocal),
+          orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
+    }
+    //Set locale
+    this._locale = locale;
+    log('easy localization: Set locale ${this._locale.toString()}');
+  }
+
+  bool _checkInitLocale(Locale locale, Locale osLocale) {
+    //If suported locale not contain countryCode then check only languageCode
+    if (locale.countryCode ?? false) {
+      return (locale == osLocale);
+    } else {
+      return (locale.languageCode == osLocale.languageCode);
+    }
+  }
+
+  //Get fallback Locale
+  Locale _getFallbackLocale(
+      List<Locale> supportedLocales, Locale fallbackLocale) {
+    //If fallbackLocale not set then return first from supportedLocales
+    if (fallbackLocale != null) {
+      return fallbackLocale;
+    } else {
+      return supportedLocales.first;
+    }
+  }
+
+  // Get Device Locale
+  Future<Locale> _getDeviceLocale() async {
+    final String _deviceLocale = await findSystemLocale();
+    final List _deviceLocaleList = _deviceLocale.split("_");
+    return Locale(_deviceLocaleList[0], _deviceLocaleList[1]);
   }
 
   Locale get locale => _locale;
