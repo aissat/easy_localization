@@ -44,28 +44,28 @@ class EasyLocalization extends StatefulWidget {
 class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
   static Locale _savedLocale;
-  static Locale _osLocal;
+  static Locale _osLocale;
   bool saveLocale;
 
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale) {
-        this.saveLocale = saveLocale;
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale): this.saveLocale= saveLocale
+       {
     _init(fallbackLocale, supportedLocales);
   }
 
   //Initialize _EasyLocalizationLocale
   _init(Locale fallbackLocale, List<Locale> supportedLocales) async {
     // Get Device Locale
-    _osLocal = await _getDeviceLocale();
+    _osLocale = await _getDeviceLocale();
     // If saved locale then get
     if (_savedLocale != null && this.saveLocale) {
       locale = _savedLocale;
       log('easy localization: Load saved locale ${_savedLocale.toString()}');
     } else {
       locale = supportedLocales.firstWhere(
-          (local) => _checkInitLocale(local, _osLocal),
+          (locale) => _checkInitLocale(locale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
     //Set locale
@@ -73,12 +73,12 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     log('easy localization: Set locale ${this._locale.toString()}');
   }
 
-  bool _checkInitLocale(Locale locale, Locale osLocale) {
-    //If suported locale not contain countryCode then check only languageCode
-    if (locale.countryCode ?? false) {
-      return (locale == osLocale);
+  bool _checkInitLocale(Locale locale) {
+    // If suported locale not contain countryCode then check only languageCode
+    if (locale.countryCode == null) {
+      return (locale == _osLocale);
     } else {
-      return (locale.languageCode == osLocale.languageCode);
+      return (locale.languageCode == _osLocale.languageCode);
     }
   }
 
