@@ -67,7 +67,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
     //Set locale
-    this._locale = locale;
+    if (Intl.defaultLocale == null) locale = _locale;
     log('easy localization: Set locale ${this._locale.toString()}');
   }
 
@@ -94,8 +94,13 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // Get Device Locale
   Future<Locale> _getDeviceLocale() async {
     final String _deviceLocale = await findSystemLocale();
-    final List _deviceLocaleList = _deviceLocale.split("_");
-    return Locale(_deviceLocaleList[0], _deviceLocaleList[1]);
+    print(_deviceLocale);
+    final _deviceLocaleList = _deviceLocale.split("_");
+    return (_deviceLocaleList.length > 1)
+        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1] ?? null)
+        : Locale(_deviceLocaleList[0]);
+
+    //;
   }
 
   Locale get locale => _locale;

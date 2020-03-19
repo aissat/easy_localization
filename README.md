@@ -26,6 +26,7 @@ this package simplify the internationalizing process using Json file
 - [x] Supports `plural`
 - [x] Supports `gender`
 - [x] Supports Flutter extension.
+- [x] Supports change locale dynamically .
 - [x] Supports for RTL locales
 - [x] Supports for nesting
 - [x] Customization AssetLoader localizations
