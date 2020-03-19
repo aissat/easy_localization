@@ -24,15 +24,14 @@ class EasyLocalization extends StatefulWidget {
     @required this.path,
     this.fallbackLocale,
     this.useOnlyLangCode = false,
-    this.assetLoader =  const RootBundleAssetLoader(),
+    this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
   })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
             path: path,
             supportedLocales: supportedLocales,
             useOnlyLangCode: useOnlyLangCode,
-          assetLoader: assetLoader
-        ),
+            assetLoader: assetLoader),
         super(key: key);
 
   _EasyLocalizationState createState() => _EasyLocalizationState();
@@ -50,8 +49,8 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale): this.saveLocale= saveLocale
-       {
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale)
+      : this.saveLocale = saveLocale {
     _init(fallbackLocale, supportedLocales);
   }
 
@@ -64,12 +63,11 @@ class _EasyLocalizationLocale extends ChangeNotifier {
       locale = _savedLocale;
       log('easy localization: Load saved locale ${_savedLocale.toString()}');
     } else {
-      locale = supportedLocales.firstWhere(
-          (locale) => _checkInitLocale(locale),
+      locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
     //Set locale
-    this._locale = locale;
+    if (Intl.defaultLocale == null) locale = _locale;
     log('easy localization: Set locale ${this._locale.toString()}');
   }
 
@@ -96,8 +94,13 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // Get Device Locale
   Future<Locale> _getDeviceLocale() async {
     final String _deviceLocale = await findSystemLocale();
-    final List _deviceLocaleList = _deviceLocale.split("_");
-    return Locale(_deviceLocaleList[0], _deviceLocaleList[1]);
+    print(_deviceLocale);
+    final _deviceLocaleList = _deviceLocale.split("_");
+    return (_deviceLocaleList.length > 1)
+        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1])
+        : Locale(_deviceLocaleList[0]);
+
+    //;
   }
 
   Locale get locale => _locale;
@@ -119,23 +122,26 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
-    log(locale.toString(), name:this.toString()+ "_saveLocale");
+    log(locale.toString(), name: this.toString() + "_saveLocale");
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale) async {
+      Locale fallbackLocale,
+      List<Locale> supportedLocales,
+      bool saveLocale) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeLa');
     var _codeCoun = _preferences.getString('codeCa');
 
     _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
-    return _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale);
+    return _EasyLocalizationLocale(
+        fallbackLocale, supportedLocales, saveLocale);
   }
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
-  
+
   Locale get locale => _locale.locale;
 
   set locale(Locale l) {
@@ -206,12 +212,11 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate({
-    @required this.path,
-    @required this.supportedLocales,
-    this.useOnlyLangCode = false,
-    this.assetLoader
-  });
+  _EasyLocalizationDelegate(
+      {@required this.path,
+      @required this.supportedLocales,
+      this.useOnlyLangCode = false,
+      this.assetLoader});
 
   @override
   bool isSupported(Locale locale) => supportedLocales.contains(locale);
