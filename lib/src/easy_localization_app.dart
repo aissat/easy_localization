@@ -64,18 +64,18 @@ class _EasyLocalizationLocale extends ChangeNotifier {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
       locale = _savedLocale;      
     } else {
-      locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale, _osLocale),
+      locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
     if (Intl.defaultLocale == null) locale = _locale;    
   }
 
-  bool _checkInitLocale(Locale locale, Locale osLocale) {
+  bool _checkInitLocale(Locale locale) {
     // If suported locale not contain countryCode then check only languageCode
     if (locale.countryCode == null) {
-      return (locale.languageCode == osLocale.languageCode);      
+      return (locale.languageCode == _osLocale.languageCode);      
     } else {
-      return (locale == osLocale);
+      return (locale == _osLocale);
     }
   }
 
