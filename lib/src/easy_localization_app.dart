@@ -125,7 +125,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
-    log('easy localization: Locale saved ${locale.toString()}');
+    log(locale.toString(), name: this.toString() + "_saveLocale");
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
@@ -144,7 +144,6 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
-  Future _futureSavedAppLocale;
 
   Locale get locale => _locale.locale;
 
