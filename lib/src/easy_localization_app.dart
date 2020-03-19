@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import "package:intl/intl_standalone.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'asset_loader.dart';
@@ -15,6 +16,7 @@ class EasyLocalization extends StatefulWidget {
   final bool useOnlyLangCode;
   final String path;
   final AssetLoader assetLoader;
+  final bool saveLocale;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -23,11 +25,12 @@ class EasyLocalization extends StatefulWidget {
     this.fallbackLocale,
     this.useOnlyLangCode = false,
     this.assetLoader =  const RootBundleAssetLoader(),
+    this.saveLocale = true,
   })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
-          path: path,
-          supportedLocales: supportedLocales,
-          useOnlyLangCode: useOnlyLangCode,
+            path: path,
+            supportedLocales: supportedLocales,
+            useOnlyLangCode: useOnlyLangCode,
           assetLoader: assetLoader
         ),
         super(key: key);
@@ -41,19 +44,60 @@ class EasyLocalization extends StatefulWidget {
 class _EasyLocalizationLocale extends ChangeNotifier {
   Locale _locale;
   static Locale _savedLocale;
-  // Get default OS Locale
-  static final _osCurrentLocale = Intl.getCurrentLocale().split("_");
-  static Locale _osLocal = Locale(_osCurrentLocale[0], _osCurrentLocale[1]);
+  static Locale _osLocale;
+  bool saveLocale;
 
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
-  _EasyLocalizationLocale(Locale fallbackLocale, List<Locale> supportedLocales)
-      // if fallbackLocale null and default OS Locale in supportedLocales
-      // init by default OS Locale else init by supportedLocales[0]
-      : this._locale = (_savedLocale ?? fallbackLocale) ??
-            supportedLocales.firstWhere((local) => local == _osLocal,
-                orElse: () => supportedLocales.first) {
-    if(Intl.defaultLocale == null) locale = _locale;
+  _EasyLocalizationLocale(
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale): this.saveLocale= saveLocale
+       {
+    _init(fallbackLocale, supportedLocales);
+  }
+
+  //Initialize _EasyLocalizationLocale
+  _init(Locale fallbackLocale, List<Locale> supportedLocales) async {
+    // Get Device Locale
+    _osLocale = await _getDeviceLocale();
+    // If saved locale then get
+    if (_savedLocale != null && this.saveLocale) {
+      locale = _savedLocale;
+      log('easy localization: Load saved locale ${_savedLocale.toString()}');
+    } else {
+      locale = supportedLocales.firstWhere(
+          (locale) => _checkInitLocale(locale),
+          orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
+    }
+    //Set locale
+    this._locale = locale;
+    log('easy localization: Set locale ${this._locale.toString()}');
+  }
+
+  bool _checkInitLocale(Locale locale) {
+    // If suported locale not contain countryCode then check only languageCode
+    if (locale.countryCode == null) {
+      return (locale == _osLocale);
+    } else {
+      return (locale.languageCode == _osLocale.languageCode);
+    }
+  }
+
+  //Get fallback Locale
+  Locale _getFallbackLocale(
+      List<Locale> supportedLocales, Locale fallbackLocale) {
+    //If fallbackLocale not set then return first from supportedLocales
+    if (fallbackLocale != null) {
+      return fallbackLocale;
+    } else {
+      return supportedLocales.first;
+    }
+  }
+
+  // Get Device Locale
+  Future<Locale> _getDeviceLocale() async {
+    final String _deviceLocale = await findSystemLocale();
+    final List _deviceLocaleList = _deviceLocale.split("_");
+    return Locale(_deviceLocaleList[0], _deviceLocaleList[1]);
   }
 
   Locale get locale => _locale;
@@ -66,7 +110,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
               ? l.languageCode
               : l.toString());
 
-    _saveLocale(_locale);
+    if (this.saveLocale) _saveLocale(_locale);
 
     notifyListeners();
   }
@@ -79,18 +123,19 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales) async {
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeLa');
     var _codeCoun = _preferences.getString('codeCa');
 
     _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
-    return _EasyLocalizationLocale(fallbackLocale, supportedLocales);
+    return _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale);
   }
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
+  
   Locale get locale => _locale.locale;
 
   set locale(Locale l) {
@@ -102,6 +147,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   List<Locale> get supportedLocales => widget.supportedLocales;
   _EasyLocalizationDelegate get delegate => widget.delegate;
   Locale get fallbackLocale => widget.fallbackLocale;
+  bool get saveLocale => widget.saveLocale;
 
   @override
   void initState() {
@@ -118,7 +164,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   Widget build(BuildContext context) {
     return FutureBuilder<_EasyLocalizationLocale>(
       future: _EasyLocalizationLocale.initSavedAppLocale(
-          fallbackLocale, supportedLocales),
+          fallbackLocale, supportedLocales, saveLocale),
       builder: (BuildContext context,
           AsyncSnapshot<_EasyLocalizationLocale> snapshot) {
         if (snapshot.hasData) {
