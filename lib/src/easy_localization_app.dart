@@ -122,8 +122,6 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
     log(locale.toString(), name: this.toString() + "_saveLocale");
-    notifyListeners();
-    
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
