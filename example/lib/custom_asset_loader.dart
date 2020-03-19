@@ -29,7 +29,7 @@ class FileAssetLoader extends AssetLoader {
   }
 
   @override
-  Future<bool> localeExists(String localePath) => File(localePath).exists();
+  Future<bool> localeExists(String localePath) async => File(localePath).exists();
 }
 
 //
