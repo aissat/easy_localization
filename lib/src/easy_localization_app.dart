@@ -97,7 +97,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     print(_deviceLocale);
     final _deviceLocaleList = _deviceLocale.split("_");
     return (_deviceLocaleList.length > 1)
-        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1] ?? null)
+        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1])
         : Locale(_deviceLocaleList[0]);
 
     //;
