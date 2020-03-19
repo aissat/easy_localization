@@ -34,6 +34,11 @@ this package simplify the internationalizing process using Json file
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
+### [2.0.1]
+
+- Added change locale dynamically `saveLocale` default value `true`
+- fixed many issues
+
 ### [2.0.0]
 
 this version came with many updates, here are the main ones:
