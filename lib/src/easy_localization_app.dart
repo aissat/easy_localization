@@ -69,7 +69,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     }
     //Set locale
     if (Intl.defaultLocale == null) locale = _locale;
-    log('easy localization: Set locale ${this.locale.toString()}');
+    log('easy localization: Set locale ${this._locale.toString()}');
   }
 
   bool _checkInitLocale(Locale locale) {
@@ -98,7 +98,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     print(_deviceLocale);
     final _deviceLocaleList = _deviceLocale.split("_");
     return (_deviceLocaleList.length > 1)
-        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1])
+        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1] ?? null)
         : Locale(_deviceLocaleList[0]);
 
     //;
