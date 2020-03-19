@@ -58,25 +58,24 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   _init(Locale fallbackLocale, List<Locale> supportedLocales) async {
     // Get Device Locale
     _osLocale = await _getDeviceLocale();
+    log('easy localization: Device locale ${_osLocale.toString()}');
     // If saved locale then get
     if (_savedLocale != null && this.saveLocale) {
-      locale = _savedLocale;
-      log('easy localization: Load saved locale ${_savedLocale.toString()}');
+      log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
+      locale = _savedLocale;      
     } else {
-      locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale),
+      locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale, _osLocale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
-    //Set locale
-    if (Intl.defaultLocale == null) locale = _locale;
-    log('easy localization: Set locale ${this._locale.toString()}');
+    if (Intl.defaultLocale == null) locale = _locale;    
   }
 
-  bool _checkInitLocale(Locale locale) {
+  bool _checkInitLocale(Locale locale, Locale osLocale) {
     // If suported locale not contain countryCode then check only languageCode
     if (locale.countryCode == null) {
-      return (locale == _osLocale);
+      return (locale.languageCode == osLocale.languageCode);      
     } else {
-      return (locale.languageCode == _osLocale.languageCode);
+      return (locale == osLocale);
     }
   }
 
@@ -114,7 +113,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
               : l.toString());
 
     if (this.saveLocale) _saveLocale(_locale);
-
+    log('easy localization: Set locale ${_locale.toString()}');
     notifyListeners();
   }
 
@@ -122,7 +121,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
-    log(locale.toString(), name: this.toString() + "_saveLocale");
+    log('easy localization: Locale saved ${locale.toString()}');
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
