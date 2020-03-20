@@ -9,7 +9,7 @@ import 'package:easy_localization/easy_localization.dart';
 void main(){
   runApp(EasyLocalization(
     child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ'), Locale('ru', 'RU')],
     path: 'resources/langs',
     // fallbackLocale: Locale('en', 'US'),
     // useOnlyLangCode: true,
