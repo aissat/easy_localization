@@ -15,6 +15,7 @@ void main(){
     // saveLocale: false,
     // fallbackLocale: Locale('en', 'US'),
     // useOnlyLangCode: true,
+    // saveLocale: false,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // assetLoader: RootBundleAssetLoader()
     // assetLoader: NetworkAssetLoader()
