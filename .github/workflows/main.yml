@@ -18,8 +18,8 @@ jobs:
       run: flutter packages get
     - name: Run tests
       run: flutter test
-    # - name: Run tests coverage
-    #   run: flutter test --coverage
+    - name: Run tests coverage
+      run: flutter test --coverage
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v1.0.1
       with:
