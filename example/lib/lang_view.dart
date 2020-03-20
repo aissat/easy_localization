@@ -58,6 +58,12 @@ class LanguageView extends StatelessWidget {
                 subtitle: "English",
                 locale: Locale("en", "US")),
             buildDivider(),
+            buildSwitchListTileMenuItem(
+                context: context,
+                title: "Русский",
+                subtitle: "Русский",
+                locale: Locale("ru", "RU")),
+            buildDivider(),
           ],
         ),
       ),
