@@ -58,6 +58,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   _init(Locale fallbackLocale, List<Locale> supportedLocales) async {
     // Get Device Locale
     _osLocale = await _getDeviceLocale();
+    log('easy localization: Device locale ${_osLocale.toString()}');
     // If saved locale then get
     if (_savedLocale != null && this.saveLocale) {
       locale = _savedLocale;
@@ -68,7 +69,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     }
     //Set locale
     if (Intl.defaultLocale == null) locale = _locale;
-    log('easy localization: Set locale ${this._locale.toString()}');
+    log('easy localization: Set locale ${this.locale.toString()}');
   }
 
   bool _checkInitLocale(Locale locale) {
@@ -114,8 +115,6 @@ class _EasyLocalizationLocale extends ChangeNotifier {
               : l.toString());
 
     if (this.saveLocale) _saveLocale(_locale);
-
-    notifyListeners();
   }
 
   _saveLocale(Locale locale) async {
@@ -123,6 +122,8 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
     log(locale.toString(), name: this.toString() + "_saveLocale");
+    notifyListeners();
+    
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
@@ -155,10 +156,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   Locale get fallbackLocale => widget.fallbackLocale;
   bool get saveLocale => widget.saveLocale;
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {

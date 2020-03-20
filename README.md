@@ -8,7 +8,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/aissat/easy_localization?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/aissat/easy_localization?style=flat-square)
 ![Coveralls github branch](https://img.shields.io/coveralls/github/aissat/easy_localization/dev?style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aissat/easy_localization/Flutter%20Tester?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aissat/easy_localization/Flutter%20Tester?longCache=true&style=flat-square&logo=github)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/aissat/easy_localization?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 
