@@ -27,25 +27,15 @@ class LanguageView extends StatelessWidget {
                 horizontal: 24,
               ),
               child: Text(
-                "Language Menu",
+                "Choose language",
                 style: TextStyle(
-                  color: Color.fromARGB(255, 166, 166, 166),
+                  color: Colors.blue,
                   fontFamily: "Montserrat",
                   fontWeight: FontWeight.w700,
-                  fontSize: 10,
+                  fontSize: 18,
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 10, bottom: 25),
-              margin: EdgeInsets.symmetric(
-                horizontal: 24,
-              ),
-              child: Text(
-                "language",
-              ),
-            ),
-            buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
                 title: "عربي",
@@ -99,6 +89,7 @@ class LanguageView extends StatelessWidget {
           onTap: () {
             log(locale.toString(), name: this.toString());
             EasyLocalization.of(context).locale = locale;
+            Navigator.pop(context);
           }),
     );
   }
