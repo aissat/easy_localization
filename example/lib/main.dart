@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
@@ -11,6 +12,7 @@ void main(){
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ'), Locale('ru', 'RU')],
     path: 'resources/langs',
+    // saveLocale: false,
     // fallbackLocale: Locale('en', 'US'),
     // useOnlyLangCode: true,
     // saveLocale: false,

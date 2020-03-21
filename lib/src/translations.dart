@@ -21,9 +21,9 @@ class Translations {
     return value;
   }
 
-  bool has(String key) => isNestedKey(key)
-      ? getNested(key) != null
-      : _translations.containsKey(key);
+  // bool has(String key) => isNestedKey(key)
+  //     ? getNested(key) != null
+  //     : _translations.containsKey(key);
 
   bool isNestedCached(String key) => _nestedKeysCache.containsKey(key);
 
