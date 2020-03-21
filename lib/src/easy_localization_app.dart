@@ -67,6 +67,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
       locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
+    //Set locale
     if (Intl.defaultLocale == null) locale = _locale;    
   }
 
@@ -113,8 +114,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
               : l.toString());
 
     if (this.saveLocale) _saveLocale(_locale);
-    log('easy localization: Set locale ${_locale.toString()}');
-    notifyListeners();
+    log('easy localization: Set locale ${this.locale.toString()}');
   }
 
   _saveLocale(Locale locale) async {
@@ -122,6 +122,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
     log('easy localization: Locale saved ${locale.toString()}');
+    notifyListeners();    
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
