@@ -2,7 +2,7 @@ on: [push, pull_request]
 name: Flutter Tester
 jobs:
   test:
-    name: test
+    name: Tester
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
