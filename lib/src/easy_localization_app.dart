@@ -104,16 +104,19 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
   Locale get locale => _locale;
   set locale(Locale l) {
-    _locale = l;
 
-    if (_locale != null)
-      Intl.defaultLocale = Intl.canonicalizedLocale(
-          l.countryCode == null || l.countryCode.isEmpty
-              ? l.languageCode
-              : l.toString());
+    if (_locale != l){
+      _locale = l;
 
-    if (this.saveLocale) _saveLocale(_locale);
-    log('easy localization: Set locale ${this.locale.toString()}');
+      if (_locale != null)
+        Intl.defaultLocale = Intl.canonicalizedLocale(
+            l.countryCode == null || l.countryCode.isEmpty
+                ? l.languageCode
+                : l.toString());
+
+      if (this.saveLocale) _saveLocale(_locale);
+      log('easy localization: Set locale ${this.locale.toString()}');
+    }
   }
 
   _saveLocale(Locale locale) async {
