@@ -10,7 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 void main(){
   runApp(EasyLocalization(
     child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ'), Locale('ru', 'RU')],
     path: 'resources/langs',
     // saveLocale: false,
     // fallbackLocale: Locale('en', 'US'),
@@ -73,7 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    log(tr("title"), name: this.toString() );
     return Scaffold(
       appBar: AppBar(
         title: Text("title").tr(context: context),
