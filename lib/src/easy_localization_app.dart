@@ -117,7 +117,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
       if (this.saveLocale) _saveLocale(_locale);
       log('easy localization: Set locale ${this.locale.toString()}');
       
-      notifyListeners(); 
+      notifyListeners();
     }
   }
 
@@ -125,7 +125,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
-    log('easy localization: Locale saved ${locale.toString()}');       
+    log('easy localization: Locale saved ${locale.toString()}');
   }
 
   static Future<_EasyLocalizationLocale> initSavedAppLocale(
@@ -144,6 +144,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
+  Future _futureSavedAppLocale;
 
   Locale get locale => _locale.locale;
 
@@ -166,10 +167,17 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   }
 
   @override
+  void initState() {
+    //init _EasyLocalizationLocale only once
+    _futureSavedAppLocale = _EasyLocalizationLocale.initSavedAppLocale(
+          fallbackLocale, supportedLocales, saveLocale);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<_EasyLocalizationLocale>(
-      future: _EasyLocalizationLocale.initSavedAppLocale(
-          fallbackLocale, supportedLocales, saveLocale),
+      future: _futureSavedAppLocale,
       builder: (BuildContext context,
           AsyncSnapshot<_EasyLocalizationLocale> snapshot) {
         if (snapshot.hasData) {
