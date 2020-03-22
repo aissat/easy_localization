@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -128,6 +129,13 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     log('easy localization: Locale saved ${locale.toString()}');
   }
 
+  deleteSaveLocale() async{
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    await _preferences.setString('codeCa', null);
+    await _preferences.setString('codeLa', null);
+    log('easy localization: Saved locale deleted');
+  }
+  
   static Future initSavedAppLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeLa');
@@ -170,12 +178,15 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     _futureSavedAppLocale = saveLocale
         ? _EasyLocalizationLocale.initSavedAppLocale()
         : Future.value();
-        
+
     //init device locale once
     _futureInitDeviceLocale = _EasyLocalizationLocale.initDeviceLocale();
 
     super.initState();
   }
+
+  //delete saved locale
+  void deleteSaveLocale() => _locale.deleteSaveLocale(); 
 
   @override
   Widget build(BuildContext context) {
