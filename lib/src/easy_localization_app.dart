@@ -80,9 +80,9 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   bool _checkInitLocale(Locale locale, Locale osLocale) {
     // If suported locale not contain countryCode then check only languageCode
     if (locale.countryCode == null) {
-      return (locale.languageCode == osLocale.languageCode);      
+      return (locale.languageCode == _osLocale.languageCode);      
     } else {
-      return (locale == osLocale);
+      return (locale == _osLocale);
     }
   }
 
@@ -100,7 +100,6 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // Get Device Locale
   static Future initDeviceLocale() async {
     final String _deviceLocale = await findSystemLocale();
-    print(_deviceLocale);
     final _deviceLocaleList = _deviceLocale.split("_");
     
     _osLocale = (_deviceLocaleList.length > 1)
@@ -139,7 +138,6 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     await _preferences.setString('codeCa', locale.countryCode);
     await _preferences.setString('codeLa', locale.languageCode);
     log('easy localization: Locale saved ${locale.toString()}');
-    notifyListeners();    
   }
 
   deleteSaveLocale() async{
