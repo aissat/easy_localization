@@ -22,6 +22,8 @@ void main(){
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
+    // preloaderWidget: CircularProgressIndicator(),
+    // preloaderColor: Colors.red,
   ));
 }
 
