@@ -20,6 +20,7 @@ class EasyLocalization extends StatefulWidget {
   final bool saveLocale;
   final Widget preloaderWidget;
   final Color preloaderColor;
+  final VoidCallback onLocaleChange;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -31,6 +32,7 @@ class EasyLocalization extends StatefulWidget {
     this.saveLocale = true,
     this.preloaderWidget = const EmptyPreloaderWidget(),
     this.preloaderColor = Colors.white,
+    this.onLocaleChange,
   })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
             path: path,
@@ -50,12 +52,14 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   static Locale _savedLocale;
   static Locale _osLocale;
   bool saveLocale;
+  VoidCallback onLocaleChange;
 
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale)
-      : this.saveLocale = saveLocale {
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale, VoidCallback onLocaleChange)
+      : this.saveLocale = saveLocale,
+        this.onLocaleChange = onLocaleChange {
     _init(fallbackLocale, supportedLocales);
   }
 
@@ -107,8 +111,9 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
   Locale get locale => _locale;
   set locale(Locale l) {
-
+    
     if (_locale != l){
+      Locale _oldLocale = _locale;
       _locale = l;
 
       if (_locale != null)
@@ -121,6 +126,8 @@ class _EasyLocalizationLocale extends ChangeNotifier {
       log('easy localization: Set locale ${this.locale.toString()}');
       
       notifyListeners();
+
+      if (onLocaleChange != null && _oldLocale != null) onLocaleChange();
     }
   }
 
@@ -167,6 +174,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationDelegate get delegate => widget.delegate;
   Locale get fallbackLocale => widget.fallbackLocale;
   bool get saveLocale => widget.saveLocale;
+  VoidCallback get onLocaleChange => widget.onLocaleChange;
 
 
   @override
@@ -186,8 +194,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     //init device locale once
     _futureInitDeviceLocale = _EasyLocalizationLocale.initDeviceLocale();
 
+    //Init locale engine
     _locale =
-        _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale);
+        _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale, onLocaleChange);
     this._locale.addListener(() {
       if (mounted) setState(() {});
     });
