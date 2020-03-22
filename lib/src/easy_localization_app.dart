@@ -159,10 +159,14 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   void initState() {
     //init _EasyLocalizationLocale only once
-    _futureSavedAppLocale = _EasyLocalizationLocale.initSavedAppLocale();
+    //if saveLocale false then return blanc future
+    _futureSavedAppLocale = saveLocale
+        ? _EasyLocalizationLocale.initSavedAppLocale()
+        : Future.value();
+        
     //init device locale once
     _futureInitDeviceLocale = _EasyLocalizationLocale.initDeviceLocale();
-          
+
     super.initState();
   }
 
