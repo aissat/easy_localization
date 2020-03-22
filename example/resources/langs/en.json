@@ -32,5 +32,6 @@
             "male": "Hi man ;) {}",
             "female": "Hello girl :) {}"
         }
-    }
+    },
+    "reset_locale": "Reset Saved Language"
 }
