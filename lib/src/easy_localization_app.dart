@@ -121,17 +121,12 @@ class _EasyLocalizationLocale extends ChangeNotifier {
     notifyListeners();    
   }
 
-  static Future<_EasyLocalizationLocale> initSavedAppLocale(
-      Locale fallbackLocale,
-      List<Locale> supportedLocales,
-      bool saveLocale) async {
+  static Future initSavedAppLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeLa');
     var _codeCoun = _preferences.getString('codeCa');
 
     _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
-    return _EasyLocalizationLocale(
-        fallbackLocale, supportedLocales, saveLocale);
   }
 }
 
@@ -164,8 +159,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   void initState() {
     //init _EasyLocalizationLocale only once
-    _futureSavedAppLocale = _EasyLocalizationLocale.initSavedAppLocale(
-          fallbackLocale, supportedLocales, saveLocale);
+    _futureSavedAppLocale = _EasyLocalizationLocale.initSavedAppLocale();
     //init device locale once
     _futureInitDeviceLocale = _EasyLocalizationLocale.initDeviceLocale();
           
@@ -180,8 +174,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       builder: (BuildContext context,
           AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          if (this._locale == null) this._locale = snapshot.data[0];
-          snapshot.data[0].addListener(() {
+          this._locale = _EasyLocalizationLocale(
+              fallbackLocale, supportedLocales, saveLocale);
+          this._locale.addListener(() {
             if (mounted) setState(() {});
           });
           return _EasyLocalizationProvider(
