@@ -24,6 +24,7 @@ void main(){
     // assetLoader: StringAssetLoader()
     // preloaderWidget: CircularProgressIndicator(),
     // preloaderColor: Colors.red,
+    // onLocaleChange: (){print('Locale change callback!!!');},
   ));
 }
 
