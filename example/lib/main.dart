@@ -145,7 +145,13 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 20,
             ),
-            Text('profile.reset_password.title').tr(),
+            RaisedButton(
+              onPressed: () {
+                EasyLocalization.of(context).deleteSaveLocale();
+                },
+              child: Text('reset_locale').tr(), 
+            )
+            ,
             Spacer(
               flex: 2,
             ),
