@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'asset_loader.dart';
 import 'localization.dart';
+import 'widgets.dart';
 
 class EasyLocalization extends StatefulWidget {
   final Widget child;
@@ -17,6 +18,8 @@ class EasyLocalization extends StatefulWidget {
   final String path;
   final AssetLoader assetLoader;
   final bool saveLocale;
+  final Widget preloaderWidget;
+  final Color preloaderColor;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -26,6 +29,8 @@ class EasyLocalization extends StatefulWidget {
     this.useOnlyLangCode = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
+    this.preloaderWidget = const EmptyPreloaderWidget(),
+    this.preloaderColor = Colors.white,
   })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
             path: path,
@@ -55,7 +60,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   }
 
   //Initialize _EasyLocalizationLocale
-  _init(Locale fallbackLocale, List<Locale> supportedLocales) async {
+  _init(Locale fallbackLocale, List<Locale> supportedLocales){
     // If saved locale then get
     if (_savedLocale != null && this.saveLocale) {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
@@ -147,7 +152,7 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
   Future _futureSavedAppLocale;
-  Future _futureInitDeviceLocale;
+  Future _futureInitDeviceLocale; 
 
   Locale get locale => _locale.locale;
   Locale get deviceLocale => _locale.deviceLocale;
@@ -181,34 +186,39 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     //init device locale once
     _futureInitDeviceLocale = _EasyLocalizationLocale.initDeviceLocale();
 
+    _locale =
+        _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale);
+    this._locale.addListener(() {
+      if (mounted) setState(() {});
+    });
     super.initState();
   }
-
   //delete saved locale
   void deleteSaveLocale() => _locale.deleteSaveLocale(); 
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List>(
-      //init saved locale and device locale
-      future: Future.wait([_futureSavedAppLocale, _futureInitDeviceLocale]),
-      builder: (BuildContext context,
-          AsyncSnapshot<List> snapshot) {
-        if (snapshot.hasData) {
-          if (this._locale == null) this._locale = _EasyLocalizationLocale(
-              fallbackLocale, supportedLocales, saveLocale);
-          this._locale.addListener(() {
-            if (mounted) setState(() {});
-          });
-          return _EasyLocalizationProvider(
-            data: this,
-            child: widget.child,
-          );
-        } else {
-          // TODO implement [load, error] widget when init locale
-          return Container();
-        }
-      },
+    return Container(
+      color: widget.preloaderColor,
+      child: FutureBuilder<List>(
+        //init saved locale and device locale
+        future: Future.wait([_futureSavedAppLocale, _futureInitDeviceLocale]),
+        builder: (BuildContext context,
+            AsyncSnapshot<List> snapshot) {
+          if (snapshot.hasData) {
+            return _EasyLocalizationProvider(
+              data: this,
+              child: widget.child,
+            );
+          } else if (snapshot.hasError){
+            //Show error message       
+            return const FutureErrorWidget();
+          } else {
+            //Show preloader widget
+            return widget.preloaderWidget;
+          }
+        },
+      ),
     );
   }
 }
