@@ -189,7 +189,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       builder: (BuildContext context,
           AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          this._locale = _EasyLocalizationLocale(
+          if (this._locale == null) this._locale = _EasyLocalizationLocale(
               fallbackLocale, supportedLocales, saveLocale);
           this._locale.addListener(() {
             if (mounted) setState(() {});
