@@ -56,9 +56,6 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
   //Initialize _EasyLocalizationLocale
   _init(Locale fallbackLocale, List<Locale> supportedLocales) async {
-    // Get Device Locale
-    _osLocale = await _getDeviceLocale();
-    log('easy localization: Device locale ${_osLocale.toString()}');
     // If saved locale then get
     if (_savedLocale != null && this.saveLocale) {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
@@ -92,15 +89,16 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   }
 
   // Get Device Locale
-  Future<Locale> _getDeviceLocale() async {
+  static Future initDeviceLocale() async {
     final String _deviceLocale = await findSystemLocale();
     print(_deviceLocale);
     final _deviceLocaleList = _deviceLocale.split("_");
-    return (_deviceLocaleList.length > 1)
-        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1] ?? null)
+    
+    _osLocale = (_deviceLocaleList.length > 1)
+        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1])
         : Locale(_deviceLocaleList[0]);
 
-    //;
+  log('easy localization: Device locale ${_osLocale.toString()}');
   }
 
   Locale get locale => _locale;
@@ -137,6 +135,8 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
+  Future _futureSavedAppLocale;
+  Future _futureInitDeviceLocale;
 
   Locale get locale => _locale.locale;
 
@@ -163,18 +163,22 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     //init _EasyLocalizationLocale only once
     _futureSavedAppLocale = _EasyLocalizationLocale.initSavedAppLocale(
           fallbackLocale, supportedLocales, saveLocale);
+    //init device locale once
+    _futureInitDeviceLocale = _EasyLocalizationLocale.initDeviceLocale();
+          
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<_EasyLocalizationLocale>(
-      future: _futureSavedAppLocale,
+    return FutureBuilder<List>(
+      //init saved locale and device locale
+      future: Future.wait([_futureSavedAppLocale, _futureInitDeviceLocale]),
       builder: (BuildContext context,
-          AsyncSnapshot<_EasyLocalizationLocale> snapshot) {
+          AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          if (this._locale == null) this._locale = snapshot.data;
-          snapshot.data.addListener(() {
+          if (this._locale == null) this._locale = snapshot.data[0];
+          snapshot.data[0].addListener(() {
             if (mounted) setState(() {});
           });
           return _EasyLocalizationProvider(
