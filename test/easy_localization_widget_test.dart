@@ -445,7 +445,7 @@ void main() {
     );
   });
 
-  group('SharedPreferences SavedLocale', () {
+  group('SharedPreferences saveLocale', () {
     setUpAll(() {
       SharedPreferences.setMockInitialValues({"locale": "ar_DZ",});
     });
@@ -506,10 +506,73 @@ void main() {
           expect(Intl.defaultLocale, Locale("en", "US").toString());
           expect(Intl.defaultLocale,
               EasyLocalization.of(_context).locale.toString());
+          EasyLocalization.of(_context).locale =Locale("en", "US");
         });
       },
     );
+
   });
+
+
+group('SharedPreferences deleteSaveLocale()', () {
+  setUpAll(() {
+      SharedPreferences.setMockInitialValues({"locale": "ar_DZ",});
+    });
+  testWidgets(
+      "[EasyLocalization] deleteSaveLocale  test",
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: "i18n",
+            // fallbackLocale:Locale("en") ,
+            supportedLocales: [
+              Locale("en", "US"),
+              Locale("ar", "DZ")
+            ], // Locale("en", "US"), Locale("ar","DZ")
+          ));
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
+          EasyLocalization.of(_context).deleteSaveLocale();
+
+        });
+      },
+    );
+
+    testWidgets(
+      "[EasyLocalization] after deleteSaveLocale  test",
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: "i18n",
+            // fallbackLocale:Locale("en") ,
+            supportedLocales: [
+              Locale("en", "US"),
+              Locale("ar", "DZ")
+            ], // Locale("en", "US"), Locale("ar","DZ")
+          ));
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
+
+        });
+      },
+    );
+
+});
+
+
+
+
+
+
+
 
  
 }
