@@ -414,8 +414,8 @@ void main() {
   );
 
   group('SharedPreferences SavedLocale NULL', () {
-    setUpAll(() {
-      SharedPreferences.setMockInitialValues({"codeLa": null, "codeCa": null});
+    setUp(() {
+      SharedPreferences.setMockInitialValues({"locale": null,});
     });
 
     testWidgets(
@@ -434,10 +434,10 @@ void main() {
 
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
-          expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
+          expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
           expect(EasyLocalization.of(_context).fallbackLocale, null);
 
-          expect(Intl.defaultLocale, Locale("ar", "DZ").toString());
+          expect(Intl.defaultLocale, Locale("en", "US").toString());
           expect(Intl.defaultLocale,
               EasyLocalization.of(_context).locale.toString());
         });
@@ -447,11 +447,11 @@ void main() {
 
   group('SharedPreferences SavedLocale', () {
     setUpAll(() {
-      SharedPreferences.setMockInitialValues({"codeLa": "ar", "codeCa": "DZ"});
+      SharedPreferences.setMockInitialValues({"locale": "ar_DZ",});
     });
 
     testWidgets(
-      "[EasyLocalization] saveLocale flase  test",
+      "[EasyLocalization] saveLocale true  test",
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
@@ -470,10 +470,10 @@ void main() {
 
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
-          expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
+          expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
           expect(EasyLocalization.of(_context).fallbackLocale, null);
 
-          expect(Intl.defaultLocale, Locale("en", "US").toString());
+          expect(Intl.defaultLocale, Locale("ar", "DZ").toString());
           expect(Intl.defaultLocale,
               EasyLocalization.of(_context).locale.toString());
         });
@@ -481,7 +481,7 @@ void main() {
     );
 
     testWidgets(
-      "[EasyLocalization] saveLocale true  test",
+      "[EasyLocalization] saveLocale false  test",
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
