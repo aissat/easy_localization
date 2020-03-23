@@ -447,6 +447,47 @@ void main() {
 
   group('SharedPreferences saveLocale', () {
     setUpAll(() {
+      SharedPreferences.setMockInitialValues({"locale": "ar",});
+    });
+
+    testWidgets(
+      "[EasyLocalization] useOnlyLangCode true  test",
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: "i18n",
+            saveLocale: true,
+            // fallbackLocale:Locale("en") ,
+            useOnlyLangCode: true,
+            supportedLocales: [
+              Locale("en"),
+              Locale("ar")
+            ], // Locale("en", "US"), Locale("ar","DZ")
+          ));
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).supportedLocales,
+              [Locale("en"), Locale("ar")]);
+          expect(EasyLocalization.of(_context).locale, Locale("ar"));
+          expect(EasyLocalization.of(_context).fallbackLocale, null);
+
+          expect(Intl.defaultLocale, Locale("ar").toString());
+          expect(Intl.defaultLocale,
+              EasyLocalization.of(_context).locale.toString());
+        });
+      },
+    );
+
+
+  });
+
+
+
+group('SharedPreferences saveLocale', () {
+    setUpAll(() {
       SharedPreferences.setMockInitialValues({"locale": "ar_DZ",});
     });
 
@@ -512,6 +553,8 @@ void main() {
     );
 
   });
+
+
 
 
 group('SharedPreferences deleteSaveLocale()', () {
