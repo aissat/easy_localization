@@ -18,9 +18,7 @@ class EasyLocalization extends StatefulWidget {
   final String path;
   final AssetLoader assetLoader;
   final bool saveLocale;
-  final Widget preloaderWidget;
   final Color preloaderColor;
-  final VoidCallback onLocaleChange;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -30,9 +28,7 @@ class EasyLocalization extends StatefulWidget {
     this.useOnlyLangCode = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
-    this.preloaderWidget = const EmptyPreloaderWidget(),
     this.preloaderColor = Colors.white,
-    this.onLocaleChange,
   })  : //assert(supportedLocales.contains(fallbackLocale)),
         delegate = _EasyLocalizationDelegate(
             path: path,
@@ -57,30 +53,30 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // @TOGO maybe add assertion to ensure that ensureInitialized has been called and that
   // _savedLocale is set.
   _EasyLocalizationLocale(
-      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale, VoidCallback onLocaleChange)
-      : this.saveLocale = saveLocale,
-        this.onLocaleChange = onLocaleChange {
+      Locale fallbackLocale, List<Locale> supportedLocales, bool saveLocale)
+      : this.saveLocale = saveLocale {
     _init(fallbackLocale, supportedLocales);
   }
 
   //Initialize _EasyLocalizationLocale
-  _init(Locale fallbackLocale, List<Locale> supportedLocales){
+  _init(Locale fallbackLocale, List<Locale> supportedLocales) {
     // If saved locale then get
     if (_savedLocale != null && this.saveLocale) {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
-      locale = _savedLocale;      
+      locale = _savedLocale;
     } else {
-      locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale, _osLocale),
+      locale = supportedLocales.firstWhere(
+          (locale) => _checkInitLocale(locale, _osLocale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
     //Set locale
-    if (Intl.defaultLocale == null) locale = _locale;    
+    if (Intl.defaultLocale == null) locale = _locale;
   }
 
   bool _checkInitLocale(Locale locale, Locale osLocale) {
     // If suported locale not contain countryCode then check only languageCode
     if (locale.countryCode == null) {
-      return (locale.languageCode == _osLocale.languageCode);      
+      return (locale.languageCode == _osLocale.languageCode);
     } else {
       return (locale == _osLocale);
     }
@@ -100,20 +96,14 @@ class _EasyLocalizationLocale extends ChangeNotifier {
   // Get Device Locale
   static Future initDeviceLocale() async {
     final String _deviceLocale = await findSystemLocale();
-    final _deviceLocaleList = _deviceLocale.split("_");
-    
-    _osLocale = (_deviceLocaleList.length > 1)
-        ? Locale(_deviceLocaleList[0], _deviceLocaleList[1])
-        : Locale(_deviceLocaleList[0]);
-
-  log('easy localization: Device locale ${_osLocale.toString()}');
+    _osLocale = _localeFromString(_deviceLocale);
+    log('easy localization: Device locale ${_osLocale.toString()}');
   }
 
   Locale get locale => _locale;
   set locale(Locale l) {
-    
-    if (_locale != l){
-      Locale _oldLocale = _locale;
+    if (_locale != l) {
+      // Locale _oldLocale = _locale;
       _locale = l;
 
       if (_locale != null)
@@ -124,10 +114,10 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
       if (this.saveLocale) _saveLocale(_locale);
       log('easy localization: Set locale ${this.locale.toString()}');
-      
+
       notifyListeners();
 
-      if (onLocaleChange != null && _oldLocale != null) onLocaleChange();
+      // if (onLocaleChange != null && _oldLocale != null) onLocaleChange();
     }
   }
 
@@ -135,31 +125,36 @@ class _EasyLocalizationLocale extends ChangeNotifier {
 
   _saveLocale(Locale locale) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    await _preferences.setString('codeCa', locale.countryCode);
-    await _preferences.setString('codeLa', locale.languageCode);
+    await _preferences.setString('locale', locale.toString());
     log('easy localization: Locale saved ${locale.toString()}');
   }
 
-  deleteSaveLocale() async{
+  deleteSaveLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    await _preferences.setString('codeCa', null);
-    await _preferences.setString('codeLa', null);
+    await _preferences.clear();
+
     log('easy localization: Saved locale deleted');
   }
-  
-  static Future initSavedAppLocale() async {
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
-    var _codeLang = _preferences.getString('codeLa');
-    var _codeCoun = _preferences.getString('codeCa');
 
-    _savedLocale = _codeLang != null ? Locale(_codeLang, _codeCoun) : null;
+  static Future<_EasyLocalizationLocale> initSavedAppLocale(
+      Locale fallbackLocale,
+      List<Locale> supportedLocales,
+      bool saveLocale) async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    var _strLocale = _preferences.getString('locale');
+
+    log('easy localization: initSavedAppLocale ${_strLocale.toString()}');
+    _savedLocale = _strLocale != null ? _localeFromString(_strLocale) : null;
+
+    return _EasyLocalizationLocale(
+        fallbackLocale, supportedLocales, saveLocale);
   }
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationLocale _locale;
   Future _futureSavedAppLocale;
-  Future _futureInitDeviceLocale; 
+  Future _futureInitDeviceLocale;
 
   Locale get locale => _locale.locale;
   Locale get deviceLocale => _locale.deviceLocale;
@@ -174,8 +169,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationDelegate get delegate => widget.delegate;
   Locale get fallbackLocale => widget.fallbackLocale;
   bool get saveLocale => widget.saveLocale;
-  VoidCallback get onLocaleChange => widget.onLocaleChange;
-
 
   @override
   void dispose() {
@@ -188,22 +181,18 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     //init _EasyLocalizationLocale only once
     //if saveLocale false then return blank future
     _futureSavedAppLocale = saveLocale
-        ? _EasyLocalizationLocale.initSavedAppLocale()
+        ? _EasyLocalizationLocale.initSavedAppLocale(
+            fallbackLocale, supportedLocales, saveLocale)
         : Future.value();
 
     //init device locale once
     _futureInitDeviceLocale = _EasyLocalizationLocale.initDeviceLocale();
 
-    //Init locale engine
-    _locale =
-        _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale, onLocaleChange);
-    this._locale.addListener(() {
-      if (mounted) setState(() {});
-    });
     super.initState();
   }
+
   //delete saved locale
-  void deleteSaveLocale() => _locale.deleteSaveLocale(); 
+  void deleteSaveLocale() => _locale.deleteSaveLocale();
 
   @override
   Widget build(BuildContext context) {
@@ -212,20 +201,20 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       child: FutureBuilder<List>(
         //init saved locale and device locale
         future: Future.wait([_futureSavedAppLocale, _futureInitDeviceLocale]),
-        builder: (BuildContext context,
-            AsyncSnapshot<List> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           if (snapshot.hasData) {
+            if (this._locale == null) this._locale = snapshot.data.first;
+            this._locale.addListener(() {
+              if (mounted) setState(() {});
+            });
             return _EasyLocalizationProvider(
               data: this,
               child: widget.child,
             );
-          } else if (snapshot.hasError){
-            //Show error message       
-            return const FutureErrorWidget();
           } else {
-            //Show preloader widget
-            return widget.preloaderWidget;
-          }
+            //Show error message
+            return const FutureErrorWidget();
+          } 
         },
       ),
     );
@@ -275,4 +264,11 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   bool shouldReload(LocalizationsDelegate<Localization> old) => false;
+}
+
+Locale _localeFromString(String val) {
+  var localeList = val.split("_");
+  return (localeList.length > 1)
+      ? Locale(localeList.first, localeList.last)
+      : Locale(localeList.first);
 }
