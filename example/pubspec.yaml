@@ -46,12 +46,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - resources/langs/ar-DZ.json
-    - resources/langs/ar.json
-    - resources/langs/en-US.json
-    - resources/langs/en.json
-    - resources/langs/ru-RU.json
-    - resources/langs/ru.json
+    - resources/langs/
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
