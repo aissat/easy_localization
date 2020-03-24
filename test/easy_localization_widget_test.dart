@@ -226,8 +226,9 @@ void main() {
         var l = Locale("en", "US");
         EasyLocalization.of(_context).locale = l;
         expect(EasyLocalization.of(_context).locale, l);
-//        expect(Intl.defaultLocale, l.toString());
-
+        expect(Intl.defaultLocale, l.toString());
+        
+        
         l = Locale("ar", "DZ");
         EasyLocalization.of(_context).locale = l;
         await tester.pumpAndSettle();
