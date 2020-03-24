@@ -303,7 +303,6 @@ void main() {
             Locale("en"),
             Locale("ar")
           ], // Locale("en", "US"), Locale("ar","DZ")
-          fallbackLocale: Locale("en"), // Locale("ar","DZ"),
         ));
         await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -344,7 +343,6 @@ void main() {
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en"), Locale("ar")]);
         expect(EasyLocalization.of(_context).locale, Locale("en"));
-        expect(EasyLocalization.of(_context).fallbackLocale, null);
 
         expect(Intl.defaultLocale, Locale("en").toString());
         expect(Intl.defaultLocale,
@@ -366,7 +364,6 @@ void main() {
           path: "i18n",
           saveLocale: false,
           useOnlyLangCode: true,
-          fallbackLocale: Locale("ar"),
           supportedLocales: [Locale("ar")],
         ));
         await tester.idle();
@@ -375,7 +372,6 @@ void main() {
 
         expect(EasyLocalization.of(_context).supportedLocales, [Locale("ar")]);
         expect(EasyLocalization.of(_context).locale, Locale("ar"));
-        expect(EasyLocalization.of(_context).fallbackLocale, Locale("ar"));
 
         expect(Intl.defaultLocale, Locale("ar").toString());
         expect(Intl.defaultLocale,
@@ -404,7 +400,6 @@ void main() {
 
         expect(EasyLocalization.of(_context).supportedLocales, [Locale("ar")]);
         expect(EasyLocalization.of(_context).locale, Locale("ar"));
-        expect(EasyLocalization.of(_context).fallbackLocale, null);
 
         expect(Intl.defaultLocale, Locale("ar").toString());
         expect(Intl.defaultLocale,
@@ -435,7 +430,6 @@ void main() {
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
           expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
-          expect(EasyLocalization.of(_context).fallbackLocale, null);
 
           expect(Intl.defaultLocale, Locale("ar", "DZ").toString());
           expect(Intl.defaultLocale,
@@ -471,7 +465,6 @@ void main() {
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
           expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-          expect(EasyLocalization.of(_context).fallbackLocale, null);
 
           expect(Intl.defaultLocale, Locale("en", "US").toString());
           expect(Intl.defaultLocale,
@@ -501,7 +494,6 @@ void main() {
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
           expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-          expect(EasyLocalization.of(_context).fallbackLocale, null);
 
           expect(Intl.defaultLocale, Locale("en", "US").toString());
           expect(Intl.defaultLocale,
@@ -510,6 +502,4 @@ void main() {
       },
     );
   });
-
- 
 }
