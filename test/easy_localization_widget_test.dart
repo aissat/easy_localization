@@ -58,9 +58,6 @@ void main() {
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en", "US")]);
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-//        expect(Intl.defaultLocale, Locale("en", "US").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
 
         final trFinder = find.text('test');
         expect(trFinder, findsOneWidget);
@@ -92,9 +89,6 @@ void main() {
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en", "US")]);
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-//        expect(Intl.defaultLocale, Locale("en", "US").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
 
         final trFinder = find.text('test');
         expect(trFinder, findsOneWidget);
@@ -124,9 +118,6 @@ void main() {
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en", "US")]);
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-//        expect(Intl.defaultLocale, Locale("en", "US").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
 
         final trFinder = find.text('test');
         expect(trFinder, findsOneWidget);
@@ -157,9 +148,6 @@ void main() {
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en", "US"), Locale("en")]);
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-//        expect(Intl.defaultLocale, Locale("en", "US").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
 
         var l = Locale("en", "US");
         EasyLocalization.of(_context).locale = l;
@@ -175,11 +163,11 @@ void main() {
         expect(plural("day", 2, context: _context), "2 days");
         expect(plural("day", 3, context: _context), "3 other days");
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-//        expect(Intl.defaultLocale, Locale("en", "US").toString());
 
         l = Locale("ar", "DZ");
-        expect(() => {EasyLocalization.of(_context).locale = l},
-            throwsAssertionError);
+        expect(() {
+          EasyLocalization.of(_context).locale = l;
+        }, throwsAssertionError);
 
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en", "US"), Locale("en")]);
@@ -226,20 +214,16 @@ void main() {
         var l = Locale("en", "US");
         EasyLocalization.of(_context).locale = l;
         expect(EasyLocalization.of(_context).locale, l);
-        expect(Intl.defaultLocale, l.toString());
-        
-        
+
         l = Locale("ar", "DZ");
         EasyLocalization.of(_context).locale = l;
         await tester.pumpAndSettle();
         expect(EasyLocalization.of(_context).locale, l);
-//        expect(Intl.defaultLocale, l.toString());
 
         l = Locale("en", "US");
         EasyLocalization.of(_context).locale = l;
         await tester.pumpAndSettle();
         expect(EasyLocalization.of(_context).locale, l);
-//        expect(Intl.defaultLocale, l.toString());
 
         l = Locale("en", "UK");
         expect(() => {EasyLocalization.of(_context).locale = l},
@@ -274,9 +258,6 @@ void main() {
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en", "US"), Locale("ar", "DZ")]);
         expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
-//        expect(Intl.defaultLocale, Locale("ar", "DZ").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
 
         var trFinder = find.text('اختبار');
         expect(trFinder, findsOneWidget);
@@ -317,9 +298,6 @@ void main() {
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en"), Locale("ar")]);
         expect(EasyLocalization.of(_context).locale, Locale("en"));
-//        expect(Intl.defaultLocale, Locale("en").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
 
         var l = Locale("en");
         EasyLocalization.of(_context).locale = l;
@@ -350,10 +328,6 @@ void main() {
             [Locale("en"), Locale("ar")]);
         expect(EasyLocalization.of(_context).locale, Locale("en"));
 
-//        expect(Intl.defaultLocale, Locale("en").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
-
         var l = Locale("en");
         EasyLocalization.of(_context).locale = l;
         expect(EasyLocalization.of(_context).locale, l);
@@ -378,10 +352,7 @@ void main() {
 
         expect(EasyLocalization.of(_context).supportedLocales, [Locale("ar")]);
         expect(EasyLocalization.of(_context).locale, Locale("ar"));
-
-//        expect(Intl.defaultLocale, Locale("ar").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
+        expect(EasyLocalization.of(_context).fallbackLocale, Locale("ar"));
       });
     },
   );
@@ -406,10 +377,7 @@ void main() {
 
         expect(EasyLocalization.of(_context).supportedLocales, [Locale("ar")]);
         expect(EasyLocalization.of(_context).locale, Locale("ar"));
-
-//        expect(Intl.defaultLocale, Locale("ar").toString());
-//        expect(Intl.defaultLocale,
-//            EasyLocalization.of(_context).locale.toString());
+        expect(EasyLocalization.of(_context).fallbackLocale, null);
       });
     },
   );
@@ -439,10 +407,7 @@ void main() {
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
           expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-
-//          expect(Intl.defaultLocale, Locale("ar", "DZ").toString());
-//          expect(Intl.defaultLocale,
-//              EasyLocalization.of(_context).locale.toString());
+          expect(EasyLocalization.of(_context).fallbackLocale, null);
         });
       },
     );
@@ -477,10 +442,7 @@ void main() {
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en"), Locale("ar")]);
           expect(EasyLocalization.of(_context).locale, Locale("ar"));
-
-//          expect(Intl.defaultLocale, Locale("ar").toString());
-//          expect(Intl.defaultLocale,
-//              EasyLocalization.of(_context).locale.toString());
+          expect(EasyLocalization.of(_context).fallbackLocale, null);
         });
       },
     );
@@ -514,10 +476,7 @@ void main() {
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
           expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
-
-//          expect(Intl.defaultLocale, Locale("en", "US").toString());
-//          expect(Intl.defaultLocale,
-//              EasyLocalization.of(_context).locale.toString());
+          expect(EasyLocalization.of(_context).fallbackLocale, null);
         });
       },
     );
@@ -544,8 +503,7 @@ void main() {
               [Locale("en", "US"), Locale("ar", "DZ")]);
           expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
 
-//          expect(Intl.defaultLocale, Locale("en", "US").toString());
-//          expect(Intl.defaultLocale,
+          EasyLocalization.of(_context).locale = Locale("en", "US");
         });
       },
     );
