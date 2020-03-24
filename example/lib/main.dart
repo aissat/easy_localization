@@ -7,13 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main(){
+void main() {
   runApp(EasyLocalization(
     child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ'), Locale('ru', 'RU')],
+    supportedLocales: [
+      Locale('ar', 'DZ'),
+      Locale('en', 'US'),
+      Locale('de', 'DE'),
+      Locale('ru', 'RU')
+    ],
     path: 'resources/langs',
     // saveLocale: false,
-    // fallbackLocale: Locale('en', 'US'),
     // useOnlyLangCode: true,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // assetLoader: RootBundleAssetLoader()
@@ -21,14 +25,15 @@ void main(){
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
+    // onLocaleChange: (){print('Locale change callback!!!');},
   ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    log( EasyLocalization.of(context).locale.toString(), name: this.toString()+"# locale" );
-    log( Intl.defaultLocale.toString(), name: this.toString()+"# Intl.defaultLocale" );
+    log(EasyLocalization.of(context).locale.toString(),
+        name: this.toString() + "# locale");
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: [
@@ -136,8 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
                 plural('amount', counter,
                     format: NumberFormat.currency(
-                        locale: Intl.defaultLocale,
-                        symbol: "€")),
+                        locale: Intl.defaultLocale, symbol: "€")),
                 style: TextStyle(
                     color: Colors.grey.shade900,
                     fontSize: 18,
@@ -145,9 +149,14 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 20,
             ),
-            Text('profile.reset_password.title').tr(),
+            RaisedButton(
+              onPressed: () {
+                EasyLocalization.of(context).deleteSaveLocale();
+              },
+              child: Text('reset_locale').tr(),
+            ),
             Spacer(
-              flex: 2,
+              flex: 1,
             ),
           ],
         ),

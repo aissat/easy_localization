@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.2]
+
+- fixed many issues
+- optimized and clean code more stability
+
 ## [2.0.1]
 
 - Added change locale dynamically `saveLocale` default value `true`

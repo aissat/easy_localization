@@ -35,50 +35,15 @@ this package simplify the internationalizing process using Json file
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
+### [2.0.2]
+
+- fixed many issues
+- optimized and clean code more stability
+
 ### [2.0.1]
 
 - Added change locale dynamically `saveLocale` default value `true`
 - fixed many issues
-
-### [2.0.0]
-
-this version came with many updates, here are the main ones:
-
-- optimized and clean code more stability
-- fixed many issues
-- added Unite test
-- Customization AssetLoader localizations `assetLoader`
-- added `fallbackLocale` as optional
-- Hiding `EasyLocalizationProvider`
-- refactor and update approach localization for more details see [example:](https://github.com/aissat/easy_localization/tree/master/example)
-
-  ``` dart
-  // Now V2.0.0
-  runApp(EasyLocalization(
-    child: MyApp(),
-    ...
-  ));
-
-  // after V2.0.0
-  runApp(EasyLocalization(
-    child: MyApp(),
-    ...
-  ));
-  ...
-  class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(...);
-  }}
-  ```
-
-- added Support for context
-
-    ``` dart
-    tr("key", context: context),
-    plural("key", 1 , context: context),
-    ```
 
 ## Getting Started
 

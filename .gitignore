@@ -623,3 +623,6 @@ example/.metadata
 test/.test_coverage.dart
 coverage/lcov.info
 pubspec.lock
+.idea/codeStyles/Project.xml
+
+example/ios/Runner.xcodeproj/project.pbxproj

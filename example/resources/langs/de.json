@@ -1,0 +1,37 @@
+{
+  "title": "Hallo",
+  "msg": "Hallo {} in der {} welt ",
+  "clickMe": "Click mich",
+  "profile": {
+    "reset_password": {
+      "title": "Password zurücksetzten",
+      "username": "Name",
+      "password": "Password"
+    }
+  },
+  "clicked": {
+    "zero": "Du hast {} mal geklickt",
+    "one": "Du hast {} mal geklickt",
+    "two": "Du hast {} mal geklickt",
+    "few": "Du hast {} mal geklickt",
+    "many": "Du hast {} mal geklickt",
+    "other": "Du hast {} mal geklickt"
+  },
+  "amount": {
+    "zero": "Deine Klicks: {}",
+    "one": "Deine Klicks: {}",
+    "two": "Deine Klicks: {}",
+    "few": "Deine Klicks: {}",
+    "many": "Deine Klicks: {}",
+    "other": "Deine Klicks: {}"
+  },
+  "switch": {
+    "male": "Hi Mann ;) ",
+    "female": "Hallo Frau :)",
+    "with_arg": {
+      "male": "Hi Mann ;) {}",
+      "female": "Hallo Frau :) {}"
+    }
+  },
+  "reset_locale": "Gespeicherte Sprache zurücksettzen"
+}
