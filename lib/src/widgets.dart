@@ -10,7 +10,7 @@ class EmptyPreloaderWidget extends StatelessWidget {
 
 class FutureErrorWidget extends StatelessWidget {
   final String msg;
-  const FutureErrorWidget({this.msg});
+  const FutureErrorWidget({this.msg="Loading ..."});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,12 +24,16 @@ class FutureErrorWidget extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text(
-          'localization : ${msg}',
+          'easy localization: : ${msg}',
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
           style: TextStyle(
               fontWeight: FontWeight.w700, color: Colors.red, fontSize: 18.0),
         ),
+        SizedBox(height: 30),
+        // Center(
+        //   child: CircularProgressIndicator()
+        // ),
       ]),
     );
   }
