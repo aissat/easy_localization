@@ -54,7 +54,12 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   void initState() {
     if (widget.saveLocale) loadSavedLocale();
-    delegate.onLocaleChanged = _onLocaleChanged;
+    delegate.onLocaleChanged = (locale) {
+      if (this.locale == null)
+        setState(() {
+          this.locale = locale;
+        });
+    };
     super.initState();
   }
 
@@ -155,9 +160,7 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
       useOnlyLangCode: useOnlyLangCode,
       assetLoader: assetLoader,
     );
-    if (onLocaleChanged != null && value == loadedLocale) {
-      onLocaleChanged(value);
-    }
+    onLocaleChanged(value);
     return Localization.instance;
   }
 
