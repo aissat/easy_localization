@@ -59,7 +59,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       throw new Exception("Locale $l is not supported by this app.");
     print(l);
     _locale = l;
-    bloc.onChangeLocal.add(l);
+    bloc.onChangeLocal(l);
   }
 
   List<Locale> get supportedLocales => widget.supportedLocales;
@@ -81,29 +81,26 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     _ezlocale =
         _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale);
     bloc = EasyLocalizationBloc(_ezlocale);
-    // bloc.initSavedAppLocale();
-    bloc.onChangeLocal.add(null);
+    bloc.onChangeLocal(null);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // _EasyLocalizationProvider.of(context).bloc;
-    _ezlocale =
-        _EasyLocalizationLocale(fallbackLocale, supportedLocales, saveLocale);
+
     return StreamBuilder(
         stream: bloc.outStream,
-        initialData: _ezlocale._savedLocale,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
+        builder: (context, snapshot ) {
+          if (snapshot.hasData && snapshot.data != null) {
             _locale = snapshot.data;
             return _EasyLocalizationProvider(
               data: this,
               child: widget.child,
             );
-          } else
-            return FutureErrorWidget();
+          } else  {
+            return FutureErrorWidget(msg: snapshot.data);
+          }
         });
   }
 }
