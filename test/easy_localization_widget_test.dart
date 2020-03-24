@@ -415,7 +415,9 @@ void main() {
 
   group('SharedPreferences SavedLocale NULL', () {
     setUp(() {
-      SharedPreferences.setMockInitialValues({"locale": null,});
+      SharedPreferences.setMockInitialValues({
+        "locale": null,
+      });
     });
 
     testWidgets(
@@ -447,11 +449,13 @@ void main() {
 
   group('SharedPreferences saveLocale', () {
     setUpAll(() {
-      SharedPreferences.setMockInitialValues({"locale": "ar",});
+      SharedPreferences.setMockInitialValues({
+        "locale": "ar",
+      });
     });
 
     testWidgets(
-      "[EasyLocalization] useOnlyLangCode true  test",
+      "[EasyLocalization] useOnlyLangCode true test",
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
@@ -471,7 +475,7 @@ void main() {
 
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en"), Locale("ar")]);
-          expect(EasyLocalization.of(_context).locale, Locale("en"));
+          expect(EasyLocalization.of(_context).locale, Locale("ar"));
 
 //          expect(Intl.defaultLocale, Locale("ar").toString());
 //          expect(Intl.defaultLocale,
@@ -479,15 +483,13 @@ void main() {
         });
       },
     );
-
-
   });
 
-
-
-group('SharedPreferences saveLocale', () {
+  group('SharedPreferences saveLocale', () {
     setUpAll(() {
-      SharedPreferences.setMockInitialValues({"locale": "ar_DZ",});
+      SharedPreferences.setMockInitialValues({
+        "locale": "ar_DZ",
+      });
     });
 
     testWidgets(
@@ -520,7 +522,7 @@ group('SharedPreferences saveLocale', () {
     );
 
     testWidgets(
-      "[EasyLocalization] saveLocale false  test",
+      "[EasyLocalization] saveLocale false test",
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
@@ -543,10 +545,59 @@ group('SharedPreferences saveLocale', () {
 
 //          expect(Intl.defaultLocale, Locale("en", "US").toString());
 //          expect(Intl.defaultLocale,
-//              EasyLocalization.of(_context).locale.toString());
+        });
+      },
+    );
+  });
+  group('SharedPreferences deleteSaveLocale()', () {
+    setUpAll(() {
+      SharedPreferences.setMockInitialValues({
+        "locale": "ar_DZ",
+      });
+    });
+    testWidgets(
+      "[EasyLocalization] deleteSaveLocale  test",
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: "i18n",
+            // fallbackLocale:Locale("en") ,
+            supportedLocales: [
+              Locale("en", "US"),
+              Locale("ar", "DZ")
+            ], // Locale("en", "US"), Locale("ar","DZ")
+          ));
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
+          EasyLocalization.of(_context).deleteSaveLocale();
         });
       },
     );
 
+    testWidgets(
+      "[EasyLocalization] after deleteSaveLocale test",
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: "i18n",
+            // fallbackLocale:Locale("en") ,
+            supportedLocales: [
+              Locale("en", "US"),
+              Locale("ar", "DZ")
+            ], // Locale("en", "US"), Locale("ar","DZ")
+          ));
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
+        });
+      },
+    );
   });
 }
