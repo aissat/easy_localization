@@ -12,23 +12,19 @@ void main() {
     child: MyApp(),
     supportedLocales: [
       Locale('en', 'US'),
-      Locale('de', 'DE'),
       Locale('ar', 'DZ'),
+      Locale('de', 'DE'),
       Locale('ru', 'RU')
     ],
     path: 'resources/langs',
-    // saveLocale: false,
-    // fallbackLocale: Locale('en', 'US'),
+//    saveLocale: false,
     // useOnlyLangCode: true,
-    // saveLocale: false,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // assetLoader: RootBundleAssetLoader()
     // assetLoader: NetworkAssetLoader()
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
-    // preloaderWidget: CircularProgressIndicator(),
-    // preloaderColor: Colors.red,
     // onLocaleChange: (){print('Locale change callback!!!');},
   ));
 }
@@ -38,8 +34,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     log(EasyLocalization.of(context).locale.toString(),
         name: this.toString() + "# locale");
-    log(Intl.defaultLocale.toString(),
-        name: this.toString() + "# Intl.defaultLocale");
     return MaterialApp(
       title: 'Flutter Demo',
       localizationsDelegates: [
@@ -162,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('reset_locale').tr(),
             ),
             Spacer(
-              flex: 2,
+              flex: 1,
             ),
           ],
         ),
