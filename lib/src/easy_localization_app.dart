@@ -53,8 +53,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void initState() {
-    loadSavedLocale();
+    if (widget.saveLocale) loadSavedLocale();
     delegate.onLocaleChanged = _onLocaleChanged;
+    super.initState();
   }
 
   loadSavedLocale() async {
@@ -82,7 +83,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 }
 
 class EasyLocalizationProvider extends InheritedWidget {
-  EasyLocalization parent;
+  final EasyLocalization parent;
   final Locale _locale;
   final ValueChanged<Locale> onLocaleChanged;
 
