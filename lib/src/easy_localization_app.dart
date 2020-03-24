@@ -57,10 +57,11 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _codeLang = _preferences.getString('codeLa');
     var _codeCoun = _preferences.getString('codeCa');
-    if (_codeLang != null) {
+    var _strLocale = _preferences.getString('locale');
+    if (_strLocale != null) {
       log('easy localization: Locale loaded from shared preferences ${Locale(_codeLang, _codeCoun)}');
       setState(() {
-        locale = Locale(_codeLang, _codeCoun);
+        locale = _localeFromString(_strLocale);
       });
     }
     // TODO reload delegate, set on Material Widget
