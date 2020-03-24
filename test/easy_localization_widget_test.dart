@@ -472,7 +472,6 @@ void main() {
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en"), Locale("ar")]);
           expect(EasyLocalization.of(_context).locale, Locale("ar"));
-          expect(EasyLocalization.of(_context).fallbackLocale, null);
 
           expect(Intl.defaultLocale, Locale("ar").toString());
           expect(Intl.defaultLocale,
