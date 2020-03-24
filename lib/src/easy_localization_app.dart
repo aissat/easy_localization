@@ -35,13 +35,10 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   Locale locale;
   EasyLocalizationDelegate delegate;
 
-  _onLocaleChanged(Locale locale, [bool rebuild = true]) {
-    if (rebuild)
-      setState(() {
-        this.locale = locale;
-      });
-    else
+  _onLocaleChanged(Locale locale) {
+    setState(() {
       this.locale = locale;
+    });
   }
 
   @override
@@ -52,9 +49,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
         supportedLocales: widget.supportedLocales,
         useOnlyLangCode: widget.useOnlyLangCode,
         assetLoader: widget.assetLoader,
-        onLocaleChanged: (locale) {
-          _onLocaleChanged(locale, false);
-        });
+        onLocaleChanged: _onLocaleChanged);
   }
 
   loadSavedLocale() async {
