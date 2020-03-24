@@ -1,8 +1,6 @@
 part of '../easy_localization_app.dart';
 
 class EasyLocalizationBloc {
-  _EasyLocalizationLocale _easyLocalizationLocale;
-
   //
   // Stream to handle the _easyLocalizationLocale
   //
@@ -30,7 +28,7 @@ class EasyLocalizationBloc {
   //
   // Constructor
   //
-  EasyLocalizationBloc(this._easyLocalizationLocale) {
+  EasyLocalizationBloc() {
     _actionController.stream.listen(_handleLogic);
   }
 
@@ -39,12 +37,7 @@ class EasyLocalizationBloc {
     _controller.close();
   }
 
-  void _handleLogic(data) async {
-    if (data == null)
-      await _easyLocalizationLocale._init();
-    else
-      _easyLocalizationLocale.locale = data;
-    _inSink.add(_easyLocalizationLocale._locale);
-    // onChangeLocal(_easyLocalizationLocale._locale);
+  void _handleLogic(data) {
+    _inSink.add(data);
   }
 }
