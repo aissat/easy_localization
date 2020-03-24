@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_localization/src/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -101,15 +102,13 @@ class EasyLocalizationProvider extends InheritedWidget {
 
   _saveLocale(Locale locale) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    await _preferences.setString('codeCa', locale.countryCode);
-    await _preferences.setString('codeLa', locale.languageCode);
+    await _preferences.setString('locale', locale.toString());
     log('easy localization: Locale saved ${locale.toString()}');
   }
 
   deleteSaveLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    await _preferences.setString('codeCa', null);
-    await _preferences.setString('codeLa', null);
+    await _preferences.setString('locale', null);
     log('easy localization: Saved locale deleted');
   }
 
@@ -162,4 +161,11 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   bool shouldReload(EasyLocalizationDelegate old) {
     return loadedLocale != old.loadedLocale;
   }
+}
+
+Locale _localeFromString(String val) {
+  var localeList = val.split("_");
+  return (localeList.length > 1)
+      ? Locale(localeList.first, localeList.last)
+      : Locale(localeList.first);
 }

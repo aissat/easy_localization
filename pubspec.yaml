@@ -30,6 +30,8 @@ flutter:
   assets:
     - i18n/ar-DZ.json
     - i18n/en-US.json
+    - i18n/ar.json
+    - i18n/en.json
 
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg

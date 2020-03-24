@@ -12,19 +12,24 @@ class FutureErrorWidget extends StatelessWidget {
   const FutureErrorWidget();
   @override
   Widget build(BuildContext context) {
-    return  Container(
-          child: Align(
-        alignment: Alignment.center,
-        child: Text(
+    return Container(
+      color: Colors.white,
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Icon(
+          Icons.error_outline,
+          color: Colors.red,
+          size: 64,
+          textDirection: TextDirection.ltr,
+        ),
+        SizedBox(height: 20),
+        Text(
           'Error loading localization',
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
           style: TextStyle(
-            color: Colors.red,
-            fontSize: 18.0
-          ),
+              fontWeight: FontWeight.w700, color: Colors.red, fontSize: 18.0),
         ),
-      ),
+      ]),
     );
   }
 }
