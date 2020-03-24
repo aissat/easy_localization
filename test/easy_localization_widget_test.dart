@@ -510,7 +510,7 @@ group('SharedPreferences saveLocale', () {
 
           expect(EasyLocalization.of(_context).supportedLocales,
               [Locale("en", "US"), Locale("ar", "DZ")]);
-          expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
+          expect(EasyLocalization.of(_context).locale, Locale("ar", "DZ"));
 
 //          expect(Intl.defaultLocale, Locale("en", "US").toString());
 //          expect(Intl.defaultLocale,
