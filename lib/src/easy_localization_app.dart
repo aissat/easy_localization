@@ -14,6 +14,7 @@ class EasyLocalization extends StatefulWidget {
   final AssetLoader assetLoader;
   final Widget child;
   final bool saveLocale;
+  final EasyLocalizationDelegate delegate;
 
   EasyLocalization({
     Key key,
@@ -23,18 +24,26 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.child,
-  }) : super(key: key);
+  })  : delegate = EasyLocalizationDelegate(
+          path: path,
+          supportedLocales: supportedLocales,
+          useOnlyLangCode: useOnlyLangCode,
+          assetLoader: assetLoader,
+        ),
+        super(key: key);
 
   static EasyLocalizationProvider of(BuildContext context) =>
       EasyLocalizationProvider.of(context);
 
   @override
-  _EasyLocalizationState createState() => _EasyLocalizationState();
+  _EasyLocalizationState createState() => _EasyLocalizationState(delegate);
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   Locale locale;
-  EasyLocalizationDelegate delegate;
+  final EasyLocalizationDelegate delegate;
+
+  _EasyLocalizationState(this.delegate);
 
   _onLocaleChanged(Locale locale) {
     setState(() {
@@ -45,23 +54,16 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   void initState() {
     loadSavedLocale();
-    delegate = EasyLocalizationDelegate(
-        path: widget.path,
-        supportedLocales: widget.supportedLocales,
-        useOnlyLangCode: widget.useOnlyLangCode,
-        assetLoader: widget.assetLoader,
-        onLocaleChanged: _onLocaleChanged);
+    delegate.onLocaleChanged = _onLocaleChanged;
   }
 
   loadSavedLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _strLocale = _preferences.getString('locale');
-    print(_strLocale);
     if (_strLocale != null) {
       log('easy localization: Locale loaded from shared preferences ${_strLocale}');
       setState(() {
         locale = _localeFromString(_strLocale);
-        print(locale);
       });
     }
     // TODO reload delegate, set on Material Widget
@@ -126,33 +128,33 @@ class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final String path;
   final AssetLoader assetLoader;
   final List<Locale> supportedLocales;
-  final ValueChanged<Locale> onLocaleChanged;
+  ValueChanged<Locale> onLocaleChanged;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   final bool useOnlyLangCode;
 
   Locale loadedLocale;
 
-  EasyLocalizationDelegate(
-      {@required this.path,
-      @required this.supportedLocales,
-      this.useOnlyLangCode = false,
-      this.assetLoader,
-      this.onLocaleChanged});
+  EasyLocalizationDelegate({
+    @required this.path,
+    @required this.supportedLocales,
+    this.useOnlyLangCode = false,
+    this.assetLoader,
+  });
 
   @override
   bool isSupported(Locale locale) => supportedLocales.contains(locale);
 
   @override
   Future<Localization> load(Locale value) async {
+    loadedLocale = value;
     await Localization.load(
       value,
       path: path,
       useOnlyLangCode: useOnlyLangCode,
       assetLoader: assetLoader,
     );
-    loadedLocale = value;
-    if (onLocaleChanged != null) {
+    if (onLocaleChanged != null && value == loadedLocale) {
       onLocaleChanged(value);
     }
     return Localization.instance;
