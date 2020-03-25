@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl_standalone.dart';
 
 import 'asset_loader.dart';
 import 'localization.dart';
@@ -71,6 +72,12 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       log('easy localization: Locale loaded from shared preferences ${_strLocale.toString()}');
       setState(() {
         locale = _localeFromString(_strLocale);
+      });
+    }else{
+      setState(()  {
+        findSystemLocale().then((sysLocale){
+          locale = _localeFromString(sysLocale);
+        });        
       });
     }
     // TODO reload delegate, set on Material Widget
