@@ -73,11 +73,11 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       setState(() {
         locale = _localeFromString(_strLocale);
       });
-    }else{
-      setState(()  {
-        findSystemLocale().then((sysLocale){
+    }else{      
+      findSystemLocale().then((sysLocale){
+        setState((){
           locale = _localeFromString(sysLocale);
-        });        
+        });          
       });
     }
     // TODO reload delegate, set on Material Widget
