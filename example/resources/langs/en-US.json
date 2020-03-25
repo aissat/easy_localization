@@ -10,7 +10,7 @@
         }
     },
     "clicked": {
-        "zero": "You clicked {} s!",
+        "zero": "You clicked {} times!",
         "one": "You clicked {} time!",
         "two": "You clicked {} times!",
         "few": "You clicked {} times!",
@@ -32,5 +32,6 @@
             "male": "Hi man ;) {}",
             "female": "Hello girl :) {}"
         }
-    }
+    },
+    "reset_locale": "Reset Saved Language"
 }

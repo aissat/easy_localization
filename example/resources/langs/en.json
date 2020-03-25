@@ -17,8 +17,21 @@
         "many": "You clicked {} times!",
         "other": "You clicked {} times!"
     },
+    "amount": {
+        "zero": "Your amount : {} ",
+        "one": "Your amount : {} ",
+        "two": "Your amount : {} ",
+        "few": "Your amount : {} ",
+        "many": "Your amount : {} ",
+        "other": "Your amount : {} "
+    },
     "switch": {
-        "male": "Hi man ;)",
-        "female": "Hello girl :)"
-    }
+        "male": "Hi man ;) ",
+        "female": "Hello girl :)",
+        "with_arg": {
+            "male": "Hi man ;) {}",
+            "female": "Hello girl :) {}"
+        }
+    },
+    "reset_locale": "Reset Saved Language"
 }

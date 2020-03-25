@@ -45,11 +45,11 @@ void main() {
     test('load() Failed assertion', () async {
       try {
         await Localization.load(
-            null,
-            path: null,
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader(),
-          );
+          null,
+          path: null,
+          useOnlyLangCode: true,
+          assetLoader: JsonAssetLoader(),
+        );
       } on AssertionError catch (e) {
         // throw  AssertionError("Expected ArgumentError");
         expect(e, isAssertionError);

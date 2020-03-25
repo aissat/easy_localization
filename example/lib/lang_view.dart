@@ -27,36 +27,38 @@ class LanguageView extends StatelessWidget {
                 horizontal: 24,
               ),
               child: Text(
-                "Language Menu",
+                "Choose language",
                 style: TextStyle(
-                  color: Color.fromARGB(255, 166, 166, 166),
+                  color: Colors.blue,
                   fontFamily: "Montserrat",
                   fontWeight: FontWeight.w700,
-                  fontSize: 10,
+                  fontSize: 18,
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 10, bottom: 25),
-              margin: EdgeInsets.symmetric(
-                horizontal: 24,
-              ),
-              child: Text(
-                "language",
-              ),
-            ),
-            buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
                 title: "عربي",
                 subtitle: "عربي",
-                locale: Locale("ar", "DZ")),
+                locale: EasyLocalization.of(context).supportedLocales[0]),
             buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
                 title: "English",
                 subtitle: "English",
-                locale: Locale("en", "US")),
+                locale: EasyLocalization.of(context).supportedLocales[1]),
+            buildDivider(),
+            buildSwitchListTileMenuItem(
+                context: context,
+                title: "Dutch",
+                subtitle: "Dutch",
+                locale: EasyLocalization.of(context).supportedLocales[2]),
+            buildDivider(),
+            buildSwitchListTileMenuItem(
+                context: context,
+                title: "Русский",
+                subtitle: "Русский",
+                locale: EasyLocalization.of(context).supportedLocales[3]),
             buildDivider(),
           ],
         ),
@@ -93,6 +95,7 @@ class LanguageView extends StatelessWidget {
           onTap: () {
             log(locale.toString(), name: this.toString());
             EasyLocalization.of(context).locale = locale;
+            Navigator.pop(context);
           }),
     );
   }

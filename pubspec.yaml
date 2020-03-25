@@ -1,7 +1,7 @@
 name: easy_localization
 description: Easy and Fast internationalizing and localization your Flutter Apps, this package simplify the internationalizing process using Json file.
 
-version: 2.0.1
+version: 2.0.2
 
 #author: AISSAT abdelwahab <mr.aissat@gmail.com>
 homepage: https://github.com/aissat/easy_localization
@@ -12,7 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.16.0
+  flutter_localizations:
+    sdk: flutter
   shared_preferences: ^0.5.6+1
 
 dev_dependencies:
@@ -27,8 +28,7 @@ flutter:
 
   # To add assets to your package, add an assets section, like this:
   assets:
-    - i18n/ar-DZ.json
-    - i18n/en-US.json
+    - i18n/
 
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
