@@ -14,6 +14,7 @@ class EasyLocalization extends StatefulWidget {
   final Widget child;
   final bool saveLocale;
   final EasyLocalizationDelegate delegate;
+  final Color preloaderColor;
 
   EasyLocalization({
     Key key,
@@ -23,6 +24,7 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.child,
+    this.preloaderColor = Colors.white
   })  : delegate = EasyLocalizationDelegate(
           path: path,
           supportedLocales: supportedLocales,
@@ -66,7 +68,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _strLocale = _preferences.getString('locale');
     if (_strLocale != null) {
-      log('easy localization: Locale loaded from shared preferences ${_strLocale}');
+      log('easy localization: Locale loaded from shared preferences ${_strLocale.toString()}');
       setState(() {
         locale = _localeFromString(_strLocale);
       });
@@ -98,6 +100,16 @@ class EasyLocalizationProvider extends InheritedWidget {
   EasyLocalizationProvider(this.parent, this._locale,
       {Key key, Widget child, this.onLocaleChanged, this.delegate})
       : super(key: key, child: child);
+
+  @override
+  Widget get child {
+    if(_locale == null){
+      return PreloaderWidget(null, parent.preloaderColor);
+    }
+    else{
+      return PreloaderWidget(super.child, parent.preloaderColor);
+    } 
+  }
 
   Locale get locale => _locale;
 
@@ -174,4 +186,18 @@ Locale _localeFromString(String val) {
   return (localeList.length > 1)
       ? Locale(localeList.first, localeList.last)
       : Locale(localeList.first);
+}
+
+class PreloaderWidget extends StatelessWidget{
+  final Widget children;
+  final Color preloaderColor;
+  PreloaderWidget(this.children, this.preloaderColor);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: preloaderColor,
+      child: children,
+    );
+  }
 }
