@@ -40,7 +40,7 @@ class EasyLocalization extends StatefulWidget {
 class _EasyLocalizationState extends State<EasyLocalization> {
   Locale locale;
   _EasyLocalizationDelegate delegate;
-  EasyLocalizationBloc bloc = EasyLocalizationBloc();
+  final EasyLocalizationBloc bloc = EasyLocalizationBloc();
 
   @override
   void dispose() {
@@ -64,10 +64,10 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   _init() async {
     Locale _savedLocale;
     Locale _osLocale;
-    _savedLocale = await loadSavedLocale();
+
+    if(widget.saveLocale) _savedLocale = await loadSavedLocale();
     // Get Device Locale
     _osLocale = await _getDeviceLocale();
-    log('easy localization: Device locale ${_osLocale.toString()}');
     // If saved locale then get
     if (_savedLocale != null && widget.saveLocale) {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
@@ -104,6 +104,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   // Get Device Locale
   Future<Locale> _getDeviceLocale() async {
     final String _deviceLocale = await findSystemLocale();
+    log('easy localization: Device locale $_deviceLocale');
     return _localeFromString(_deviceLocale);
   }
 
