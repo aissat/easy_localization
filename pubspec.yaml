@@ -12,9 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  shared_preferences: ^0.5.6+1
+  intl: ^0.16.0
+  shared_preferences: ^0.5.6+3
 
 dev_dependencies:
   flutter_test:
