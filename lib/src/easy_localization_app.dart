@@ -20,6 +20,7 @@ class EasyLocalization extends StatefulWidget {
   final String path;
   final AssetLoader assetLoader;
   final bool saveLocale;
+  final Color preloaderColor;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -29,6 +30,7 @@ class EasyLocalization extends StatefulWidget {
     this.useOnlyLangCode = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
+    this.preloaderColor = Colors.white,
   }) : super(key: key);
 
   _EasyLocalizationState createState() => _EasyLocalizationState();
@@ -118,7 +120,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: widget.preloaderColor,
       child: StreamBuilder(
           stream: bloc.outStream,
           builder: (context, snapshot) {
