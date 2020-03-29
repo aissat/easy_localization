@@ -29,7 +29,10 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.preloaderColor = Colors.white,
-  }) : super(key: key);
+  })  : assert(child != null),
+        assert(supportedLocales != null && supportedLocales.isNotEmpty),
+        assert(path != null && path.isNotEmpty),
+        super(key: key);
 
   static EasyLocalizationProvider of(BuildContext context) =>
       EasyLocalizationProvider.of(context);
