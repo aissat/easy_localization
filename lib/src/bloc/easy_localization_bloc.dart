@@ -38,6 +38,6 @@ class EasyLocalizationBloc {
   }
 
   void _handleLogic(data) {
-    _inSink.add(data);
+    if(!_actionController.isClosed) _inSink.add(data);
   }
 }
