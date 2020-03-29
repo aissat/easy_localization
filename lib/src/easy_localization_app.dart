@@ -159,10 +159,13 @@ class _EasyLocalizationProvider extends InheritedWidget {
   Locale get fallbackLocale => parent.fallbackLocale;
 
   set locale(Locale locale) {
-    assert(parent.supportedLocales.contains(locale));
-    if (parent.saveLocale) _saveLocale(locale);
-    log('easy localization: Locale set ${locale.toString()}');
-    onLocaleChanged(locale);
+    // Check old locale    
+    if (locale != _locale){
+      assert(parent.supportedLocales.contains(locale));
+      if (parent.saveLocale) _saveLocale(locale);
+      log('easy localization: Locale set ${locale.toString()}');
+      onLocaleChanged(locale);
+    }
   }
 
   _saveLocale(Locale locale) async {
