@@ -140,7 +140,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 }
 
 class _EasyLocalizationProvider extends InheritedWidget {
-  EasyLocalization parent;
+  final EasyLocalization parent;
   final Locale _locale;
   final ValueChanged<Locale> onLocaleChanged;
 
