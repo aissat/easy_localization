@@ -25,7 +25,7 @@ void main() {
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
-    // onLocaleChange: (){print('Locale change callback!!!');},
+    // preloaderColor: Colors.red,
   ));
 }
 
