@@ -24,7 +24,7 @@ class FutureErrorWidget extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text(
-          'easy localization: : ${msg}',
+          'easy localization: : $msg',
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
           style: TextStyle(
