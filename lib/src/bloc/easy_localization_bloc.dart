@@ -4,7 +4,7 @@ class EasyLocalizationBloc {
   //
   // Stream to handle the _easyLocalizationLocale
   //
-  StreamController<Locale> _controller = StreamController<Locale>.broadcast();
+  StreamController<Locale> _controller = StreamController<Locale>();
   StreamSink<Locale> get _inSink => _controller.sink;
   Stream<Locale> get outStream => _controller.stream.transform(validate);
 
