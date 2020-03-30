@@ -66,6 +66,12 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     super.initState();
   }
 
+  @override
+  void reassemble(){
+    bloc.reassemble();
+    super.reassemble();    
+  }
+
   _init() async {
     Locale _savedLocale;
     Locale _osLocale;

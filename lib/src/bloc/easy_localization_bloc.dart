@@ -4,7 +4,7 @@ class EasyLocalizationBloc {
   //
   // Stream to handle the _easyLocalizationLocale
   //
-  final StreamController<Locale> _controller = StreamController<Locale>.broadcast();
+  StreamController<Locale> _controller = StreamController<Locale>();
   StreamSink<Locale> get _inSink => _controller.sink;
   Stream<Locale> get outStream => _controller.stream.transform(validate);
 
@@ -37,6 +37,12 @@ class EasyLocalizationBloc {
     _controller.close();
   }
 
+  void reassemble() async{
+    //cloase and create new when hotreloaded or reloaded  
+    await _controller.close();
+   _controller = StreamController<Locale>();
+  }
+  
   void _handleLogic(data) {
     if(!_actionController.isClosed) _inSink.add(data);
   }
