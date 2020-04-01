@@ -24,11 +24,19 @@ class FutureErrorWidget extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text(
-          'easy localization: : $msg',
+          "Easy Localization:",
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
           style: TextStyle(
-              fontWeight: FontWeight.w700, color: Colors.red, fontSize: 18.0),
+              fontWeight: FontWeight.w700, color: Colors.red, fontSize: 25.0),
+        ),
+        SizedBox(height: 10),
+        Text(
+          '"$msg"',
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: Colors.red, fontSize: 14.0),
         ),
         SizedBox(height: 30),
         // Center(
