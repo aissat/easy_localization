@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 abstract class AssetLoader {
   const AssetLoader();
   Future<Map<String, dynamic>> load(String localePath);
-  Future localeExists(String localePath);
 }
 
 //
@@ -21,9 +20,4 @@ class RootBundleAssetLoader extends AssetLoader {
     log('easy localization: Load asset from $localePath');
     return json.decode(await rootBundle.loadString(localePath));
   }
-      
-
-  @override
-  Future localeExists(String localePath) =>
-      rootBundle.load(localePath);
 }

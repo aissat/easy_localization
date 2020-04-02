@@ -13,9 +13,6 @@ import 'package:http/http.dart' as http;
 class JsonAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String string) => Future.value({});
-
-  @override
-  Future localeExists(String localePath) => Future.value();
 }
 
 //
@@ -28,9 +25,6 @@ class FileAssetLoader extends AssetLoader {
     File file = File(localePath);
     return json.decode(await file.readAsString());
   }
-
-  @override
-  Future localeExists(String localePath) async => File(localePath).exists();
 }
 
 //
@@ -50,9 +44,6 @@ class NetworkAssetLoader extends AssetLoader {
       return Future.value();
     }
   }
-
-  @override
-  Future localeExists(String localePath) => Future.value();
 }
 
 // asset loader to be used when doing integration tests
@@ -64,8 +55,4 @@ class TestsAssetLoader extends AssetLoader {
     final ByteData byteData = await rootBundle.load(localePath);
     return json.decode(utf8.decode(byteData.buffer.asUint8List()));
   }
-
-  @override
-  Future localeExists(String localePath) =>
-      rootBundle.load(localePath);
 }
