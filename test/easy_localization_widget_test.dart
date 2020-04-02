@@ -367,6 +367,7 @@ void main() {
           saveLocale: false,
           useOnlyLangCode: true,
           supportedLocales: [Locale("ar")],
+          fallbackLocale:Locale("ar") ,
         ));
         await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump

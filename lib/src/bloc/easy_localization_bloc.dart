@@ -1,7 +1,4 @@
-//part of '../easy_localization_app.dart';
-
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 
@@ -28,7 +25,7 @@ class Resource {
 
   loadTranslations() async {
     var data = await assetLoader.load(_getLocalePath());
-    return _translations =Translations(data);
+    _translations =Translations(data);
   }
 }
 

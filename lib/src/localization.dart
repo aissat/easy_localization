@@ -24,7 +24,6 @@ class Localization {
   static bool load(Locale locale, {Translations translations}) {
     instance._locale = locale;
     instance._translations = translations;
-    print(translations);
     return translations == null ? false : true;
   }
 

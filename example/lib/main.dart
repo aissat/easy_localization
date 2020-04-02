@@ -34,8 +34,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     log(EasyLocalization.of(context).locale.toString(),
         name: this.toString() + "# locale");
+    log("title".tr().toString(), name: this.toString() + "# locale");
+    log("appName".tr().toString(), name: this.toString() + "# locale");
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'title'.tr(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

@@ -13,19 +13,20 @@ import 'translations.dart';
 import 'bloc/easy_localization_bloc.dart';
 
 class EasyLocalization extends StatefulWidget {
+  final Widget child;
   final List<Locale> supportedLocales;
   final Locale fallbackLocale;
   final bool useOnlyLangCode;
   final String path;
   final AssetLoader assetLoader;
-  final Widget child;
   final bool saveLocale;
   final Color preloaderColor;
-  // final _EasyLocalizationDelegate delegate;
   EasyLocalization({
     Key key,
+    @required this.child,
     @required this.supportedLocales,
     @required this.path,
+    this.fallbackLocale,
     this.useOnlyLangCode = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
@@ -37,8 +38,7 @@ class EasyLocalization extends StatefulWidget {
     log("EasyLocalization");
   }
 
-  static EasyLocalizationProvider of(BuildContext context) =>
-      EasyLocalizationProvider.of(context);
+  _EasyLocalizationState createState() => _EasyLocalizationState();
 
   static _EasyLocalizationProvider of(BuildContext context) =>
       _EasyLocalizationProvider.of(context);
@@ -246,9 +246,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool shouldReload(EasyLocalizationDelegate old) {
-    return loadedLocale != old.loadedLocale;
-  }
+  bool shouldReload(LocalizationsDelegate<Localization> old) => false;
 }
 
 Locale _localeFromString(String val) {
