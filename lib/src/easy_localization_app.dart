@@ -232,7 +232,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   // final bool useOnlyLangCode;
 
   _EasyLocalizationDelegate({this.translations, this.supportedLocales}) {
-    log("_EasyLocalizationDelegate");
+    log('easy localization: Init Localization Delegate');
     Localization.instance.translations = translations;
   }
 
@@ -241,7 +241,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale value) {
-    log("load $value ...");
+    log('easy localization: Load Localization Delegate');
     Localization.load(value, translations: translations);
     return Future.value(Localization.instance);
   }
