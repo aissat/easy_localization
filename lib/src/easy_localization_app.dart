@@ -51,7 +51,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void dispose() {
-    //bloc.dispose();
+    bloc.dispose();
     super.dispose();
   }
 
