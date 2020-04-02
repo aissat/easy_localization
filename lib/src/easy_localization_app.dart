@@ -45,6 +45,7 @@ class EasyLocalization extends StatefulWidget {
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
+  ///Init EasyLocalizationBloc
   final EasyLocalizationBloc bloc = EasyLocalizationBloc();
   _EasyLocalizationDelegate delegate;
   Locale locale;
@@ -129,8 +130,10 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   Future<Locale> loadSavedLocale() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    var _strLocale = _preferences.getString('locale');
-    return locale = _strLocale != null ? _localeFromString(_strLocale) : null;
+    final _strLocale = _preferences.getString('locale');
+    final locale = _strLocale != null ? _localeFromString(_strLocale) : null;
+    
+    return locale;
   }
 
   String getLocalePath(Locale l) {
