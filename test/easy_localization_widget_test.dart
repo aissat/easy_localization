@@ -60,7 +60,7 @@ void main() {
 
         expect(Localization.of(_context), isInstanceOf<Localization>());
         expect(Localization.instance, isInstanceOf<Localization>());
-        expect(Localization.instance,Localization.of(_context) );
+        expect(Localization.instance, Localization.of(_context));
         expect(EasyLocalization.of(_context).supportedLocales,
             [Locale("en", "US")]);
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
@@ -74,10 +74,9 @@ void main() {
         expect(plural("day", 1, context: _context), "1 day");
         expect(plural("day", 2, context: _context), "2 days");
         expect(plural("day", 3, context: _context), "3 other days");
-        
+
         expect("test".tr(), "test");
         expect("day".plural(1), "1 day");
-
       });
     },
   );
@@ -172,7 +171,8 @@ void main() {
         // The async delegator load will require build on the next frame. Thus, pump
         await tester.pumpAndSettle();
 
-        expect(EasyLocalization.of(_context).supportedLocales,[Locale("en", "US")]);
+        expect(EasyLocalization.of(_context).supportedLocales,
+            [Locale("en", "US")]);
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
 
         var l = Locale("en", "US");
@@ -197,7 +197,6 @@ void main() {
         }, throwsAssertionError);
         await tester.pumpAndSettle();
         expect(EasyLocalization.of(_context).locale, Locale("en", "US"));
-
       });
     },
   );
@@ -243,7 +242,7 @@ void main() {
 
         l = Locale("en", "US");
         EasyLocalization.of(_context).locale = l;
-         await tester.idle();
+        await tester.idle();
         await tester.pumpAndSettle();
         expect(EasyLocalization.of(_context).locale, l);
 
