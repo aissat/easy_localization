@@ -55,7 +55,7 @@ class EasyLocalizationBloc {
   //
   StreamController<Resource> _actionController = StreamController<Resource>();
   Function(Resource) get onChange => _actionController.sink.add;
-  Function get onError => _actionController.sink.addError;
+  // Function get onError => _actionController.sink.addError;
 
   void dispose() {
     _actionController.close();
