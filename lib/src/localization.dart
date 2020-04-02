@@ -74,7 +74,7 @@ class Localization {
   String _resolve(String key) {
     final String resource = this._translations.get(key);
     if (resource == null) {
-      log('[easy_localization] Missing message : Not found this Key ["$key"] .');
+      print('[easy_localization] Missing message : Not found this Key ["$key"] .');
       return key;
     }
     return resource;

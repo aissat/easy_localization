@@ -113,7 +113,7 @@ void main() {
         printLog = [];
         expect(Localization.instance.tr("test_missing"), "test_missing");
         expect(printLog.first,
-            '[easy_localization] Missing message: "test_missing" for locale: "en", using key as fallback.');
+            '[easy_localization] Missing message : Not found this Key ["test_missing"] .');
       }));
 
       test('returns resource and replaces argument', () {
