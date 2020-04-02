@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 
@@ -25,7 +26,7 @@ class Resource {
 
   loadTranslations() async {
     var data = await assetLoader.load(_getLocalePath());
-    _translations =Translations(data);
+    _translations = Translations(data);
   }
 }
 
@@ -70,8 +71,14 @@ class EasyLocalizationBloc {
   }
 
   void _onData(Resource data) async{
-    await data.loadTranslations();
-    if(!_actionController.isClosed) _inSink.add(data);
+    // Catch error from json parse/load
+    try {
+      await data.loadTranslations();
+      if(!_actionController.isClosed) _inSink.add(data);
+    } catch(e) {
+      debugPrint(e.toString());
+      _onError(e.toString());
+    }
   }
 
   void _onError(data){
