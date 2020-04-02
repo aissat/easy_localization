@@ -21,6 +21,8 @@ this package simplify the internationalizing process using Json file
 
 - [x] simplifying and making easy the internationalizing process in Flutter.
 - [x] Using JSON Files .
+- [x] Error widget
+- [x] Based on Bloc Archi
 - [x] Load locale from remote or backend.
 - [x] Automatically saving App state (save/restor the selected locale).
 - [x] Supports `plural`
@@ -35,50 +37,21 @@ this package simplify the internationalizing process using Json file
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
+### [2.1.0]
+
+- Added Error widget.
+- fixed many issues.
+- Based on Bloc.
+
+### [2.0.2]
+
+- fixed many issues
+- optimized and clean code more stability
+
 ### [2.0.1]
 
 - Added change locale dynamically `saveLocale` default value `true`
 - fixed many issues
-
-### [2.0.0]
-
-this version came with many updates, here are the main ones:
-
-- optimized and clean code more stability
-- fixed many issues
-- added Unite test
-- Customization AssetLoader localizations `assetLoader`
-- added `fallbackLocale` as optional
-- Hiding `EasyLocalizationProvider`
-- refactor and update approach localization for more details see [example:](https://github.com/aissat/easy_localization/tree/master/example)
-
-  ``` dart
-  // Now V2.0.0
-  runApp(EasyLocalization(
-    child: MyApp(),
-    ...
-  ));
-
-  // after V2.0.0
-  runApp(EasyLocalization(
-    child: MyApp(),
-    ...
-  ));
-  ...
-  class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var data = EasyLocalizationProvider.of(context).data;
-    return EasyLocalizationProvider(...);
-  }}
-  ```
-
-- added Support for context
-
-    ``` dart
-    tr("key", context: context),
-    plural("key", 1 , context: context),
-    ```
 
 ## Getting Started
 
@@ -314,10 +287,6 @@ class NetworkAssetLoader extends AssetLoader {
         .get(localePath)
         .then((response) => json.decode(response.body.toString()));
   }
-
-  @override
-  Future localeExists(String localePath) => Future.value(true);
-}
 ```
 
 The next step :
@@ -347,6 +316,14 @@ void main(){
  Arbic RTL | English LTR
 --- | ---
 ![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ar.png?raw=true "Arbic RTL")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true "English LTR")
+
+ Dutch | Русский
+--- | ---
+![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_de.png?raw=true "Русский ")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ru.png?raw=true "Dutch")
+
+ Error widget | Language widget
+--- | ---
+![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_err.png?raw=true "Language")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_lang.png?raw=true "Error")
 
 ### Donations
 

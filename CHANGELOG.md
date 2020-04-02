@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0]
+
+- Added Error widget.
+- fixed many issues.
+- Based on Bloc.
+- optimized and clean code more stability
+
+## [2.0.2]
+
+- fixed many issues
+- optimized and clean code more stability
+
 ## [2.0.1]
 
 - Added change locale dynamically `saveLocale` default value `true`
