@@ -60,7 +60,6 @@ class EasyLocalizationBloc {
   void dispose() {
     _actionController.close();
     _controller.close();
-    // _localController.close();
   }
 
   void reassemble() async{

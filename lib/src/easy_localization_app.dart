@@ -86,19 +86,11 @@ class _EasyLocalizationState extends State<EasyLocalization> {
               widget.supportedLocales, widget.fallbackLocale));
     }
 
-    
-    try {
-      await widget.assetLoader.localeExists(getLocalePath(locale));
-      bloc.onChange(Resource(
-          locale: locale,
-          assetLoader: widget.assetLoader,
-          path: widget.path,
-          useOnlyLangCode: widget.useOnlyLangCode));
-    } catch (e) {
-      // Catch load json error
-      debugPrint(e.toString());
-      bloc.onError(e.toString());
-    }
+    bloc.onChange(Resource(
+        locale: locale,
+        assetLoader: widget.assetLoader,
+        path: widget.path,
+        useOnlyLangCode: widget.useOnlyLangCode));
   }
 
   bool _checkInitLocale(Locale locale, Locale _osLocale) {
@@ -202,7 +194,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
       assert(parent.supportedLocales.contains(locale));
       if (parent.saveLocale) _saveLocale(locale);
       log('easy localization: Locale set ${locale.toString()}');
-    
+
       bloc.onChange(Resource(
           locale: locale,
           path: parent.path,
