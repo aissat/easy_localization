@@ -140,7 +140,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   Widget build(BuildContext context) {
-    var res;
+    Widget returnWidget;
     log("build");
     return Container(
       color: widget.preloaderColor,
@@ -150,9 +150,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
             if (snapshot.connectionState == ConnectionState.waiting &&
                 !snapshot.hasData &&
                 !snapshot.hasError) {
-              res = EmptyPreloaderWidget();
+              returnWidget = EmptyPreloaderWidget();
             } else if (snapshot.hasData && !snapshot.hasError) {
-              res = _EasyLocalizationProvider(
+              returnWidget = _EasyLocalizationProvider(
                 widget,
                 snapshot.data.locale,
                 bloc: bloc,
@@ -161,9 +161,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
                     supportedLocales: widget.supportedLocales),
               );
             } else if (snapshot.hasError) {
-              res = FutureErrorWidget(msg: snapshot.error);
+              returnWidget = FutureErrorWidget(msg: snapshot.error);
             }
-            return res;
+            return returnWidget;
           }),
     );
   }
