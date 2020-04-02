@@ -17,7 +17,8 @@ void main() {
       Locale('ru', 'RU')
     ],
     path: 'resources/langs',
-//    saveLocale: false,
+    // fallbackLocale: Locale('en', 'US'),
+    // saveLocale: false,
     // useOnlyLangCode: true,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // assetLoader: RootBundleAssetLoader()
@@ -35,7 +36,6 @@ class MyApp extends StatelessWidget {
     log(EasyLocalization.of(context).locale.toString(),
         name: this.toString() + "# locale");
     log("title".tr().toString(), name: this.toString() + "# locale");
-    log("appName".tr().toString(), name: this.toString() + "# locale");
     return MaterialApp(
       title: 'title'.tr(),
       localizationsDelegates: [
