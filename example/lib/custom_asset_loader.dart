@@ -47,6 +47,7 @@ class NetworkAssetLoader extends AssetLoader {
     }catch (e){
       //Catch network exceptions
       debugPrint(e.toString());
+      return Future.value();
     }
   }
 
