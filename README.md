@@ -316,7 +316,7 @@ class NetworkAssetLoader extends AssetLoader {
   }
 
   @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
+  Future localeExists(String localePath) => Future.value(true);
 }
 ```
 

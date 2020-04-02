@@ -85,14 +85,27 @@ class _EasyLocalizationState extends State<EasyLocalization> {
               widget.supportedLocales, widget.fallbackLocale));
     }
 
-    var ret = await widget.assetLoader.localeExists(getLocalePath(locale));
+    
+    try {
+      await widget.assetLoader.localeExists(getLocalePath(locale));
+      bloc.onChange(Resource(
+          locale: locale,
+          assetLoader: widget.assetLoader,
+          path: widget.path,
+          useOnlyLangCode: widget.useOnlyLangCode));
+    } catch (e) {
+      // Catch load json error
+      debugPrint(e.toString());
+      bloc.onError(e.toString());
+    }
+    /*
     ret
         ? bloc.onChange(Resource(
             locale: locale,
             assetLoader: widget.assetLoader,
             path: widget.path,
             useOnlyLangCode: widget.useOnlyLangCode))
-        : bloc.onError("Unable to load ${getLocalePath(locale)}");
+        : bloc.onError("Unable to load ${getLocalePath(locale)}");*/
   }
 
   bool _checkInitLocale(Locale locale, Locale _osLocale) {

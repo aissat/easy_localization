@@ -14,7 +14,7 @@ class JsonAssetLoader extends AssetLoader {
   Future<Map<String, dynamic>> load(String string) => Future.value({});
 
   @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
+  Future localeExists(String localePath) => Future.value();
 }
 
 //
@@ -29,7 +29,7 @@ class FileAssetLoader extends AssetLoader {
   }
 
   @override
-  Future<bool> localeExists(String localePath) async => File(localePath).exists();
+  Future localeExists(String localePath) async => File(localePath).exists();
 }
 
 //
@@ -45,7 +45,7 @@ class NetworkAssetLoader extends AssetLoader {
   }
 
   @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
+  Future localeExists(String localePath) => Future.value();
 }
 
 // asset loader to be used when doing integration tests
@@ -59,6 +59,6 @@ class TestsAssetLoader extends AssetLoader {
   }
 
   @override
-  Future<bool> localeExists(String localePath) =>
-      rootBundle.load(localePath).then((v) => true).catchError((e) => false);
+  Future localeExists(String localePath) =>
+      rootBundle.load(localePath);
 }
