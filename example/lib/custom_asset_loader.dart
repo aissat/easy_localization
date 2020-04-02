@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
@@ -39,9 +40,14 @@ class FileAssetLoader extends AssetLoader {
 class NetworkAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String localePath) async {
-    return http
-        .get(localePath)
-        .then((response) => json.decode(response.body.toString()));
+    try{
+      return http
+          .get(localePath)
+          .then((response) => json.decode(response.body.toString()));
+    }catch (e){
+      //Catch network exceptions
+      debugPrint(e.toString());
+    }
   }
 
   @override
