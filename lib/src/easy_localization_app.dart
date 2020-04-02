@@ -182,7 +182,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   _EasyLocalizationProvider(this.parent, this._locale,
       {Key key, this.bloc, this.delegate})
       : super(key: key, child: parent.child) {
-    log("_EasyLocalizationProvider");
+    log('easy localization: Init provider');
   }
 
   Locale get locale => _locale;
