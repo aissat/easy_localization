@@ -65,7 +65,7 @@ class EasyLocalizationBloc {
   }
 
   void reassemble() async{
-    //cloase and create new when hotreloaded or reloaded
+    //recreate StreamController when hotreloaded or reloaded
     await _controller.close();
     _controller = StreamController<Resource>();
   }
