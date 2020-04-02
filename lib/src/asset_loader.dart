@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 
@@ -16,8 +17,11 @@ class RootBundleAssetLoader extends AssetLoader {
   const RootBundleAssetLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String localePath) async =>
-      json.decode(await rootBundle.loadString(localePath));
+  Future<Map<String, dynamic>> load(String localePath) async {
+    log('easy localization: Load asset from $localePath');
+    return json.decode(await rootBundle.loadString(localePath));
+  }
+      
 
   @override
   Future<bool> localeExists(String localePath) =>
