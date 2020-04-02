@@ -4,13 +4,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:easy_localization/src/widgets.dart';
 
 import 'asset_loader.dart';
 import 'localization.dart';
+import 'translations.dart';
 
-part 'bloc/easy_localization_bloc.dart';
+import 'bloc/easy_localization_bloc.dart';
 
 class EasyLocalization extends StatefulWidget {
   final List<Locale> supportedLocales;
@@ -21,6 +21,7 @@ class EasyLocalization extends StatefulWidget {
   final Widget child;
   final bool saveLocale;
   final Color preloaderColor;
+  // final _EasyLocalizationDelegate delegate;
   EasyLocalization({
     Key key,
     @required this.supportedLocales,
@@ -32,7 +33,9 @@ class EasyLocalization extends StatefulWidget {
   })  : assert(child != null),
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
-        super(key: key);
+        super(key: key) {
+    log("EasyLocalization");
+  }
 
   static EasyLocalizationProvider of(BuildContext context) =>
       EasyLocalizationProvider.of(context);
@@ -42,40 +45,33 @@ class EasyLocalization extends StatefulWidget {
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
-  Locale locale;
-  _EasyLocalizationDelegate delegate;
   final EasyLocalizationBloc bloc = EasyLocalizationBloc();
+  _EasyLocalizationDelegate delegate;
+  Locale locale;
 
   @override
   void dispose() {
-    bloc.dispose();
+    //bloc.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
+    log("initState");
     _init();
-    delegate = _EasyLocalizationDelegate(
-        path: widget.path,
-        supportedLocales: widget.supportedLocales,
-        useOnlyLangCode: widget.useOnlyLangCode,
-        assetLoader: widget.assetLoader,
-        onLocaleChanged: bloc.onChangeLocal);
-
     super.initState();
   }
 
   @override
-  void reassemble(){
+  void reassemble() {
     bloc.reassemble();
-    super.reassemble();    
+    super.reassemble();
   }
 
   _init() async {
     Locale _savedLocale;
     Locale _osLocale;
-
-    if(widget.saveLocale) _savedLocale = await loadSavedLocale();
+    if (widget.saveLocale) _savedLocale = await loadSavedLocale();
     // Get Device Locale
     _osLocale = await _getDeviceLocale();
     // If saved locale then get
@@ -88,7 +84,15 @@ class _EasyLocalizationState extends State<EasyLocalization> {
           orElse: () => _getFallbackLocale(
               widget.supportedLocales, widget.fallbackLocale));
     }
-    bloc.onChangeLocal(locale);
+
+    var ret = await widget.assetLoader.localeExists(getLocalePath(locale));
+    ret
+        ? bloc.onChange(Resource(
+            locale: locale,
+            assetLoader: widget.assetLoader,
+            path: widget.path,
+            useOnlyLangCode: widget.useOnlyLangCode))
+        : bloc.onError("Unable to load ${getLocalePath(locale)}");
   }
 
   bool _checkInitLocale(Locale locale, Locale _osLocale) {
@@ -122,29 +126,44 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     var _strLocale = _preferences.getString('locale');
     return locale = _strLocale != null ? _localeFromString(_strLocale) : null;
-    // TODO reload delegate, set on Material Widget
+  }
+
+  String getLocalePath(Locale l) {
+    final String _codeLang = l.languageCode;
+    final String _codeCoun = l.countryCode;
+    final String localePath = '${widget.path}/$_codeLang';
+
+    return widget.useOnlyLangCode
+        ? '$localePath.json'
+        : '$localePath-$_codeCoun.json';
   }
 
   @override
   Widget build(BuildContext context) {
+    var res;
+    log("build");
     return Container(
       color: widget.preloaderColor,
-      child: StreamBuilder(
+      child: StreamBuilder<Resource>(
           stream: bloc.outStream,
           builder: (context, snapshot) {
-            if (snapshot.hasData && !snapshot.hasError) {
-              return _EasyLocalizationProvider(
+            if (snapshot.connectionState == ConnectionState.waiting &&
+                !snapshot.hasData &&
+                !snapshot.hasError) {
+              res = EmptyPreloaderWidget();
+            } else if (snapshot.hasData && !snapshot.hasError) {
+              res = _EasyLocalizationProvider(
                 widget,
-                snapshot.data,
-                child: widget.child,
-                onLocaleChanged: bloc.onChangeLocal,
-                delegate: delegate,
+                snapshot.data.locale,
+                bloc: bloc,
+                delegate: _EasyLocalizationDelegate(
+                    translations: snapshot.data.translations,
+                    supportedLocales: widget.supportedLocales),
               );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return EmptyPreloaderWidget();
-            } else {
-              return FutureErrorWidget(msg: snapshot.error);
+            } else if (snapshot.hasError) {
+              res = FutureErrorWidget(msg: snapshot.error);
             }
+            return res;
           }),
     );
   }
@@ -153,27 +172,34 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalization parent;
   final Locale _locale;
-  final ValueChanged<Locale> onLocaleChanged;
+  final EasyLocalizationBloc bloc;
+  final _EasyLocalizationDelegate delegate;
 
   List<Locale> get supportedLocales => parent.supportedLocales;
 
-  final _EasyLocalizationDelegate delegate;
+  // _EasyLocalizationDelegate get delegate => parent.delegate;
 
   _EasyLocalizationProvider(this.parent, this._locale,
-      {Key key, Widget child, this.onLocaleChanged, this.delegate})
-      : super(key: key, child: child);
+      {Key key, this.bloc, this.delegate})
+      : super(key: key, child: parent.child) {
+    log("_EasyLocalizationProvider");
+  }
 
   Locale get locale => _locale;
   Locale get fallbackLocale => parent.fallbackLocale;
 
   set locale(Locale locale) {
-    // Check old locale    
-    if (locale != _locale){
+    // Check old locale
+    if (locale != _locale) {
       assert(parent.supportedLocales.contains(locale));
       if (parent.saveLocale) _saveLocale(locale);
       log('easy localization: Locale set ${locale.toString()}');
-      onLocaleChanged(locale);
     }
+    bloc.onChange(Resource(
+        locale: locale,
+        path: parent.path,
+        assetLoader: parent.assetLoader,
+        useOnlyLangCode: parent.useOnlyLangCode));
   }
 
   _saveLocale(Locale locale) async {
@@ -197,36 +223,26 @@ class _EasyLocalizationProvider extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
 }
 
-class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
-  final String path;
-  final AssetLoader assetLoader;
+class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final List<Locale> supportedLocales;
-  final ValueChanged<Locale> onLocaleChanged;
+  final Translations translations;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
-  final bool useOnlyLangCode;
+  // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate(
-      {@required this.path,
-      @required this.supportedLocales,
-      this.useOnlyLangCode = false,
-      this.assetLoader,
-      this.onLocaleChanged});
+  _EasyLocalizationDelegate({this.translations, this.supportedLocales}) {
+    log("_EasyLocalizationDelegate");
+    Localization.instance.translations = translations;
+  }
 
   @override
   bool isSupported(Locale locale) => supportedLocales.contains(locale);
 
   @override
-  Future<Localization> load(Locale value) async {
-    loadedLocale = value;
-    await Localization.load(
-      value,
-      path: path,
-      useOnlyLangCode: useOnlyLangCode,
-      assetLoader: assetLoader,
-    );
-    onLocaleChanged(value);
-    return Localization.instance;
+  Future<Localization> load(Locale value) {
+    log("load $value ...");
+    Localization.load(value, translations: translations);
+    return Future.value(Localization.instance);
   }
 
   @override
