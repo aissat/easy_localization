@@ -128,16 +128,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     return locale;
   }
 
-  String getLocalePath(Locale l) {
-    final String _codeLang = l.languageCode;
-    final String _codeCoun = l.countryCode;
-    final String localePath = widget.useOnlyLangCode
-        ? '${widget.path}/$_codeLang.json'
-        : '${widget.path}/$_codeLang-$_codeCoun.json';
-
-    return localePath;
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget returnWidget;
