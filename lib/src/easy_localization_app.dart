@@ -98,14 +98,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       debugPrint(e.toString());
       bloc.onError(e.toString());
     }
-    /*
-    ret
-        ? bloc.onChange(Resource(
-            locale: locale,
-            assetLoader: widget.assetLoader,
-            path: widget.path,
-            useOnlyLangCode: widget.useOnlyLangCode))
-        : bloc.onError("Unable to load ${getLocalePath(locale)}");*/
   }
 
   bool _checkInitLocale(Locale locale, Locale _osLocale) {
