@@ -51,16 +51,7 @@ class EasyLocalizationBloc {
 
   final validate = StreamTransformer<Resource, Resource>.fromHandlers(
     handleError: (error, stackTrace, sink) =>  sink.addError(error),
-    handleData: (resource, sink) {
-
-    if ( resource != null) {
-      log('easy localization: validate locale ${resource.toString()}');
-      sink.add(resource);
-    } else {
-      sink.addError("error resource");
-      log('easy localization: error resource ');
-    }
-  });
+    handleData: (resource, sink) => sink.add(resource));
 
   //
   // Stream to handle the action on the _easyLocalizationLocale
@@ -69,9 +60,6 @@ class EasyLocalizationBloc {
   Function(Resource) get onChange => _actionController.sink.add;
   Function get onError => _actionController.sink.addError;
 
-  // StreamController _localController = StreamController<Locale>();
-  // Function(Locale) get onChangeLocale => _localController.sink.add;
-
   void dispose() {
     _actionController.close();
     _controller.close();
@@ -79,11 +67,11 @@ class EasyLocalizationBloc {
   }
 
   void reassemble() async{
-    //cloase and create new when hotreloaded or reloaded  
+    //cloase and create new when hotreloaded or reloaded
     await _controller.close();
-   _controller = StreamController<Resource>();
+    _controller = StreamController<Resource>();
   }
-  
+
   void _onData(Resource data) async{
     await data.loadTranslations();
     if(!_actionController.isClosed) _inSink.add(data);
