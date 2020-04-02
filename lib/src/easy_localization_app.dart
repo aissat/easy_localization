@@ -146,7 +146,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   Widget build(BuildContext context) {
     Widget returnWidget;
-    log("build");
+    log("easy localization: Build");
     return Container(
       color: widget.preloaderColor,
       child: StreamBuilder<Resource>(
