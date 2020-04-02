@@ -315,15 +315,15 @@ void main(){
 
  Arbic RTL | English LTR
 --- | ---
-![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ar.png?raw=true "Arbic RTL")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true "English LTR")
+![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_ar.png "Arbic RTL")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_en.png "English LTR")
 
- Dutch | Русский
+ Русский | Dutch
 --- | ---
-![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_de.png?raw=true "Русский ")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ru.png?raw=true "Dutch")
+![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_ru.png "Русский ")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_de.png "Dutch")
 
  Error widget | Language widget
 --- | ---
-![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_err.png?raw=true "Language")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_lang.png?raw=true "Error")
+![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_err.png "Error")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_lang.png "Language")
 
 ### Donations
 
