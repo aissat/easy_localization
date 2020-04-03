@@ -2,13 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-
-import 'asset_loader.dart';
 import 'translations.dart';
 
 class Localization {
   Translations _translations;
   Locale _locale;
+  set translations(val) => _translations = val;
 
   String path;
   bool useOnlyLangCode;
@@ -21,35 +20,10 @@ class Localization {
   static Localization of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
-  static Future<bool> load(
-    Locale locale, {
-    String path,
-    bool useOnlyLangCode,
-    AssetLoader assetLoader,
-  }) async {
-    assert(locale != null &&
-        path != null &&
-        useOnlyLangCode != null &&
-        assetLoader != null);
+  static bool load(Locale locale, {Translations translations}) {
     instance._locale = locale;
-    instance.path = path;
-    instance.useOnlyLangCode = useOnlyLangCode;
-
-    String localePath = instance.getLocalePath();
-    if (await assetLoader.localeExists(localePath) == true) {
-      Map<String, dynamic> data = await assetLoader.load(localePath);
-      instance._translations = Translations(data);
-      return true;
-    } else
-      return false;
-  }
-
-  String getLocalePath() {
-    final String _codeLang = _locale.languageCode;
-    final String _codeCoun = _locale.countryCode;
-    final String localePath = '$path/$_codeLang';
-
-    return useOnlyLangCode ? '$localePath.json' : '$localePath-$_codeCoun.json';
+    instance._translations = translations;
+    return translations == null ? false : true;
   }
 
   String tr(String key, {List<String> args, String gender}) {
@@ -99,11 +73,9 @@ class Localization {
     final String resource = this._translations.get(key);
     if (resource == null) {
       print(
-          '[easy_localization] Missing message: "$key" for locale: "${this._locale.languageCode}", using key as fallback.');
-
+          '[easy_localization] Missing message : Not found this Key ["$key"] .');
       return key;
     }
-
     return resource;
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:easy_localization/src/localization.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/src/localization.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +20,21 @@ overridePrint(testFn()) => () {
 
 void main() {
   group('localization', () {
+    var r1 = Resource(
+        locale: Locale('en'),
+        path: "path",
+        useOnlyLangCode: true,
+        assetLoader: JsonAssetLoader());
+    var r2 = Resource(
+        locale: Locale('en', 'us'),
+        path: "path",
+        useOnlyLangCode: false,
+        assetLoader: JsonAssetLoader());
+    setUpAll(() async {
+      await r1.loadTranslations();
+      await r2.loadTranslations();
+      Localization.load(Locale('en'), translations: r1.translations);
+    });
     test('is a localization object', () {
       expect(Localization.instance, isInstanceOf<Localization>());
     });
@@ -33,23 +48,12 @@ void main() {
 
     test('load() succeeds', () async {
       expect(
-          await Localization.load(
-            Locale('en'),
-            path: "path",
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader(),
-          ),
-          true);
+          Localization.load(Locale('en'), translations: r1.translations), true);
     });
 
     test('load() Failed assertion', () async {
       try {
-        await Localization.load(
-          null,
-          path: null,
-          useOnlyLangCode: true,
-          assetLoader: JsonAssetLoader(),
-        );
+        Localization.load(Locale('en'), translations: null);
       } on AssertionError catch (e) {
         // throw  AssertionError("Expected ArgumentError");
         expect(e, isAssertionError);
@@ -58,46 +62,30 @@ void main() {
 
     test('load() correctly sets locale path', () async {
       expect(
-          await Localization.load(
-            Locale('en'),
-            path: "path",
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader(),
-          ),
-          true);
-
+          Localization.load(Locale('en'), translations: r1.translations), true);
       expect(Localization.instance.tr("path"), "path/en.json");
     });
 
     test('load() respects useOnlyLangCode', () async {
       expect(
-          await Localization.load(
-            Locale('en', 'us'),
-            path: "path",
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader(),
-          ),
-          true);
-
+          Localization.load(Locale('en'), translations: r1.translations), true);
       expect(Localization.instance.tr("path"), "path/en.json");
 
       expect(
-          await Localization.load(
-            Locale('en', 'us'),
-            path: "path",
-            useOnlyLangCode: false,
-            assetLoader: JsonAssetLoader(),
-          ),
+          Localization.load(Locale('en', 'us'), translations: r2.translations),
           true);
       expect(Localization.instance.tr("path"), "path/en-us.json");
     });
 
     group('tr', () {
+      var r = Resource(
+          locale: Locale('en'),
+          path: "path",
+          useOnlyLangCode: true,
+          assetLoader: JsonAssetLoader());
       setUpAll(() async {
-        await Localization.load(Locale('en'),
-            path: "path",
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader());
+        await r.loadTranslations();
+        Localization.load(Locale('en'), translations: r.translations);
       });
       test('finds and returns resource', () {
         expect(Localization.instance.tr("test"), "test");
@@ -124,7 +112,7 @@ void main() {
         printLog = [];
         expect(Localization.instance.tr("test_missing"), "test_missing");
         expect(printLog.first,
-            '[easy_localization] Missing message: "test_missing" for locale: "en", using key as fallback.');
+            '[easy_localization] Missing message : Not found this Key ["test_missing"] .');
       }));
 
       test('returns resource and replaces argument', () {
@@ -180,12 +168,12 @@ void main() {
     });
 
     group('plural', () {
-      setUpAll(() async {
-        await Localization.load(Locale('en-US'),
-            path: "path",
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader());
-      });
+      // setUpAll(() async {
+      //   await Localization.load(Locale('en-US'),
+      //       path: "path",
+      //       useOnlyLangCode: true,
+      //       assetLoader: JsonAssetLoader());
+      // });
 
       test('zero', () {
         expect(Localization.instance.plural("day", 0), "0 days");
@@ -219,12 +207,12 @@ void main() {
     });
 
     group('extensions', () {
-      setUpAll(() async {
-        await Localization.load(Locale('en'),
-            path: "path",
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader());
-      });
+      // setUpAll(() async {
+      //   await Localization.load(Locale('en'),
+      //       path: "path",
+      //       useOnlyLangCode: true,
+      //       assetLoader: JsonAssetLoader());
+      // });
       group('string', () {
         test('tr', () {
           expect("test".tr(), "test");
@@ -237,12 +225,12 @@ void main() {
     });
 
     group('extensions', () {
-      setUpAll(() async {
-        await Localization.load(Locale('en'),
-            path: "path",
-            useOnlyLangCode: true,
-            assetLoader: JsonAssetLoader());
-      });
+      // setUpAll(() async {
+      //   await Localization.load(Locale('en'),
+      //       path: "path",
+      //       useOnlyLangCode: true,
+      //       assetLoader: JsonAssetLoader());
+      // });
       group('string', () {
         test('tr', () {
           expect(tr("test"), "test");

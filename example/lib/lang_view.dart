@@ -40,13 +40,13 @@ class LanguageView extends StatelessWidget {
                 context: context,
                 title: "عربي",
                 subtitle: "عربي",
-                locale: EasyLocalization.of(context).supportedLocales[0]),
+                locale: EasyLocalization.of(context).supportedLocales[1]),
             buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
                 title: "English",
                 subtitle: "English",
-                locale: EasyLocalization.of(context).supportedLocales[1]),
+                locale: EasyLocalization.of(context).supportedLocales[0]),
             buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,

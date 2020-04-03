@@ -21,6 +21,8 @@ this package simplify the internationalizing process using Json file
 
 - [x] simplifying and making easy the internationalizing process in Flutter.
 - [x] Using JSON Files .
+- [x] Error widget
+- [x] Based on Bloc Archi
 - [x] Load locale from remote or backend.
 - [x] Automatically saving App state (save/restor the selected locale).
 - [x] Supports `plural`
@@ -34,6 +36,12 @@ this package simplify the internationalizing process using Json file
 - [x] Testable and easy maintenence
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
+
+### [2.1.0]
+
+- Added Error widget.
+- fixed many issues.
+- Based on Bloc.
 
 ### [2.0.2]
 
@@ -279,10 +287,6 @@ class NetworkAssetLoader extends AssetLoader {
         .get(localePath)
         .then((response) => json.decode(response.body.toString()));
   }
-
-  @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
-}
 ```
 
 The next step :
@@ -311,7 +315,15 @@ void main(){
 
  Arbic RTL | English LTR
 --- | ---
-![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_ar.png?raw=true "Arbic RTL")|![alt text](https://github.com/aissat/easy_localization/blob/master/screenshots/Screenshot_en.png?raw=true "English LTR")
+![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_ar.png "Arbic RTL")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_en.png "English LTR")
+
+ Русский | Dutch
+--- | ---
+![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_ru.png "Русский ")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_de.png "Dutch")
+
+ Error widget | Language widget
+--- | ---
+![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_err.png "Error")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/aissat-dev/screenshots/Screenshot_lang.png "Language")
 
 ### Donations
 

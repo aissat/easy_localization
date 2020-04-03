@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,9 +13,6 @@ import 'package:http/http.dart' as http;
 class JsonAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String string) => Future.value({});
-
-  @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
 }
 
 //
@@ -27,9 +25,6 @@ class FileAssetLoader extends AssetLoader {
     File file = File(localePath);
     return json.decode(await file.readAsString());
   }
-
-  @override
-  Future<bool> localeExists(String localePath) async => File(localePath).exists();
 }
 
 //
@@ -39,13 +34,16 @@ class FileAssetLoader extends AssetLoader {
 class NetworkAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String localePath) async {
-    return http
-        .get(localePath)
-        .then((response) => json.decode(response.body.toString()));
+    try{
+      return http
+          .get(localePath)
+          .then((response) => json.decode(response.body.toString()));
+    }catch (e){
+      //Catch network exceptions
+      debugPrint(e.toString());
+      return Future.value();
+    }
   }
-
-  @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
 }
 
 // asset loader to be used when doing integration tests
@@ -57,8 +55,4 @@ class TestsAssetLoader extends AssetLoader {
     final ByteData byteData = await rootBundle.load(localePath);
     return json.decode(utf8.decode(byteData.buffer.asUint8List()));
   }
-
-  @override
-  Future<bool> localeExists(String localePath) =>
-      rootBundle.load(localePath).then((v) => true).catchError((e) => false);
 }

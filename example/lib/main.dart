@@ -11,12 +11,13 @@ void main() {
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [
-      Locale('ar', 'DZ'),
       Locale('en', 'US'),
+      Locale('ar', 'DZ'),
       Locale('de', 'DE'),
       Locale('ru', 'RU')
     ],
     path: 'resources/langs',
+    // fallbackLocale: Locale('en', 'US'),
     // saveLocale: false,
     // useOnlyLangCode: true,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
@@ -25,7 +26,7 @@ void main() {
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
-    // onLocaleChange: (){print('Locale change callback!!!');},
+    // preloaderColor: Colors.red,
   ));
 }
 
@@ -34,8 +35,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     log(EasyLocalization.of(context).locale.toString(),
         name: this.toString() + "# locale");
+    log("title".tr().toString(), name: this.toString() + "# locale");
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'title'.tr(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
