@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl_standalone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/src/widgets.dart';
 
@@ -11,6 +10,10 @@ import 'localization.dart';
 import 'translations.dart';
 
 import 'bloc/easy_localization_bloc.dart';
+
+//If web then import intl_browser else intl_standalone
+import 'package:intl/intl_standalone.dart'
+    if (dart.library.html) 'package:intl/intl_browser.dart';
 
 class EasyLocalization extends StatefulWidget {
   final Widget child;
@@ -55,7 +58,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     bloc.dispose();
     super.dispose();
   }
-
   @override
   void initState() {
     log("initState");
