@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl_standalone.dart';
+import "package:intl/intl_browser.dart" as intl_web;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/src/widgets.dart';
 
@@ -115,7 +117,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   // Get Device Locale
   Future<Locale> _getDeviceLocale() async {
-    final String _deviceLocale = await findSystemLocale();
+    ///If platform web get findSystemLocale from intl_browser.dart
+    final String _deviceLocale =
+        kIsWeb ? await intl_web.findSystemLocale() : await findSystemLocale();
     log('easy localization: Device locale $_deviceLocale');
     return _localeFromString(_deviceLocale);
   }
@@ -124,7 +128,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     final _strLocale = _preferences.getString('locale');
     final locale = _strLocale != null ? _localeFromString(_strLocale) : null;
-    
     return locale;
   }
 
