@@ -28,8 +28,8 @@ class MyFlutterApp {
 
   static const _kFontFam = 'MyFlutterApp';
 
-  static const IconData male = const IconData(0xe800, fontFamily: _kFontFam);
-  static const IconData female = const IconData(0xe801, fontFamily: _kFontFam);
-  static const IconData male_1 = const IconData(0xe802, fontFamily: _kFontFam);
-  static const IconData female_1 = const IconData(0xe803, fontFamily: _kFontFam);
+  static const IconData male = IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData female = IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData male_1 = IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData female_1 = IconData(0xe803, fontFamily: _kFontFam);
 }

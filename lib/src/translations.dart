@@ -14,8 +14,9 @@ class Translations {
 
     var value = _translations[kHead];
 
-    for (var i = 1; i < keys.length; i++)
+    for (var i = 1; i < keys.length; i++) {
       if (value is Map<String, dynamic>) value = value[keys[i]];
+    }
 
     cacheNestedKey(key, value);
     return value;
@@ -28,12 +29,13 @@ class Translations {
   bool isNestedCached(String key) => _nestedKeysCache.containsKey(key);
 
   cacheNestedKey(String key, String value) {
-    if (!isNestedKey(key))
-      throw new Exception("Cannot cache a key that is not nested.");
+    if (!isNestedKey(key)) {
+      throw Exception("Cannot cache a key that is not nested.");
+    }
 
     _nestedKeysCache[key] = value;
   }
 
   bool isNestedKey(String key) =>
-      !_translations.containsKey(key) && key.indexOf('.') != -1;
+      !_translations.containsKey(key) && key.contains('.');
 }
