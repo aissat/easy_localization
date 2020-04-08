@@ -35,6 +35,4 @@ class JsonAssetLoader extends AssetLoader {
     });
   }
 
-  @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
 }

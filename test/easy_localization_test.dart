@@ -11,7 +11,7 @@ import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
 overridePrint(testFn()) => () {
-      var spec = new ZoneSpecification(print: (_, __, ___, String msg) {
+      var spec = ZoneSpecification(print: (_, __, ___, String msg) {
         // Add to log instead of printing to stdout
         printLog.add(msg);
       });
