@@ -70,14 +70,6 @@ dependencies:
 
 ```
 
-you must add `flutter_localizations` to your pubspec.yaml file:
-
-```yaml
-dependencies:
-  flutter_localizations:
-    sdk: flutter
-```
-
 #### Load translations from local assets
 
 You must create a folder in your project's root: the `path`. Some examples:
