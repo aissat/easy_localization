@@ -17,13 +17,13 @@ class Resource {
   Resource({this.locale, this.assetLoader, this.path, this.useOnlyLangCode});
 
   String _getLocalePath() {
-    final String _codeLang = locale.languageCode;
-    final String _codeCoun = locale.countryCode;
-    final String localePath = '$path/$_codeLang';
-    return this.useOnlyLangCode  ? '$localePath.json' : '$localePath-$_codeCoun.json';
+    final _codeLang = locale.languageCode;
+    final _codeCoun = locale.countryCode;
+    final localePath = '$path/$_codeLang';
+    return useOnlyLangCode  ? '$localePath.json' : '$localePath-$_codeCoun.json';
   }
 
-  loadTranslations() async {
+  void loadTranslations() async {
     var data = await assetLoader.load(_getLocalePath());
     _translations = Translations(data);
   }
@@ -53,7 +53,7 @@ class EasyLocalizationBloc {
   //
   // Stream to handle the action on the _easyLocalizationLocale
   //
-  StreamController<Resource> _actionController = StreamController<Resource>();
+  final StreamController<Resource> _actionController = StreamController<Resource>();
   Function(Resource) get onChange => _actionController.sink.add;
   // Function get onError => _actionController.sink.addError;
 

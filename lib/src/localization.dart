@@ -28,7 +28,7 @@ class Localization {
 
   String tr(String key, {List<String> args, String gender}) {
     if (gender != null) return trGender(key, gender, args: args);
-    return this._replaceArgs(this._resolve(key), args);
+    return _replaceArgs(_resolve(key), args);
   }
 
   String trGender(
@@ -36,8 +36,8 @@ class Localization {
     String gender, {
     List<String> args,
   }) =>
-      this._replaceArgs(
-        this._gender(key, gender: gender),
+      _replaceArgs(
+        _gender(key, gender: gender),
         args,
       );
 
@@ -49,28 +49,28 @@ class Localization {
 
   String plural(String key, dynamic value, {NumberFormat format}) {
     final res = Intl.pluralLogic(value,
-        zero: this._resolve(key + '.zero'),
-        one: this._resolve(key + '.one'),
-        two: this._resolve(key + '.two'),
-        few: this._resolve(key + '.few'),
-        many: this._resolve(key + '.many'),
-        other: this._resolve(key + '.other') ?? key,
+        zero: _resolve(key + '.zero'),
+        one: _resolve(key + '.one'),
+        two: _resolve(key + '.two'),
+        few: _resolve(key + '.few'),
+        many: _resolve(key + '.many'),
+        other: _resolve(key + '.other') ?? key,
         locale: _locale.languageCode);
-    return this._replaceArgs(res, [
+    return _replaceArgs(res, [
       format == null ? '$value' : format.format(value),
     ]);
   }
 
   String _gender(String key, {String gender}) => Intl.genderLogic(
         gender,
-        female: this._resolve(key + '.female'),
-        male: this._resolve(key + '.male'),
-        other: this._resolve(key + '.male'),
+        female: _resolve(key + '.female'),
+        male: _resolve(key + '.male'),
+        other: _resolve(key + '.male'),
         locale: _locale.languageCode,
       );
 
   String _resolve(String key) {
-    final String resource = this._translations.get(key);
+    final resource = _translations.get(key);
     if (resource == null) {
       print(
           '[easy_localization] Missing message : Not found this Key ["$key"] .');

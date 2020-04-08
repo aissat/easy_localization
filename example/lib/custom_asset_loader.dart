@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +21,7 @@ class JsonAssetLoader extends AssetLoader {
 class FileAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String localePath) async {
-    File file = File(localePath);
+    final file = File(localePath);
     return json.decode(await file.readAsString());
   }
 }
@@ -52,7 +51,7 @@ class NetworkAssetLoader extends AssetLoader {
 class TestsAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String localePath) async {
-    final ByteData byteData = await rootBundle.load(localePath);
+    final byteData = await rootBundle.load(localePath);
     return json.decode(utf8.decode(byteData.buffer.asUint8List()));
   }
 }

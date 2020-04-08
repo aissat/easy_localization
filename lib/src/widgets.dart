@@ -10,7 +10,7 @@ class EmptyPreloaderWidget extends StatelessWidget {
 
 class FutureErrorWidget extends StatelessWidget {
   final String msg;
-  const FutureErrorWidget({this.msg = "Loading ..."});
+  const FutureErrorWidget({this.msg = 'Loading ...'});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +24,7 @@ class FutureErrorWidget extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Text(
-          "Easy Localization:",
+          'Easy Localization:',
           textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
           style: TextStyle(

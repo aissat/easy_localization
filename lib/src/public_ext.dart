@@ -5,39 +5,39 @@ import 'public.dart' as ez;
 
 extension TextTranslateExtension on Text {
   Text tr({BuildContext context, List<String> args, String gender}) =>
-      Text(ez.tr(this.data, context: context, args: args, gender: gender),
-          key: this.key,
-          style: this.style,
-          strutStyle: this.strutStyle,
-          textAlign: this.textAlign,
-          textDirection: this.textDirection,
-          locale: this.locale,
-          softWrap: this.softWrap,
-          overflow: this.overflow,
-          textScaleFactor: this.textScaleFactor,
-          maxLines: this.maxLines,
-          semanticsLabel: this.semanticsLabel,
-          textWidthBasis: this.textWidthBasis);
+      Text(ez.tr(data, context: context, args: args, gender: gender),
+          key: key,
+          style: style,
+          strutStyle: strutStyle,
+          textAlign: textAlign,
+          textDirection: textDirection,
+          locale: locale,
+          softWrap: softWrap,
+          overflow: overflow,
+          textScaleFactor: textScaleFactor,
+          maxLines: maxLines,
+          semanticsLabel: semanticsLabel,
+          textWidthBasis: textWidthBasis);
 
   Text plural(dynamic value, {BuildContext context, NumberFormat format}) =>
-      Text(ez.plural(this.data, value, context: context, format: format),
-          key: this.key,
-          style: this.style,
-          strutStyle: this.strutStyle,
-          textAlign: this.textAlign,
-          textDirection: this.textDirection,
-          locale: this.locale,
-          softWrap: this.softWrap,
-          overflow: this.overflow,
-          textScaleFactor: this.textScaleFactor,
-          maxLines: this.maxLines,
-          semanticsLabel: this.semanticsLabel,
-          textWidthBasis: this.textWidthBasis);
+      Text(ez.plural(data, value, context: context, format: format),
+          key: key,
+          style: style,
+          strutStyle: strutStyle,
+          textAlign: textAlign,
+          textDirection: textDirection,
+          locale: locale,
+          softWrap: softWrap,
+          overflow: overflow,
+          textScaleFactor: textScaleFactor,
+          maxLines: maxLines,
+          semanticsLabel: semanticsLabel,
+          textWidthBasis: textWidthBasis);
 }
 
 extension StringTranslateExtension on String {
-  tr({List<String> args, String gender}) =>
+  String tr({List<String> args, String gender}) =>
       ez.tr(this, args: args, gender: gender);
-  plural(dynamic value, {NumberFormat format}) =>
+  String plural(dynamic value, {NumberFormat format}) =>
       ez.plural(this, value, format: format);
 }
