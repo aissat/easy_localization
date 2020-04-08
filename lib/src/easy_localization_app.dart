@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl_standalone.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/src/widgets.dart';
 
@@ -11,6 +10,10 @@ import 'localization.dart';
 import 'translations.dart';
 
 import 'bloc/easy_localization_bloc.dart';
+
+//If web then import intl_browser else intl_standalone
+import 'package:intl/intl_standalone.dart'
+    if (dart.library.html) 'package:intl/intl_browser.dart';
 
 class EasyLocalization extends StatefulWidget {
   final Widget child;
@@ -35,9 +38,10 @@ class EasyLocalization extends StatefulWidget {
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
         super(key: key) {
-    log("EasyLocalization");
+    log('EasyLocalization');
   }
 
+  @override
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
   static _EasyLocalizationProvider of(BuildContext context) =>
@@ -58,7 +62,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void initState() {
-    log("initState");
+    log('initState');
     _init();
     super.initState();
   }
@@ -69,7 +73,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     super.reassemble();
   }
 
-  _init() async {
+  void _init() async {
     Locale _savedLocale;
     Locale _osLocale;
     if (widget.saveLocale) _savedLocale = await loadSavedLocale();
@@ -115,23 +119,23 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   // Get Device Locale
   Future<Locale> _getDeviceLocale() async {
-    final String _deviceLocale = await findSystemLocale();
+    final _deviceLocale = await findSystemLocale();
     log('easy localization: Device locale $_deviceLocale');
     return _localeFromString(_deviceLocale);
   }
 
   Future<Locale> loadSavedLocale() async {
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    final _preferences = await SharedPreferences.getInstance();
     final _strLocale = _preferences.getString('locale');
     final locale = _strLocale != null ? _localeFromString(_strLocale) : null;
-    
+
     return locale;
   }
 
   @override
   Widget build(BuildContext context) {
     Widget returnWidget;
-    log("easy localization: Build");
+    log('easy localization: Build');
     return Container(
       color: widget.preloaderColor,
       child: StreamBuilder<Resource>(
@@ -193,21 +197,21 @@ class _EasyLocalizationProvider extends InheritedWidget {
     }
   }
 
-  _saveLocale(Locale locale) async {
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
+  void _saveLocale(Locale locale) async {
+    final _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('locale', locale.toString());
     log('easy localization: Locale saved ${locale.toString()}');
   }
 
-  deleteSaveLocale() async {
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
+  void deleteSaveLocale() async {
+    final _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('locale', null);
     log('easy localization: Saved locale deleted');
   }
 
   @override
   bool updateShouldNotify(_EasyLocalizationProvider oldWidget) {
-    return oldWidget._locale != this._locale;
+    return oldWidget._locale != _locale;
   }
 
   static _EasyLocalizationProvider of(BuildContext context) =>
@@ -241,7 +245,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 }
 
 Locale _localeFromString(String val) {
-  var localeList = val.split("_");
+  var localeList = val.split('_');
   return (localeList.length > 1)
       ? Locale(localeList.first, localeList.last)
       : Locale(localeList.first);

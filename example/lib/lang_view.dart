@@ -9,7 +9,7 @@ class LanguageView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "",
+          '',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -27,10 +27,10 @@ class LanguageView extends StatelessWidget {
                 horizontal: 24,
               ),
               child: Text(
-                "Choose language",
+                'Choose language',
                 style: TextStyle(
                   color: Colors.blue,
-                  fontFamily: "Montserrat",
+                  fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
                 ),
@@ -38,26 +38,26 @@ class LanguageView extends StatelessWidget {
             ),
             buildSwitchListTileMenuItem(
                 context: context,
-                title: "عربي",
-                subtitle: "عربي",
+                title: 'عربي',
+                subtitle: 'عربي',
                 locale: EasyLocalization.of(context).supportedLocales[1]),
             buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
-                title: "English",
-                subtitle: "English",
+                title: 'English',
+                subtitle: 'English',
                 locale: EasyLocalization.of(context).supportedLocales[0]),
             buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
-                title: "Dutch",
-                subtitle: "Dutch",
+                title: 'Dutch',
+                subtitle: 'Dutch',
                 locale: EasyLocalization.of(context).supportedLocales[2]),
             buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
-                title: "Русский",
-                subtitle: "Русский",
+                title: 'Русский',
+                subtitle: 'Русский',
                 locale: EasyLocalization.of(context).supportedLocales[3]),
             buildDivider(),
           ],
@@ -93,7 +93,7 @@ class LanguageView extends StatelessWidget {
             subtitle,
           ),
           onTap: () {
-            log(locale.toString(), name: this.toString());
+            log(locale.toString(), name: toString());
             EasyLocalization.of(context).locale = locale;
             Navigator.pop(context);
           }),

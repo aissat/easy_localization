@@ -6,35 +6,33 @@ class JsonAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String localePath) {
     return Future.value({
-      "test": "test",
-      "test_replace_one": "test replace {}",
-      "test_replace_two": "test replace {} {}",
-      "gender": {"male": "Hi man ;)", "female": "Hello girl :)"},
-      "gender_and_replace": {
-        "male": "Hi {} man ;)",
-        "female": "Hello {} girl :)"
+      'test': 'test',
+      'test_replace_one': 'test replace {}',
+      'test_replace_two': 'test replace {} {}',
+      'gender': {'male': 'Hi man ;)', 'female': 'Hello girl :)'},
+      'gender_and_replace': {
+        'male': 'Hi {} man ;)',
+        'female': 'Hello {} girl :)'
       },
-      "day": {
-        "zero": "{} days",
-        "one": "{} day",
-        "two": "{} days",
-        "few": "{} few days",
-        "many": "{} many days",
-        "other": "{} other days"
+      'day': {
+        'zero': '{} days',
+        'one': '{} day',
+        'two': '{} days',
+        'few': '{} few days',
+        'many': '{} many days',
+        'other': '{} other days'
       },
-      "nested.but.not.nested": "nested but not nested",
-      "nested": {
-        "super": {
-          "duper": {
-            "nested": "nested.super.duper.nested",
-            "nested_with_arg": "nested.super.duper.nested_with_arg {}"
+      'nested.but.not.nested': 'nested but not nested',
+      'nested': {
+        'super': {
+          'duper': {
+            'nested': 'nested.super.duper.nested',
+            'nested_with_arg': 'nested.super.duper.nested_with_arg {}'
           }
         }
       },
-      "path": "$localePath"
+      'path': '$localePath'
     });
   }
 
-  @override
-  Future<bool> localeExists(String localePath) => Future.value(true);
 }

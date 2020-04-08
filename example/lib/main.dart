@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log(EasyLocalization.of(context).locale.toString(),
-        name: this.toString() + "# locale");
-    log("title".tr().toString(), name: this.toString() + "# locale");
+        name: '${this} # locale');
+    log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
       title: 'title'.tr(),
       localizationsDelegates: [
@@ -66,13 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int counter = 0;
   bool _gender = true;
 
-  incrementCounter() {
+  void incrementCounter() {
     setState(() {
       counter++;
     });
   }
 
-  switchGender(bool val) {
+  void switchGender(bool val) {
     setState(() {
       _gender = val;
     });
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("title").tr(context: context),
+        title: Text('title').tr(context: context),
         //Text(AppLocalizations.of(context).tr('title')),
         actions: <Widget>[
           FlatButton(
@@ -110,9 +110,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.grey.shade600,
                   fontSize: 19,
                   fontWeight: FontWeight.bold),
-            ).tr(args: ["aissat"], gender: _gender ? "female" : "male"),
+            ).tr(args: ['aissat'], gender: _gender ? 'female' : 'male'),
             Text(
-              tr('switch', gender: _gender ? "female" : "male"),
+              tr('switch', gender: _gender ? 'female' : 'male'),
               style: TextStyle(
                   color: Colors.grey.shade600,
                   fontSize: 15,
@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
                 plural('amount', counter,
                     format: NumberFormat.currency(
-                        locale: Intl.defaultLocale, symbol: "€")),
+                        locale: Intl.defaultLocale, symbol: '€')),
                 style: TextStyle(
                     color: Colors.grey.shade900,
                     fontSize: 18,
