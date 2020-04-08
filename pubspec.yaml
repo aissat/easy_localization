@@ -14,12 +14,12 @@ dependencies:
     sdk: flutter
   intl: ^0.16.0
   shared_preferences: ^0.5.6+3
+  flutter_localizations:
+    sdk: flutter  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
