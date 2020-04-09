@@ -267,18 +267,30 @@ EasyLocalization.of(context).locale = locale;
 
 #### Load translations from Customization AssetLoader
 
-for example You need to have backend endpoint (`loadPath`) where resources get loaded from and your endpoint must containing the translated keys.
-
-example:
+example from Csv file:
 
 ```dart
-class NetworkAssetLoader extends AssetLoader {
+//
+// load example/resources/langs/langs.csv
+//
+class CsvAssetLoader extends AssetLoader {
   @override
-  Future<Map<String, dynamic>> load(String localePath) async {
-    return http
-        .get(localePath)
-        .then((response) => json.decode(response.body.toString()));
+  Future<Map<String, dynamic>> load(String path, Locale locale) async {
+    final csv = await rootBundle.loadString(path);
+    final converter = CsvToListConverter();
+    final val = converter.convert(csv);
+    return _mappingData(locale, val);
   }
+
+  Map<String, String> _mappingData(Locale locale, List<List<dynamic>> table) {
+    var languageIndex = table.first.indexOf(locale.languageCode);
+    var translations = <String, String>{};
+    for (var i = 1; i < table.length; i++) {
+      translations.addAll({table[i][0]: table[i][languageIndex]});
+    }
+    return translations;
+  }
+}
 ```
 
 The next step :
@@ -289,8 +301,8 @@ void main(){
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-    path: 'https://raw.githubusercontent.com/aissat/easy_localization/master/example/resources/langs',
-    assetLoader: NetworkAssetLoader()
+    path: 'resources/langs/langs.csv',
+    assetLoader: CsvAssetLoader()
     // fallbackLocale: Locale('en', 'US'),
     // useOnlyLangCode: true,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
