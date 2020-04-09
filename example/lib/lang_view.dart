@@ -95,7 +95,7 @@ class LanguageView extends StatelessWidget {
           onTap: () {
             log(locale.toString(), name: toString());
             EasyLocalization.of(context).locale = locale;
-            Navigator.pop(context);
+            // Navigator.pop(context);
           }),
     );
   }

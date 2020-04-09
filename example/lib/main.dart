@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log(EasyLocalization.of(context).locale.toString(),
-        name: '${this} + # locale');
-    log('title'.tr().toString(), name: '${this} + # locale');
+        name: '${this} # locale');
+    log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
       title: 'title'.tr(),
       localizationsDelegates: [

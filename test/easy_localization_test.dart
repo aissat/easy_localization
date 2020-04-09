@@ -22,12 +22,12 @@ void main() {
   group('localization', () {
     var r1 = Resource(
         locale: Locale('en'),
-        path: 'path',
+        path: 'path/en.json',
         useOnlyLangCode: true,
         assetLoader: JsonAssetLoader());
     var r2 = Resource(
         locale: Locale('en', 'us'),
-        path: 'path',
+        path: 'path/en-us.json',
         useOnlyLangCode: false,
         assetLoader: JsonAssetLoader());
     setUpAll(() async {

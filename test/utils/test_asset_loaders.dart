@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:easy_localization/src/asset_loader.dart';
 
 class JsonAssetLoader extends AssetLoader {
   const JsonAssetLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String localePath) {
+  Future<Map<String, dynamic>> load(String fullPath, Locale locale ) {
     return Future.value({
       'test': 'test',
       'test_replace_one': 'test replace {}',
@@ -31,7 +33,7 @@ class JsonAssetLoader extends AssetLoader {
           }
         }
       },
-      'path': '$localePath'
+      'path': '$fullPath'
     });
   }
 

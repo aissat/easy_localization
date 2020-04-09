@@ -11,20 +11,12 @@ class Resource {
   final String path;
   final bool useOnlyLangCode;
   Translations _translations;
-  
   Translations get translations => _translations;
 
   Resource({this.locale, this.assetLoader, this.path, this.useOnlyLangCode});
 
-  String _getLocalePath() {
-    final _codeLang = locale.languageCode;
-    final _codeCoun = locale.countryCode;
-    final localePath = '$path/$_codeLang';
-    return useOnlyLangCode  ? '$localePath.json' : '$localePath-$_codeCoun.json';
-  }
-
   void loadTranslations() async {
-    var data = await assetLoader.load(_getLocalePath());
+    var data = await assetLoader.load(path, locale);
     _translations = Translations(data);
   }
 }
