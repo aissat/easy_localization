@@ -24,6 +24,7 @@ class EasyLocalization extends StatefulWidget {
   final AssetLoader assetLoader;
   final bool saveLocale;
   final Color preloaderColor;
+  final bool logging;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -34,11 +35,12 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.preloaderColor = Colors.white,
+    this.logging = false;
   })  : assert(child != null),
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
         super(key: key) {
-    log('EasyLocalization');
+    if (logging) log('EasyLocalization');
   }
 
   @override
@@ -61,8 +63,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   }
 
   @override
-  void initState() {
-    log('initState');
+  void initState() { 
+    if (logging) log('initState');
     _init();
     super.initState();
   }
@@ -81,7 +83,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     _osLocale = await _getDeviceLocale();
     // If saved locale then get
     if (_savedLocale != null && widget.saveLocale) {
-      log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
+      if (logging) log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
       locale = _savedLocale;
     } else {
       locale = widget.supportedLocales.firstWhere(
@@ -120,7 +122,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   // Get Device Locale
   Future<Locale> _getDeviceLocale() async {
     final _deviceLocale = await findSystemLocale();
-    log('easy localization: Device locale $_deviceLocale');
+    if (logging) log('easy localization: Device locale $_deviceLocale');
     return _localeFromString(_deviceLocale);
   }
 
@@ -135,7 +137,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   @override
   Widget build(BuildContext context) {
     Widget returnWidget;
-    log('easy localization: Build');
+    if (logging) log('easy localization: Build');
     return Container(
       color: widget.preloaderColor,
       child: StreamBuilder<Resource>(
@@ -176,7 +178,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   _EasyLocalizationProvider(this.parent, this._locale,
       {Key key, this.bloc, this.delegate})
       : super(key: key, child: parent.child) {
-    log('easy localization: Init provider');
+    if (logging) log('easy localization: Init provider');
   }
 
   Locale get locale => _locale;
@@ -187,7 +189,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
     if (locale != _locale) {
       assert(parent.supportedLocales.contains(locale));
       if (parent.saveLocale) _saveLocale(locale);
-      log('easy localization: Locale set ${locale.toString()}');
+      if (logging) log('easy localization: Locale set ${locale.toString()}');
 
       bloc.onChange(Resource(
           locale: locale,
@@ -200,13 +202,13 @@ class _EasyLocalizationProvider extends InheritedWidget {
   void _saveLocale(Locale locale) async {
     final _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('locale', locale.toString());
-    log('easy localization: Locale saved ${locale.toString()}');
+    if (logging) log('easy localization: Locale saved ${locale.toString()}');
   }
 
   void deleteSaveLocale() async {
     final _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('locale', null);
-    log('easy localization: Saved locale deleted');
+    if (logging) log('easy localization: Saved locale deleted');
   }
 
   @override
@@ -226,7 +228,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   // final bool useOnlyLangCode;
 
   _EasyLocalizationDelegate({this.translations, this.supportedLocales}) {
-    log('easy localization: Init Localization Delegate');
+    if (logging) log('easy localization: Init Localization Delegate');
     Localization.instance.translations = translations;
   }
 
@@ -235,7 +237,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale value) {
-    log('easy localization: Load Localization Delegate');
+    if (logging) log('easy localization: Load Localization Delegate');
     Localization.load(value, translations: translations);
     return Future.value(Localization.instance);
   }
