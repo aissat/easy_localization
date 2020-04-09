@@ -35,7 +35,7 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.preloaderColor = Colors.white,
-    this.logging = false;
+    this.logging = false
   })  : assert(child != null),
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
