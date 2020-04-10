@@ -1,9 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/widgets.dart';
-
-import '../../easy_localization.dart';
-import '../translations.dart';
+part of '../easy_localization_app.dart';
 
 class Resource {
   final Locale locale;
@@ -21,15 +16,15 @@ class Resource {
   }
 }
 
-class EasyLocalizationBloc {
+class _EasyLocalizationBloc {
   //
   // Constructor
   //
-  EasyLocalizationBloc._internal(){
+  _EasyLocalizationBloc._internal(){
     _actionController.stream.listen(_onData, onError: _onError, cancelOnError: true);
   }
-  factory EasyLocalizationBloc(){
-    return EasyLocalizationBloc._internal();
+  factory _EasyLocalizationBloc(){
+    return _EasyLocalizationBloc._internal();
   }
   //
   // Stream to handle the _easyLocalizationLocale
@@ -60,7 +55,7 @@ class EasyLocalizationBloc {
     _controller = StreamController<Resource>();
   }
 
-  void _onData(Resource data) async{
+  Future _onData(Resource data) async{
     // Catch error from json parse/load
     try {
       await data.loadTranslations();

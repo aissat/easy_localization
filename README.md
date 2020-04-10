@@ -265,7 +265,7 @@ to change Locale
 EasyLocalization.of(context).locale = locale;
 ```
 
-#### Load translations from Customization AssetLoader
+#### Load translations from Custom AssetLoader
 
 example from Csv file:
 

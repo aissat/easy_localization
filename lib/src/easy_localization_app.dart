@@ -3,17 +3,17 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:easy_localization/src/widgets.dart';
 
+import 'widgets.dart';
 import 'asset_loader.dart';
 import 'localization.dart';
 import 'translations.dart';
 
-import 'bloc/easy_localization_bloc.dart';
-
 //If web then import intl_browser else intl_standalone
 import 'package:intl/intl_standalone.dart'
     if (dart.library.html) 'package:intl/intl_browser.dart';
+
+part 'bloc/easy_localization_bloc.dart';
 
 class EasyLocalization extends StatefulWidget {
   final Widget child;
@@ -50,7 +50,7 @@ class EasyLocalization extends StatefulWidget {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   ///Init EasyLocalizationBloc
-  final EasyLocalizationBloc bloc = EasyLocalizationBloc();
+  final bloc = _EasyLocalizationBloc();
   _EasyLocalizationDelegate delegate;
   Locale locale;
 
@@ -166,7 +166,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalization parent;
   final Locale _locale;
-  final EasyLocalizationBloc bloc;
+  final _EasyLocalizationBloc bloc;
   final _EasyLocalizationDelegate delegate;
 
   List<Locale> get supportedLocales => parent.supportedLocales;
