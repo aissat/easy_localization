@@ -142,6 +142,21 @@ void main() {
         // @TODO
       });
 
+      test('return resource and replaces named argument', () {
+        expect(
+          Localization.instance.tr('test_replace_named', namedArgs: {'arg1': 'one', 'arg2': 'two'}),
+          'test named replace one two',
+        );
+      });
+
+      test('returns resource and replaces named argument in any nest level', () {
+        expect(
+          Localization.instance
+              .tr('nested.super.duper.nested_with_named_arg', namedArgs: {'arg': 'what a nest'}),
+          'nested.super.duper.nested_with_named_arg what a nest',
+        );
+      });
+
       test('gender returns the correct resource', () {
         expect(
           Localization.instance.tr('gender', gender: 'male'),

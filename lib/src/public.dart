@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'localization.dart';
 
 String tr(String key,
-    {BuildContext context, List<String> args, String gender}) {
+    {BuildContext context, List<String> args, Map<String,String> namedArgs, String gender}) {
   return context == null
-      ? Localization.instance.tr(key, args: args, gender: gender)
-      : Localization.of(context).tr(key, args: args, gender: gender);
+      ? Localization.instance.tr(key, args: args, namedArgs: namedArgs, gender: gender)
+      : Localization.of(context).tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
 String plural(String key, dynamic value,
