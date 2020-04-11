@@ -114,7 +114,9 @@ void main(){
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')], // [Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK')]
     path: 'resources/langs',
     // fallbackLocale: Locale('en', 'US'),
+    // saveLocale: false,
     // useOnlyLangCode: true,
+    // preloaderColor: Colors.black,
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // assetLoader: RootBundleAssetLoader()
     // assetLoader: NetworkAssetLoader()
