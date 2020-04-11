@@ -26,24 +26,34 @@ class Localization {
     return translations == null ? false : true;
   }
 
-  String tr(String key, {List<String> args, String gender}) {
-    if (gender != null) return trGender(key, gender, args: args);
-    return _replaceArgs(_resolve(key), args);
+  String tr(String key, {List<String> args, Map<String, String> namedArgs, String gender}) {
+    if (gender != null) return trGender(key, gender, args: args, namedArgs: namedArgs);
+    return _replaceArgs(_replaceNamedArgs(_resolve(key), namedArgs), args);
   }
 
   String trGender(
     String key,
     String gender, {
     List<String> args,
+    Map<String, String> namedArgs,
   }) =>
       _replaceArgs(
-        _gender(key, gender: gender),
+        _replaceNamedArgs(
+          _gender(key, gender: gender), 
+          namedArgs,
+        ),
         args,
       );
 
   String _replaceArgs(String res, List<String> args) {
     if (args == null || args.isEmpty) return res;
     args.forEach((String str) => res = res.replaceFirst(_replaceArgRegex, str));
+    return res;
+  }
+
+  String _replaceNamedArgs(String res, Map<String, String> args) {
+    if(args == null || args.isEmpty) return res;
+    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{{$key}}'), value));
     return res;
   }
 

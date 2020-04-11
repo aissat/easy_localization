@@ -130,6 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
             ),
             Text('msg').tr(args: ['aissat', 'Flutter']),
+            Text('msg_named').tr(namedArgs: {'lang': 'English'}),
             Text('clicked').plural(counter),
             FlatButton(
               onPressed: () {
