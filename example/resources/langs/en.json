@@ -1,6 +1,7 @@
 {
     "title": "Hello",
     "msg": "Hello {} in the {} world ",
+    "msg_named": "This text is displayed in {{lang}} language",
     "clickMe": "Click me",
     "profile": {
         "reset_password": {
