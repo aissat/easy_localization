@@ -7,11 +7,16 @@ class Resource {
   final bool useOnlyLangCode;
   Translations _translations;
   Translations get translations => _translations;
-
+  //TODO: fix useOnlyLangCode
   Resource({this.locale, this.assetLoader, this.path, this.useOnlyLangCode});
 
   void loadTranslations() async {
-    var data = await assetLoader.load(path, locale);
+    Map<String,dynamic> data;
+    if (useOnlyLangCode){
+      data = await assetLoader.load(path, Locale(locale.languageCode));
+    }else{
+      data = await assetLoader.load(path, locale);
+    }
     _translations = Translations(data);
   }
 }
