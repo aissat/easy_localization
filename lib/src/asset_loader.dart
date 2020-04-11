@@ -19,7 +19,7 @@ class RootBundleAssetLoader extends AssetLoader {
   const RootBundleAssetLoader();
 
   String getLocalePath(String basePath, Locale locale) {
-    return  '$basePath/${localeToString(locale, separator: "-")}.json';
+    return '$basePath/${localeToString(locale, separator: "-")}.json';
   }
 
   @override
