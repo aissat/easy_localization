@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'dart:ui';
 
 Locale localeFromString(String localeString) {  
   final List<String> localeList = localeString.split("_");
