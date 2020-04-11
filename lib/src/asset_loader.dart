@@ -4,6 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/services.dart';
 
+import 'utils.dart';
+
 abstract class AssetLoader {
   const AssetLoader();
   Future<Map<String, dynamic>> load(String path, Locale locale);
@@ -17,12 +19,7 @@ class RootBundleAssetLoader extends AssetLoader {
   const RootBundleAssetLoader();
 
   String getLocalePath(String basePath, Locale locale) {
-    final _codeLang = locale.languageCode;
-    final _codeCoun = locale.countryCode;
-    final localePath = '$basePath/$_codeLang';
-    return locale.countryCode == null
-        ? '$localePath.json'
-        : '$localePath-$_codeCoun.json';
+    return  '$basePath/${localeToString(locale, separator: "-")}.json';
   }
 
   @override

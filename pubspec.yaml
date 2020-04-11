@@ -4,7 +4,7 @@ author: AISSAT abdelwahab <mr.aissat@gmail.com>
 homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
 
-version: 2.1.0+1
+version: 2.1.1+0
 
 environment:
   sdk: ">=2.6.0 <3.0.0"

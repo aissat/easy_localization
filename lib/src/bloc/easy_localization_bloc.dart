@@ -6,8 +6,7 @@ class Resource {
   final String path;
   final bool useOnlyLangCode;
   Translations _translations;
-  Translations get translations => _translations;
-  //TODO: fix useOnlyLangCode
+  Translations get translations => _translations; 
   Resource({this.locale, this.assetLoader, this.path, this.useOnlyLangCode});
 
   void loadTranslations() async {
