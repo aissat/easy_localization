@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'utils.dart';
 import 'widgets.dart';
 import 'asset_loader.dart';
 import 'localization.dart';
@@ -121,13 +122,13 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   Future<Locale> _getDeviceLocale() async {
     final _deviceLocale = await findSystemLocale();
     log('easy localization: Device locale $_deviceLocale');
-    return _localeFromString(_deviceLocale);
+    return localeFromString(_deviceLocale);
   }
 
   Future<Locale> loadSavedLocale() async {
     final _preferences = await SharedPreferences.getInstance();
     final _strLocale = _preferences.getString('locale');
-    final locale = _strLocale != null ? _localeFromString(_strLocale) : null;
+    final locale = _strLocale != null ? localeFromString(_strLocale) : null;
 
     return locale;
   }
@@ -242,11 +243,4 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   bool shouldReload(LocalizationsDelegate<Localization> old) => false;
-}
-
-Locale _localeFromString(String val) {
-  var localeList = val.split('_');
-  return (localeList.length > 1)
-      ? Locale(localeList.first, localeList.last)
-      : Locale(localeList.first);
 }

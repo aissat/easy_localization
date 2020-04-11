@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.1.1]
+
+- Added support Locale scriptCode.
+- fixed many issues.
+
 ## [2.1.0]
 
 - Added Error widget.
