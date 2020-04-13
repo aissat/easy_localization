@@ -1,7 +1,7 @@
 {
     "title": "السلام",
     "msg": "السلام عليكم يا {} في عالم {}",
-    "msg_named": "هذا النص باللغة {lang}",
+    "msg_named": "{} مكتوبة باللغة {lang}",
     "clickMe": "إضغط هنا",
     "profile": {
         "reset_password": {

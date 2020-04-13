@@ -1,7 +1,7 @@
 {
     "title": "Hello",
     "msg": "Hello {} in the {} world ",
-    "msg_named": "Easy localization are written in the {lang} language",
+    "msg_named": "{} are written in the {lang} language",
     "clickMe": "Click me",
     "profile": {
         "reset_password": {
