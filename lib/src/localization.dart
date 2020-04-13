@@ -27,23 +27,18 @@ class Localization {
   }
 
   String tr(String key, {List<String> args, Map<String, String> namedArgs, String gender}) {
-    if (gender != null) return trGender(key, gender, args: args, namedArgs: namedArgs);
-    return _replaceArgs(_replaceNamedArgs(_resolve(key), namedArgs), args);
-  }
+    String res;
 
-  String trGender(
-    String key,
-    String gender, {
-    List<String> args,
-    Map<String, String> namedArgs,
-  }) =>
-      _replaceArgs(
-        _replaceNamedArgs(
-          _gender(key, gender: gender), 
-          namedArgs,
-        ),
-        args,
-      );
+    if(gender != null) {
+      res = _gender(key, gender: gender);
+    } else {
+      res = _resolve(key);
+    }
+
+    res = _replaceNamedArgs(res, namedArgs);
+
+    return _replaceArgs(res, args);
+  }
 
   String _replaceArgs(String res, List<String> args) {
     if (args == null || args.isEmpty) return res;
