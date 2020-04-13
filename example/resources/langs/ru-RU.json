@@ -1,7 +1,7 @@
 {
     "title": "Привет!",
     "msg": "Привет! {} добро пожаловать {} мир! ",
-    "msg_named": "Easy localization написан на языке {{lang}}",
+    "msg_named": "Easy localization написан на языке {lang}",
     "clickMe": "Нажми на меня",
     "profile": {
         "reset_password": {
