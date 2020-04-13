@@ -53,7 +53,7 @@ class Localization {
 
   String _replaceNamedArgs(String res, Map<String, String> args) {
     if(args == null || args.isEmpty) return res;
-    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{{$key}}'), value));
+    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 

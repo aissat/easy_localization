@@ -11,7 +11,7 @@ class JsonAssetLoader extends AssetLoader {
       'test': 'test',
       'test_replace_one': 'test replace {}',
       'test_replace_two': 'test replace {} {}',
-      'test_replace_named': 'test named replace {{arg1}} {{arg2}}',
+      'test_replace_named': 'test named replace {arg1} {arg2}',
       'gender': {'male': 'Hi man ;)', 'female': 'Hello girl :)'},
       'gender_and_replace': {
         'male': 'Hi {} man ;)',
@@ -31,7 +31,7 @@ class JsonAssetLoader extends AssetLoader {
           'duper': {
             'nested': 'nested.super.duper.nested',
             'nested_with_arg': 'nested.super.duper.nested_with_arg {}',
-            'nested_with_named_arg': 'nested.super.duper.nested_with_named_arg {{arg}}'
+            'nested_with_named_arg': 'nested.super.duper.nested_with_named_arg {arg}'
           }
         }
       },
