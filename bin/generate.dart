@@ -78,7 +78,7 @@ void handleLangFiles(GenerateOptions options) async {
       Directory(path.join(current.path, output.path, options.outputFile));
 
   if (!await sourcePath.exists()) {
-    print('easy localization: Source path does not exist');
+    printError('Source path does not exist');
     return;
   }
 
@@ -88,7 +88,7 @@ void handleLangFiles(GenerateOptions options) async {
   if (files.isNotEmpty) {
     generateFile(files, outputPath, options.format);
   } else {
-    print('easy localization: Source path empty');
+    printError('Source path empty');
   }
 }
 
@@ -133,11 +133,13 @@ class CodegenLoader extends AssetLoader{
       await _writeCsv(classBuilder, files);
       break;
     default:
-      print("easy localization: format not support");
+      printError("Format not support");
   }
 
   classBuilder.writeln('}');
   generatedFile.writeAsStringSync(classBuilder.toString());
+
+  printInfo('All done! File generated in ${outputPath.path}');
 }
 
 _writeJson(StringBuffer classBuilder, List<FileSystemEntity> files) async {
@@ -179,4 +181,13 @@ _writeCsv(StringBuffer classBuilder, List<FileSystemEntity> files) async {
   classBuilder.writeln(
       '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
 
+}
+
+
+void printInfo(String info) {
+  print('\u001b[32measy localization: $info\u001b[0m');
+}
+
+void printError(String error) {
+  print('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
 }
