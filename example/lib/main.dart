@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:example/generated/codegen_loager.g.dart';
 import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ void main() {
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
+    assetLoader: CodegenLoader()
     // preloaderColor: Colors.red,
   ));
 }
