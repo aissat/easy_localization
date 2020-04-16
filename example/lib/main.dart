@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'dart:ui';
 
-import 'package:example/generated/codegen_loager.g.dart';
 import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+//import 'generated/codegen_loader.g.dart';
 
 void main() {
   runApp(EasyLocalization(
@@ -28,7 +29,8 @@ void main() {
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
-    assetLoader: CodegenLoader()
+    // assetLoader: CsvAssetLoader()
+    // assetLoader: CodegenLoader()
     // preloaderColor: Colors.red,
   ));
 }

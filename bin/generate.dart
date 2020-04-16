@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:csv/csv.dart';
 import 'package:easy_localization/src/csv_parser.dart';
 import 'package:path/path.dart' as path;
 
