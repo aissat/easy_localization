@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:csv/csv.dart';
+import 'package:easy_localization/src/csv_parser.dart';
 import 'package:path/path.dart' as path;
 
 main(List<String> args) async {
@@ -47,6 +49,11 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
       callback: (String x) => generateOptions.outputFile = x,
       help: 'Output file name');
 
+  parser.addOption('format',
+      defaultsTo: 'json',
+      callback: (String x) => generateOptions.format = x,
+      help: 'Support json, csv formats');
+
   return parser;
 }
 
@@ -55,10 +62,11 @@ class GenerateOptions {
   String templateLocale;
   String outputDir;
   String outputFile;
+  String format;
 
   @override
   String toString() {
-    return 'sourceDir: $sourceDir outputDir: $outputDir outputFile: $outputFile';
+    return 'format: $format sourceDir: $sourceDir outputDir: $outputDir outputFile: $outputFile';
   }
 }
 
@@ -76,10 +84,10 @@ void handleLangFiles(GenerateOptions options) async {
   }
 
   List<FileSystemEntity> files = await dirContents(sourcePath);
-  //filtering only json
-  files = files.where((f) => f.path.contains('.json')).toList();
+  //filtering format
+  files = files.where((f) => f.path.contains('.${options.format}')).toList();
   if (files.isNotEmpty) {
-    generateFile(files, outputPath);
+    generateFile(files, outputPath, options.format);
   } else {
     print('easy localization: Source path empty');
   }
@@ -94,7 +102,8 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
   return completer.future;
 }
 
-void generateFile(List<FileSystemEntity> files, Directory outputPath) async {
+void generateFile(
+    List<FileSystemEntity> files, Directory outputPath, String format) async {
   File generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
@@ -117,8 +126,24 @@ class CodegenLoader extends AssetLoader{
   }
 
   ''');
-  
+  switch (format) {
+    case 'json':
+      await _writeJson(classBuilder, files);
+      break;
+    case 'csv':
+      await _writeCsv(classBuilder, files);
+      break;
+    default:
+      print("easy localization: format not support");
+  }
+
+  classBuilder.writeln('}');
+  generatedFile.writeAsStringSync(classBuilder.toString());
+}
+
+_writeJson(StringBuffer classBuilder, List<FileSystemEntity> files) async {
   List<String> listLocales = List();
+
   for (FileSystemEntity file in files) {
     String localeName =
         path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
@@ -134,8 +159,25 @@ class CodegenLoader extends AssetLoader{
   }
 
   classBuilder.writeln(
-      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(' , ')}\};');
+      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
+}
 
-  classBuilder.writeln('}');
-  generatedFile.writeAsStringSync(classBuilder.toString());
+_writeCsv(StringBuffer classBuilder, List<FileSystemEntity> files) async {
+  List<String> listLocales = List();
+  final fileData = File(files.first.path);
+
+  CSVParser csvParser = CSVParser(await fileData.readAsString());
+
+  List listLangs = csvParser.getLanguages(); 
+  for(String localeName in listLangs){
+    listLocales.add('"$localeName": $localeName');
+    String mapString = JsonEncoder.withIndent("  ").convert(csvParser.getLanguageMap(localeName)) ;
+
+    classBuilder.writeln(
+      '  static const Map<String,dynamic> $localeName = ${mapString};\n');
+  }
+
+  classBuilder.writeln(
+      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
+
 }
