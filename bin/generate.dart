@@ -51,7 +51,8 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
   parser.addOption('format',
       defaultsTo: 'json',
       callback: (String x) => generateOptions.format = x,
-      help: 'Support json, csv formats');
+      help: 'Support json, csv formats',
+      allowed: ['json', 'csv']);
 
   return parser;
 }
