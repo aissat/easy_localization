@@ -1,8 +1,10 @@
 # Changelog
 
-## [2.1.1]
+## [2.2.0]
 
 - Added support Locale scriptCode.
+- Added support CSV files.
+- Added Code generation of localization files.
 - fixed many issues.
 
 ## [2.1.0]

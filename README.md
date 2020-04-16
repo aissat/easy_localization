@@ -20,9 +20,10 @@ this package simplify the internationalizing process using Json file
 ## Why easy_localization
 
 - [x] simplifying and making easy the internationalizing process in Flutter.
-- [x] Using JSON Files .
+- [x] Using JSON and CSV Files .
 - [x] Error widget
 - [x] Based on Bloc Archi
+- [x] Code generation of localization files
 - [x] Load locale from remote or backend.
 - [x] Automatically saving App state (save/restor the selected locale).
 - [x] Supports `plural`
@@ -36,6 +37,13 @@ this package simplify the internationalizing process using Json file
 - [x] Testable and easy maintenence
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
+
+### [2.2.0]
+
+- Added support Locale scriptCode.
+- Added support CSV files.
+- Added Code generation of localization files.
+- fixed many issues.
 
 ### [2.1.0]
 
@@ -78,23 +86,22 @@ You must create a folder in your project's root: the `path`. Some examples:
 >
 > /resources/"langs" , "i18n", "locale" or anyname ...
 
-Inside this folder, must put the _json_ files containing the translated keys :
+Inside this folder, must put the _json_ or _csv_ files containing the translated keys :
 
-> `path`/${languageCode}-${countryCode}.json
+> `path`/${languageCode}-${countryCode}.${formatFile}
 
 [example:](https://github.com/aissat/easy_localization/tree/master/example)
 
-- en.json to en-US.json
-- ar.json to ar-DZ.json
-- zh.json to zh-CN.json
-- zh.json to zh-TW.json
+- en.json or en-US.json
+- ar.json or ar-DZ.json
+- langs.csv
 
 must declare the subtree in your **_pubspec.yaml_** as assets:
 
 ```yaml
 flutter:
   assets:
-    - {`path`/{languageCode}-{countryCode}.json}
+    - {`path`/{languageCode}-{countryCode}.{formatFile}}
 ```
 
 The next step :
@@ -107,6 +114,8 @@ import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+//import 'generated/codegen_loader.g.dart';
 
 void main(){
   runApp(EasyLocalization(
@@ -123,6 +132,8 @@ void main(){
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
+    // assetLoader: CsvAssetLoader()
+    // assetLoader: CodegenLoader()
   ));
 }
 
@@ -269,33 +280,31 @@ EasyLocalization.of(context).locale = locale;
 
 #### Load translations from Custom AssetLoader
 
-example from Csv file:
+See [other examples](https://github.com/aissat/easy_localization/blob/master/example/lib/custom_asset_loader.dart) for more options.
 
+Example from Csv file:
+
+1. Create custom class loader
 ```dart
 //
 // load example/resources/langs/langs.csv
 //
 class CsvAssetLoader extends AssetLoader {
+  CSVParser csvParser;
+
   @override
   Future<Map<String, dynamic>> load(String path, Locale locale) async {
-    final csv = await rootBundle.loadString(path);
-    final converter = CsvToListConverter();
-    final val = converter.convert(csv);
-    return _mappingData(locale, val);
-  }
-
-  Map<String, String> _mappingData(Locale locale, List<List<dynamic>> table) {
-    var languageIndex = table.first.indexOf(locale.languageCode);
-    var translations = <String, String>{};
-    for (var i = 1; i < table.length; i++) {
-      translations.addAll({table[i][0]: table[i][languageIndex]});
+    if (csvParser == null) {
+      csvParser = CSVParser(await rootBundle.loadString(path));
+    } else {
+      log('easy localization: CSV parser already loaded');
     }
-    return translations;
+    return csvParser.getLanguageMap(locale.toString());
   }
 }
 ```
 
-The next step :
+2. Change assetLoader to your custom class
 
 ```dart
 ...
@@ -305,17 +314,36 @@ void main(){
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
     path: 'resources/langs/langs.csv',
     assetLoader: CsvAssetLoader()
-    // fallbackLocale: Locale('en', 'US'),
-    // useOnlyLangCode: true,
-    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-    // assetLoader: RootBundleAssetLoader()
-    // assetLoader: TestsAssetLoader()
-    // assetLoader: FileAssetLoader()
-    // assetLoader: StringAssetLoader()
   ));
 }
 ...
 ```
+
+3. All done!.
+
+#### Code generation of localization files
+
+Code generation support json and csv file, for more information run in terminal `flutter pub run easy_localization:generate -h`
+
+Steps:
+1. Go to the folder with your project in terminal
+2. Run in terminal `flutter pub run easy_localization:generate`
+3. Change asset loader and past import.
+
+```dart
+import 'generated/codegen_loader.g.dart';
+...
+void main(){
+  runApp(EasyLocalization(
+    child: MyApp(),
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    path: 'resources/langs',
+    assetLoader: assetLoader: CodegenLoader()
+  ));
+}
+...
+```
+4. All done!.
 
 ## Screenshots
 
