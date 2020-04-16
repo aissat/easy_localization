@@ -40,7 +40,12 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
   parser.addOption('output-dir',
       defaultsTo: 'lib/generated',
       callback: (String x) => generateOptions.outputDir = x,
-      help: 'Output folder stores all generated files');
+      help: 'Output folder stores generated file');
+
+  parser.addOption('output-file',
+      defaultsTo: 'codegen_loader.g.dart',
+      callback: (String x) => generateOptions.outputFile = x,
+      help: 'Output file name');
 
   return parser;
 }
@@ -49,10 +54,11 @@ class GenerateOptions {
   String sourceDir;
   String templateLocale;
   String outputDir;
+  String outputFile;
 
   @override
   String toString() {
-    return 'sourceDir: $sourceDir outputDir: $outputDir';
+    return 'sourceDir: $sourceDir outputDir: $outputDir outputFile: $outputFile';
   }
 }
 
@@ -61,7 +67,7 @@ void handleLangFiles(GenerateOptions options) async {
   final Directory source = Directory.fromUri(Uri.parse(options.sourceDir));
   final Directory output = Directory.fromUri(Uri.parse(options.outputDir));
   final Directory sourcePath = Directory(path.join(current.path, source.path));
-  final Directory outputPath = Directory(path.join(current.path, output.path, 'codegen_loager.g.dart'));
+  final Directory outputPath = Directory(path.join(current.path, output.path, options.outputFile));
 
   if (!await sourcePath.exists()) {
     print('easy localization: Source path does not exist');
@@ -109,7 +115,6 @@ class CodegenLoader extends AssetLoader{
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale ) {
-
     return Future.value(mapLocales[locale.toString()]);
   }
 
@@ -122,99 +127,11 @@ class CodegenLoader extends AssetLoader{
 
     Map<String, dynamic> data = json.decode(await fileData.readAsString());
 
-    String mapString = JsonEncoder.withIndent("    ").convert(data);
+    String mapString = JsonEncoder.withIndent("  ").convert(data);
     
-    classBuilder.writeln('  static const Map<String,dynamic> $localeName = ${mapString};');
+    classBuilder.writeln('  static const Map<String,dynamic> $localeName = ${mapString};\n');
   }
   classBuilder.writeln('  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(' , ')}\};');
   classBuilder.writeln('}');
   generatedFile.writeAsStringSync(classBuilder.toString());
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-Map<String, FileSystemEntity> getValidStringFileMap(files) {
-  Map<String, FileSystemEntity> validMap;
-  for (FileSystemEntity file in files) {
-
-    String fileName = path.basename(file.path);
-    String locale = fileName.replaceAll('.json', '');
-    validMap[locale] = file;
-  }
-
-  return validMap;
-}
-*/
-
-/*
-void handleGenerateI18nFiles(I18nOption option) async {
-  Directory current = Directory.current;
-
-  var sourcePath = Directory(path.join(current.path, option.sourceDir));
-  if (!await sourcePath.exists()) {
-    print('Source path does not exist');
-    return;
-  }
-
-  List<FileSystemEntity> files =
-      await dirContents(Directory(path.join(current.path, option.sourceDir)));
-  Map<String, FileSystemEntity> validFilesMap = getValidStringFileMap(files);
-  FileSystemEntity defaultTemplateLang =
-      getDefaultTemplateLang(validFilesMap, option.templateLocale);
-  if (null != defaultTemplateLang) {
-    Map<String, Message> defaultJsonKeyMessageMap =
-        await generateJsonKeyMessageMap(File(defaultTemplateLang.path));
-//    printInfo(defaultJsonKeyMessageMap.toString());
-//    printInfo('outputDir: ${option.outputDir}');
-
-    String defaultLang = path.basename(getLocale(defaultTemplateLang.path));
-
-    // Generate messages_all.dart
-    _handleGenerateMessageAllDart(
-        path.join(current.path, option.outputDir, 'messages_all.dart'),
-        defaultLang,
-        defaultJsonKeyMessageMap,
-        validFilesMap);
-
-    // Generate i18n.dart
-    _handleGenerateI18nDart(
-        path.join(current.path, option.outputDir, 'i18n.dart'),
-        defaultLang,
-        defaultJsonKeyMessageMap,
-        validFilesMap);
-
-    printInfo('Finished to generate 2 files.');
-  }
-}*/
