@@ -67,7 +67,8 @@ void handleLangFiles(GenerateOptions options) async {
   final Directory source = Directory.fromUri(Uri.parse(options.sourceDir));
   final Directory output = Directory.fromUri(Uri.parse(options.outputDir));
   final Directory sourcePath = Directory(path.join(current.path, source.path));
-  final Directory outputPath = Directory(path.join(current.path, output.path, options.outputFile));
+  final Directory outputPath =
+      Directory(path.join(current.path, output.path, options.outputFile));
 
   if (!await sourcePath.exists()) {
     print('easy localization: Source path does not exist');
@@ -77,12 +78,11 @@ void handleLangFiles(GenerateOptions options) async {
   List<FileSystemEntity> files = await dirContents(sourcePath);
   //filtering only json
   files = files.where((f) => f.path.contains('.json')).toList();
-  if (files.isNotEmpty){
+  if (files.isNotEmpty) {
     generateFile(files, outputPath);
-  }else{
+  } else {
     print('easy localization: Source path empty');
   }
-  //final Map<String, FileSystemEntity> validFilesMap = getValidStringFileMap(files);
 }
 
 Future<List<FileSystemEntity>> dirContents(Directory dir) {
@@ -90,13 +90,11 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
   var completer = Completer<List<FileSystemEntity>>();
   var lister = dir.list(recursive: false);
   lister.listen((file) => files.add(file),
-      // should also register onError
       onDone: () => completer.complete(files));
   return completer.future;
 }
 
-void generateFile(List<FileSystemEntity> files, Directory outputPath) async{
-
+void generateFile(List<FileSystemEntity> files, Directory outputPath) async {
   File generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
@@ -105,7 +103,7 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath) async{
   StringBuffer classBuilder = StringBuffer();
 
   classBuilder.writeln(
-  '''// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+      '''// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 import 'dart:ui';
 
 import 'package:easy_localization/src/asset_loader.dart';
@@ -119,19 +117,25 @@ class CodegenLoader extends AssetLoader{
   }
 
   ''');
+  
   List<String> listLocales = List();
-  for (FileSystemEntity file in files){
-    String localeName = path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
+  for (FileSystemEntity file in files) {
+    String localeName =
+        path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
     listLocales.add('"$localeName": $localeName');
     final fileData = File(file.path);
 
     Map<String, dynamic> data = json.decode(await fileData.readAsString());
 
     String mapString = JsonEncoder.withIndent("  ").convert(data);
-    
-    classBuilder.writeln('  static const Map<String,dynamic> $localeName = ${mapString};\n');
+
+    classBuilder.writeln(
+        '  static const Map<String,dynamic> $localeName = ${mapString};\n');
   }
-  classBuilder.writeln('  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(' , ')}\};');
+
+  classBuilder.writeln(
+      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(' , ')}\};');
+
   classBuilder.writeln('}');
   generatedFile.writeAsStringSync(classBuilder.toString());
 }
