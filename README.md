@@ -284,7 +284,14 @@ See [other examples](https://github.com/aissat/easy_localization/blob/master/exa
 
 Example from Csv file:
 
-1. Create custom class loader
+1. add dependency
+
+```yaml
+dependencies:
+  csv: <last_version>
+```
+
+2. Create custom class loader
 ```dart
 //
 // load example/resources/langs/langs.csv
@@ -304,7 +311,7 @@ class CsvAssetLoader extends AssetLoader {
 }
 ```
 
-2. Change assetLoader to your custom class
+3. Change assetLoader to your custom class
 
 ```dart
 ...
@@ -319,7 +326,7 @@ void main(){
 ...
 ```
 
-3. All done!.
+4. All done!.
 
 #### Code generation of localization files
 
