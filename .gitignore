@@ -628,4 +628,4 @@ pubspec.lock
 example/ios/Runner.xcodeproj/project.pbxproj
 
 # Allow
-!bin/generate.dart
+!/bin/
