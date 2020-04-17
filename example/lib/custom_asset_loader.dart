@@ -8,7 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization/src/csv_parser.dart';
+
+import 'csv_parser.dart';
 
 //
 //

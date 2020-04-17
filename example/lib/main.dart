@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-//import 'generated/codegen_loader.g.dart';
+import 'generated/codegen.g.dart';
 
 void main() {
   runApp(EasyLocalization(
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('title').tr(context: context),
+        title: Text(KeyCodegen.title).tr(context: context),
         //Text(AppLocalizations.of(context).tr('title')),
         actions: <Widget>[
           FlatButton(
@@ -110,14 +110,14 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
             ),
             Text(
-              'switch.with_arg',
+              KeyCodegen.gender_with_arg,
               style: TextStyle(
                   color: Colors.grey.shade600,
                   fontSize: 19,
                   fontWeight: FontWeight.bold),
             ).tr(args: ['aissat'], gender: _gender ? 'female' : 'male'),
             Text(
-              tr('switch', gender: _gender ? 'female' : 'male'),
+              tr(KeyCodegen.gender, gender: _gender ? 'female' : 'male'),
               style: TextStyle(
                   color: Colors.grey.shade600,
                   fontSize: 15,
@@ -134,20 +134,20 @@ class _MyHomePageState extends State<MyHomePage> {
             Spacer(
               flex: 1,
             ),
-            Text('msg').tr(args: ['aissat', 'Flutter']),
-            Text('msg_named').tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
-            Text('clicked').plural(counter),
+            Text(KeyCodegen.msg).tr(args: ['aissat', 'Flutter']),
+            Text(KeyCodegen.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+            Text(KeyCodegen.clicked).plural(counter),
             FlatButton(
               onPressed: () {
                 incrementCounter();
               },
-              child: Text('clickMe').tr(),
+              child: Text(KeyCodegen.clickMe).tr(),
             ),
             SizedBox(
               height: 15,
             ),
             Text(
-                plural('amount', counter,
+                plural(KeyCodegen.amount, counter,
                     format: NumberFormat.currency(
                         locale: Intl.defaultLocale, symbol: '€')),
                 style: TextStyle(
@@ -161,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 EasyLocalization.of(context).deleteSaveLocale();
               },
-              child: Text('reset_locale').tr(),
+              child: Text(KeyCodegen.reset_locale).tr(),
             ),
             Spacer(
               flex: 1,
