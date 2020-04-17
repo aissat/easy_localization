@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:easy_localization/src/csv_parser.dart';
 import 'package:path/path.dart' as path;
 
-main(List<String> args) async {
+void main(List<String> args) {
   if (_isHelpCommand(args)) {
     _printHelperDisplay();
   } else {
@@ -24,7 +23,7 @@ void _printHelperDisplay() {
 }
 
 GenerateOptions _generateOption(List<String> args) {
-  GenerateOptions generateOptions = GenerateOptions();
+  var generateOptions = GenerateOptions();
   var parser = _generateArgParser(generateOptions);
   parser.parse(args);
   return generateOptions;
@@ -34,11 +33,13 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
   var parser = ArgParser();
 
   parser.addOption('source-dir',
+      abbr: 's',
       defaultsTo: 'resources/langs',
       callback: (String x) => generateOptions.sourceDir = x,
       help: 'Source folder contains all string json files');
 
   parser.addOption('output-dir',
+      abbr: 'O',
       defaultsTo: 'lib/generated',
       callback: (String x) => generateOptions.outputDir = x,
       help: 'Output folder stores generated file');
@@ -49,10 +50,11 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
       help: 'Output file name');
 
   parser.addOption('format',
+      abbr: 'f',
       defaultsTo: 'json',
       callback: (String x) => generateOptions.format = x,
-      help: 'Support json, csv formats',
-      allowed: ['json', 'csv']);
+      help: 'Support json, dart formats',
+      allowed: ['json', 'dart']);
 
   return parser;
 }
@@ -71,11 +73,11 @@ class GenerateOptions {
 }
 
 void handleLangFiles(GenerateOptions options) async {
-  final Directory current = Directory.current;
-  final Directory source = Directory.fromUri(Uri.parse(options.sourceDir));
-  final Directory output = Directory.fromUri(Uri.parse(options.outputDir));
-  final Directory sourcePath = Directory(path.join(current.path, source.path));
-  final Directory outputPath =
+  final current = Directory.current;
+  final source = Directory.fromUri(Uri.parse(options.sourceDir));
+  final output = Directory.fromUri(Uri.parse(options.outputDir));
+  final sourcePath = Directory(path.join(current.path, source.path));
+  final outputPath =
       Directory(path.join(current.path, output.path, options.outputFile));
 
   if (!await sourcePath.exists()) {
@@ -83,9 +85,9 @@ void handleLangFiles(GenerateOptions options) async {
     return;
   }
 
-  List<FileSystemEntity> files = await dirContents(sourcePath);
+  var files = await dirContents(sourcePath);
   //filtering format
-  files = files.where((f) => f.path.contains('.${options.format}')).toList();
+  files = files.where((f) => f.path.contains('.json')).toList();
   if (files.isNotEmpty) {
     generateFile(files, outputPath, options.format);
   } else {
@@ -94,7 +96,7 @@ void handleLangFiles(GenerateOptions options) async {
 }
 
 Future<List<FileSystemEntity>> dirContents(Directory dir) {
-  List<FileSystemEntity> files = [];
+  var files = <FileSystemEntity>[];
   var completer = Completer<List<FileSystemEntity>>();
   var lister = dir.list(recursive: false);
   lister.listen((file) => files.add(file),
@@ -104,15 +106,80 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
 
 void generateFile(
     List<FileSystemEntity> files, Directory outputPath, String format) async {
-  File generatedFile = File(outputPath.path);
+  var generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
   }
 
-  StringBuffer classBuilder = StringBuffer();
+  var classBuilder = StringBuffer();
 
-  classBuilder.writeln(
-      '''// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+  switch (format) {
+    case 'json':
+      await _writeJson(classBuilder, files);
+      break;
+    case 'dart':
+      await _writedart(classBuilder, files);
+      break;
+    // case 'csv':
+    //   await _writeCsv(classBuilder, files);
+    // break;
+    default:
+      printError('Format not support');
+  }
+
+  classBuilder.writeln('}');
+  generatedFile.writeAsStringSync(classBuilder.toString());
+
+  printInfo('All done! File generated in ${outputPath.path}');
+}
+
+Future _writedart(StringBuffer classBuilder, List<FileSystemEntity> files) async {
+  var file = '''
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+abstract class  KeyCodegen {
+''';
+
+  final fileData = File(files.first.path);
+
+  Map<String, dynamic> translations =
+      json.decode(await fileData.readAsString());
+
+  file += _resolv(translations);
+
+  classBuilder.writeln(file);
+}
+
+String _resolv(Map<String, dynamic> translations, [String hKey]) {
+  var file = '';
+  final l = ['few', 'many', 'one', 'other', 'two', 'zero', 'male', 'female'];
+
+  final sortedKeys = translations.keys.toList();
+  
+  
+  for (var key in sortedKeys) {
+    
+    
+    if (translations[key] is Map) {
+      // file += '  static const $key = \'$hKey.$key\';\n';
+      // print( '  static const $key = \'$hKey.$key\';\n');
+      file += _resolv(translations[key], key);
+      // print('$key ==> ' );
+    } 
+    if (!l.contains(key)) {
+      hKey!=null ?
+      file +=  '  static const $hKey\_$key = \'$hKey.$key\';\n' :
+      file +=  '  static const $key = \'$key\';\n';
+    }
+  }
+
+  return file;
+}
+
+Future _writeJson(
+    StringBuffer classBuilder, List<FileSystemEntity> files) async {
+  var gFile = '''
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 import 'dart:ui';
 
 import 'package:easy_localization/src/asset_loader.dart';
@@ -125,65 +192,46 @@ class CodegenLoader extends AssetLoader{
     return Future.value(mapLocales[locale.toString()]);
   }
 
-  ''');
-  switch (format) {
-    case 'json':
-      await _writeJson(classBuilder, files);
-      break;
-    case 'csv':
-      await _writeCsv(classBuilder, files);
-      break;
-    default:
-      printError("Format not support");
-  }
+  ''';
 
-  classBuilder.writeln('}');
-  generatedFile.writeAsStringSync(classBuilder.toString());
+  final listLocales = [];
 
-  printInfo('All done! File generated in ${outputPath.path}');
-}
-
-_writeJson(StringBuffer classBuilder, List<FileSystemEntity> files) async {
-  List<String> listLocales = List();
-
-  for (FileSystemEntity file in files) {
-    String localeName =
+  for (var file in files) {
+    final localeName =
         path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
     listLocales.add('"$localeName": $localeName');
     final fileData = File(file.path);
 
     Map<String, dynamic> data = json.decode(await fileData.readAsString());
 
-    String mapString = JsonEncoder.withIndent("  ").convert(data);
-
-    classBuilder.writeln(
-        '  static const Map<String,dynamic> $localeName = ${mapString};\n');
+    final mapString = JsonEncoder.withIndent('  ').convert(data);
+    gFile += '  static const Map<String,dynamic> $localeName = ${mapString};\n';
   }
 
-  classBuilder.writeln(
-      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
+  gFile +=
+      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
+  classBuilder.writeln(gFile);
 }
 
-_writeCsv(StringBuffer classBuilder, List<FileSystemEntity> files) async {
-  List<String> listLocales = List();
-  final fileData = File(files.first.path);
+// _writeCsv(StringBuffer classBuilder, List<FileSystemEntity> files) async {
+//   List<String> listLocales = List();
+//   final fileData = File(files.first.path);
 
-  CSVParser csvParser = CSVParser(await fileData.readAsString());
+//   // CSVParser csvParser = CSVParser(await fileData.readAsString());
 
-  List listLangs = csvParser.getLanguages(); 
-  for(String localeName in listLangs){
-    listLocales.add('"$localeName": $localeName');
-    String mapString = JsonEncoder.withIndent("  ").convert(csvParser.getLanguageMap(localeName)) ;
+//   // List listLangs = csvParser.getLanguages();
+//   for(String localeName in listLangs){
+//     listLocales.add('"$localeName": $localeName');
+//     String mapString = JsonEncoder.withIndent("  ").convert(csvParser.getLanguageMap(localeName)) ;
 
-    classBuilder.writeln(
-      '  static const Map<String,dynamic> $localeName = ${mapString};\n');
-  }
+//     classBuilder.writeln(
+//       '  static const Map<String,dynamic> $localeName = ${mapString};\n');
+//   }
 
-  classBuilder.writeln(
-      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
+//   classBuilder.writeln(
+//       '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
 
-}
-
+// }
 
 void printInfo(String info) {
   print('\u001b[32measy localization: $info\u001b[0m');
