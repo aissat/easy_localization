@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:csv/csv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/src/csv_parser.dart';
 
 //
 //
@@ -65,20 +66,15 @@ class TestsAssetLoader extends AssetLoader {
 // load example/resources/langs/langs.csv
 //
 class CsvAssetLoader extends AssetLoader {
+  CSVParser csvParser;
+
   @override
   Future<Map<String, dynamic>> load(String path, Locale locale) async {
-    final csv = await rootBundle.loadString(path);
-    final converter = CsvToListConverter();
-    final val = converter.convert(csv);
-    return _mappingData(locale, val);
-  }
-
-  Map<String, String> _mappingData(Locale locale, List<List<dynamic>> table) {
-    var languageIndex = table.first.indexOf(locale.languageCode);
-    var translations = <String, String>{};
-    for (var i = 1; i < table.length; i++) {
-      translations.addAll({table[i][0]: table[i][languageIndex]});
+    if (csvParser == null) {
+      csvParser = CSVParser(await rootBundle.loadString(path));
+    } else {
+      log('easy localization: CSV parser already loaded');
     }
-    return translations;
+    return csvParser.getLanguageMap(locale.toString());
   }
 }
