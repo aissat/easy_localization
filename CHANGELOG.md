@@ -109,7 +109,7 @@ this version came with many updates, here are the main ones:
 
   ``` json
   {
-    "switch":{
+    "gender":{
       "male": "Hi man ;)",
       "female": "Hello girl :)"
     }
@@ -126,7 +126,7 @@ this version came with many updates, here are the main ones:
   
   ``` json
   {
-    "switch":{
+    "gender":{
       "male": "Hi man ;) {}",
       "female": "Hello girl :) {}"
     }
@@ -144,7 +144,7 @@ this version came with many updates, here are the main ones:
 
   ``` json
   {
-    "switch":{
+    "gender":{
       "male": "Hi man ;)",
       "female": "Hello girl :)"
     }
@@ -233,7 +233,7 @@ this version came with many updates, here are the main ones:
   "clickMe": "Click me",
   "profile": {
     "reset_password": {
-      "title": "Reset Password",
+      "label":  "Reset Password",
       "username": "Username",
       "password": "password"
     }

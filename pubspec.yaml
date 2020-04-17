@@ -23,7 +23,6 @@ dev_dependencies:
   pedantic: ^1.8.0+1
   args: ^1.5.2
   path: ^1.6.4
-  csv: ^4.0.3
 
 flutter:
   assets:
