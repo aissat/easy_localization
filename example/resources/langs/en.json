@@ -5,7 +5,7 @@
     "clickMe": "Click me",
     "profile": {
         "reset_password": {
-            "title": "Reset Password",
+            "label": "Reset Password",
             "username": "Username",
             "password": "password"
         }
@@ -26,7 +26,7 @@
         "many": "Your amount : {} ",
         "other": "Your amount : {} "
     },
-    "switch": {
+    "gender": {
         "male": "Hi man ;) ",
         "female": "Hello girl :)",
         "with_arg": {

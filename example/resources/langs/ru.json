@@ -5,7 +5,7 @@
     "clickMe": "Нажми на меня",
     "profile": {
         "reset_password": {
-            "title": "Сбросить пароль",
+            "label": "Сбросить пароль",
             "username": "Логин",
             "password": "Пароль"
         }
@@ -26,7 +26,7 @@
         "many": "Твой счет : {} ",
         "other": "Твой счет : {} "
     },
-    "switch": {
+    "gender": {
         "male": "Привет мужык ;) ",
         "female": "Привет девчуля :)",
         "with_arg": {
