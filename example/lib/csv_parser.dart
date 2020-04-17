@@ -14,10 +14,10 @@ class CSVParser {
   }
 
   Map<String, String> getLanguageMap(String localeName) {
-    int indexLocale = lines.first.indexOf(localeName);
+    final indexLocale = lines.first.indexOf(localeName);
 
-    Map<String, String> translations = Map();
-    for (int i = 1; i < lines.length; i++) {
+    final translations = {};
+    for (var i = 1; i < lines.length; i++) {
       translations.addAll({lines[i][0]: lines[i][indexLocale]});
     }
     return translations;
