@@ -3,7 +3,7 @@ title,Hello,السلام,Hallo,Привет!
 msg,Hello {} in the {} world ,السلام عليكم يا {} في عالم {},Hallo {} in der {} welt ,Привет! {} добро пожаловать {} мир! 
 msg_named,{} are written in the {lang} language,{} مكتوبة باللغة {lang},{} ist in {lang} geschrieben,{} написан на языке {lang}
 clickMe,Click me,إضغط هنا,Click mich,Нажми на меня
-profile.reset_password.title,Reset Password,اعادة تعين كلمة السر,Password zurГјcksetzten,Сбросить пароль
+profile.reset_password.label,Reset Password,اعادة تعين كلمة السر,Password zurГјcksetzten,Сбросить пароль
 profile.reset_password.username,Username,المستخدم,Name,Логин
 profile.reset_password.password,password,كلمة السر,Password,Пароль
 clicked.zero,You clicked {} times!,{} نقرة!,Du hast {} mal geklickt,Ты кликнул {} раз!
@@ -18,8 +18,8 @@ amount.two,Your amount : {} , المبلغ : {},Deine Klicks: {},Твой сче
 amount.few,Your amount : {} , المبلغ : {},Deine Klicks: {},Твой счет : {} 
 amount.many,Your amount : {} , المبلغ : {},Deine Klicks: {},Твой счет : {} 
 amount.other,Your amount : {} , المبلغ : {},Deine Klicks: {},Твой счет : {} 
-switch.male,Hi man ;) , مرحبا يا رجل,Hi Mann ;) ,Привет мужык ;) 
-switch.female,Hello girl :), مرحبا بك يا فتاة,Hallo Frau :),Привет девчуля :)
-switch.with_arg.male,Hi man ;) {},{} مرحبا يا رجل,Hi Mann ;) {},Привет мужык ;) {}
-switch.with_arg.female,Hello girl :) {},{} مرحبا بك يا فتاة,Hallo Frau :) {},Привет девчуля :) {}
+gender.male,Hi man ;) , مرحبا يا رجل,Hi Mann ;) ,Привет мужык ;) 
+gender.female,Hello girl :), مرحبا بك يا فتاة,Hallo Frau :),Привет девчуля :)
+gender.with_arg.male,Hi man ;) {},{} مرحبا يا رجل,Hi Mann ;) {},Привет мужык ;) {}
+gender.with_arg.female,Hello girl :) {},{} مرحبا بك يا فتاة,Hallo Frau :) {},Привет девчуля :) {}
 reset_locale,Reset Saved Language,إعادة تعيين اللغة المحفوظة,Gespeicherte Sprache zurГјcksettzen,Сбросить сохраненный язык

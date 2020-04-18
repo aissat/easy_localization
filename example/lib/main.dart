@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'custom_asset_loader.dart';
 import 'generated/locale_keys.g.dart';
 
 void main() {
@@ -18,7 +19,7 @@ void main() {
       Locale('de', 'DE'),
       Locale('ru', 'RU')
     ],
-    path: 'resources/langs',
+    path: 'resources/langs/langs.csv', //'resources/langs',
     // fallbackLocale: Locale('en', 'US'),
     // saveLocale: false,
     // useOnlyLangCode: true,
@@ -29,7 +30,7 @@ void main() {
     // assetLoader: TestsAssetLoader()
     // assetLoader: FileAssetLoader()
     // assetLoader: StringAssetLoader()
-    // assetLoader: CsvAssetLoader()
+    assetLoader: CsvAssetLoader()
     // assetLoader: CodegenLoader()
     // preloaderColor: Colors.red,
   ));

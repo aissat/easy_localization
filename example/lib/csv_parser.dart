@@ -13,10 +13,10 @@ class CSVParser {
     return lines.first.sublist(1, lines.first.length);
   }
 
-  Map<String, String> getLanguageMap(String localeName) {
+  Map<String, dynamic> getLanguageMap(String localeName) {
     final indexLocale = lines.first.indexOf(localeName);
 
-    final translations = {};
+    var translations = <String, dynamic>{};
     for (var i = 1; i < lines.length; i++) {
       translations.addAll({lines[i][0]: lines[i][indexLocale]});
     }
