@@ -45,6 +45,7 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
       help: 'Output folder stores generated file');
 
   parser.addOption('output-file',
+      abbr: 'o',
       defaultsTo: 'codegen_loader.g.dart',
       callback: (String x) => generateOptions.outputFile = x,
       help: 'Output file name');
@@ -54,7 +55,7 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
       defaultsTo: 'json',
       callback: (String x) => generateOptions.format = x,
       help: 'Support json, dart formats',
-      allowed: ['json', 'dart']);
+      allowed: ['json', 'keys']);
 
   return parser;
 }
@@ -117,8 +118,8 @@ void generateFile(
     case 'json':
       await _writeJson(classBuilder, files);
       break;
-    case 'dart':
-      await _writedart(classBuilder, files);
+    case 'keys':
+      await _writekeys(classBuilder, files);
       break;
     // case 'csv':
     //   await _writeCsv(classBuilder, files);
@@ -133,11 +134,11 @@ void generateFile(
   printInfo('All done! File generated in ${outputPath.path}');
 }
 
-Future _writedart(StringBuffer classBuilder, List<FileSystemEntity> files) async {
+Future _writekeys(StringBuffer classBuilder, List<FileSystemEntity> files) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  KeyCodegen {
+abstract class  LocaleKeys {
 ''';
 
   final fileData = File(files.first.path);
@@ -155,17 +156,11 @@ String _resolv(Map<String, dynamic> translations, [String hKey]) {
   final l = ['few', 'many', 'one', 'other', 'two', 'zero', 'male', 'female'];
 
   final sortedKeys = translations.keys.toList();
-  
-  
+
   for (var key in sortedKeys) {
-    
-    
     if (translations[key] is Map) {
-      // file += '  static const $key = \'$hKey.$key\';\n';
-      // print( '  static const $key = \'$hKey.$key\';\n');
       file += _resolv(translations[key], key);
-      // print('$key ==> ' );
-    } 
+    }
     if (!l.contains(key)) {
       hKey!=null ?
       file +=  '  static const $hKey\_$key = \'$hKey.$key\';\n' :
