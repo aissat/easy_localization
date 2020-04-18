@@ -44,11 +44,7 @@ class MyApp extends StatelessWidget {
     log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
       title: 'title'.tr(),
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        EasyLocalization.of(context).delegate,
-      ],
+      localizationsDelegates:EasyLocalization.of(context).delegates,
       supportedLocales: EasyLocalization.of(context).supportedLocales,
       locale: EasyLocalization.of(context).locale,
       theme: ThemeData(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils.dart';
@@ -169,6 +170,22 @@ class _EasyLocalizationProvider extends InheritedWidget {
   final Locale _locale;
   final _EasyLocalizationBloc bloc;
   final _EasyLocalizationDelegate delegate;
+  /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
+  ///
+  /// ```dart
+  ///   delegates = [
+  ///     delegate
+  ///     GlobalMaterialLocalizations.delegate,
+  ///     GlobalWidgetsLocalizations.delegate,
+  ///     GlobalCupertinoLocalizations.delegate
+  ///   ],
+  /// ```
+  List<LocalizationsDelegate> get delegates => [
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ];
 
   List<Locale> get supportedLocales => parent.supportedLocales;
 
