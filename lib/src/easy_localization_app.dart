@@ -170,6 +170,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   final Locale _locale;
   final _EasyLocalizationBloc bloc;
   final _EasyLocalizationDelegate delegate;
+
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
   ///
   /// ```dart

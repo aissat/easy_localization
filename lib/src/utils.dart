@@ -1,5 +1,5 @@
-
 part of 'easy_localization_app.dart';
+
 Locale localeFromString(String localeString) {
   final localeList = localeString.split('_');
   switch (localeList.length) {

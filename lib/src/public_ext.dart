@@ -4,8 +4,17 @@ import 'package:intl/intl.dart';
 import 'public.dart' as ez;
 
 extension TextTranslateExtension on Text {
-  Text tr({BuildContext context, List<String> args, Map<String, String> namedArgs, String gender}) =>
-      Text(ez.tr(data, context: context, args: args, namedArgs: namedArgs, gender: gender),
+  Text tr(
+          {BuildContext context,
+          List<String> args,
+          Map<String, String> namedArgs,
+          String gender}) =>
+      Text(
+          ez.tr(data,
+              context: context,
+              args: args,
+              namedArgs: namedArgs,
+              gender: gender),
           key: key,
           style: style,
           strutStyle: strutStyle,

@@ -26,10 +26,11 @@ class Localization {
     return translations == null ? false : true;
   }
 
-  String tr(String key, {List<String> args, Map<String, String> namedArgs, String gender}) {
+  String tr(String key,
+      {List<String> args, Map<String, String> namedArgs, String gender}) {
     String res;
 
-    if(gender != null) {
+    if (gender != null) {
       res = _gender(key, gender: gender);
     } else {
       res = _resolve(key);
@@ -47,8 +48,9 @@ class Localization {
   }
 
   String _replaceNamedArgs(String res, Map<String, String> args) {
-    if(args == null || args.isEmpty) return res;
-    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{$key}'), value));
+    if (args == null || args.isEmpty) return res;
+    args.forEach((String key, String value) =>
+        res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 

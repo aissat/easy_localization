@@ -134,7 +134,8 @@ void generateFile(
   printInfo('All done! File generated in ${outputPath.path}');
 }
 
-Future _writekeys(StringBuffer classBuilder, List<FileSystemEntity> files) async {
+Future _writekeys(
+    StringBuffer classBuilder, List<FileSystemEntity> files) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
@@ -162,9 +163,9 @@ String _resolv(Map<String, dynamic> translations, [String hKey]) {
       file += _resolv(translations[key], key);
     }
     if (!l.contains(key)) {
-      hKey!=null ?
-      file +=  '  static const $hKey\_$key = \'$hKey.$key\';\n' :
-      file +=  '  static const $key = \'$key\';\n';
+      hKey != null
+          ? file += '  static const $hKey\_$key = \'$hKey.$key\';\n'
+          : file += '  static const $key = \'$key\';\n';
     }
   }
 
@@ -200,7 +201,7 @@ class CodegenLoader extends AssetLoader{
     Map<String, dynamic> data = json.decode(await fileData.readAsString());
 
     final mapString = JsonEncoder.withIndent('  ').convert(data);
-    gFile += '  static const Map<String,dynamic> $localeName = ${mapString};\n';
+    gFile += '  static const Map<String,dynamic> $localeName = $mapString;\n';
   }
 
   gFile +=
