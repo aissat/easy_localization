@@ -3,9 +3,75 @@
 ## [2.2.0]
 
 - Added support Locale scriptCode.
+
+  ```dart
+  supportedLocales: [
+      Locale('en', 'US'),
+      Locale('ar', 'DZ'),
+      Locale('ar','DZ'),localeFromString('ar_DZ')
+    ]
+  ```
+
 - Added support CSV files.
+
+  ```dart
+  path: 'resources/langs/langs.csv',
+  assetLoader: CsvAssetLoader(),
+  ```
+
 - Added Code generation of localization files.
+
+  ```cmd
+  $ flutter pub run easy_localization:generate -h
+  -s, --source-dir     Source folder contains all string json files
+                      (defaults to "resources/langs")
+  -O, --output-dir     Output folder stores generated file
+                      (defaults to "lib/generated")
+  -o, --output-file    Output file name
+                      (defaults to "codegen_loader.g.dart")
+  -f, --format         Support json, dart formats
+                      [json (default), keys]
+  ```
+
+  - generate the json string static keys in a dart class
+
+    ```json
+    {
+      "msg_named": "{} مكتوبة باللغة {lang}",
+    }
+    ```
+
+    ```cmd
+    flutter pub run easy_localization:generate  -f keys -o locale_keys.g.dart
+    ```
+
+    ```dart
+    abstract class  LocaleKeys {
+      static const msg_named = 'msg_named';
+    }
+    ```
+
+    ```dart
+    Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+    ```
+
+  - generate the json Loader in a dart class
+  
+    ```cmd
+    flutter pub run easy_localization:generate
+    ```
+
 - fixed many issues.
+- Added named arguments.
+
+  ```json
+  "msg_named": "{} are written in the {lang} language",
+  ```
+
+  ```dart
+  Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+  ```
+
 
 ## [2.1.0]
 
