@@ -51,6 +51,13 @@ void main() {
           Localization.load(Locale('en'), translations: r1.translations), true);
     });
 
+    test('localeFromString() succeeds', () async {
+      
+      expect(Locale('ar'),localeFromString('ar'));
+      expect(Locale('ar','DZ'),localeFromString('ar_DZ'));
+      expect(Locale.fromSubtags(languageCode:'ar' ,scriptCode:'Arab' , countryCode:'DZ' ),localeFromString('ar_Arab_DZ'));
+    });
+
     test('load() Failed assertion', () async {
       try {
         Localization.load(Locale('en'), translations: null);

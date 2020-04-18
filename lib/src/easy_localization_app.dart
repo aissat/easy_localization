@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'utils.dart';
 import 'widgets.dart';
 import 'asset_loader.dart';
 import 'localization.dart';
@@ -16,6 +15,7 @@ import 'package:intl/intl_standalone.dart'
     if (dart.library.html) 'package:intl/intl_browser.dart';
 
 part 'bloc/easy_localization_bloc.dart';
+part 'utils.dart';
 
 class EasyLocalization extends StatefulWidget {
   final Widget child;
