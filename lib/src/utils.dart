@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 Locale localeFromString(String localeString) {
-  final List<String> localeList = localeString.split("_");
+  final localeList = localeString.split('_');
   switch (localeList.length) {
     case 2:
       return Locale(localeList.first, localeList.last);

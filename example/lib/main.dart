@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'custom_asset_loader.dart';
