@@ -24,10 +24,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   easy_localization:
-    path: ../
+    path: ../  
   flutter_icons: ^1.0.0+1
-  http: ^0.12.0+2
-  csv: ^4.0.3
+
+  #custom loaders
+  easy_localization_loader:
 
 dev_dependencies:
   flutter_test:
