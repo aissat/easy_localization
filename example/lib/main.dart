@@ -5,8 +5,8 @@ import 'package:example/lang_view.dart';
 import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
 
-import 'custom_asset_loader.dart';
 import 'generated/locale_keys.g.dart';
 
 void main() {
