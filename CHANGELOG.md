@@ -19,6 +19,13 @@
   assetLoader: CsvAssetLoader(),
   ```
 
+- Added support Yaml files.
+
+  ```dart
+  path: 'resources/langs',
+  assetLoader: YamlAssetLoader(),
+  ```
+
 - Added Code generation of localization files.
 
   ```cmd
