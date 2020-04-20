@@ -98,7 +98,8 @@ void main(){
     // assetLoader: HttpAssetLoader()
     // assetLoader: FileAssetLoader()
     assetLoader: CsvAssetLoader()
-    // assetLoader: YamlAssetLoader()
+    // assetLoader: YamlAssetLoader() //multiple files
+    // assetLoader: YamlSingleAssetLoader() //single file
     
     // assetLoader: CodegenLoader() 
   ));
