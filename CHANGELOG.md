@@ -26,6 +26,11 @@
   assetLoader: YamlAssetLoader(),
   ```
 
+  ```dart
+  path: 'resources/langs/langs.yaml',
+  assetLoader: YamlSingleAssetLoader(),
+  ```
+
 - Added Code generation of localization files.
 
   ```cmd
