@@ -23,15 +23,16 @@ void main() {
     // saveLocale: false,
     // useOnlyLangCode: true,
     // preloaderColor: Colors.black,
+
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // install easy_localization_loader for enable custom loaders
     // assetLoader: RootBundleAssetLoader()
-    // assetLoader: NetworkAssetLoader()
-    // assetLoader: TestsAssetLoader()
+    // assetLoader: HttpAssetLoader()
     // assetLoader: FileAssetLoader()
-    // assetLoader: StringAssetLoader()
     assetLoader: CsvAssetLoader()
-    // assetLoader: CodegenLoader()
-    // preloaderColor: Colors.red,
+    // assetLoader: YamlAssetLoader()
+    
+    // assetLoader: CodegenLoader() 
   ));
 }
 
