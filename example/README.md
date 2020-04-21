@@ -100,6 +100,8 @@ void main(){
     assetLoader: CsvAssetLoader()
     // assetLoader: YamlAssetLoader() //multiple files
     // assetLoader: YamlSingleAssetLoader() //single file
+    // assetLoader: XmlAssetLoader() //multiple files
+    // assetLoader: XmlSingleAssetLoader() //single file
     
     // assetLoader: CodegenLoader() 
   ));

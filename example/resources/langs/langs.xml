@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<langs>
+   <ar_DZ>
+      <amount>
+         <few> المبلغ : {}</few>
+         <many> المبلغ : {}</many>
+         <one> المبلغ : {}</one>
+         <other> المبلغ : {}</other>
+         <two> المبلغ : {}</two>
+         <zero>المبلغ : {}</zero>
+      </amount>
+      <clickMe>إضغط هنا</clickMe>
+      <clicked>
+         <few> لقد قمت بالنقر {} مرات!</few>
+         <many>لقد قمت بالنقر {} مرة!</many>
+         <one>لقد نقرت مرة واحدة!</one>
+         <other>{} نقرة!</other>
+         <two>لقد قمت بالنقر مرتين!</two>
+         <zero>لم تنقر بعد!</zero>
+      </clicked>
+      <gender>
+         <female> مرحبا بك يا فتاة</female>
+         <male> مرحبا يا رجل</male>
+         <with_arg>
+            <female>{} مرحبا بك يا فتاة</female>
+            <male>{} مرحبا يا رجل</male>
+         </with_arg>
+      </gender>
+      <msg>السلام عليكم يا {} في عالم {}</msg>
+      <msg_named>{} مكتوبة باللغة {lang}</msg_named>
+      <profile>
+         <reset_password>
+            <label>اعادة تعين كلمة السر</label>
+            <password>كلمة السر</password>
+            <username>المستخدم</username>
+         </reset_password>
+      </profile>
+      <reset_locale>إعادة تعيين اللغة المحفوظة</reset_locale>
+      <title>السلام</title>
+   </ar_DZ>
+   <de_DE>
+      <amount>
+         <few>Deine Klicks: {}</few>
+         <many>Deine Klicks: {}</many>
+         <one>Deine Klicks: {}</one>
+         <other>Deine Klicks: {}</other>
+         <two>Deine Klicks: {}</two>
+         <zero>Deine Klicks: {}</zero>
+      </amount>
+      <clickMe>Click mich</clickMe>
+      <clicked>
+         <few>Du hast {} mal geklickt</few>
+         <many>Du hast {} mal geklickt</many>
+         <one>Du hast {} mal geklickt</one>
+         <other>Du hast {} mal geklickt</other>
+         <two>Du hast {} mal geklickt</two>
+         <zero>Du hast {} mal geklickt</zero>
+      </clicked>
+      <gender>
+         <female>Hallo Frau :)</female>
+         <male>Hi Mann ;) </male>
+         <with_arg>
+            <female>Hallo Frau :) {}</female>
+            <male>Hi Mann ;) {}</male>
+         </with_arg>
+      </gender>
+      <msg>Hallo {} in der {} welt </msg>
+      <msg_named>{} ist in {lang} geschrieben</msg_named>
+      <profile>
+         <reset_password>
+            <label>Password zurücksetzten</label>
+            <password>Password</password>
+            <username>Name</username>
+         </reset_password>
+      </profile>
+      <reset_locale>Gespeicherte Sprache zurücksettzen</reset_locale>
+      <title>Hallo</title>
+   </de_DE>
+   <en_US>
+      <amount>
+         <few>Your amount : {} </few>
+         <many>Your amount : {} </many>
+         <one>Your amount : {} </one>
+         <other>Your amount : {} </other>
+         <two>Your amount : {} </two>
+         <zero>Your amount : {} </zero>
+      </amount>
+      <clickMe>Click me</clickMe>
+      <clicked>
+         <few>You clicked {} times!</few>
+         <many>You clicked {} times!</many>
+         <one>You clicked {} time!</one>
+         <other>You clicked {} times!</other>
+         <two>You clicked {} times!</two>
+         <zero>You clicked {} times!</zero>
+      </clicked>
+      <gender>
+         <female>Hello girl :)</female>
+         <male>Hi man ;) </male>
+         <with_arg>
+            <female>Hello girl :) {}</female>
+            <male>Hi man ;) {}</male>
+         </with_arg>
+      </gender>
+      <msg>Hello {} in the {} world </msg>
+      <msg_named>{} are written in the {lang} language</msg_named>
+      <profile>
+         <reset_password>
+            <label>Reset Password</label>
+            <password>password</password>
+            <username>Username</username>
+         </reset_password>
+      </profile>
+      <reset_locale>Reset Saved Language</reset_locale>
+      <title>Hello</title>
+   </en_US>
+   <ru_RU>
+      <amount>
+         <few>Твой счет : {} </few>
+         <many>Твой счет : {} </many>
+         <one>Твой счет : {} </one>
+         <other>Твой счет : {} </other>
+         <two>Твой счет : {} </two>
+         <zero>Твой счет : {} </zero>
+      </amount>
+      <clickMe>Нажми на меня</clickMe>
+      <clicked>
+         <few>Ты кликнул {} раз!</few>
+         <many>Ты кликнул {} раз!</many>
+         <one>Ты кликнул {} раз!</one>
+         <other>Ты кликнул {} раз!</other>
+         <two>Ты кликнул {} раза!</two>
+         <zero>Ты кликнул {} раз!</zero>
+      </clicked>
+      <gender>
+         <female>Привет девчуля :)</female>
+         <male>Привет мужык ;) </male>
+         <with_arg>
+            <female>Привет девчуля :) {}</female>
+            <male>Привет мужык ;) {}</male>
+         </with_arg>
+      </gender>
+      <msg>Привет! {} добро пожаловать {} мир! </msg>
+      <msg_named>{} написан на языке {lang}</msg_named>
+      <profile>
+         <reset_password>
+            <label>Сбросить пароль</label>
+            <password>Пароль</password>
+            <username>Логин</username>
+         </reset_password>
+      </profile>
+      <reset_locale>Сбросить сохраненный язык</reset_locale>
+      <title>Привет!</title>
+   </ru_RU>
+</langs>

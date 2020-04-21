@@ -69,6 +69,18 @@ this package simplify the internationalizing process using Json file
   assetLoader: YamlSingleAssetLoader(),
   ```
 
+- Added support XML files.
+
+  ```dart
+  path: 'resources/langs',
+  assetLoader: XmlAssetLoader(),
+  ```
+
+  ```dart
+  path: 'resources/langs/langs.xml',
+  assetLoader: XmlSingleAssetLoader(),
+  ```
+
 - Added Code generation of localization files.
 
   ```cmd
@@ -212,6 +224,8 @@ void main(){
     assetLoader: CsvAssetLoader()
     // assetLoader: YamlAssetLoader() //multiple files
     // assetLoader: YamlSingleAssetLoader() //single file
+    // assetLoader: XmlAssetLoader() //multiple files
+    // assetLoader: XmlSingleAssetLoader() //single file
     
     // assetLoader: CodegenLoader() 
   ));
