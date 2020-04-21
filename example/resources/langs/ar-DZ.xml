@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ar_DZ>
+   <amount>
+      <few> المبلغ : {}</few>
+      <many> المبلغ : {}</many>
+      <one> المبلغ : {}</one>
+      <other> المبلغ : {}</other>
+      <two> المبلغ : {}</two>
+      <zero>المبلغ : {}</zero>
+   </amount>
+   <clickMe>إضغط هنا</clickMe>
+   <clicked>
+      <few> لقد قمت بالنقر {} مرات!</few>
+      <many>لقد قمت بالنقر {} مرة!</many>
+      <one>لقد نقرت مرة واحدة!</one>
+      <other>{} نقرة!</other>
+      <two>لقد قمت بالنقر مرتين!</two>
+      <zero>لم تنقر بعد!</zero>
+   </clicked>
+   <gender>
+      <female> مرحبا بك يا فتاة</female>
+      <male> مرحبا يا رجل</male>
+      <with_arg>
+         <female>{} مرحبا بك يا فتاة</female>
+         <male>{} مرحبا يا رجل</male>
+      </with_arg>
+   </gender>
+   <msg>السلام عليكم يا {} في عالم {}</msg>
+   <msg_named>{} مكتوبة باللغة {lang}</msg_named>
+   <profile>
+      <reset_password>
+         <label>اعادة تعين كلمة السر</label>
+         <password>كلمة السر</password>
+         <username>المستخدم</username>
+      </reset_password>
+   </profile>
+   <reset_locale>إعادة تعيين اللغة المحفوظة</reset_locale>
+   <title>السلام</title>
+</ar_DZ>

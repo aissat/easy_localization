@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<en_US>
+   <amount>
+      <few>Your amount : {} </few>
+      <many>Your amount : {} </many>
+      <one>Your amount : {} </one>
+      <other>Your amount : {} </other>
+      <two>Your amount : {} </two>
+      <zero>Your amount : {} </zero>
+   </amount>
+   <clickMe>Click me</clickMe>
+   <clicked>
+      <few>You clicked {} times!</few>
+      <many>You clicked {} times!</many>
+      <one>You clicked {} time!</one>
+      <other>You clicked {} times!</other>
+      <two>You clicked {} times!</two>
+      <zero>You clicked {} times!</zero>
+   </clicked>
+   <gender>
+      <female>Hello girl :)</female>
+      <male>Hi man ;) </male>
+      <with_arg>
+         <female>Hello girl :) {}</female>
+         <male>Hi man ;) {}</male>
+      </with_arg>
+   </gender>
+   <msg>Hello {} in the {} world </msg>
+   <msg_named>{} are written in the {lang} language</msg_named>
+   <profile>
+      <reset_password>
+         <label>Reset Password</label>
+         <password>password</password>
+         <username>Username</username>
+      </reset_password>
+   </profile>
+   <reset_locale>Reset Saved Language</reset_locale>
+   <title>Hello</title>
+</en_US>

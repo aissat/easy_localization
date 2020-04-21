@@ -31,6 +31,18 @@
   assetLoader: YamlSingleAssetLoader(),
   ```
 
+- Added support XML files.
+
+  ```dart
+  path: 'resources/langs',
+  assetLoader: XmlAssetLoader(),
+  ```
+
+  ```dart
+  path: 'resources/langs/langs.xml',
+  assetLoader: XmlSingleAssetLoader(),
+  ```
+
 - Added Code generation of localization files.
 
   ```cmd
