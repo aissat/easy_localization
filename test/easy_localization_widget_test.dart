@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/test_asset_loaders.dart';
 
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 BuildContext _context;
 
@@ -16,11 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       locale: EasyLocalization.of(context).locale,
       supportedLocales: EasyLocalization.of(context).supportedLocales,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        EasyLocalization.of(context).delegate,
-      ],
+      localizationsDelegates: EasyLocalization.of(context).delegates,
       home: MyWidget(),
     );
   }

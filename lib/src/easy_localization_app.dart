@@ -2,18 +2,21 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_localization/src/widgets.dart';
 
+import 'widgets.dart';
 import 'asset_loader.dart';
 import 'localization.dart';
 import 'translations.dart';
 
-import 'bloc/easy_localization_bloc.dart';
-
 //If web then import intl_browser else intl_standalone
 import 'package:intl/intl_standalone.dart'
     if (dart.library.html) 'package:intl/intl_browser.dart';
+
+part 'bloc/easy_localization_bloc.dart';
+part 'utils.dart';
 
 class EasyLocalization extends StatefulWidget {
   final Widget child;
@@ -50,7 +53,7 @@ class EasyLocalization extends StatefulWidget {
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   ///Init EasyLocalizationBloc
-  final EasyLocalizationBloc bloc = EasyLocalizationBloc();
+  final bloc = _EasyLocalizationBloc();
   _EasyLocalizationDelegate delegate;
   Locale locale;
 
@@ -121,13 +124,13 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   Future<Locale> _getDeviceLocale() async {
     final _deviceLocale = await findSystemLocale();
     log('easy localization: Device locale $_deviceLocale');
-    return _localeFromString(_deviceLocale);
+    return localeFromString(_deviceLocale);
   }
 
   Future<Locale> loadSavedLocale() async {
     final _preferences = await SharedPreferences.getInstance();
     final _strLocale = _preferences.getString('locale');
-    final locale = _strLocale != null ? _localeFromString(_strLocale) : null;
+    final locale = _strLocale != null ? localeFromString(_strLocale) : null;
 
     return locale;
   }
@@ -166,8 +169,25 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalization parent;
   final Locale _locale;
-  final EasyLocalizationBloc bloc;
+  final _EasyLocalizationBloc bloc;
   final _EasyLocalizationDelegate delegate;
+
+  /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
+  ///
+  /// ```dart
+  ///   delegates = [
+  ///     delegate
+  ///     GlobalMaterialLocalizations.delegate,
+  ///     GlobalWidgetsLocalizations.delegate,
+  ///     GlobalCupertinoLocalizations.delegate
+  ///   ],
+  /// ```
+  List<LocalizationsDelegate> get delegates => [
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ];
 
   List<Locale> get supportedLocales => parent.supportedLocales;
 
@@ -242,11 +262,4 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   bool shouldReload(LocalizationsDelegate<Localization> old) => false;
-}
-
-Locale _localeFromString(String val) {
-  var localeList = val.split('_');
-  return (localeList.length > 1)
-      ? Locale(localeList.first, localeList.last)
-      : Locale(localeList.first);
 }

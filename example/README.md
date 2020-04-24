@@ -9,7 +9,7 @@
   "clickMe":"إضغط هنا",
   "profile": {
     "reset_password": {
-      "title": "اعادة تعين كلمة السر",
+      "label":  "اعادة تعين كلمة السر",
       "username": "المستخدم",
       "password": "كلمة السر"
     }
@@ -22,7 +22,7 @@
     "many":"{} نقرة!",
     "other": "{} نقرة!"
   },
-  "switch":{
+  "gender":{
     "male": " مرحبا يا رجل",
     "female": " مرحبا بك يا فتاة",
     "with_arg":{
@@ -42,7 +42,7 @@
   "clickMe": "Click me",
   "profile": {
     "reset_password": {
-      "title": "Reset Password",
+      "label":  "Reset Password",
       "username": "Username",
       "password": "password"
     }
@@ -55,7 +55,7 @@
     "many":"You clicked {} times!",
     "other": "You clicked {} times!"
   },
-  "switch":{
+  "gender":{
     "male": "Hi man ;) ",
     "female": "Hello girl :)",
     "with_arg":{
@@ -88,13 +88,22 @@ void main(){
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
     path: 'resources/langs',
     // fallbackLocale: Locale('en', 'US'),
+    // saveLocale: false,
     // useOnlyLangCode: true,
+    // preloaderColor: Colors.black,
+
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // install easy_localization_loader for enable custom loaders
     // assetLoader: RootBundleAssetLoader()
-    // assetLoader: NetworkAssetLoader()
-    // assetLoader: TestsAssetLoader()
+    // assetLoader: HttpAssetLoader()
     // assetLoader: FileAssetLoader()
-    // assetLoader: StringAssetLoader()
+    assetLoader: CsvAssetLoader()
+    // assetLoader: YamlAssetLoader() //multiple files
+    // assetLoader: YamlSingleAssetLoader() //single file
+    // assetLoader: XmlAssetLoader() //multiple files
+    // assetLoader: XmlSingleAssetLoader() //single file
+    
+    // assetLoader: CodegenLoader() 
   ));
 }
 

@@ -1,10 +1,11 @@
 {
     "title": "Hello",
     "msg": "Hello {} in the {} world ",
+    "msg_named": "{} are written in the {lang} language",
     "clickMe": "Click me",
     "profile": {
         "reset_password": {
-            "title": "Reset Password",
+            "label": "Reset Password",
             "username": "Username",
             "password": "password"
         }
@@ -25,7 +26,7 @@
         "many": "Your amount : {} ",
         "other": "Your amount : {} "
     },
-    "switch": {
+    "gender": {
         "male": "Hi man ;) ",
         "female": "Hello girl :)",
         "with_arg": {

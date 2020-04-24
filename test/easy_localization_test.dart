@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
-overridePrint(Function() testFn) => () {
+dynamic overridePrint(Function() testFn) => () {
       var spec = ZoneSpecification(print: (_, __, ___, String msg) {
         // Add to log instead of printing to stdout
         printLog.add(msg);
@@ -22,12 +22,12 @@ void main() {
   group('localization', () {
     var r1 = Resource(
         locale: Locale('en'),
-        path: 'path',
+        path: 'path/en.json',
         useOnlyLangCode: true,
         assetLoader: JsonAssetLoader());
     var r2 = Resource(
         locale: Locale('en', 'us'),
-        path: 'path',
+        path: 'path/en-us.json',
         useOnlyLangCode: false,
         assetLoader: JsonAssetLoader());
     setUpAll(() async {
@@ -49,6 +49,13 @@ void main() {
     test('load() succeeds', () async {
       expect(
           Localization.load(Locale('en'), translations: r1.translations), true);
+    });
+
+    test('localeFromString() succeeds', () async {
+      
+      expect(Locale('ar'),localeFromString('ar'));
+      expect(Locale('ar','DZ'),localeFromString('ar_DZ'));
+      expect(Locale.fromSubtags(languageCode:'ar' ,scriptCode:'Arab' , countryCode:'DZ' ),localeFromString('ar_Arab_DZ'));
     });
 
     test('load() Failed assertion', () async {
@@ -140,6 +147,21 @@ void main() {
           'should raise exception if provided arguments length is different from the count of {} in the resource',
           () {
         // @TODO
+      });
+
+      test('return resource and replaces named argument', () {
+        expect(
+          Localization.instance.tr('test_replace_named', namedArgs: {'arg1': 'one', 'arg2': 'two'}),
+          'test named replace one two',
+        );
+      });
+
+      test('returns resource and replaces named argument in any nest level', () {
+        expect(
+          Localization.instance
+              .tr('nested.super.duper.nested_with_named_arg', namedArgs: {'arg': 'what a nest'}),
+          'nested.super.duper.nested_with_named_arg what a nest',
+        );
       });
 
       test('gender returns the correct resource', () {

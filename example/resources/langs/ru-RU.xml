@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ru_RU>
+   <amount>
+      <few>Твой счет : {} </few>
+      <many>Твой счет : {} </many>
+      <one>Твой счет : {} </one>
+      <other>Твой счет : {} </other>
+      <two>Твой счет : {} </two>
+      <zero>Твой счет : {} </zero>
+   </amount>
+   <clickMe>Нажми на меня</clickMe>
+   <clicked>
+      <few>Ты кликнул {} раз!</few>
+      <many>Ты кликнул {} раз!</many>
+      <one>Ты кликнул {} раз!</one>
+      <other>Ты кликнул {} раз!</other>
+      <two>Ты кликнул {} раза!</two>
+      <zero>Ты кликнул {} раз!</zero>
+   </clicked>
+   <gender>
+      <female>Привет девчуля :)</female>
+      <male>Привет мужык ;) </male>
+      <with_arg>
+         <female>Привет девчуля :) {}</female>
+         <male>Привет мужык ;) {}</male>
+      </with_arg>
+   </gender>
+   <msg>Привет! {} добро пожаловать {} мир! </msg>
+   <msg_named>{} написан на языке {lang}</msg_named>
+   <profile>
+      <reset_password>
+         <label>Сбросить пароль</label>
+         <password>Пароль</password>
+         <username>Логин</username>
+      </reset_password>
+   </profile>
+   <reset_locale>Сбросить сохраненный язык</reset_locale>
+   <title>Привет!</title>
+</ru_RU>

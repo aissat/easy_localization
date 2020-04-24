@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<de_DE>
+   <amount>
+      <few>Deine Klicks: {}</few>
+      <many>Deine Klicks: {}</many>
+      <one>Deine Klicks: {}</one>
+      <other>Deine Klicks: {}</other>
+      <two>Deine Klicks: {}</two>
+      <zero>Deine Klicks: {}</zero>
+   </amount>
+   <clickMe>Click mich</clickMe>
+   <clicked>
+      <few>Du hast {} mal geklickt</few>
+      <many>Du hast {} mal geklickt</many>
+      <one>Du hast {} mal geklickt</one>
+      <other>Du hast {} mal geklickt</other>
+      <two>Du hast {} mal geklickt</two>
+      <zero>Du hast {} mal geklickt</zero>
+   </clicked>
+   <gender>
+      <female>Hallo Frau :)</female>
+      <male>Hi Mann ;) </male>
+      <with_arg>
+         <female>Hallo Frau :) {}</female>
+         <male>Hi Mann ;) {}</male>
+      </with_arg>
+   </gender>
+   <msg>Hallo {} in der {} welt </msg>
+   <msg_named>{} ist in {lang} geschrieben</msg_named>
+   <profile>
+      <reset_password>
+         <label>Password zurücksetzten</label>
+         <password>Password</password>
+         <username>Name</username>
+      </reset_password>
+   </profile>
+   <reset_locale>Gespeicherte Sprache zurücksettzen</reset_locale>
+   <title>Hallo</title>
+</de_DE>

@@ -1,9 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/widgets.dart';
-
-import '../../easy_localization.dart';
-import '../translations.dart';
+part of '../easy_localization_app.dart';
 
 class Resource {
   final Locale locale;
@@ -11,33 +6,28 @@ class Resource {
   final String path;
   final bool useOnlyLangCode;
   Translations _translations;
-  
   Translations get translations => _translations;
-
   Resource({this.locale, this.assetLoader, this.path, this.useOnlyLangCode});
 
-  String _getLocalePath() {
-    final _codeLang = locale.languageCode;
-    final _codeCoun = locale.countryCode;
-    final localePath = '$path/$_codeLang';
-    return useOnlyLangCode  ? '$localePath.json' : '$localePath-$_codeCoun.json';
-  }
-
-  void loadTranslations() async {
-    var data = await assetLoader.load(_getLocalePath());
+  Future loadTranslations() async {
+    Map<String, dynamic> data;
+    useOnlyLangCode
+        ? data = await assetLoader.load(path, Locale(locale.languageCode))
+        : data = await assetLoader.load(path, locale);
     _translations = Translations(data);
   }
 }
 
-class EasyLocalizationBloc {
+class _EasyLocalizationBloc {
   //
   // Constructor
   //
-  EasyLocalizationBloc._internal(){
-    _actionController.stream.listen(_onData, onError: _onError, cancelOnError: true);
+  _EasyLocalizationBloc._internal() {
+    _actionController.stream
+        .listen(_onData, onError: _onError, cancelOnError: true);
   }
-  factory EasyLocalizationBloc(){
-    return EasyLocalizationBloc._internal();
+  factory _EasyLocalizationBloc() {
+    return _EasyLocalizationBloc._internal();
   }
   //
   // Stream to handle the _easyLocalizationLocale
@@ -47,13 +37,14 @@ class EasyLocalizationBloc {
   Stream<Resource> get outStream => _controller.stream.transform(validate);
 
   final validate = StreamTransformer<Resource, Resource>.fromHandlers(
-    handleError: (error, stackTrace, sink) =>  sink.addError(error),
-    handleData: (resource, sink) => sink.add(resource));
+      handleError: (error, stackTrace, sink) => sink.addError(error),
+      handleData: (resource, sink) => sink.add(resource));
 
   //
   // Stream to handle the action on the _easyLocalizationLocale
   //
-  final StreamController<Resource> _actionController = StreamController<Resource>();
+  final StreamController<Resource> _actionController =
+      StreamController<Resource>();
   Function(Resource) get onChange => _actionController.sink.add;
   // Function get onError => _actionController.sink.addError;
 
@@ -62,24 +53,24 @@ class EasyLocalizationBloc {
     _controller.close();
   }
 
-  void reassemble() async{
+  void reassemble() async {
     //recreate StreamController when hotreloaded or reloaded
     await _controller.close();
     _controller = StreamController<Resource>();
   }
 
-  void _onData(Resource data) async{
+  Future _onData(Resource data) async {
     // Catch error from json parse/load
     try {
       await data.loadTranslations();
-      if(!_actionController.isClosed) _inSink.add(data);
-    } catch(e) {
+      if (!_actionController.isClosed) _inSink.add(data);
+    } catch (e) {
       debugPrint(e.toString());
       _onError(e.toString());
     }
   }
 
-  void _onError(data){
-    if(!_actionController.isClosed) _inSink.addError(data);
+  void _onError(data) {
+    if (!_actionController.isClosed) _inSink.addError(data);
   }
 }

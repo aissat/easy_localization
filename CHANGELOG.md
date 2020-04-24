@@ -1,5 +1,103 @@
 # Changelog
 
+## [2.2.0]
+
+- Added support Locale scriptCode.
+- Added `EasyLocalization.of(context).delegates` for `localizationsDelegates`
+
+  ```dart
+  supportedLocales: [
+      Locale('en', 'US'),
+      Locale('ar', 'DZ'),
+      Locale('ar','DZ'),localeFromString('ar_DZ')
+    ]
+  ```
+
+- Added support Custom assets loaders [Easy Localization Loader](https://github.com/aissat/easy_localization_loader).
+  - Added support CSV files.
+
+    ```dart
+    path: 'resources/langs/langs.csv',
+    assetLoader: CsvAssetLoader(),
+    ```
+
+  - Added support Yaml files.
+
+    ```dart
+    path: 'resources/langs',
+    assetLoader: YamlAssetLoader(),
+    ```
+
+    ```dart
+    path: 'resources/langs/langs.yaml',
+    assetLoader: YamlSingleAssetLoader(),
+    ```
+
+  - Added support XML files.
+
+    ```dart
+    path: 'resources/langs',
+    assetLoader: XmlAssetLoader(),
+    ```
+
+    ```dart
+    path: 'resources/langs/langs.xml',
+    assetLoader: XmlSingleAssetLoader(),
+    ```
+
+- Added Code generation of localization files.
+
+  ```cmd
+  $ flutter pub run easy_localization:generate -h
+  -s, --source-dir     Source folder contains all string json files
+                      (defaults to "resources/langs")
+  -O, --output-dir     Output folder stores generated file
+                      (defaults to "lib/generated")
+  -o, --output-file    Output file name
+                      (defaults to "codegen_loader.g.dart")
+  -f, --format         Support json, dart formats
+                      [json (default), keys]
+  ```
+
+  - generate the json string static keys in a dart class
+
+    ```json
+    {
+      "msg_named": "{} مكتوبة باللغة {lang}",
+    }
+    ```
+
+    ```cmd
+    flutter pub run easy_localization:generate  -f keys -o locale_keys.g.dart
+    ```
+
+    ```dart
+    abstract class  LocaleKeys {
+      static const msg_named = 'msg_named';
+    }
+    ```
+
+    ```dart
+    Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+    ```
+
+  - generate the json Loader in a dart class
+  
+    ```cmd
+    flutter pub run easy_localization:generate
+    ```
+
+- fixed many issues.
+- Added named arguments.
+
+  ```json
+  "msg_named": "{} are written in the {lang} language",
+  ```
+
+  ```dart
+  Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+  ```
+
 ## [2.1.0]
 
 - Added Error widget.
@@ -102,7 +200,7 @@ this version came with many updates, here are the main ones:
 
   ``` json
   {
-    "switch":{
+    "gender":{
       "male": "Hi man ;)",
       "female": "Hello girl :)"
     }
@@ -119,7 +217,7 @@ this version came with many updates, here are the main ones:
   
   ``` json
   {
-    "switch":{
+    "gender":{
       "male": "Hi man ;) {}",
       "female": "Hello girl :) {}"
     }
@@ -137,7 +235,7 @@ this version came with many updates, here are the main ones:
 
   ``` json
   {
-    "switch":{
+    "gender":{
       "male": "Hi man ;)",
       "female": "Hello girl :)"
     }
@@ -226,7 +324,7 @@ this version came with many updates, here are the main ones:
   "clickMe": "Click me",
   "profile": {
     "reset_password": {
-      "title": "Reset Password",
+      "label":  "Reset Password",
       "username": "Username",
       "password": "password"
     }
