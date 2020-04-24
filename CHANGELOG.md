@@ -3,6 +3,7 @@
 ## [2.2.0]
 
 - Added support Locale scriptCode.
+- Added `EasyLocalization.of(context).delegates` for `localizationsDelegates`
 
   ```dart
   supportedLocales: [
@@ -12,36 +13,37 @@
     ]
   ```
 
-- Added support CSV files.
+- Added support Custom assets loaders [Easy Localization Loader](https://github.com/aissat/easy_localization_loader).
+  - Added support CSV files.
 
-  ```dart
-  path: 'resources/langs/langs.csv',
-  assetLoader: CsvAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs/langs.csv',
+    assetLoader: CsvAssetLoader(),
+    ```
 
-- Added support Yaml files.
+  - Added support Yaml files.
 
-  ```dart
-  path: 'resources/langs',
-  assetLoader: YamlAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs',
+    assetLoader: YamlAssetLoader(),
+    ```
 
-  ```dart
-  path: 'resources/langs/langs.yaml',
-  assetLoader: YamlSingleAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs/langs.yaml',
+    assetLoader: YamlSingleAssetLoader(),
+    ```
 
-- Added support XML files.
+  - Added support XML files.
 
-  ```dart
-  path: 'resources/langs',
-  assetLoader: XmlAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs',
+    assetLoader: XmlAssetLoader(),
+    ```
 
-  ```dart
-  path: 'resources/langs/langs.xml',
-  assetLoader: XmlSingleAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs/langs.xml',
+    assetLoader: XmlSingleAssetLoader(),
+    ```
 
 - Added Code generation of localization files.
 
