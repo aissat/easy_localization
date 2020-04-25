@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.1]
+
+- Added `startLocale` .
+
 ## [2.2.0]
 
 - Added support Locale scriptCode.

@@ -428,6 +428,28 @@ void main() {
           expect(EasyLocalization.of(_context).fallbackLocale, null);
         });
       },
+    );testWidgets(
+      '[EasyLocalization] startLocale  test',
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: 'i18n',
+            startLocale: Locale('ar', 'DZ'),
+            // fallbackLocale:Locale('en') ,
+            supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')], //
+          ));
+          await tester.idle();
+          await tester.pump(Duration(seconds: 2));
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).supportedLocales,
+              [Locale('en', 'US'), Locale('ar', 'DZ')]);
+          expect(EasyLocalization.of(_context).locale, Locale('ar', 'DZ'));
+          expect(EasyLocalization.of(_context).fallbackLocale, null);
+        });
+      },
     );
   });
 

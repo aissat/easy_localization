@@ -13,8 +13,8 @@
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 
 <p align="center"> 
-Easy and Fast internationalizing your Flutter Apps,
-this package simplify the internationalizing process.
+Easy and Fast internationalization for your Flutter Apps,
+this package simplifies the internationalizing process
 </p>
 
 ## Why easy_localization
@@ -36,7 +36,12 @@ this package simplify the internationalizing process.
 - [x] Support for context
 - [x] Testable and easy maintenence
 
+
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
+
+### [2.2.1]
+
+- Added `startLocale` .
 
 ### [2.2.0]
 
@@ -140,7 +145,17 @@ this package simplify the internationalizing process.
 
 - Added Error widget.
 - fixed many issues.
-- Based on Bloc.
+- Adopted Bloc architecture.
+
+### [2.0.2]
+
+- fixed many issues.
+- optimized and clean code for more stability.
+
+### [2.0.1]
+
+- Added change locale dynamically `saveLocale` default value `true`.
+- fixed many issues.
 
 ## Getting Started
 
@@ -167,7 +182,7 @@ You must create a folder in your project's root: the `path`. Some examples:
 >
 > /resources/"langs" , "i18n", "locale" or anyname ...
 
-Inside this folder, must put the _json_ or _csv_ files containing the translated keys :
+Inside this folder, must put the _json_ or _csv_ files containing the translated keys:
 
 > `path`/${languageCode}-${countryCode}.${formatFile}
 
@@ -353,7 +368,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-to change Locale
+How to change Locale:
 
 ```dart
 EasyLocalization.of(context).locale = locale;
@@ -407,14 +422,14 @@ void main(){
 ...
 ```
 
-4. All done!.
+4. All done!
 
 #### Code generation of localization files
 
-Code generation support json and csv file, for more information run in terminal `flutter pub run easy_localization:generate -h`
+Code generation supports json and csv files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
-1. Go to the folder with your project in terminal
+1. Open your terminal in the folder's path containing your project 
 2. Run in terminal `flutter pub run easy_localization:generate`
 3. Change asset loader and past import.
 
@@ -431,7 +446,7 @@ void main(){
 }
 ...
 ```
-4. All done!.
+4. All done!
 
 ## Screenshots
 
