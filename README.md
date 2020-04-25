@@ -13,14 +13,14 @@
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 
 <p align="center"> 
-Easy and Fast internationalizing for your Flutter Apps,
+Easy and Fast internationalization for your Flutter Apps,
 this package simplifies the internationalizing process using Json file
 </p>
 
 ## Why easy_localization
 
 - [x] simplifies and makes the internationalizing process in Flutter much easier.
-- [x] Uses easy_Localization_Loader JSON, CSV, Yaml, Xml Files .
+- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files .
 - [x] Error widget
 - [x] Based on Bloc architecture.
 - [x] Code generation for localization files.
