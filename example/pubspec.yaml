@@ -29,6 +29,7 @@ dependencies:
 
   #custom loaders
   easy_localization_loader:
+    git: https://github.com/aissat/easy_localization_loader.git
 
 dev_dependencies:
   flutter_test:

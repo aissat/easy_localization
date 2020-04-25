@@ -34,8 +34,7 @@ void main() {
     // assetLoader: YamlSingleAssetLoader() //single file
     // assetLoader: XmlAssetLoader() //multiple files
     // assetLoader: XmlSingleAssetLoader() //single file
-    
-    // assetLoader: CodegenLoader() 
+    // assetLoader: CodegenLoader()
   ));
 }
 
