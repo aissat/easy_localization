@@ -14,7 +14,7 @@
 
 <p align="center"> 
 Easy and Fast internationalization for your Flutter Apps,
-this package simplifies the internationalizing process using Json file
+this package simplifies the internationalizing process
 </p>
 
 ## Why easy_localization
@@ -25,7 +25,7 @@ this package simplifies the internationalizing process using Json file
 - [x] Based on Bloc architecture.
 - [x] Code generation for localization files.
 - [x] Load locale from remote or backend.
-- [x] Automatically saving App state (save/restor the selected locale).
+- [x] Automatically saving App state (save/restor/reset the selected locale).
 - [x] Supports `plural`
 - [x] Supports `gender`
 - [x] Supports Flutter extension.
@@ -42,6 +42,7 @@ this package simplifies the internationalizing process using Json file
 ### [2.2.0]
 
 - Added support Locale scriptCode.
+- Added `EasyLocalization.of(context).delegates` for `localizationsDelegates`
 
   ```dart
   supportedLocales: [
@@ -51,36 +52,37 @@ this package simplifies the internationalizing process using Json file
     ]
   ```
 
-- Added support CSV files.
+- Added support Custom assets loaders [Easy Localization Loader](https://github.com/aissat/easy_localization_loader).
+  - Added support CSV files.
 
-  ```dart
-  path: 'resources/langs/langs.csv',
-  assetLoader: CsvAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs/langs.csv',
+    assetLoader: CsvAssetLoader(),
+    ```
 
-- Added support Yaml files.
+  - Added support Yaml files.
 
-  ```dart
-  path: 'resources/langs',
-  assetLoader: YamlAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs',
+    assetLoader: YamlAssetLoader(),
+    ```
 
-  ```dart
-  path: 'resources/langs/langs.yaml',
-  assetLoader: YamlSingleAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs/langs.yaml',
+    assetLoader: YamlSingleAssetLoader(),
+    ```
 
-- Added support XML files.
+  - Added support XML files.
 
-  ```dart
-  path: 'resources/langs',
-  assetLoader: XmlAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs',
+    assetLoader: XmlAssetLoader(),
+    ```
 
-  ```dart
-  path: 'resources/langs/langs.xml',
-  assetLoader: XmlSingleAssetLoader(),
-  ```
+    ```dart
+    path: 'resources/langs/langs.xml',
+    assetLoader: XmlSingleAssetLoader(),
+    ```
 
 - Added Code generation of localization files.
 
@@ -227,8 +229,7 @@ void main(){
     // assetLoader: YamlSingleAssetLoader() //single file
     // assetLoader: XmlAssetLoader() //multiple files
     // assetLoader: XmlSingleAssetLoader() //single file
-    
-    // assetLoader: CodegenLoader() 
+    // assetLoader: CodegenLoader()
   ));
 }
 
