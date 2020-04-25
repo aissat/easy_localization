@@ -13,28 +13,29 @@
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 
 <p align="center"> 
-Easy and Fast internationalizing your Flutter Apps,
-this package simplify the internationalizing process.
+Easy and Fast internationalization for your Flutter Apps,
+this package simplifies the internationalizing process
 </p>
 
 ## Why easy_localization
 
-- [x] simplifying and making easy the internationalizing process in Flutter.
-- [x] Using JSON, CSV, Yaml, Xml Files .
-- [x] Customization AssetLoader localizations
+- [x] simplifies and makes the internationalizing process in Flutter much easier.
+- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files .
 - [x] Error widget
-- [x] Based on Bloc Archi
-- [x] Code generation of localization files
+- [x] Based on Bloc architecture.
+- [x] Code generation for localization files.
 - [x] Load locale from remote or backend.
 - [x] Automatically saving App state (save/restor/reset the selected locale).
 - [x] Supports `plural`
 - [x] Supports `gender`
 - [x] Supports Flutter extension.
-- [x] Supports change locale dynamically .
-- [x] Supports for RTL locales
-- [x] Supports for nesting
-- [x] Support for context
-- [x] Testable and easy maintenence
+- [x] Supports changing locale dynamically.
+- [x] Supports RTL locales.
+- [x] Supports nesting.
+- [x] Customizable localizations AssetLoader.
+- [x] Supports context.
+- [x] Testable and maintainable.
+
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
@@ -140,7 +141,17 @@ this package simplify the internationalizing process.
 
 - Added Error widget.
 - fixed many issues.
-- Based on Bloc.
+- Adopted Bloc architecture.
+
+### [2.0.2]
+
+- fixed many issues.
+- optimized and clean code for more stability.
+
+### [2.0.1]
+
+- Added change locale dynamically `saveLocale` default value `true`.
+- fixed many issues.
 
 ## Getting Started
 
@@ -167,7 +178,7 @@ You must create a folder in your project's root: the `path`. Some examples:
 >
 > /resources/"langs" , "i18n", "locale" or anyname ...
 
-Inside this folder, must put the _json_ or _csv_ files containing the translated keys :
+Inside this folder, must put the _json_ or _csv_ files containing the translated keys:
 
 > `path`/${languageCode}-${countryCode}.${formatFile}
 
@@ -353,7 +364,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-to change Locale
+How to change Locale:
 
 ```dart
 EasyLocalization.of(context).locale = locale;
@@ -407,14 +418,14 @@ void main(){
 ...
 ```
 
-4. All done!.
+4. All done!
 
 #### Code generation of localization files
 
-Code generation support json and csv file, for more information run in terminal `flutter pub run easy_localization:generate -h`
+Code generation supports json and csv files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
-1. Go to the folder with your project in terminal
+1. Open your terminal in the folder's path containing your project 
 2. Run in terminal `flutter pub run easy_localization:generate`
 3. Change asset loader and past import.
 
@@ -431,7 +442,7 @@ void main(){
 }
 ...
 ```
-4. All done!.
+4. All done!
 
 ## Screenshots
 
