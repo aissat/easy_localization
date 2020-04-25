@@ -39,6 +39,10 @@ this package simplifies the internationalizing process
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
+### [2.2.1]
+
+- Added `startLocale` .
+
 ### [2.2.0]
 
 - Added support Locale scriptCode.

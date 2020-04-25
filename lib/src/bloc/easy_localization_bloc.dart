@@ -2,7 +2,7 @@ part of '../easy_localization_app.dart';
 
 class Resource {
   final Locale locale;
-  final AssetLoader assetLoader;
+  final assetLoader;
   final String path;
   final bool useOnlyLangCode;
   Translations _translations;

@@ -98,7 +98,6 @@
   Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
   ```
 
-
 ## [2.1.0]
 
 - Added Error widget.

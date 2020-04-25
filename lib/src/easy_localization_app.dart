@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/src/widgets.dart';
 
 import 'widgets.dart';
 import 'asset_loader.dart';
@@ -21,9 +22,10 @@ class EasyLocalization extends StatefulWidget {
   final Widget child;
   final List<Locale> supportedLocales;
   final Locale fallbackLocale;
+  final Locale startLocale;
   final bool useOnlyLangCode;
   final String path;
-  final AssetLoader assetLoader;
+  final assetLoader;
   final bool saveLocale;
   final Color preloaderColor;
   EasyLocalization({
@@ -32,6 +34,7 @@ class EasyLocalization extends StatefulWidget {
     @required this.supportedLocales,
     @required this.path,
     this.fallbackLocale,
+    this.startLocale,
     this.useOnlyLangCode = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
@@ -78,11 +81,16 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   void _init() async {
     Locale _savedLocale;
     Locale _osLocale;
-    if (widget.saveLocale) _savedLocale = await loadSavedLocale();
-    // Get Device Locale
-    _osLocale = await _getDeviceLocale();
+    widget.saveLocale
+        ? _savedLocale = await loadSavedLocale()
+        // Get Device Locale
+        : _osLocale = await _getDeviceLocale();
+    if (_savedLocale == null && widget.startLocale != null) {
+      locale = _getFallbackLocale(widget.supportedLocales, widget.startLocale);
+      log('easy localization: Start locale loaded ${locale.toString()}');
+    }
     // If saved locale then get
-    if (_savedLocale != null && widget.saveLocale) {
+    else if (_savedLocale != null && widget.saveLocale) {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
       locale = _savedLocale;
     } else {
