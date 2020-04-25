@@ -2,7 +2,7 @@
 
 ## [2.2.1]
 
-- Added `startLocale` .
+- Added init start locale `startLocale` .
 
 ## [2.2.0]
 

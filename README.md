@@ -19,29 +19,28 @@ this package simplifies the internationalizing process
 
 ## Why easy_localization
 
-- [x] simplifying and making easy the internationalizing process in Flutter.
-- [x] Using [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files .
-- [x] Customization AssetLoader localizations.
+- [x] simplifies and makes the internationalizing process in Flutter much easier.
+- [x] Customizable localizations AssetLoader.
+- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files .
 - [x] Error widget
-- [x] Based on Bloc Archi
-- [x] Code generation of localization files
+- [x] Based on Bloc architecture.
+- [x] Code generation for localization files.
 - [x] Load locale from remote or backend.
 - [x] Automatically saving App state (save/restor/reset the selected locale).
 - [x] Supports `plural`
 - [x] Supports `gender`
 - [x] Supports Flutter extension.
-- [x] Supports change locale dynamically .
-- [x] Supports for RTL locales
-- [x] Supports for nesting
-- [x] Support for context
-- [x] Testable and easy maintenence
-
+- [x] Supports changing locale dynamically.
+- [x] Supports RTL locales.
+- [x] Supports nesting.
+- [x] Supports context.
+- [x] Testable and maintainable.
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
 ### [2.2.1]
 
-- Added `startLocale` .
+- Added init start locale `startLocale` .
 
 ### [2.2.0]
 
