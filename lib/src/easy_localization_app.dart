@@ -25,7 +25,7 @@ class EasyLocalization extends StatefulWidget {
   final Locale startLocale;
   final bool useOnlyLangCode;
   final String path;
-  final AssetLoader assetLoader;
+  final assetLoader;
   final bool saveLocale;
   final Color preloaderColor;
   EasyLocalization({
