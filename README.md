@@ -374,55 +374,11 @@ How to change Locale:
 EasyLocalization.of(context).locale = locale;
 ```
 
-#### Load translations from Custom AssetLoader
+#### Loading translations from other resources
 
-See [other examples](https://github.com/aissat/easy_localization/blob/master/example/lib/custom_asset_loader.dart) for more options.
+You can use JSON,CSV,HTTP,XML,Yaml files, etc.
 
-Example from Csv file:
-
-1. add dependency
-
-```yaml
-dependencies:
-  csv: <last_version>
-```
-
-2. Create custom class loader
-```dart
-//
-// load example/resources/langs/langs.csv
-//
-class CsvAssetLoader extends AssetLoader {
-  CSVParser csvParser;
-
-  @override
-  Future<Map<String, dynamic>> load(String path, Locale locale) async {
-    if (csvParser == null) {
-      csvParser = CSVParser(await rootBundle.loadString(path));
-    } else {
-      log('easy localization: CSV parser already loaded');
-    }
-    return csvParser.getLanguageMap(locale.toString());
-  }
-}
-```
-
-3. Change assetLoader to your custom class
-
-```dart
-...
-void main(){
-  runApp(EasyLocalization(
-    child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-    path: 'resources/langs/langs.csv',
-    assetLoader: CsvAssetLoader()
-  ));
-}
-...
-```
-
-4. All done!
+See [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) for more info.
 
 #### Code generation of localization files
 
