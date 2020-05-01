@@ -81,10 +81,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   void _init() async {
     Locale _savedLocale;
     Locale _osLocale;
-    widget.saveLocale
-        ? _savedLocale = await loadSavedLocale()
-        // Get Device Locale
-        : _osLocale = await _getDeviceLocale();
+    if(widget.saveLocale) _savedLocale = await loadSavedLocale();
     if (_savedLocale == null && widget.startLocale != null) {
       locale = _getFallbackLocale(widget.supportedLocales, widget.startLocale);
       log('easy localization: Start locale loaded ${locale.toString()}');
@@ -94,6 +91,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
       locale = _savedLocale;
     } else {
+      // Get Device Locale
+      _osLocale = await _getDeviceLocale();
       locale = widget.supportedLocales.firstWhere(
           (locale) => _checkInitLocale(locale, _osLocale),
           orElse: () => _getFallbackLocale(
