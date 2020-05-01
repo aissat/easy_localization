@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/test_asset_loaders.dart';
 
-
 BuildContext _context;
 
 class MyApp extends StatelessWidget {
@@ -72,6 +71,25 @@ void main() {
 
         expect('test'.tr(), 'test');
         expect('day'.plural(1), '1 day');
+      });
+    },
+  );
+
+  testWidgets(
+    '[EasyLocalization with  child==null  AssertionError] test',
+    (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        try {
+          await tester.pumpWidget(
+          EasyLocalization(
+          child: null,
+          path: 'i18n',
+          supportedLocales: [Locale('en', 'US')],
+        ));
+        } on AssertionError catch (e) {
+          // throw  AssertionError('Expected ArgumentError');
+          expect(e, isAssertionError);
+        }
       });
     },
   );
@@ -362,7 +380,7 @@ void main() {
           saveLocale: false,
           useOnlyLangCode: true,
           supportedLocales: [Locale('ar')],
-          fallbackLocale:Locale('ar') ,
+          fallbackLocale: Locale('ar'),
         ));
         await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -450,7 +468,8 @@ void main() {
           expect(EasyLocalization.of(_context).fallbackLocale, null);
         });
       },
-    );testWidgets(
+    );
+    testWidgets(
       '[EasyLocalization] startLocale  test',
       (WidgetTester tester) async {
         await tester.runAsync(() async {
