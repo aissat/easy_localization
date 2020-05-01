@@ -20,6 +20,7 @@ void main() {
     ],
     path: 'resources/langs/langs.csv', //'resources/langs',
     // fallbackLocale: Locale('en', 'US'),
+    // startLocale: Locale('de', 'DE'),
     // saveLocale: false,
     // useOnlyLangCode: true,
     // preloaderColor: Colors.black,
