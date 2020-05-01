@@ -20,10 +20,10 @@ this package simplifies the internationalizing process
 ## Why easy_localization
 
 - [x] simplifies and makes the internationalizing process in Flutter much easier.
-- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files .
+- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files.
 - [x] Error widget
 - [x] Based on Bloc architecture.
-- [x] Code generation for localization files.
+- [x] Code generation for localization files and keys.
 - [x] Load locale from remote or backend.
 - [x] Automatically saving App state (save/restor/reset the selected locale).
 - [x] Supports `plural`
@@ -284,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
     log(tr("title"), name: this.toString() );
     return Scaffold(
       appBar: AppBar(
-        title: Text("title").tr(context: context),
+        title: Text(LocaleKeys.title).tr(context: context),
         actions: <Widget>[
           FlatButton(
             child: Icon(Icons.language),
@@ -383,7 +383,7 @@ See [Easy Localization Loader](https://github.com/aissat/easy_localization_loade
 
 #### Code generation of localization files
 
-Code generation supports json and csv files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+Code generation supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
 1. Open your terminal in the folder's path containing your project 
@@ -404,6 +404,30 @@ void main(){
 ...
 ```
 4. All done!
+
+#### Code generation of keys
+
+If you have many localization keys and are confused, key generation will help you. The code editor will automatically prompt keys
+
+Code generation keys supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+
+Steps:
+1. Open your terminal in the folder's path containing your project 
+2. Run in terminal `flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart`
+3. Past import.
+
+```dart
+import 'generated/locale_keys.g.dart';
+```
+4. All done!
+
+How to usage generated keys:
+
+```dart
+print(LocaleKeys.title.tr()); //String
+//or
+Text(LocaleKeys.title).tr(); //Widget
+```
 
 ## Screenshots
 
