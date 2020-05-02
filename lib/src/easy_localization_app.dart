@@ -40,10 +40,11 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.preloaderColor = Colors.white,
-    this.preloaderWidget
+    this.preloaderWidget = const EmptyPreloaderWidget(),
   })  : assert(child != null),
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
+        assert(preloaderWidget != null),
         super(key: key) {
     log('EasyLocalization');
   }
@@ -155,7 +156,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
             if (snapshot.connectionState == ConnectionState.waiting &&
                 !snapshot.hasData &&
                 !snapshot.hasError) {
-              returnWidget = widget.preloaderWidget ?? EmptyPreloaderWidget();
+              returnWidget = widget.preloaderWidget;
             } else if (snapshot.hasData && !snapshot.hasError) {
               returnWidget = _EasyLocalizationProvider(
                 widget,
