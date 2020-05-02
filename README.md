@@ -39,9 +39,14 @@ this package simplifies the internationalizing process
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
+### [2.2.2]
+
+- Added `preloaderWidget`.
+- Fixed many issues.
+
 ### [2.2.1]
 
-- Added `startLocale` .
+- Added `startLocale`.
 
 ### [2.2.0]
 
@@ -223,6 +228,7 @@ void main(){
     // saveLocale: false,
     // useOnlyLangCode: true,
     // preloaderColor: Colors.black,
+    // preloaderWidget: CustomPreloaderWidget(),
 
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // install easy_localization_loader for enable custom loaders

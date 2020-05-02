@@ -24,6 +24,7 @@ void main() {
     // saveLocale: false,
     // useOnlyLangCode: true,
     // preloaderColor: Colors.black,
+    // preloaderWidget: CustomPreloaderWidget(),
 
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // install easy_localization_loader for enable custom loaders
@@ -172,6 +173,20 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: incrementCounter,
         child: Text('+1'),
+      ),
+    );
+  }
+}
+
+class CustomPreloaderWidget extends StatelessWidget {
+  const CustomPreloaderWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    log('Loading custom preloder widget');
+    return Container(
+      child: Center(
+        child: CircularProgressIndicator()
       ),
     );
   }
