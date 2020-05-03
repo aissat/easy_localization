@@ -4,7 +4,7 @@ description: Easy and Fast internationalizing and localization your Flutter Apps
 homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
 
-version: 2.2.0
+version: 2.3.0
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.16.0
-  shared_preferences: ^0.5.6+3
+  shared_preferences: ^0.5.7
   args: ^1.5.2
   path: ^1.6.4
   flutter_localizations:
