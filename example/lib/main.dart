@@ -43,14 +43,14 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    log(EasyLocalization.of(context).locale.toString(),
-        name: '${this} # locale');
+    log(context.locale.toString(),
+        name: '${this} # locale Context');
     log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
       title: 'title'.tr(),
-      localizationsDelegates:EasyLocalization.of(context).delegates,
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -160,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             RaisedButton(
               onPressed: () {
-                EasyLocalization.of(context).deleteSaveLocale();
+                context.deleteSaveLocale();
               },
               child: Text(LocaleKeys.reset_locale).tr(),
             ),
