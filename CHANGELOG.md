@@ -1,5 +1,16 @@
 # Changelog
 
+### [2.3.0]
+
+- Added extension methods on [BuildContext] for access to Easy Localization
+
+:fire: It's more easiest way change locale or get parameters
+
+```dart
+context.locale = locale;
+```
+:information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
+
 ### [2.2.2]
 
 - Added `preloaderWidget`.

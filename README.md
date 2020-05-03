@@ -39,6 +39,17 @@ this package simplifies the internationalizing process
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
+### [2.3.0]
+
+- Added extension methods on [BuildContext] for access to Easy Localization
+
+:fire: It's more easiest way change locale or get parameters
+
+```dart
+context.locale = locale;
+```
+:information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
+
 ### [2.2.2]
 
 - Added `preloaderWidget`.
@@ -249,9 +260,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      localizationsDelegates: EasyLocalization.of(context).delegates,
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -375,21 +386,59 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-How to change Locale:
+#### Change locale
+
+:fire: The easiest way change or get locale is by using the extension methods on [BuildContext]:
+
+```dart
+context.locale = locale;
+```
+
+You can also use the static method `EasyLocalization.of(context)`
 
 ```dart
 EasyLocalization.of(context).locale = locale;
 ```
 
+#### Getting parameters
+
+For getting parameters in Easy Localization use the extension methods or the static method.
+
+```dart
+context.supportedLocales
+//or
+EasyLocalization.of(context).supportedLocales
+```
+```dart
+context.fallbackLocale
+//or
+EasyLocalization.of(context).fallbackLocale
+```
+```dart
+context.startLocale
+//or
+EasyLocalization.of(context).startLocale
+```
+
+#### Delete saved locale
+
+For delete saved in Shared preferences use `deleteSaveLocale()` function.
+
+```dart
+context.deleteSaveLocale();
+//or
+EasyLocalization.of(context).deleteSaveLocale();
+```
+
 #### Loading translations from other resources
 
-You can use JSON,CSV,HTTP,XML,Yaml files, etc.
+:electric_plug: You can use JSON,CSV,HTTP,XML,Yaml files, etc.
 
 See [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) for more info.
 
 #### Code generation of localization files
 
-Code generation supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+Code generation :computer: supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
 1. Open your terminal in the folder's path containing your project 
@@ -413,9 +462,9 @@ void main(){
 
 #### Code generation of keys
 
-If you have many localization keys and are confused, key generation will help you. The code editor will automatically prompt keys
+If you have many localization keys and are confused, key generation will help you. The code editor will automatically prompt keys :rocket:.
 
-Code generation keys supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+Code generation :computer: keys supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
 1. Open your terminal in the folder's path containing your project 
