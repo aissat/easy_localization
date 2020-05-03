@@ -210,6 +210,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   Locale get locale => _locale;
   Locale get fallbackLocale => parent.fallbackLocale;
+  Locale get startLocale => parent.startLocale;
 
   set locale(Locale locale) {
     // Check old locale
