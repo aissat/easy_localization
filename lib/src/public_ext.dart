@@ -62,9 +62,10 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
 
   Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
 
-  Locale get startLocale => EasyLocalization.of(this).startLocale;
+  // Locale get startLocale => EasyLocalization.of(this).startLocale;
 
-  List<LocalizationsDelegate> get localizationDelegates => EasyLocalization.of(this).delegates;
+  List<LocalizationsDelegate> get localizationDelegates =>
+      EasyLocalization.of(this).delegates;
 
-  deleteSaveLocale() =>  EasyLocalization.of(this).deleteSaveLocale();
+  deleteSaveLocale() => EasyLocalization.of(this).deleteSaveLocale();
 }

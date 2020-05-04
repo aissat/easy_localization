@@ -409,15 +409,11 @@ context.supportedLocales
 //or
 EasyLocalization.of(context).supportedLocales
 ```
+
 ```dart
 context.fallbackLocale
 //or
 EasyLocalization.of(context).fallbackLocale
-```
-```dart
-context.startLocale
-//or
-EasyLocalization.of(context).startLocale
 ```
 
 #### Delete saved locale
@@ -441,7 +437,7 @@ See [Easy Localization Loader](https://github.com/aissat/easy_localization_loade
 Code generation :computer: supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
-1. Open your terminal in the folder's path containing your project 
+1. Open your terminal in the folder's path containing your project
 2. Run in terminal `flutter pub run easy_localization:generate`
 3. Change asset loader and past import.
 
