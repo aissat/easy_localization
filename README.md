@@ -36,6 +36,7 @@ this package simplifies the internationalizing process
 - [x] Supports context.
 - [x] Testable and maintainable.
 
+
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
 ### [2.3.0]
@@ -47,7 +48,6 @@ this package simplifies the internationalizing process
 ```dart
 context.locale = locale;
 ```
-
 :information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
 ### [2.2.2]
@@ -410,12 +410,6 @@ context.supportedLocales
 EasyLocalization.of(context).supportedLocales
 ```
 
-```yaml
-dependencies:
-  csv: <last_version>
-```
-
-2. Create custom class loader
 ```dart
 context.fallbackLocale
 //or
