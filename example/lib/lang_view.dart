@@ -40,7 +40,8 @@ class LanguageView extends StatelessWidget {
                 context: context,
                 title: 'عربي',
                 subtitle: 'عربي',
-                locale: EasyLocalization.of(context).supportedLocales[1]),
+                locale: context.supportedLocales[1] //BuildContext extension method
+                ),
             buildDivider(),
             buildSwitchListTileMenuItem(
                 context: context,
@@ -94,7 +95,8 @@ class LanguageView extends StatelessWidget {
           ),
           onTap: () {
             log(locale.toString(), name: toString());
-            EasyLocalization.of(context).locale = locale;
+            context.locale = locale; //BuildContext extension method
+            //EasyLocalization.of(context).locale = locale;
             Navigator.pop(context);
           }),
     );

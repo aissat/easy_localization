@@ -1,13 +1,29 @@
 # Changelog
 
-## [2.2.1]
+### [2.3.0]
 
-- Added init start locale `startLocale` .
+- Added extension methods on [BuildContext] for access to Easy Localization
+
+:fire: It's more easiest way change locale or get parameters
+
+```dart
+context.locale = locale;
+```
+:information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
+
+### [2.2.2]
+
+- Added `preloaderWidget`.
+- Fixed many issues.
+
+### [2.2.1]
+
+- Added `startLocale`.
 
 ## [2.2.0]
 
-- Added support Locale scriptCode.
 - Added `EasyLocalization.of(context).delegates` for `localizationsDelegates`
+- Added support Locale scriptCode.
 
   ```dart
   supportedLocales: [

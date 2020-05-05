@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
+import 'easy_localization_app.dart';
 import 'public.dart' as ez;
 
 extension TextTranslateExtension on Text {
@@ -49,4 +50,22 @@ extension StringTranslateExtension on String {
       ez.tr(this, args: args, gender: gender);
   String plural(dynamic value, {NumberFormat format}) =>
       ez.plural(this, value, format: format);
+}
+
+//BuildContext extension method for acces to Easy Localization
+extension BuildContextEasyLocalizationExtension on BuildContext {
+  Locale get locale => EasyLocalization.of(this).locale;
+  set locale(Locale val) => EasyLocalization.of(this).locale = val;
+
+  List<Locale> get supportedLocales =>
+      EasyLocalization.of(this).supportedLocales;
+
+  Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
+
+  // Locale get startLocale => EasyLocalization.of(this).startLocale;
+
+  List<LocalizationsDelegate> get localizationDelegates =>
+      EasyLocalization.of(this).delegates;
+
+  deleteSaveLocale() => EasyLocalization.of(this).deleteSaveLocale();
 }

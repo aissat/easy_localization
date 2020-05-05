@@ -28,6 +28,7 @@ class EasyLocalization extends StatefulWidget {
   final assetLoader;
   final bool saveLocale;
   final Color preloaderColor;
+  final Widget preloaderWidget;
   EasyLocalization({
     Key key,
     @required this.child,
@@ -39,9 +40,11 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.preloaderColor = Colors.white,
+    this.preloaderWidget = const EmptyPreloaderWidget(),
   })  : assert(child != null),
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
+        assert(preloaderWidget != null),
         super(key: key) {
     log('EasyLocalization');
   }
@@ -81,10 +84,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   void _init() async {
     Locale _savedLocale;
     Locale _osLocale;
-    widget.saveLocale
-        ? _savedLocale = await loadSavedLocale()
-        // Get Device Locale
-        : _osLocale = await _getDeviceLocale();
+    if (widget.saveLocale) _savedLocale = await loadSavedLocale();
     if (_savedLocale == null && widget.startLocale != null) {
       locale = _getFallbackLocale(widget.supportedLocales, widget.startLocale);
       log('easy localization: Start locale loaded ${locale.toString()}');
@@ -94,6 +94,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       log('easy localization: Saved locale loaded ${_savedLocale.toString()}');
       locale = _savedLocale;
     } else {
+      // Get Device Locale
+      _osLocale = await _getDeviceLocale();
       locale = widget.supportedLocales.firstWhere(
           (locale) => _checkInitLocale(locale, _osLocale),
           orElse: () => _getFallbackLocale(
@@ -154,7 +156,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
             if (snapshot.connectionState == ConnectionState.waiting &&
                 !snapshot.hasData &&
                 !snapshot.hasError) {
-              returnWidget = EmptyPreloaderWidget();
+              returnWidget = widget.preloaderWidget;
             } else if (snapshot.hasData && !snapshot.hasError) {
               returnWidget = _EasyLocalizationProvider(
                 widget,
@@ -208,6 +210,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   Locale get locale => _locale;
   Locale get fallbackLocale => parent.fallbackLocale;
+  // Locale get startLocale => parent.startLocale;
 
   set locale(Locale locale) {
     // Check old locale

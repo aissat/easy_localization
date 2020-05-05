@@ -178,7 +178,7 @@ Future _writeJson(
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 import 'dart:ui';
 
-import 'package:easy_localization/src/asset_loader.dart';
+import 'package:easy_localization/easy_localization.dart' show AssetLoader;
 
 class CodegenLoader extends AssetLoader{
   const CodegenLoader();

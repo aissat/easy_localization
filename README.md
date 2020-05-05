@@ -20,11 +20,10 @@ this package simplifies the internationalizing process
 ## Why easy_localization
 
 - [x] simplifies and makes the internationalizing process in Flutter much easier.
-- [x] Customizable localizations AssetLoader.
-- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files .
+- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files.
 - [x] Error widget
 - [x] Based on Bloc architecture.
-- [x] Code generation for localization files.
+- [x] Code generation for localization files and keys.
 - [x] Load locale from remote or backend.
 - [x] Automatically saving App state (save/restor/reset the selected locale).
 - [x] Supports `plural`
@@ -33,19 +32,37 @@ this package simplifies the internationalizing process
 - [x] Supports changing locale dynamically.
 - [x] Supports RTL locales.
 - [x] Supports nesting.
+- [x] Customizable localizations AssetLoader.
 - [x] Supports context.
 - [x] Testable and maintainable.
 
 ## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
 
+### [2.3.0]
+
+- Added extension methods on [BuildContext] for access to Easy Localization
+
+:fire: It's more easiest way change locale or get parameters
+
+```dart
+context.locale = locale;
+```
+
+:information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
+
+### [2.2.2]
+
+- Added `preloaderWidget`.
+- Fixed many issues.
+
 ### [2.2.1]
 
-- Added init start locale `startLocale` .
+- Added `startLocale`.
 
 ### [2.2.0]
 
-- Added support Locale scriptCode.
 - Added `EasyLocalization.of(context).delegates` for `localizationsDelegates`
+- Added support Locale scriptCode.
 
   ```dart
   supportedLocales: [
@@ -218,9 +235,11 @@ void main(){
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')], // [Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK')]
     path: 'resources/langs',
     // fallbackLocale: Locale('en', 'US'),
+    // startLocale: Locale('de', 'DE'),
     // saveLocale: false,
     // useOnlyLangCode: true,
     // preloaderColor: Colors.black,
+    // preloaderWidget: CustomPreloaderWidget(),
 
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // install easy_localization_loader for enable custom loaders
@@ -241,9 +260,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      localizationsDelegates: EasyLocalization.of(context).delegates,
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -282,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
     log(tr("title"), name: this.toString() );
     return Scaffold(
       appBar: AppBar(
-        title: Text("title").tr(context: context),
+        title: Text(LocaleKeys.title).tr(context: context),
         actions: <Widget>[
           FlatButton(
             child: Icon(Icons.language),
@@ -367,19 +386,29 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-How to change Locale:
+#### Change locale
+
+:fire: The easiest way change or get locale is by using the extension methods on [BuildContext]:
+
+```dart
+context.locale = locale;
+```
+
+You can also use the static method `EasyLocalization.of(context)`
 
 ```dart
 EasyLocalization.of(context).locale = locale;
 ```
 
-#### Load translations from Custom AssetLoader
+#### Getting parameters
 
-See [other examples](https://github.com/aissat/easy_localization/blob/master/example/lib/custom_asset_loader.dart) for more options.
+For getting parameters in Easy Localization use the extension methods or the static method.
 
-Example from Csv file:
-
-1. add dependency
+```dart
+context.supportedLocales
+//or
+EasyLocalization.of(context).supportedLocales
+```
 
 ```yaml
 dependencies:
@@ -388,47 +417,33 @@ dependencies:
 
 2. Create custom class loader
 ```dart
-//
-// load example/resources/langs/langs.csv
-//
-class CsvAssetLoader extends AssetLoader {
-  CSVParser csvParser;
-
-  @override
-  Future<Map<String, dynamic>> load(String path, Locale locale) async {
-    if (csvParser == null) {
-      csvParser = CSVParser(await rootBundle.loadString(path));
-    } else {
-      log('easy localization: CSV parser already loaded');
-    }
-    return csvParser.getLanguageMap(locale.toString());
-  }
-}
+context.fallbackLocale
+//or
+EasyLocalization.of(context).fallbackLocale
 ```
 
-3. Change assetLoader to your custom class
+#### Delete saved locale
+
+For delete saved in Shared preferences use `deleteSaveLocale()` function.
 
 ```dart
-...
-void main(){
-  runApp(EasyLocalization(
-    child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-    path: 'resources/langs/langs.csv',
-    assetLoader: CsvAssetLoader()
-  ));
-}
-...
+context.deleteSaveLocale();
+//or
+EasyLocalization.of(context).deleteSaveLocale();
 ```
 
-4. All done!
+#### Loading translations from other resources
+
+:electric_plug: You can use JSON,CSV,HTTP,XML,Yaml files, etc.
+
+See [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) for more info.
 
 #### Code generation of localization files
 
-Code generation supports json and csv files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+Code generation :computer: supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
-1. Open your terminal in the folder's path containing your project 
+1. Open your terminal in the folder's path containing your project
 2. Run in terminal `flutter pub run easy_localization:generate`
 3. Change asset loader and past import.
 
@@ -446,6 +461,30 @@ void main(){
 ...
 ```
 4. All done!
+
+#### Code generation of keys
+
+If you have many localization keys and are confused, key generation will help you. The code editor will automatically prompt keys :rocket:.
+
+Code generation :computer: keys supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+
+Steps:
+1. Open your terminal in the folder's path containing your project 
+2. Run in terminal `flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart`
+3. Past import.
+
+```dart
+import 'generated/locale_keys.g.dart';
+```
+4. All done!
+
+How to usage generated keys:
+
+```dart
+print(LocaleKeys.title.tr()); //String
+//or
+Text(LocaleKeys.title).tr(); //Widget
+```
 
 ## Screenshots
 

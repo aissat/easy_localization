@@ -2,10 +2,10 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:example/lang_view.dart';
-import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 import 'generated/locale_keys.g.dart';
 
@@ -20,9 +20,11 @@ void main() {
     ],
     path: 'resources/langs/langs.csv', //'resources/langs',
     // fallbackLocale: Locale('en', 'US'),
+    // startLocale: Locale('de', 'DE'),
     // saveLocale: false,
     // useOnlyLangCode: true,
     // preloaderColor: Colors.black,
+    // preloaderWidget: CustomPreloaderWidget(),
 
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // install easy_localization_loader for enable custom loaders
@@ -41,14 +43,14 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    log(EasyLocalization.of(context).locale.toString(),
-        name: '${this} # locale');
+    log(context.locale.toString(),
+        name: '${this} # locale Context');
     log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
       title: 'title'.tr(),
-      localizationsDelegates:EasyLocalization.of(context).delegates,
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -125,9 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(MyFlutterApp.male_1),
+                Icon(FontAwesome.male),
                 Switch(value: _gender, onChanged: switchGender),
-                Icon(MyFlutterApp.female_1),
+                Icon(FontAwesome.female),
               ],
             ),
             Spacer(
@@ -158,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             RaisedButton(
               onPressed: () {
-                EasyLocalization.of(context).deleteSaveLocale();
+                context.deleteSaveLocale();
               },
               child: Text(LocaleKeys.reset_locale).tr(),
             ),
@@ -171,6 +173,20 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: incrementCounter,
         child: Text('+1'),
+      ),
+    );
+  }
+}
+
+class CustomPreloaderWidget extends StatelessWidget {
+  const CustomPreloaderWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    log('Loading custom preloder widget');
+    return Container(
+      child: Center(
+        child: CircularProgressIndicator()
       ),
     );
   }
