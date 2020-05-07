@@ -127,6 +127,8 @@ class MyApp extends StatelessWidget {
 For translation to work on **iOS** you need to add supported locales to 
 `ios/Runner/Info.plist` as described [here](https://flutter.dev/docs/development/accessibility-and-localization/internationalization#specifying-supportedlocales).
 
+Example:
+
 ```
 <key>CFBundleLocalizations</key>
 <array>
