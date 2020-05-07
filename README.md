@@ -216,214 +216,63 @@ flutter:
     - {`path`/{languageCode}-{countryCode}.{formatFile}}
 ```
 
-The next step :
+#### EasyLocalization attributes
+
+ Attribute | Type  | Default | Required | Description |
+|-----------|-------|---------|-------------|----------|
+| `child` | `Widget` | `null` | `true` | Description |
+| `path` | `String` | `null`  | `true` | Description |
+| `supportedLocales` | `List<Locale>` | `null`  | `true` | Description |
+| `fallbackLocale` | `Locale` | `null` | `false` | Description |
+| `startLocale` | `Locale` | `null`  | `false` | Description |
+| `useOnlyLangCode` | `bool` | `false` | `false` | Description |
+| `assetLoader` | `AssetLoader` | `const RootBundleAssetLoader()`  | `false` | Description |
+| `saveLocale` | `bool` | `true`  | `false` | Description |
+| `preloaderColor` | `Color` | `Colors.white`  | `false` | Description |
+| `preloaderWidget` | `Widget` | `const EmptyPreloaderWidget()`  | `false` | Description |
+
+#### EasyLocalization properties
+
+ property | Type | Description |
+|-----------|---------|----------|
+| `tr()` | `String` | Description |
+| `plural()` | `String` | Description |
+| `EasyLocalization.of(context).locale` or `context.locale` | `locale` | set or get locale |
+| `EasyLocalization.of(context).deleteSaveLocale()` or `context.deleteSaveLocale()` | `void` | delete saved locale |
+| `EasyLocalization.of(context).supportedLocales` or `context.supportedLocales` | `locale` | get value of `supportedLocales` |
+| `EasyLocalization.of(context).fallbackLocale` or `context.fallbackLocale` | `locale` | get value of `fallbackLocale` |
+
+#### :fire: `tr()` attributes
+
+ Attribute | Type  | Default | Required | Description |
+|-----------|-------|---------|-------------|----------|
+| `context` | `BuildContext` | `null` | `false` | Description |
+| `args` | `List<String>` | `null`  | `false` | Description |
+| `namedArgs` | `Map<String, String>` | `null`  | `false` | Description |
+| `gender` | `String` | `null` | `false` | Description |
+
+example :
 
 ```dart
-import 'dart:developer';
-
-import 'package:example/lang_view.dart';
-import 'package:example/my_flutter_app_icons.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:easy_localization/easy_localization.dart';
-
-//import 'generated/codegen_loader.g.dart';
-
-void main(){
-  runApp(EasyLocalization(
-    child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')], // [Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK')]
-    path: 'resources/langs',
-    // fallbackLocale: Locale('en', 'US'),
-    // startLocale: Locale('de', 'DE'),
-    // saveLocale: false,
-    // useOnlyLangCode: true,
-    // preloaderColor: Colors.black,
-    // preloaderWidget: CustomPreloaderWidget(),
-
-    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-    // install easy_localization_loader for enable custom loaders
-    // assetLoader: RootBundleAssetLoader()
-    // assetLoader: HttpAssetLoader()
-    // assetLoader: FileAssetLoader()
-    assetLoader: CsvAssetLoader()
-    // assetLoader: YamlAssetLoader() //multiple files
-    // assetLoader: YamlSingleAssetLoader() //single file
-    // assetLoader: XmlAssetLoader() //multiple files
-    // assetLoader: XmlSingleAssetLoader() //single file
-    // assetLoader: CodegenLoader()
-  ));
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Easy localization'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int counter = 0;
-  bool _gender = true;
-
-  incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
-  switchGender(bool val) {
-    setState(() {
-      _gender = val;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    log(tr("title"), name: this.toString() );
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(LocaleKeys.title).tr(context: context),
-        actions: <Widget>[
-          FlatButton(
-            child: Icon(Icons.language),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => LanguageView(), fullscreenDialog: true),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(
-              flex: 1,
-            ),
-            Text(
-              'switch.with_arg',
-              style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
-            ).tr(args: ["aissat"], gender: _gender ? "female" : "male"),
-            Text(
-              tr('switch', gender: _gender ? "female" : "male"),
-              style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(MyFlutterApp.male_1),
-                Switch(value: _gender, onChanged: switchGender),
-                Icon(MyFlutterApp.female_1),
-              ],
-            ),
-            Spacer(
-              flex: 1,
-            ),
-            Text('msg').tr(args: ['aissat', 'Flutter']),
-            Text('clicked').plural(counter),
-            FlatButton(
-              onPressed: () {
-                incrementCounter();
-              },
-              child: Text('clickMe').tr(),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-                plural('amount', counter,
-                    format: NumberFormat.currency(
-                        locale: Intl.defaultLocale,
-                        symbol: "€")),
-                style: TextStyle(
-                    color: Colors.grey.shade900,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-            SizedBox(
-              height: 20,
-            ),
-            Text('profile.reset_password.title').tr(),
-            Spacer(
-              flex: 2,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: incrementCounter,
-        child: Text('+1'),
-      ),
-    );
-  }
-}
+  Text('title'.tr()),
+  Text('title').tr(),
+  Text(tr('title')),
 ```
 
-#### Change locale
+#### :fire: `plural()` attributes
 
-:fire: The easiest way change or get locale is by using the extension methods on [BuildContext]:
+ Attribute | Type  | Default | Required | Description |
+|-----------|-------|---------|-------------|----------|
+| `context` | `BuildContext` | `null` | `false` | Description |
+| `value` | `dynamic` | `null`  | `false` | Description |
+| `format` | `NumberFormat` | `null`  | `false` | Description |
 
-```dart
-context.locale = locale;
-```
-
-You can also use the static method `EasyLocalization.of(context)`
-
-```dart
-EasyLocalization.of(context).locale = locale;
-```
-
-#### Getting parameters
-
-For getting parameters in Easy Localization use the extension methods or the static method.
+example :
 
 ```dart
-context.supportedLocales
-//or
-EasyLocalization.of(context).supportedLocales
-```
-
-```dart
-context.fallbackLocale
-//or
-EasyLocalization.of(context).fallbackLocale
-```
-
-#### Delete saved locale
-
-For delete saved in Shared preferences use `deleteSaveLocale()` function.
-
-```dart
-context.deleteSaveLocale();
-//or
-EasyLocalization.of(context).deleteSaveLocale();
+  Text('counter'.plural(counter)),
+  Text('counter').plural(counter),
+  Text(plural('counter',counter)),
 ```
 
 #### Loading translations from other resources
@@ -437,6 +286,7 @@ See [Easy Localization Loader](https://github.com/aissat/easy_localization_loade
 Code generation :computer: supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
 
 Steps:
+
 1. Open your terminal in the folder's path containing your project
 2. Run in terminal `flutter pub run easy_localization:generate`
 3. Change asset loader and past import.
@@ -454,6 +304,7 @@ void main(){
 }
 ...
 ```
+
 4. All done!
 
 #### Code generation of keys
