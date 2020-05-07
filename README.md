@@ -36,142 +36,9 @@ this package simplifies the internationalizing process
 - [x] Supports context.
 - [x] Testable and maintainable.
 
+For example see [example](example) folder.
 
-## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
-
-### [2.3.0]
-
-- Added extension methods on [BuildContext] for access to Easy Localization
-
-:fire: It's more easiest way change locale or get parameters
-
-```dart
-context.locale = locale;
-```
-:information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
-
-### [2.2.2]
-
-- Added `preloaderWidget`.
-- Fixed many issues.
-
-### [2.2.1]
-
-- Added `startLocale`.
-
-### [2.2.0]
-
-- Added support Locale scriptCode.
-- Added `EasyLocalization.of(context).delegates` for `localizationsDelegates`
-
-  ```dart
-  supportedLocales: [
-      Locale('en', 'US'),
-      Locale('ar', 'DZ'),
-      Locale('ar','DZ'),localeFromString('ar_DZ')
-    ]
-  ```
-
-- Added support Custom assets loaders [Easy Localization Loader](https://github.com/aissat/easy_localization_loader).
-  - Added support CSV files.
-
-    ```dart
-    path: 'resources/langs/langs.csv',
-    assetLoader: CsvAssetLoader(),
-    ```
-
-  - Added support Yaml files.
-
-    ```dart
-    path: 'resources/langs',
-    assetLoader: YamlAssetLoader(),
-    ```
-
-    ```dart
-    path: 'resources/langs/langs.yaml',
-    assetLoader: YamlSingleAssetLoader(),
-    ```
-
-  - Added support XML files.
-
-    ```dart
-    path: 'resources/langs',
-    assetLoader: XmlAssetLoader(),
-    ```
-
-    ```dart
-    path: 'resources/langs/langs.xml',
-    assetLoader: XmlSingleAssetLoader(),
-    ```
-
-- Added Code generation of localization files.
-
-  ```cmd
-  $ flutter pub run easy_localization:generate -h
-  -s, --source-dir     Source folder contains all string json files
-                      (defaults to "resources/langs")
-  -O, --output-dir     Output folder stores generated file
-                      (defaults to "lib/generated")
-  -o, --output-file    Output file name
-                      (defaults to "codegen_loader.g.dart")
-  -f, --format         Support json, dart formats
-                      [json (default), keys]
-  ```
-
-  - generate the json string static keys in a dart class
-
-    ```json
-    {
-      "msg_named": "{} مكتوبة باللغة {lang}",
-    }
-    ```
-
-    ```cmd
-    flutter pub run easy_localization:generate  -f keys -o locale_keys.g.dart
-    ```
-
-    ```dart
-    abstract class  LocaleKeys {
-      static const msg_named = 'msg_named';
-    }
-    ```
-
-    ```dart
-    Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
-    ```
-
-  - generate the json Loader in a dart class
-  
-    ```cmd
-    flutter pub run easy_localization:generate
-    ```
-
-- fixed many issues.
-- Added named arguments.
-
-  ```json
-  "msg_named": "{} are written in the {lang} language",
-  ```
-
-  ```dart
-  Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
-  ```
-
-### [2.1.0]
-
-- Added Error widget.
-- fixed many issues.
-- Adopted Bloc architecture.
-
-### [2.0.2]
-
-- fixed many issues.
-- optimized and clean code for more stability.
-
-### [2.0.1]
-
-- Added change locale dynamically `saveLocale` default value `true`.
-- fixed many issues.
+For changes see [CHANGELOG.md](CHANGELOG.md).
 
 ## Getting Started
 
@@ -215,6 +82,24 @@ flutter:
   assets:
     - {`path`/{languageCode}-{countryCode}.{formatFile}}
 ```
+
+#### Note on **iOS**
+
+For translation to work on **iOS** you need to add supported locales to 
+`ios/Runner/Info.plist` as described [here](https://flutter.dev/docs/development/accessibility-and-localization/internationalization#specifying-supportedlocales).
+
+Example:
+
+```
+<key>CFBundleLocalizations</key>
+<array>
+	<string>en</string>
+	<string>nb</string>
+	<string>es</string>
+	<string>ru</string>
+</array>
+```
+
 
 #### EasyLocalization attributes
 
