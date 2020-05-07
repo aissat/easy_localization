@@ -1,4 +1,6 @@
-<h1 align="center"> Easy localization </h1>
+# Easy localization
+
+Easy internationalization for your Flutter Apps
 
 ![Pub Version](https://img.shields.io/pub/v/easy_localization?style=flat-square)
 ![Code Climate issues](https://img.shields.io/github/issues/aissat/easy_localization?style=flat-square)
@@ -12,33 +14,20 @@
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/aissat/easy_localization?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 
-<p align="center"> 
-Easy and Fast internationalization for your Flutter Apps,
-this package simplifies the internationalizing process
-</p>
-
 ## Why easy_localization
 
-- [x] simplifies and makes the internationalizing process in Flutter much easier.
-- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files.
-- [x] Error widget
-- [x] Based on Bloc architecture.
-- [x] Code generation for localization files and keys.
-- [x] Load locale from remote or backend.
-- [x] Automatically saving App state (save/restor/reset the selected locale).
-- [x] Supports `plural`
-- [x] Supports `gender`
-- [x] Supports Flutter extension.
-- [x] Supports changing locale dynamically.
-- [x] Supports RTL locales.
-- [x] Supports nesting.
-- [x] Customizable localizations AssetLoader.
-- [x] Supports context.
-- [x] Testable and maintainable.
+- Easy translations for many languages
+- Load translations as JSON, CSV, Yaml, Xml using [easy\_localization\_loader](https://github.com/aissat/easy_localization_loader)
+- React and persist to locale changes
+- Supports `plural`, `gender`, nesting, RTL locales and more
+- Optional code generation
+- Error widget for missing translations
+- Extension methods on `Text`
+- Uses BLoC pattern
 
-For example see [example](example) folder.
+See [example](example) folder.
 
-For changes see [CHANGELOG.md](CHANGELOG.md).
+See [CHANGELOG.md](CHANGELOG.md) for changes.
 
 ## Getting Started
 
