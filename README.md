@@ -71,7 +71,7 @@ Describe translations in your `pubspec.yaml`:
 ```yaml
 flutter:
   assets:
-    translations:
+    - assets/translations/
 ```
 
 Then in your code use one of the following `tr` methods:
