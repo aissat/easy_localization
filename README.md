@@ -82,13 +82,12 @@ Then in your code use one of the following `tr` methods:
   'hi'.tr()
 ```
 
-#### A more complete code example
+#### A simple example
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization_loader/easy_localization_loader.dart';
 
 void main() {
   runApp(
@@ -98,7 +97,6 @@ void main() {
       path: 'assets/translations',
       fallbackLocale: Locale('en'),
       assetLoader: RootBundleAssetLoader(),
-      //assetLoader: CsvAssetLoader(),
     ),
   );
 }
