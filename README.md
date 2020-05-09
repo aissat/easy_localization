@@ -1,6 +1,7 @@
-# Easy localization
-
-Easy internationalization for Flutter apps
+<p align="center"><img src="./logo/logo.svg" width="600"/></p>
+<h1 align="center"> 
+Easy and Fast internationalization for your Flutter Apps
+</h1>
 
 ![Pub Version](https://img.shields.io/pub/v/easy_localization?style=flat-square)
 ![Code Climate issues](https://img.shields.io/github/issues/aissat/easy_localization?style=flat-square)
@@ -13,29 +14,31 @@ Easy internationalization for Flutter apps
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aissat/easy_localization/Flutter%20Tester?longCache=true&style=flat-square&logo=github)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/aissat/easy_localization?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
+![Sponsors](https://opencollective.com/flutter_easy_localization/tiers/backer/badge.svg?label=sponsors&color=brightgreen)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 
-## Features
+## Why easy_localization?
 
-- Easy translations for many languages
-- Load translations as JSON, CSV, Yaml, Xml using [easy\_localization\_loader](https://github.com/aissat/easy_localization_loader)
-- React and persist to locale changes
-- Supports `plural`, `gender`, nesting, RTL locales and more
-- Optional code generation
-- Error widget for missing translations
-- Extension methods on `Text`
-- Uses BLoC pattern
+- 🚀 Easy translations for many languages
+- 🔌 Load translations as JSON, CSV, Yaml, Xml using [Easy Localization Loader](https://github.com/aissat/easy_localization_loader)
+- 💾 React and persist to locale changes
+- ⚡ Supports plural, gender, nesting, RTL locales and more
+- ⁉️ Error widget for missing translations
+- ❤️ Extension methods on `Text` and `BuildContext`
+- 💻 Code generation for localization files and keys.
+- 👍 Uses BLoC pattern 
 
-See [example](example) and [CHANGELOG.md](CHANGELOG.md).
+## Getting Started
 
-## Getting started
+### Installation
 
 Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  easy_localization:
-
+  easy_localization: <last_version>
 ```
+
 
 Add translation files as local assets to `path`, e.g:
 
@@ -55,18 +58,9 @@ Example:
 ```
 /assets/translations/en.json
 /assets/translations/en-US.json
-/assets/translations/nb.json
 ```
 
-or as a single CVS file using [easy_localization_loader](https://github.com/aissat/easy_localization_loader)
-
-> With [easy_localization_loader](https://github.com/aissat/easy_localization_loader), you can load translations using various file format like; JSON, CSV, XML, Yaml files, and even load remote assets using HTTP. You can also create a custom assset loader.
-
-```
-{path}/translations.cvs
-```
-
-Describe translations in your `pubspec.yaml`:
+Declare your assets localization directory in `pubspec.yaml`:
 
 ```yaml
 flutter:
@@ -74,15 +68,30 @@ flutter:
     - assets/translations/
 ```
 
-Then in your code use one of the following `tr` methods:
+### Loading translations from other resources
 
-```dart
-  Text(tr('hi'))
-  Text('hi').tr()
-  'hi'.tr()
+You can use JSON,CSV,HTTP,XML,Yaml files, etc.
+
+See [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) for more info.
+
+### Note on **iOS**
+
+For translation to work on **iOS** you need to add supported locales to 
+`ios/Runner/Info.plist` as described [here](https://flutter.dev/docs/development/accessibility-and-localization/internationalization#specifying-supportedlocales).
+
+Example:
+
+```xml
+<key>CFBundleLocalizations</key>
+<array>
+	<string>en</string>
+	<string>nb</string>
+</array>
 ```
 
-#### A simple example
+### Configuration app
+
+Add EasyLocalization widget like in example
 
 ```dart
 import 'package:flutter/material.dart';
@@ -92,11 +101,10 @@ import 'package:easy_localization/easy_localization.dart';
 void main() {
   runApp(
     EasyLocalization(
-      child: MyApp(),
-      supportedLocales: [Locale('en'), Locale('nb')],
+      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
       path: 'assets/translations',
-      fallbackLocale: Locale('en'),
-      assetLoader: RootBundleAssetLoader(),
+      fallbackLocale: Locale('en', 'US'),
+      child: MyApp()
     ),
   );
 }
@@ -105,71 +113,75 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        EasyLocalization.of(context).delegate,
-      ],
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
-      home: Scaffold(
-        body: Center(
-          child: Text('hi').tr(),
-        ),
-      ),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      home: MyHomePage()
     );
   }
 }
 ```
 
-#### Note on **iOS**
+[**Full example**](https://github.com/aissat/easy_localization/blob/master/example/lib/main.dart)
 
-For translation to work on **iOS** you need to add supported locales to 
-`ios/Runner/Info.plist` as described [here](https://flutter.dev/docs/development/accessibility-and-localization/internationalization#specifying-supportedlocales).
+## Usage
+
+### Change Locale:
+
+```dart
+context.locale = locale;
+```
+
+## Code generation
+
+Code generation keys supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+
+### Localization asset loader class
 
 Example:
 
 ```
-<key>CFBundleLocalizations</key>
-<array>
-	<string>en</string>
-	<string>nb</string>
-</array>
+4. All done!
+
+### Localization keys
+
+If you have many localization keys and are confused, key generation will help you. The code editor will automatically prompt keys
+
+Steps:
+1. Open your terminal in the folder's path containing your project 
+2. Run in terminal `flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart`
+3. Past import.
+
+```dart
+import 'generated/locale_keys.g.dart';
 ```
 
 #### Code generation
 
 Run `flutter pub run easy_localization:generate -h` for help.
 
-See [CODEGEN.md](CODEGEN.md) for usage.
-
 ## Screenshots
 
- Arbic RTL | English LTR
---- | ---
-![](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ar.png)|![](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_en.png)
+ Arabic RTL | English LTR | Error widget
+--- | --- | ---
+![Arabic RTL](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ar.png "Arabic RTL")|![English LTR](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_en.png "English LTR")|![Error widget](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_err.png "Error widget")
 
 ## Donations
 
-If you would like to support further development and ongoing maintenance, please consider donating.
+We need your support. Projects like this can not be successful without support from the community. If you find this project useful, and would like to support further development and ongoing maintenance, please consider donating.
 
-**PayPal**
+<p align="center">
+  <a href="https://opencollective.com/flutter_easy_localization/donate" target="_blank">
+    <img src="https://opencollective.com/flutter_easy_localization/donate/button@2x.png?color=blue" width=300 />
+  </a>
+</p>
 
-- **[Donate $5](https://paypal.me/aissatabdelwahab/5)**:
-  Thank's for creating this project, here's a coffee for you!
+### Sponsors
 
-- **[Donate $10](https://paypal.me/aissatabdelwahab/10)**:
-  Wow, I am stunned. Let me take you to the movies!
+<img src="https://opencollective.com/flutter_easy_localization/tiers/backer.svg?avatarHeight=48"/>
 
-- **[Donate $15](https://paypal.me/aissatabdelwahab/15)**:
-  I really appreciate your work, let's grab some lunch!
 
-- **[Donate $25](https://paypal.me/aissatabdelwahab/25)**:
-  That's some awesome stuff you did right there, dinner is on me!
-
-All donations are very much appreciated!
-
-## Thanks to
+### Contributors thanks
 
 ![contributors](https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization)
 <a href="https://github.com/aissat/easy_localization/graphs/contributors"></a>
