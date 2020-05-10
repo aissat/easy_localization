@@ -46,8 +46,9 @@ extension TextTranslateExtension on Text {
 }
 
 extension StringTranslateExtension on String {
-  String tr({List<String> args, String gender}) =>
-      ez.tr(this, args: args, gender: gender);
+  String tr(
+          {List<String> args, Map<String, String> namedArgs, String gender}) =>
+      ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
   String plural(dynamic value, {NumberFormat format}) =>
       ez.plural(this, value, format: format);
 }
