@@ -72,7 +72,7 @@ class Localization {
         gender,
         female: _resolve(key + '.female'),
         male: _resolve(key + '.male'),
-        other: _resolve(key + '.male'),
+        other: _resolve(key + '.other'),
         locale: _locale.languageCode,
       );
 
