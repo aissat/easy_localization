@@ -1,5 +1,10 @@
 # Changelog
 
+### [2.3.1]
+
+- Updated `plural()` function, now she is not strict.
+- Updates print and log messages
+
 ### [2.3.0]
 
 - Added extension methods on [BuildContext] for access to Easy Localization
