@@ -29,7 +29,7 @@ extension TextTranslateExtension on Text {
           semanticsLabel: semanticsLabel,
           textWidthBasis: textWidthBasis);
 
-  Text plural(dynamic value, {BuildContext context, NumberFormat format}) =>
+  Text plural(num value, {BuildContext context, NumberFormat format}) =>
       Text(ez.plural(data, value, context: context, format: format),
           key: key,
           style: style,
@@ -49,7 +49,7 @@ extension StringTranslateExtension on String {
   String tr(
           {List<String> args, Map<String, String> namedArgs, String gender}) =>
       ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
-  String plural(dynamic value, {NumberFormat format}) =>
+  String plural(num value, {NumberFormat format}) =>
       ez.plural(this, value, format: format);
 }
 

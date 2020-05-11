@@ -14,7 +14,7 @@ String tr(String key,
           .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
-String plural(String key, dynamic value,
+String plural(String key, num value,
     {BuildContext context, NumberFormat format}) {
   return context == null
       ? Localization.instance.plural(key, value, format: format)

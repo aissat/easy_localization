@@ -55,7 +55,7 @@ class Localization {
     return res;
   }
 
-  String plural(String key, dynamic value, {NumberFormat format}) {
+  String plural(String key, num value, {NumberFormat format}) {
     final res = Intl.pluralLogic(value,
         zero: _resolvePlural(key, 'zero'),
         one: _resolvePlural(key, 'one'),
