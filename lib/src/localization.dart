@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'translations.dart';
@@ -56,12 +57,12 @@ class Localization {
 
   String plural(String key, dynamic value, {NumberFormat format}) {
     final res = Intl.pluralLogic(value,
-        zero: _resolve(key + '.zero'),
-        one: _resolve(key + '.one'),
-        two: _resolve(key + '.two'),
-        few: _resolve(key + '.few'),
-        many: _resolve(key + '.many'),
-        other: _resolve(key + '.other') ?? key,
+        zero: _resolvePlural(key, 'zero'),
+        one: _resolvePlural(key, 'one'),
+        two: _resolvePlural(key, 'two'),
+        few: _resolvePlural(key, 'few'),
+        many: _resolvePlural(key, 'many'),
+        other: _resolvePlural(key, 'other'),
         locale: _locale.languageCode);
     return _replaceArgs(res, [
       format == null ? '$value' : format.format(value),
@@ -72,15 +73,25 @@ class Localization {
         gender,
         female: _resolve(key + '.female'),
         male: _resolve(key + '.male'),
-        other: _resolve(key + '.other'),
+        other: _resolve(key + '.other', loging: false),
         locale: _locale.languageCode,
       );
 
-  String _resolve(String key) {
+  String _resolvePlural(String key, String subKey) {
+    final resource = _translations.get('$key.$subKey');
+
+    if (resource == null && subKey == 'other') {
+      printError('Plural key [$key.$subKey] required');
+      return '$key.$subKey';
+    } else {
+      return resource;
+    }
+  }
+
+  String _resolve(String key, {bool loging = true}) {
     final resource = _translations.get(key);
     if (resource == null) {
-      print(
-          '[easy_localization] Missing message : Not found this Key ["$key"] .');
+      if (loging) printWarning('Localization key [$key] not found');
       return key;
     }
     return resource;
