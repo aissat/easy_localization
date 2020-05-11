@@ -73,7 +73,7 @@ class Localization {
         gender,
         female: _resolve(key + '.female'),
         male: _resolve(key + '.male'),
-        other: _resolve(key + '.other', loging: false),
+        other: _resolve(key + '.other', logging: false),
         locale: _locale.languageCode,
       );
 
@@ -88,10 +88,10 @@ class Localization {
     }
   }
 
-  String _resolve(String key, {bool loging = true}) {
+  String _resolve(String key, {bool logging = true}) {
     final resource = _translations.get(key);
     if (resource == null) {
-      if (loging) printWarning('Localization key [$key] not found');
+      if (logging) printWarning('Localization key [$key] not found');
       return key;
     }
     return resource;
