@@ -36,13 +36,13 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
       abbr: 's',
       defaultsTo: 'resources/langs',
       callback: (String x) => generateOptions.sourceDir = x,
-      help: 'Source folder contains all string json files');
+      help: 'Folder containing localization files');
 
   parser.addOption('output-dir',
       abbr: 'O',
       defaultsTo: 'lib/generated',
       callback: (String x) => generateOptions.outputDir = x,
-      help: 'Output folder stores generated file');
+      help: 'Output folder stores for the generated file');
 
   parser.addOption('output-file',
       abbr: 'o',
@@ -54,7 +54,7 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
       abbr: 'f',
       defaultsTo: 'json',
       callback: (String x) => generateOptions.format = x,
-      help: 'Support json, dart formats',
+      help: 'Support json or keys formats',
       allowed: ['json', 'keys']);
 
   return parser;
