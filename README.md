@@ -332,6 +332,15 @@ Steps:
 ```dart
 import 'generated/locale_keys.g.dart';
 ```
+4. All done!
+
+How to usage generated keys:
+
+```dart
+print(LocaleKeys.title.tr()); //String
+//or
+Text(LocaleKeys.title).tr(); //Widget
+```
 
 ## Screenshots
 
