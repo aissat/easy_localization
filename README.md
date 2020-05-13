@@ -313,7 +313,7 @@ void main(){
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
     path: 'resources/langs',
-    assetLoader: assetLoader: CodegenLoader()
+    assetLoader: CodegenLoader()
   ));
 }
 ...
