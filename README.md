@@ -129,7 +129,7 @@ class MyApp extends StatelessWidget {
 | child            | true     |                           | Place for your main page widget. |
 | supportedLocales | true     |                           | List of supported locales. |
 | path             | true     |                           | Path to your folder with localization files. |
-| assetLoader      | false    | `RootBundleAssetLoader()` | Class loader for localization files. |
+| assetLoader      | false    | `RootBundleAssetLoader()` | Class loader for localization files. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
 | fallbackLocale   | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.|
 | startLocale      | false    |                           | Overrides device locale. |
 | saveLocale       | false    | `true`                    | Save locale in device storage. |
@@ -145,6 +145,8 @@ class MyApp extends StatelessWidget {
 Easy localization uses extension methods [BuildContext] for access to locale.
 
 It's more easiest way change locale or get parameters 😉.
+
+ℹ️ No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
 Example:
 
