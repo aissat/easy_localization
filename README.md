@@ -1,4 +1,4 @@
-<p align="center"><img src="./logo/logo.svg" width="600"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/aissat/easy_localization/develop/logo/logo.svg?sanitize=true" width="600"/></p>
 <h1 align="center"> 
 Easy and Fast internationalization for your Flutter Apps
 </h1>
@@ -346,9 +346,9 @@ Text(LocaleKeys.title).tr(); //Widget
 
 ## Screenshots
 
- | Arabic RTL | English LTR | Error widget |
- | ---------- | ----------- | ------------ |
- | ![Arabic RTL](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ar.png "Arabic RTL") | ![English LTR](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_en.png "English LTR") | ![Error widget](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_err.png "Error widget") |
+| Arabic RTL | English LTR | Error widget |
+| ---------- | ----------- | ------------ |
+| ![Arabic RTL](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ar.png "Arabic RTL") | ![English LTR](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_en.png "English LTR") | ![Error widget](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_err.png "Error widget") |
 
 ## Donations
 
