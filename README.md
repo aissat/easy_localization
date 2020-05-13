@@ -1,4 +1,7 @@
-<h1 align="center"> Easy localization </h1>
+<p align="center"><img src="https://raw.githubusercontent.com/aissat/easy_localization/develop/logo/logo.svg?sanitize=true" width="600"/></p>
+<h1 align="center"> 
+Easy and Fast internationalization for your Flutter Apps
+</h1>
 
 ![Pub Version](https://img.shields.io/pub/v/easy_localization?style=flat-square)
 ![Code Climate issues](https://img.shields.io/github/issues/aissat/easy_localization?style=flat-square)
@@ -11,140 +14,19 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/aissat/easy_localization/Flutter%20Tester?longCache=true&style=flat-square&logo=github)
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/aissat/easy_localization?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
+![Sponsors](https://img.shields.io/opencollective/all/flutter_easy_localization?style=flat-square)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 
-<p align="center"> 
-Easy and Fast internationalization for your Flutter Apps,
-this package simplifies the internationalizing process
-</p>
+## Why easy_localization?
 
-## Why easy_localization
-
-- [x] simplifies and makes the internationalizing process in Flutter much easier.
-- [x] Uses [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) JSON, CSV, Yaml, Xml Files.
-- [x] Error widget
-- [x] Based on Bloc architecture.
-- [x] Code generation for localization files and keys.
-- [x] Load locale from remote or backend.
-- [x] Automatically saving App state (save/restor/reset the selected locale).
-- [x] Supports `plural`
-- [x] Supports `gender`
-- [x] Supports Flutter extension.
-- [x] Supports changing locale dynamically.
-- [x] Supports RTL locales.
-- [x] Supports nesting.
-- [x] Customizable localizations AssetLoader.
-- [x] Supports context.
-- [x] Testable and maintainable.
-
-
-## [Changelog](https://github.com/aissat/easy_localization/blob/master/CHANGELOG.md)
-
-### [2.3.0]
-
-- Added extension methods on [BuildContext] for access to Easy Localization
-
-:fire: It's more easiest way change locale or get parameters
-
-```dart
-context.locale = locale;
-```
-:information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
-
-### [2.2.2]
-
-- Added `preloaderWidget`.
-- Fixed many issues.
-
-### [2.2.1]
-
-- Added `startLocale`.
-
-### [2.2.0]
-
-- Added `EasyLocalization.of(context).delegates` for `localizationsDelegates`
-- Added support Locale scriptCode.
-
-  ```dart
-  supportedLocales: [
-      Locale('en', 'US'),
-      Locale('ar', 'DZ'),
-      Locale('ar','DZ'),localeFromString('ar_DZ')
-    ]
-  ```
-
-- Added support Custom assets loaders [Easy Localization Loader](https://github.com/aissat/easy_localization_loader).
-  - Added support CSV files.
-
-    ```dart
-    path: 'resources/langs/langs.csv',
-    assetLoader: CsvAssetLoader(),
-    ```
-
-  - Added support Yaml files.
-
-    ```dart
-    path: 'resources/langs',
-    assetLoader: YamlAssetLoader(),
-    ```
-
-    ```dart
-    path: 'resources/langs/langs.yaml',
-    assetLoader: YamlSingleAssetLoader(),
-    ```
-
-  - Added support XML files.
-
-    ```dart
-    path: 'resources/langs',
-    assetLoader: XmlAssetLoader(),
-    ```
-
-    ```dart
-    path: 'resources/langs/langs.xml',
-    assetLoader: XmlSingleAssetLoader(),
-    ```
-
-- Added Code generation of localization files.
-
-  ```cmd
-  $ flutter pub run easy_localization:generate -h
-  -s, --source-dir     Source folder contains all string json files
-                      (defaults to "resources/langs")
-  -O, --output-dir     Output folder stores generated file
-                      (defaults to "lib/generated")
-  -o, --output-file    Output file name
-                      (defaults to "codegen_loader.g.dart")
-  -f, --format         Support json, dart formats
-                      [json (default), keys]
-  ```
-
-  - generate the json string static keys in a dart class
-
-    ```json
-    {
-      "msg_named": "{} مكتوبة باللغة {lang}",
-    }
-    ```
-
-    ```cmd
-    flutter pub run easy_localization:generate  -f keys -o locale_keys.g.dart
-    ```
-
-    ```dart
-    abstract class  LocaleKeys {
-      static const msg_named = 'msg_named';
-    }
-    ```
-
-    ```dart
-    Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
-    ```
-
-  - generate the json Loader in a dart class
-  
-    ```cmd
-    flutter pub run easy_localization:generate
-    ```
+- 🚀 Easy translations for many languages
+- 🔌 Load translations as JSON, CSV, Yaml, Xml using [Easy Localization Loader](https://github.com/aissat/easy_localization_loader)
+- 💾 React and persist to locale changes
+- ⚡ Supports plural, gender, nesting, RTL locales and more
+- ⁉️ Error widget for missing translations
+- ❤️ Extension methods on `Text` and `BuildContext`
+- 💻 Code generation for localization files and keys.
+- 👍 Uses BLoC pattern 
 
 - fixed many issues.
 - Added named arguments.
@@ -175,269 +57,280 @@ context.locale = locale;
 
 ## Getting Started
 
-### Configuration
+### 🔩 Installation
 
-Add this to your package's pubspec.yaml file:
+Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  # stable version install from https://pub.dev/packages
   easy_localization: <last_version>
-
-  # Dev version install from git REPO
-  easy_localization:
-    git: https://github.com/aissat/easy_localization.git
-
 ```
 
-#### Load translations from local assets
+Create folder and add translation files like this
 
-You must create a folder in your project's root: the `path`. Some examples:
+```
+assets
+└── translations
+    ├── {languageCode}.{ext}                  //only language code
+    └── {languageCode}-{countryCode}.{ext}    //or full locale code
+```
 
-> /assets/"langs" , "i18n", "locale" or anyname ...
->
-> /resources/"langs" , "i18n", "locale" or anyname ...
+Example:
 
-Inside this folder, must put the _json_ or _csv_ files containing the translated keys:
+```
+assets
+└── translations
+    ├── en.json
+    └── en-US.json 
+```
 
-> `path`/${languageCode}-${countryCode}.${formatFile}
-
-[example:](https://github.com/aissat/easy_localization/tree/master/example)
-
-- en.json or en-US.json
-- ar.json or ar-DZ.json
-- langs.csv
-
-must declare the subtree in your **_pubspec.yaml_** as assets:
+Declare your assets localization directory in `pubspec.yaml`:
 
 ```yaml
 flutter:
   assets:
-    - {`path`/{languageCode}-{countryCode}.{formatFile}}
+    - assets/translations/
 ```
 
-The next step :
+### 🔌 Loading translations from other resources
+
+You can use JSON,CSV,HTTP,XML,Yaml files, etc.
+
+See [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) for more info.
+
+### ⚠️ Note on **iOS**
+
+For translation to work on **iOS** you need to add supported locales to 
+`ios/Runner/Info.plist` as described [here](https://flutter.dev/docs/development/accessibility-and-localization/internationalization#specifying-supportedlocales).
+
+Example:
+
+```xml
+<key>CFBundleLocalizations</key>
+<array>
+	<string>en</string>
+	<string>nb</string>
+</array>
+```
+
+### ⚙️ Configuration app
+
+Add EasyLocalization widget like in example
 
 ```dart
-import 'dart:developer';
-
-import 'package:example/lang_view.dart';
-import 'package:example/my_flutter_app_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-//import 'generated/codegen_loader.g.dart';
-
-void main(){
-  runApp(EasyLocalization(
-    child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')], // [Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK')]
-    path: 'resources/langs',
-    // fallbackLocale: Locale('en', 'US'),
-    // startLocale: Locale('de', 'DE'),
-    // saveLocale: false,
-    // useOnlyLangCode: true,
-    // preloaderColor: Colors.black,
-    // preloaderWidget: CustomPreloaderWidget(),
-
-    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-    // install easy_localization_loader for enable custom loaders
-    // assetLoader: RootBundleAssetLoader()
-    // assetLoader: HttpAssetLoader()
-    // assetLoader: FileAssetLoader()
-    assetLoader: CsvAssetLoader()
-    // assetLoader: YamlAssetLoader() //multiple files
-    // assetLoader: YamlSingleAssetLoader() //single file
-    // assetLoader: XmlAssetLoader() //multiple files
-    // assetLoader: XmlSingleAssetLoader() //single file
-    // assetLoader: CodegenLoader()
-  ));
+void main() {
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
+      path: 'assets/translations', // <-- change patch to your
+      fallbackLocale: Locale('en', 'US'),
+      child: MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Easy localization'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int counter = 0;
-  bool _gender = true;
-
-  incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
-  switchGender(bool val) {
-    setState(() {
-      _gender = val;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    log(tr("title"), name: this.toString() );
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(LocaleKeys.title).tr(context: context),
-        actions: <Widget>[
-          FlatButton(
-            child: Icon(Icons.language),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => LanguageView(), fullscreenDialog: true),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Spacer(
-              flex: 1,
-            ),
-            Text(
-              'switch.with_arg',
-              style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
-            ).tr(args: ["aissat"], gender: _gender ? "female" : "male"),
-            Text(
-              tr('switch', gender: _gender ? "female" : "male"),
-              style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(MyFlutterApp.male_1),
-                Switch(value: _gender, onChanged: switchGender),
-                Icon(MyFlutterApp.female_1),
-              ],
-            ),
-            Spacer(
-              flex: 1,
-            ),
-            Text('msg').tr(args: ['aissat', 'Flutter']),
-            Text('clicked').plural(counter),
-            FlatButton(
-              onPressed: () {
-                incrementCounter();
-              },
-              child: Text('clickMe').tr(),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-                plural('amount', counter,
-                    format: NumberFormat.currency(
-                        locale: Intl.defaultLocale,
-                        symbol: "€")),
-                style: TextStyle(
-                    color: Colors.grey.shade900,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-            SizedBox(
-              height: 20,
-            ),
-            Text('profile.reset_password.title').tr(),
-            Spacer(
-              flex: 2,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: incrementCounter,
-        child: Text('+1'),
-      ),
+      home: MyHomePage()
     );
   }
 }
 ```
 
-#### Change locale
+[**Full example**](https://github.com/aissat/easy_localization/blob/master/example/lib/main.dart)
 
-:fire: The easiest way change or get locale is by using the extension methods on [BuildContext]:
+### 📜 Easy localization widget properties
 
-```dart
-context.locale = locale;
-```
+| Properties       | Required | Default                   | Description |
+| ---------------- | -------- | ------------------------- | ----------- |
+| key              | false    |                           | Widget key. |
+| child            | true     |                           | Place for your main page widget. |
+| supportedLocales | true     |                           | List of supported locales. |
+| path             | true     |                           | Path to your folder with localization files. |
+| assetLoader      | false    | `RootBundleAssetLoader()` | Class loader for localization files. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
+| fallbackLocale   | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.|
+| startLocale      | false    |                           | Overrides device locale. |
+| saveLocale       | false    | `true`                    | Save locale in device storage. |
+| useOnlyLangCode  | false    | `false`                   | Trigger for using only language code for reading localization files.</br></br>Example:</br>`en.json //useOnlyLangCode: true`</br>`en-US.json //useOnlyLangCode: false`  |
+| preloaderColor   | false    | `Colors.white`            | Background color for EmptyPreloaderWidget.</br>If you use a different color background, change the color to avoid flickering |
+| preloaderWidget  | false    | `EmptyPreloaderWidget()`  | Shows your custom widget while translation is loading. |
 
-You can also use the static method `EasyLocalization.of(context)`
 
-```dart
-EasyLocalization.of(context).locale = locale;
-```
+## Usage
 
-#### Getting parameters
+### 🔥 Change or get locale
 
-For getting parameters in Easy Localization use the extension methods or the static method.
+Easy localization uses extension methods [BuildContext] for access to locale.
 
-```dart
-context.supportedLocales
-//or
-EasyLocalization.of(context).supportedLocales
-```
+It's more easiest way change locale or get parameters 😉.
 
-```dart
-context.fallbackLocale
-//or
-EasyLocalization.of(context).fallbackLocale
-```
+ℹ️ No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
-#### Delete saved locale
-
-For delete saved in Shared preferences use `deleteSaveLocale()` function.
+Example:
 
 ```dart
-context.deleteSaveLocale();
-//or
-EasyLocalization.of(context).deleteSaveLocale();
+context.locale = Locale('en', 'US');
+
+print(context.locale.toString());
 ```
 
-#### Loading translations from other resources
+### 🔥 Translate `tr()`
 
-:electric_plug: You can use JSON,CSV,HTTP,XML,Yaml files, etc.
+Main function for translate your language keys
 
-See [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) for more info.
+You can use extension methods of [String] or [Text] widget, you can also use `tr()` as a static function.
 
-#### Code generation of localization files
+```dart
+Text('title').tr() //Text widget
 
-Code generation :computer: supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+print('title'.tr()); //String
+
+var title = tr('title') //Static function
+```
+
+#### Arguments:
+
+| Name | Type | Description |
+| -------- | -------- | -------- |
+| context| `BuildContext` | The location in the tree where this widget builds |
+| args| `List<String>` | List of localized strings. Replaces `{}` left to right |
+| namedArgs| `Map<String, String>` | Map of localized strings. Replaces the name keys `{key_name}` according to its name |
+| gender | `String` | Gender switcher. Changes the localized string based on gender string |
+
+Example:
+
+``` json
+{
+   "msg":"{} are written in the {} language",
+   "msg_named":"Easy localization are written in the {lang} language",
+   "msg_mixed":"{} are written in the {lang} language",
+   "gender":{
+      "male":"Hi man ;) {}",
+      "female":"Hello girl :) {}",
+      "other":"Hello {}"
+   }
+}
+```
+
+```dart
+// args
+Text('msg').tr(args: ['Easy localization', 'Dart']),
+
+// namedArgs
+Text('msg_named').tr(namedArgs: {'lang': 'Dart'}),
+
+// args and namedArgs
+Text('msg_mixed').tr(args: ['Easy localization'], namedArgs: {'lang': 'Dart'}),
+
+// gender
+Text('gender').tr(gender: _gender ? "female" : "male"),
+
+```
+
+### 🔥 Plurals `plural()`
+
+You can translate with pluralization.
+To insert a number in the translated string, use `{}`. Number formatting supported, for more information read [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class documentation.
+
+You can use extension methods of [String] or [Text] widget, you can also use `plural()` as a static function.
+
+#### Arguments:
+
+| Name | Type | Description |
+| -------- | -------- | -------- |
+| context| `BuildContext` | The location in the tree where this widget builds|
+| value| `num` | Number value for pluralization |
+| format| `NumberFormat` | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
+
+Example:
+
+``` json
+{
+  "day": {
+    "zero":"{} дней",
+    "one": "{} день",
+    "two": "{} дня",
+    "few": "{} дня",
+    "many": "{} дней",
+    "other": "{} дней"
+  },
+  "money": {
+    "zero": "You not have money",
+    "one": "You have {} dollar",
+    "many": "You have {} dollars",
+    "other": "You have {} dollars"
+  }
+}
+```
+⚠️ Key "other" required!
+
+```dart
+//Text widget with format
+Text('money').plural(1000000, format: NumberFormat.compact(locale: context.locale.toString())) // output: You have 1M dollars
+
+//String
+print('day'.plural(21)); // output: 21 день
+
+//Static function
+var money = plural('money', 10.23) // output: You have 10.23 dollars
+```
+
+### 🔥 Delete save locale `deleteSaveLocale()`
+
+Clears a saved locale from device storage
+
+Example:
+
+```dart
+RaisedButton(
+  onPressed: (){
+    context.deleteSaveLocale();
+  },              
+  child: Text(LocaleKeys.reset_locale).tr(),
+)
+```
+
+### 🔥 Get Easy localization widget properties
+
+At any time, you can take the main [properties](#-easy-localization-widget-properties) of the Easy localization widget using [BuildContext].
+
+Are supported: supportedLocales, fallbackLocale, localizationDelegates.
+
+Example:
+
+```dart
+print(context.supportedLocales); // output: [en_US, ar_DZ, de_DE, ru_RU]
+
+print(context.fallbackLocale); // output: en_US
+```
+
+## 💻 Code generation
+
+Code generation supports only json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+
+### Command line arguments
+
+| Arguments | Short |  Default | Description |
+| ------ | ------ |  ------ | ------ |
+| --help | -h |  | Help info |
+| --source-dir | -s | resources/langs | Folder containing localization files |
+| --output-dir | -O | lib/generated | Output folder stores for the generated file |
+| --output-file | -o | codegen_loader.g.dart | Output file name |
+| --format | -f | json | Support json or keys formats |
+
+### 🔌 Localization asset loader class
 
 Steps:
-1. Open your terminal in the folder's path containing your project
+1. Open your terminal in the folder's path containing your project 
 2. Run in terminal `flutter pub run easy_localization:generate`
 3. Change asset loader and past import.
 
@@ -449,18 +342,16 @@ void main(){
     child: MyApp(),
     supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
     path: 'resources/langs',
-    assetLoader: assetLoader: CodegenLoader()
+    assetLoader: CodegenLoader()
   ));
 }
 ...
 ```
 4. All done!
 
-#### Code generation of keys
+### 🔑 Localization keys
 
-If you have many localization keys and are confused, key generation will help you. The code editor will automatically prompt keys :rocket:.
-
-Code generation :computer: keys supports json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+If you have many localization keys and are confused, key generation will help you. The code editor will automatically prompt keys
 
 Steps:
 1. Open your terminal in the folder's path containing your project 
@@ -482,40 +373,26 @@ Text(LocaleKeys.title).tr(); //Widget
 
 ## Screenshots
 
- Arbic RTL | English LTR
---- | ---
-![alt text](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ar.png "Arbic RTL")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_en.png "English LTR")
+| Arabic RTL | English LTR | Error widget |
+| ---------- | ----------- | ------------ |
+| ![Arabic RTL](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ar.png "Arabic RTL") | ![English LTR](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_en.png "English LTR") | ![Error widget](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_err.png "Error widget") |
 
- Русский | Dutch
---- | ---
-![alt text](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ru.png "Русский ")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_de.png "Dutch")
+## Donations
 
- Error widget | Language widget
---- | ---
-![alt text](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_err.png "Error")|![alt text](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_lang.png "Language")
+We need your support. Projects like this can not be successful without support from the community. If you find this project useful, and would like to support further development and ongoing maintenance, please consider donating.
 
-### Donations
+<p align="center">
+  <a href="https://opencollective.com/flutter_easy_localization/donate" target="_blank">
+    <img src="https://opencollective.com/flutter_easy_localization/donate/button@2x.png?color=blue" width=300 />
+  </a>
+</p>
 
----------
+### Sponsors
 
-We need your support. Projects like this can not be successful without support from the community. If you find this project useful, and would like to support further development and ongoing maintenance, please consider donating. Devs gotta eat!
-**PayPal**
+<img src="https://opencollective.com/flutter_easy_localization/tiers/backer.svg?avatarHeight=48"/>
 
-- **[Donate $5](https://paypal.me/aissatabdelwahab/5)**:
-  Thank's for creating this project, here's a coffee for you!
 
-- **[Donate $10](https://paypal.me/aissatabdelwahab/10)**:
-  Wow, I am stunned. Let me take you to the movies!
-
-- **[Donate $15](https://paypal.me/aissatabdelwahab/15)**:
-  I really appreciate your work, let's grab some lunch!
-
-- **[Donate $25](https://paypal.me/aissatabdelwahab/25)**:
-  That's some awesome stuff you did right there, dinner is on me!
-
-Of course, you can also choose what you want to donate. All donations are very much appreciated!
-
-## Contributors thanks
+### Contributors thanks
 
 ![contributors](https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization)
 <a href="https://github.com/aissat/easy_localization/graphs/contributors"></a>

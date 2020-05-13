@@ -24,7 +24,7 @@ class RootBundleAssetLoader extends AssetLoader {
   @override
   Future<Map<String, dynamic>> load(String path, Locale locale) async {
     var localePath = getLocalePath(path, locale);
-    log('easy localization: Load asset from $path');
+    log('Load asset from $path', name: 'Easy Localization');
     return json.decode(await rootBundle.loadString(localePath));
   }
 }

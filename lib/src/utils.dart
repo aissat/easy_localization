@@ -18,3 +18,15 @@ Locale localeFromString(String localeString) {
 String localeToString(Locale locale, {String separator = '_'}) {
   return locale.toString().split('_').join(separator);
 }
+
+void printInfo(String info) {
+  print('\u001b[32mEasy Localization: $info\u001b[0m');
+}
+
+void printWarning(String warning) {
+  print('\u001B[34m[WARNING] Easy Localization: $warning\u001b[0m');
+}
+
+void printError(String error) {
+  print('\u001b[31m[ERROR] Easy Localization: $error\u001b[0m');
+}

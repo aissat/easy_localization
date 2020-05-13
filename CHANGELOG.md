@@ -1,5 +1,10 @@
 # Changelog
 
+### [2.3.1]
+
+- Updated `plural()` function, now she is not strict.
+- Updates print and log messages
+
 ### [2.3.0]
 
 - Added extension methods on [BuildContext] for access to Easy Localization
@@ -9,6 +14,7 @@
 ```dart
 context.locale = locale;
 ```
+
 :information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
 ### [2.2.2]
