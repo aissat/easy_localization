@@ -28,33 +28,6 @@ Easy and Fast internationalization for your Flutter Apps
 - 💻 Code generation for localization files and keys.
 - 👍 Uses BLoC pattern 
 
-- fixed many issues.
-- Added named arguments.
-
-  ```json
-  "msg_named": "{} are written in the {lang} language",
-  ```
-
-  ```dart
-  Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
-  ```
-
-### [2.1.0]
-
-- Added Error widget.
-- fixed many issues.
-- Adopted Bloc architecture.
-
-### [2.0.2]
-
-- fixed many issues.
-- optimized and clean code for more stability.
-
-### [2.0.1]
-
-- Added change locale dynamically `saveLocale` default value `true`.
-- fixed many issues.
-
 ## Getting Started
 
 ### 🔩 Installation
