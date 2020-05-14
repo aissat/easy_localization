@@ -4,6 +4,12 @@ import 'package:intl/intl.dart';
 import 'easy_localization_app.dart';
 import 'public.dart' as ez;
 
+/// Text widget extension method for acces to [tr()] and [plural()]
+/// Example : 
+/// ```drat
+/// Text('title').tr()
+/// Text('day').plural(21)
+/// ```
 extension TextTranslateExtension on Text {
   Text tr(
           {BuildContext context,
@@ -45,6 +51,12 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 }
 
+/// Strings extension method for acces to [tr()] and [plural()]
+/// Example : 
+/// ```drat
+/// 'title'.tr()
+/// 'day'.plural(21)
+/// ```
 extension StringTranslateExtension on String {
   String tr(
           {List<String> args, Map<String, String> namedArgs, String gender}) =>
@@ -53,7 +65,17 @@ extension StringTranslateExtension on String {
       ez.plural(this, value, format: format);
 }
 
-//BuildContext extension method for acces to Easy Localization
+/// BuildContext extension method for acces to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]
+/// Example : 
+/// ```drat
+/// context.locale = Locale('en', 'US');
+/// print(context.locale.toString());
+///
+/// context.deleteSaveLocale();
+/// 
+/// print(context.supportedLocales); // output: [en_US, ar_DZ, de_DE, ru_RU]
+/// print(context.fallbackLocale);   // output: en_US
+/// ```
 extension BuildContextEasyLocalizationExtension on BuildContext {
   Locale get locale => EasyLocalization.of(this).locale;
   set locale(Locale val) => EasyLocalization.of(this).locale = val;
@@ -68,5 +90,6 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   List<LocalizationsDelegate> get localizationDelegates =>
       EasyLocalization.of(this).delegates;
 
+  /// Clears a saved locale from device storage
   void deleteSaveLocale() => EasyLocalization.of(this).deleteSaveLocale();
 }
