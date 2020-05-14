@@ -5,6 +5,17 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:path/path.dart' as path;
 
+const _preservedKeywords = [
+  'few',
+  'many',
+  'one',
+  'other',
+  'two',
+  'zero',
+  'male',
+  'female',
+];
+
 void main(List<String> args) {
   if (_isHelpCommand(args)) {
     _printHelperDisplay();
@@ -119,7 +130,7 @@ void generateFile(
       await _writeJson(classBuilder, files);
       break;
     case 'keys':
-      await _writekeys(classBuilder, files);
+      await _writeKeys(classBuilder, files);
       break;
     // case 'csv':
     //   await _writeCsv(classBuilder, files);
@@ -134,7 +145,7 @@ void generateFile(
   printInfo('All done! File generated in ${outputPath.path}');
 }
 
-Future _writekeys(
+Future _writeKeys(
     StringBuffer classBuilder, List<FileSystemEntity> files) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
@@ -147,29 +158,35 @@ abstract class  LocaleKeys {
   Map<String, dynamic> translations =
       json.decode(await fileData.readAsString());
 
-  file += _resolv(translations);
+  file += _resolve(translations);
 
   classBuilder.writeln(file);
 }
 
-String _resolv(Map<String, dynamic> translations, [String hKey]) {
-  var file = '';
-  final l = ['few', 'many', 'one', 'other', 'two', 'zero', 'male', 'female'];
+String _resolve(Map<String, dynamic> translations, [String accKey]) {
+  var fileContent = '';
 
   final sortedKeys = translations.keys.toList();
 
   for (var key in sortedKeys) {
     if (translations[key] is Map) {
-      file += _resolv(translations[key], key);
+      var nextAccKey = key;
+      if (accKey != null) {
+        nextAccKey = '$accKey.$key';
+      }
+
+      fileContent += _resolve(translations[key], nextAccKey);
     }
-    if (!l.contains(key)) {
-      hKey != null
-          ? file += '  static const $hKey\_$key = \'$hKey.$key\';\n'
-          : file += '  static const $key = \'$key\';\n';
+
+    if (!_preservedKeywords.contains(key) && translations[key] is String) {
+      accKey != null
+          ? fileContent +=
+              '  static const ${accKey.replaceAll('.', '_')}\_$key = \'$accKey.$key\';\n'
+          : fileContent += '  static const $key = \'$key\';\n';
     }
   }
 
-  return file;
+  return fileContent;
 }
 
 Future _writeJson(
