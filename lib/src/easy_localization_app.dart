@@ -37,6 +37,7 @@ class EasyLocalization extends StatefulWidget {
   /// Place for your main page widget.
   final Widget child;
 
+  /// List of supported locales.
   /// {@macro flutter.widgets.widgetsApp.supportedLocales}
   final List<Locale> supportedLocales;
 
