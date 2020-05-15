@@ -87,14 +87,14 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   /// Get current locale
   Locale get locale => EasyLocalization.of(this).locale;
 
-  /// set and change app locale
+  /// Change app locale
   set locale(Locale val) => EasyLocalization.of(this).locale = val;
 
   /// Get List of supported locales.
   List<Locale> get supportedLocales =>
       EasyLocalization.of(this).supportedLocales;
 
-  /// Get the locale when the locale is not in `supportedLocales`
+  /// Returns the locale if the locale is not in the list of supported locales in `supportedLocales`
   Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
 
   // Locale get startLocale => EasyLocalization.of(this).startLocale;

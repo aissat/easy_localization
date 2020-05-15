@@ -38,7 +38,7 @@ class EasyLocalization extends StatefulWidget {
   /// {@macro flutter.widgets.widgetsApp.supportedLocales}
   final List<Locale> supportedLocales;
 
-  /// Returns the locale when the locale is not in the list
+  /// Locale when the locale is not in the list
   final Locale fallbackLocale;
 
   /// Overrides device locale.
