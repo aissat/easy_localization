@@ -178,7 +178,7 @@ String _resolve(Map<String, dynamic> translations, [String accKey]) {
       fileContent += _resolve(translations[key], nextAccKey);
     }
 
-    if (!_preservedKeywords.contains(key) && translations[key] is String) {
+    if (!_preservedKeywords.contains(key)) {
       accKey != null
           ? fileContent +=
               '  static const ${accKey.replaceAll('.', '_')}\_$key = \'$accKey.$key\';\n'
