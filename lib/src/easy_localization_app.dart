@@ -18,16 +18,65 @@ import 'package:intl/intl_standalone.dart'
 part 'bloc/easy_localization_bloc.dart';
 part 'utils.dart';
 
+///  EasyLocalization
+///  example:
+///  ```
+///  void main(){
+///    runApp(EasyLocalization(
+///      child: MyApp(),
+///      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+///      path: 'resources/langs/langs.csv',
+///      assetLoader: CsvAssetLoader()
+///    ));
+///  }
+///  ```
 class EasyLocalization extends StatefulWidget {
+  /// Place for your main page widget.
   final Widget child;
+
+  /// List of supported locales.
+  /// {@macro flutter.widgets.widgetsApp.supportedLocales}
   final List<Locale> supportedLocales;
+
+  /// Locale when the locale is not in the list
   final Locale fallbackLocale;
+
+  /// Overrides device locale.
   final Locale startLocale;
+
+  /// Trigger for using only language code for reading localization files.
+  /// @Default value false
+  /// Example:
+  /// ```
+  /// en.json //useOnlyLangCode: true
+  /// en-US.json //useOnlyLangCode: false
+  /// ```
   final bool useOnlyLangCode;
+
+  /// Path to your folder with localization files.
+  /// Example:
+  /// ```dart
+  /// path: 'assets/translations',
+  /// path: 'assets/translations/lang.csv',
+  /// ```
   final String path;
+
+  /// Class loader for localization files.
+  /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
+  /// @Default value `const RootBundleAssetLoader()`
   final assetLoader;
+
+  /// Save locale in device storage.
+  /// @Default value false
   final bool saveLocale;
+
+  /// Preloader page color @Default value `preloaderColor = Colors.white`
+  /// Background color for EmptyPreloaderWidget.
+  /// If you use a different color background, change the color to avoid flickering
   final Color preloaderColor;
+
+  /// Shows your custom widget while translation is loading.
+  /// @Default value `preloaderWidget = EmptyPreloaderWidget()`
   final Widget preloaderWidget;
   EasyLocalization({
     Key key,
@@ -87,11 +136,13 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     if (widget.saveLocale) _savedLocale = await loadSavedLocale();
     if (_savedLocale == null && widget.startLocale != null) {
       locale = _getFallbackLocale(widget.supportedLocales, widget.startLocale);
-      log('Start locale loaded ${locale.toString()}', name: 'Easy Localization');
+      log('Start locale loaded ${locale.toString()}',
+          name: 'Easy Localization');
     }
     // If saved locale then get
     else if (_savedLocale != null && widget.saveLocale) {
-      log('Saved locale loaded ${_savedLocale.toString()}', name: 'Easy Localization');
+      log('Saved locale loaded ${_savedLocale.toString()}',
+          name: 'Easy Localization');
       locale = _savedLocale;
     } else {
       // Get Device Locale
@@ -198,6 +249,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
         GlobalCupertinoLocalizations.delegate,
       ];
 
+  /// Get List of supported locales
   List<Locale> get supportedLocales => parent.supportedLocales;
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
@@ -208,10 +260,14 @@ class _EasyLocalizationProvider extends InheritedWidget {
     log('Init provider', name: 'Easy Localization');
   }
 
+  /// Get current locale
   Locale get locale => _locale;
+
+  /// Get fallback locale
   Locale get fallbackLocale => parent.fallbackLocale;
   // Locale get startLocale => parent.startLocale;
 
+  /// Change app locale
   set locale(Locale locale) {
     // Check old locale
     if (locale != _locale) {
@@ -233,6 +289,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
     log('Locale saved ${locale.toString()}', name: 'Easy Localization');
   }
 
+  /// Clears a saved locale from device storage
   void deleteSaveLocale() async {
     final _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('locale', null);
