@@ -263,7 +263,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   /// Get current locale
   Locale get locale => _locale;
 
-  /// Get the locale when the locale is not in `supportedLocales`
+  /// Get fallback locale
   Locale get fallbackLocale => parent.fallbackLocale;
   // Locale get startLocale => parent.startLocale;
 
