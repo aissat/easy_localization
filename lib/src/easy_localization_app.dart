@@ -18,22 +18,19 @@ import 'package:intl/intl_standalone.dart'
 part 'bloc/easy_localization_bloc.dart';
 part 'utils.dart';
 
-
-
-  ///  EasyLocalization
-  ///  example:
-  ///  ```
-  ///  void main(){
-  ///    runApp(EasyLocalization(
-  ///      child: MyApp(),
-  ///      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-  ///      path: 'resources/langs/langs.csv',
-  ///      assetLoader: CsvAssetLoader()
-  ///    ));
-  ///  }
-  ///  ```
+///  EasyLocalization
+///  example:
+///  ```
+///  void main(){
+///    runApp(EasyLocalization(
+///      child: MyApp(),
+///      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+///      path: 'resources/langs/langs.csv',
+///      assetLoader: CsvAssetLoader()
+///    ));
+///  }
+///  ```
 class EasyLocalization extends StatefulWidget {
-
   /// Place for your main page widget.
   final Widget child;
 
@@ -41,7 +38,7 @@ class EasyLocalization extends StatefulWidget {
   /// {@macro flutter.widgets.widgetsApp.supportedLocales}
   final List<Locale> supportedLocales;
 
-  /// Returns the locale when the locale is not in the list 
+  /// Returns the locale when the locale is not in the list
   final Locale fallbackLocale;
 
   /// Overrides device locale.
@@ -139,11 +136,13 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     if (widget.saveLocale) _savedLocale = await loadSavedLocale();
     if (_savedLocale == null && widget.startLocale != null) {
       locale = _getFallbackLocale(widget.supportedLocales, widget.startLocale);
-      log('Start locale loaded ${locale.toString()}', name: 'Easy Localization');
+      log('Start locale loaded ${locale.toString()}',
+          name: 'Easy Localization');
     }
     // If saved locale then get
     else if (_savedLocale != null && widget.saveLocale) {
-      log('Saved locale loaded ${_savedLocale.toString()}', name: 'Easy Localization');
+      log('Saved locale loaded ${_savedLocale.toString()}',
+          name: 'Easy Localization');
       locale = _savedLocale;
     } else {
       // Get Device Locale
@@ -250,7 +249,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
         GlobalCupertinoLocalizations.delegate,
       ];
 
-  /// retrieve List of supported locales `supportedLocales`
+  /// retrieve List of supported locales
   List<Locale> get supportedLocales => parent.supportedLocales;
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
@@ -263,11 +262,12 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   /// retrieve current locale
   Locale get locale => _locale;
+
   /// retrieve the locale when the locale is not in `supportedLocales`
   Locale get fallbackLocale => parent.fallbackLocale;
   // Locale get startLocale => parent.startLocale;
 
-  /// set and change app locale
+  /// Change app locale
   set locale(Locale locale) {
     // Check old locale
     if (locale != _locale) {

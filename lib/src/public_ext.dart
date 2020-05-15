@@ -5,7 +5,7 @@ import 'easy_localization_app.dart';
 import 'public.dart' as ez;
 
 /// Text widget extension method for acces to [tr()] and [plural()]
-/// Example : 
+/// Example :
 /// ```drat
 /// Text('title').tr()
 /// Text('day').plural(21)
@@ -54,7 +54,7 @@ extension TextTranslateExtension on Text {
 }
 
 /// Strings extension method for acces to [tr()] and [plural()]
-/// Example : 
+/// Example :
 /// ```drat
 /// 'title'.tr()
 /// 'day'.plural(21)
@@ -89,10 +89,11 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
 
   /// set and change app locale
   set locale(Locale val) => EasyLocalization.of(this).locale = val;
+
   /// retrieve List of supported locales.
   List<Locale> get supportedLocales =>
       EasyLocalization.of(this).supportedLocales;
-  
+
   /// retrieve the locale when the locale is not in `supportedLocales`
   Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
 
