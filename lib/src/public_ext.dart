@@ -94,7 +94,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   List<Locale> get supportedLocales =>
       EasyLocalization.of(this).supportedLocales;
 
-  /// Returns the locale if the locale is not in the list of supported locales in `supportedLocales`
+  /// Get fallback locale
   Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
 
   // Locale get startLocale => EasyLocalization.of(this).startLocale;
