@@ -1,6 +1,6 @@
 part of 'easy_localization_app.dart';
 
-/// convert string [localeString] returns the locale.
+/// Convert string locale [localeString] to [Locale]
 Locale localeFromString(String localeString) {
   final localeList = localeString.split('_');
   switch (localeList.length) {
@@ -16,7 +16,7 @@ Locale localeFromString(String localeString) {
   }
 }
 
-/// convert [locale] to Srting at matches of [separator] and returns a string representing the locale.
+/// Convert [locale] to Srting with custom [separator]
 String localeToString(Locale locale, {String separator = '_'}) {
   return locale.toString().split('_').join(separator);
 }

@@ -4,7 +4,7 @@ import 'localization.dart';
 
 /// {@template tr}
 /// Main function for translate your language keys
-/// [key] string key
+/// [key] Localization key
 /// [BuildContext] The location in the tree where this widget builds
 /// [args] List of localized strings. Replaces {} left to right
 /// [namedArgs] Map of localized strings. Replaces the name keys {key_name} according to its name
@@ -45,7 +45,7 @@ String tr(String key,
 
 /// {@template plural}
 /// function translate with pluralization
-/// [key] string key
+/// [key] Localization key
 /// [value] Number value for pluralization
 /// [BuildContext] The location in the tree where this widget builds
 /// [format] Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class

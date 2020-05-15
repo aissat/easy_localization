@@ -84,17 +84,17 @@ extension StringTranslateExtension on String {
 /// print(context.fallbackLocale);   // output: en_US
 /// ```
 extension BuildContextEasyLocalizationExtension on BuildContext {
-  /// retrieve current locale
+  /// Get current locale
   Locale get locale => EasyLocalization.of(this).locale;
 
   /// set and change app locale
   set locale(Locale val) => EasyLocalization.of(this).locale = val;
 
-  /// retrieve List of supported locales.
+  /// Get List of supported locales.
   List<Locale> get supportedLocales =>
       EasyLocalization.of(this).supportedLocales;
 
-  /// retrieve the locale when the locale is not in `supportedLocales`
+  /// Get the locale when the locale is not in `supportedLocales`
   Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
 
   // Locale get startLocale => EasyLocalization.of(this).startLocale;
