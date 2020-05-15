@@ -42,6 +42,7 @@ String tr(String key,
       : Localization.of(context)
           .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
+
 /// {@template plural}
 /// function translate with pluralization
 /// [key] string key
@@ -68,7 +69,7 @@ String tr(String key,
 ///   }
 /// }
 /// ```
-/// 
+///
 ///```dart
 /// Text('money').plural(1000000, format: NumberFormat.compact(locale: context.locale.toString())) // output: You have 1M dollars
 /// print('day'.plural(21)); // output: 21 день
