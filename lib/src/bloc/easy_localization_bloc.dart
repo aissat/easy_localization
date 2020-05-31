@@ -32,7 +32,7 @@ class _EasyLocalizationBloc {
   //
   // Stream to handle the _easyLocalizationLocale
   //
-  StreamController<Resource> _controller = StreamController<Resource>();
+  StreamController<Resource> _controller = StreamController<Resource>.broadcast();
   StreamSink<Resource> get _inSink => _controller.sink;
   Stream<Resource> get outStream => _controller.stream.transform(validate);
 
@@ -56,7 +56,7 @@ class _EasyLocalizationBloc {
   void reassemble() async {
     //recreate StreamController when hotreloaded or reloaded
     await _controller.close();
-    _controller = StreamController<Resource>();
+    _controller = StreamController<Resource>.broadcast();
   }
 
   Future _onData(Resource data) async {
