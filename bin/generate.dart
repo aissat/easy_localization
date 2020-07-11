@@ -44,10 +44,15 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
   var parser = ArgParser();
 
   parser.addOption('source-dir',
-      abbr: 's',
+      abbr: 'S',
       defaultsTo: 'resources/langs',
       callback: (String x) => generateOptions.sourceDir = x,
       help: 'Folder containing localization files');
+
+  parser.addOption('source-file',
+      abbr: 's',
+      callback: (String x) => generateOptions.sourceFile = x,
+      help: 'File to use for localization');
 
   parser.addOption('output-dir',
       abbr: 'O',
@@ -73,6 +78,7 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
 
 class GenerateOptions {
   String sourceDir;
+  String sourceFile;
   String templateLocale;
   String outputDir;
   String outputFile;
@@ -80,7 +86,7 @@ class GenerateOptions {
 
   @override
   String toString() {
-    return 'format: $format sourceDir: $sourceDir outputDir: $outputDir outputFile: $outputFile';
+    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile';
   }
 }
 
@@ -98,8 +104,18 @@ void handleLangFiles(GenerateOptions options) async {
   }
 
   var files = await dirContents(sourcePath);
-  //filtering format
-  files = files.where((f) => f.path.contains('.json')).toList();
+  if (options.sourceFile != null) {
+    final sourceFile = File(path.join(source.path, options.sourceFile));
+    if (!await sourceFile.exists()) {
+      printError('Source file does not exist (${sourceFile.toString()})');
+      return;
+    }
+    files = [sourceFile];
+  } else {
+    //filtering format
+    files = files.where((f) => f.path.contains('.json')).toList();
+  }
+
   if (files.isNotEmpty) {
     generateFile(files, outputPath, options.format);
   } else {
