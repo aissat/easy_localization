@@ -1,5 +1,9 @@
 # Changelog
 
+### [2.3.2]
+- Updated pubspec dependencies
+- Added --source-file argument in codegen
+
 ### [2.3.1]
 
 - Updated `plural()` function, now she is not strict.

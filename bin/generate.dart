@@ -209,6 +209,9 @@ Future _writeJson(
     StringBuffer classBuilder, List<FileSystemEntity> files) async {
   var gFile = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes
+
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
@@ -234,11 +237,11 @@ class CodegenLoader extends AssetLoader{
     Map<String, dynamic> data = json.decode(await fileData.readAsString());
 
     final mapString = JsonEncoder.withIndent('  ').convert(data);
-    gFile += '  static const Map<String,dynamic> $localeName = $mapString;\n';
+    gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
   }
 
   gFile +=
-      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
+      'static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
   classBuilder.writeln(gFile);
 }
 
