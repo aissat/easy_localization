@@ -24,7 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   easy_localization:
-    path: ../
+    path: ../packages/easy_localization
   flutter_icons: ^1.0.0+1
 
   #custom loaders

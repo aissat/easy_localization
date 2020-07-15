@@ -295,8 +295,7 @@ Code generation supports only json files, for more information run in terminal `
 | Arguments | Short |  Default | Description |
 | ------ | ------ |  ------ | ------ |
 | --help | -h |  | Help info |
-| --source-dir | -S | resources/langs | Folder containing localization files |
-| --source-file | -s | none | File to use for localization |
+| --source-dir | -s | resources/langs | Folder containing localization files |
 | --output-dir | -O | lib/generated | Output folder stores for the generated file |
 | --output-file | -o | codegen_loader.g.dart | Output file name |
 | --format | -f | json | Support json or keys formats |

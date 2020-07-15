@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/localization.dart';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
