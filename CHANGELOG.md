@@ -1,8 +1,13 @@
 # Changelog
 
-### [2.3.2]
+### [2.3.3]
+
 - Updated pubspec dependencies
 - Added --source-file argument in codegen
+
+### [2.3.2]
+
+- Updates generated tool.
 
 ### [2.3.1]
 
