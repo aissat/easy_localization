@@ -78,6 +78,11 @@ class EasyLocalization extends StatefulWidget {
   /// Shows your custom widget while translation is loading.
   /// @Default value `preloaderWidget = EmptyPreloaderWidget()`
   final Widget preloaderWidget;
+
+  /// Shows a custom error widget when an error is encountered instead of the default error widget.
+  /// @Default value `errorWidget = FutureErrorWidget()`
+  final Widget Function(String message) errorWidget;
+
   EasyLocalization({
     Key key,
     @required this.child,
@@ -90,6 +95,7 @@ class EasyLocalization extends StatefulWidget {
     this.saveLocale = true,
     this.preloaderColor = Colors.white,
     this.preloaderWidget = const EmptyPreloaderWidget(),
+    this.errorWidget,
   })  : assert(child != null),
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
@@ -202,26 +208,34 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     return Container(
       color: widget.preloaderColor,
       child: StreamBuilder<Resource>(
-          stream: bloc.outStream,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting &&
-                !snapshot.hasData &&
-                !snapshot.hasError) {
-              returnWidget = widget.preloaderWidget;
-            } else if (snapshot.hasData && !snapshot.hasError) {
-              returnWidget = _EasyLocalizationProvider(
-                widget,
-                snapshot.data.locale,
-                bloc: bloc,
-                delegate: _EasyLocalizationDelegate(
-                    translations: snapshot.data.translations,
-                    supportedLocales: widget.supportedLocales),
-              );
-            } else if (snapshot.hasError) {
-              returnWidget = FutureErrorWidget(msg: snapshot.error);
-            }
-            return returnWidget;
-          }),
+        stream: bloc.outStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              !snapshot.hasData &&
+              !snapshot.hasError) {
+            returnWidget = widget.preloaderWidget;
+          } else if (snapshot.hasData && !snapshot.hasError) {
+            returnWidget = _EasyLocalizationProvider(
+              widget,
+              snapshot.data.locale,
+              bloc: bloc,
+              delegate: _EasyLocalizationDelegate(
+                translations: snapshot.data.translations,
+                supportedLocales: widget.supportedLocales,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            returnWidget = widget.errorWidget != null
+                ? widget.errorWidget(
+                    snapshot.error,
+                  )
+                : FutureErrorWidget(
+                    msg: snapshot.error,
+                  );
+          }
+          return returnWidget;
+        },
+      ),
     );
   }
 }
