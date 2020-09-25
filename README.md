@@ -136,7 +136,7 @@ class MyApp extends StatelessWidget {
 | useOnlyLangCode  | false    | `false`                   | Trigger for using only language code for reading localization files.</br></br>Example:</br>`en.json //useOnlyLangCode: true`</br>`en-US.json //useOnlyLangCode: false`  |
 | preloaderColor   | false    | `Colors.white`            | Background color for EmptyPreloaderWidget.</br>If you use a different color background, change the color to avoid flickering |
 | preloaderWidget  | false    | `EmptyPreloaderWidget()`  | Shows your custom widget while translation is loading. |
-
+| errorWidget  | false    | `FutureErrorWidget()`  | Shows a custom error widget when an error occurs. |
 
 ## Usage
 
