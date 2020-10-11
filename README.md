@@ -146,7 +146,7 @@ Easy localization uses extension methods [BuildContext] for access to locale.
 
 It's more easiest way change locale or get parameters 😉.
 
-ℹ️ No breaking changes, you can use old the static method `EasyLocalization.of(context)`
+If there are no breaking changes you can use the old static method `EasyLocalization.of(context)`.
 
 Example:
 
