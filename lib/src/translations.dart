@@ -15,7 +15,9 @@ class Translations {
     var value = _translations[kHead];
 
     for (var i = 1; i < keys.length; i++) {
-      if (value is Map<String, dynamic>) value = value[keys[i]];
+      if (value is Map<String, dynamic>)
+        value = value[keys[i]];
+      else if (value is List<dynamic>) value = value[int.parse(keys[i])];
     }
 
     cacheNestedKey(key, value);
