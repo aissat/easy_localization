@@ -5,7 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/localization.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:intl/intl.dart' show NumberFormat;
 
 import 'utils/test_asset_loaders.dart';
 

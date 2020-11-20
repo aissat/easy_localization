@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/test_asset_loaders.dart';
 
-BuildContext _context;
+late BuildContext _context;
 
 class MyApp extends StatelessWidget {
   @override
@@ -82,7 +82,7 @@ void main() {
         try {
           await tester.pumpWidget(
           EasyLocalization(
-          child: null,
+          child: null!,
           path: 'i18n',
           supportedLocales: [Locale('en', 'US')],
         ));

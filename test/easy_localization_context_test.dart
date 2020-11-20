@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-BuildContext _context;
+late BuildContext _context;
 
 class MyApp extends StatelessWidget {
   @override
