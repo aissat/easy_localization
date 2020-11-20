@@ -9,8 +9,8 @@ class EmptyPreloaderWidget extends StatelessWidget {
 }
 
 class FutureErrorWidget extends StatelessWidget {
-  final String msg;
-  const FutureErrorWidget({this.msg = 'Loading ...'});
+  late final String msg;
+  FutureErrorWidget({required this.msg});
   @override
   Widget build(BuildContext context) {
     return Container(

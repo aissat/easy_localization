@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 import 'localization.dart';
 
 /// {@template tr}
@@ -32,15 +32,15 @@ import 'localization.dart';
 /// ```
 /// {@endtemplate}
 String tr(String key,
-    {BuildContext context,
-    List<String> args,
-    Map<String, String> namedArgs,
-    String gender}) {
+    {BuildContext? context,
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? gender}) {
   return context == null
       ? Localization.instance
-          .tr(key, args: args, namedArgs: namedArgs, gender: gender)
-      : Localization.of(context)
-          .tr(key, args: args, namedArgs: namedArgs, gender: gender);
+          .tr(key, args: args!, namedArgs: namedArgs!, gender: gender!)
+      : Localization.of(context)!
+          .tr(key, args: args!, namedArgs: namedArgs!, gender: gender!);
 }
 
 /// {@template plural}
@@ -76,8 +76,8 @@ String tr(String key,
 /// var money = plural('money', 10.23) // output: You have 10.23 dollars```
 /// {@endtemplate}
 String plural(String key, num value,
-    {BuildContext context, NumberFormat format}) {
+    {BuildContext? context, NumberFormat? format}) {
   return context == null
-      ? Localization.instance.plural(key, value, format: format)
-      : Localization.of(context).plural(key, value, format: format);
+      ? Localization.instance.plural(key, value, format: format!)
+      : Localization.of(context)!.plural(key, value, format: format!);
 }

@@ -29,7 +29,7 @@ bool _isHelpCommand(List<String> args) {
 }
 
 void _printHelperDisplay() {
-  var parser = _generateArgParser(null);
+  var parser = _generateArgParser(GenerateOptions());
   print(parser.usage);
 }
 
@@ -77,12 +77,12 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
 }
 
 class GenerateOptions {
-  String sourceDir;
-  String sourceFile;
-  String templateLocale;
-  String outputDir;
-  String outputFile;
-  String format;
+  String? sourceDir;
+  String? sourceFile;
+  String? templateLocale;
+  String? outputDir;
+  String? outputFile;
+  String? format;
 
   @override
   String toString() {
@@ -92,8 +92,8 @@ class GenerateOptions {
 
 void handleLangFiles(GenerateOptions options) async {
   final current = Directory.current;
-  final source = Directory.fromUri(Uri.parse(options.sourceDir));
-  final output = Directory.fromUri(Uri.parse(options.outputDir));
+  final source = Directory.fromUri(Uri.parse(options.sourceDir!));
+  final output = Directory.fromUri(Uri.parse(options.outputDir!));
   final sourcePath = Directory(path.join(current.path, source.path));
   final outputPath =
       Directory(path.join(current.path, output.path, options.outputFile));
@@ -117,7 +117,7 @@ void handleLangFiles(GenerateOptions options) async {
   }
 
   if (files.isNotEmpty) {
-    generateFile(files, outputPath, options.format);
+    generateFile(files, outputPath, options.format!);
   } else {
     printError('Source path empty');
   }
@@ -179,7 +179,7 @@ abstract class  LocaleKeys {
   classBuilder.writeln(file);
 }
 
-String _resolve(Map<String, dynamic> translations, [String accKey]) {
+String _resolve(Map<String, dynamic> translations, [String? accKey]) {
   var fileContent = '';
 
   final sortedKeys = translations.keys.toList();

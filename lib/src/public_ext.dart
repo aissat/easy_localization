@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 
 import 'easy_localization_app.dart';
 import 'public.dart' as ez;
@@ -13,12 +13,12 @@ import 'public.dart' as ez;
 extension TextTranslateExtension on Text {
   /// {@macro tr}
   Text tr(
-          {BuildContext context,
-          List<String> args,
-          Map<String, String> namedArgs,
-          String gender}) =>
+          {BuildContext? context,
+          List<String>? args,
+          Map<String, String>? namedArgs,
+          String? gender}) =>
       Text(
-          ez.tr(data,
+          ez.tr(data!,
               context: context,
               args: args,
               namedArgs: namedArgs,
@@ -37,8 +37,8 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 
   /// {@macro plural}
-  Text plural(num value, {BuildContext context, NumberFormat format}) =>
-      Text(ez.plural(data, value, context: context, format: format),
+  Text plural(num value, {BuildContext? context, NumberFormat? format}) =>
+      Text(ez.plural(data!, value, context: context, format: format),
           key: key,
           style: style,
           strutStyle: strutStyle,
@@ -62,11 +62,11 @@ extension TextTranslateExtension on Text {
 extension StringTranslateExtension on String {
   /// {@macro tr}
   String tr(
-          {List<String> args, Map<String, String> namedArgs, String gender}) =>
+          {List<String>? args, Map<String, String>? namedArgs, String? gender}) =>
       ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
 
   /// {@macro plural}
-  String plural(num value, {NumberFormat format}) =>
+  String plural(num value, {NumberFormat? format}) =>
       ez.plural(this, value, format: format);
 }
 

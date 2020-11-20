@@ -6,29 +6,29 @@ import 'package:intl/intl.dart';
 import 'translations.dart';
 
 class Localization {
-  Translations _translations;
-  Locale _locale;
+  Translations? _translations;
+  late Locale _locale;
   set translations(val) => _translations = val;
 
-  String path;
-  bool useOnlyLangCode;
+  late String path;
+  late bool useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
 
   Localization();
 
-  static Localization _instance;
+  static Localization? _instance;
   static Localization get instance => _instance ?? (_instance = Localization());
-  static Localization of(BuildContext context) =>
+  static Localization? of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
-  static bool load(Locale locale, {Translations translations}) {
+  static bool load(Locale locale, {Translations? translations}) {
     instance._locale = locale;
     instance._translations = translations;
     return translations == null ? false : true;
   }
 
   String tr(String key,
-      {List<String> args, Map<String, String> namedArgs, String gender}) {
+      {List<String>? args, Map<String, String>? namedArgs, String? gender}) {
     String res;
 
     if (gender != null) {
@@ -42,20 +42,20 @@ class Localization {
     return _replaceArgs(res, args);
   }
 
-  String _replaceArgs(String res, List<String> args) {
+  String _replaceArgs(String res, List<String>? args) {
     if (args == null || args.isEmpty) return res;
     args.forEach((String str) => res = res.replaceFirst(_replaceArgRegex, str));
     return res;
   }
 
-  String _replaceNamedArgs(String res, Map<String, String> args) {
+  String _replaceNamedArgs(String res, Map<String, String>? args) {
     if (args == null || args.isEmpty) return res;
     args.forEach((String key, String value) =>
         res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 
-  String plural(String key, num value, {NumberFormat format}) {
+  String plural(String key, num value, {NumberFormat? format}) {
     final res = Intl.pluralLogic(value,
         zero: _resolvePlural(key, 'zero'),
         one: _resolvePlural(key, 'one'),
@@ -69,7 +69,7 @@ class Localization {
     ]);
   }
 
-  String _gender(String key, {String gender}) => Intl.genderLogic(
+  String _gender(String key, {String? gender}) => Intl.genderLogic(
         gender,
         female: _resolve(key + '.female'),
         male: _resolve(key + '.male'),
@@ -78,7 +78,7 @@ class Localization {
       );
 
   String _resolvePlural(String key, String subKey) {
-    final resource = _translations.get('$key.$subKey');
+    final resource = _translations!.get('$key.$subKey');
 
     if (resource == null && subKey == 'other') {
       printError('Plural key [$key.$subKey] required');
@@ -89,7 +89,7 @@ class Localization {
   }
 
   String _resolve(String key, {bool logging = true}) {
-    final resource = _translations.get(key);
+    final resource = _translations!.get(key);
     if (resource == null) {
       if (logging) printWarning('Localization key [$key] not found');
       return key;
