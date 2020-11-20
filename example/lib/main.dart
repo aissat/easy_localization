@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-
+import 'package:intl/intl.dart';
 import 'generated/locale_keys.g.dart';
 
 void main() {
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
                 plural(LocaleKeys.amount, counter,
-                    format: NumberFormat.currency(
+                    format:NumberFormat.currency(
                         locale: Intl.defaultLocale, symbol: '€')),
                 style: TextStyle(
                     color: Colors.grey.shade900,
