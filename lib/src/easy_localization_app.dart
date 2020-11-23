@@ -88,7 +88,7 @@ class EasyLocalization extends StatefulWidget {
     Key? key,
     required this.child,
     required this.supportedLocales,
-    required  this.path,
+    required this.path,
     this.fallbackLocale,
     this.startLocale,
     this.useOnlyLangCode = false,
@@ -97,8 +97,7 @@ class EasyLocalization extends StatefulWidget {
     this.preloaderColor = Colors.white,
     this.preloaderWidget = const EmptyPreloaderWidget(),
     this.errorWidget,
-  })  : 
-        assert(preloaderWidget != null),
+  })  : assert(preloaderWidget != null),
         super(key: key) {
     log('Start', name: 'Easy Localization');
   }
@@ -155,7 +154,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       locale = widget.supportedLocales.firstWhere(
           (locale) => _checkInitLocale(locale, _osLocale),
           orElse: () => _getFallbackLocale(
-              widget.supportedLocales, widget.fallbackLocale!));
+              widget.supportedLocales, widget.fallbackLocale));
     }
 
     bloc.onChange(Resource(
@@ -268,7 +267,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
   _EasyLocalizationProvider(this.parent, this._locale,
-      {Key? key,required this.bloc, required this.delegate})
+      {Key? key, required this.bloc, required this.delegate})
       : super(key: key, child: parent.child) {
     log('Init provider', name: 'Easy Localization');
   }

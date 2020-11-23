@@ -38,9 +38,9 @@ String tr(String key,
     String? gender}) {
   return context == null
       ? Localization.instance
-          .tr(key, args: args!, namedArgs: namedArgs!, gender: gender!)
+          .tr(key, args: args, namedArgs: namedArgs, gender: gender)
       : Localization.of(context)!
-          .tr(key, args: args!, namedArgs: namedArgs!, gender: gender!);
+          .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
 /// {@template plural}
@@ -78,6 +78,6 @@ String tr(String key,
 String plural(String key, num value,
     {BuildContext? context, NumberFormat? format}) {
   return context == null
-      ? Localization.instance.plural(key, value, format: format!)
-      : Localization.of(context)!.plural(key, value, format: format!);
+      ? Localization.instance.plural(key, value, format: format)
+      : Localization.of(context)!.plural(key, value, format: format);
 }

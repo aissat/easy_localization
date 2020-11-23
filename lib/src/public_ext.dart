@@ -62,7 +62,9 @@ extension TextTranslateExtension on Text {
 extension StringTranslateExtension on String {
   /// {@macro tr}
   String tr(
-          {List<String>? args, Map<String, String>? namedArgs, String? gender}) =>
+          {List<String>? args,
+          Map<String, String>? namedArgs,
+          String? gender}) =>
       ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
 
   /// {@macro plural}
