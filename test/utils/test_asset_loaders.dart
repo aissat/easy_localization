@@ -6,7 +6,7 @@ class JsonAssetLoader extends AssetLoader {
   const JsonAssetLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale ) {
+  Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
     return Future.value({
       'test': 'test',
       'test_replace_one': 'test replace {}',
@@ -27,7 +27,7 @@ class JsonAssetLoader extends AssetLoader {
       },
       'nested.but.not.nested': 'nested but not nested',
       'linked': 'this @:isLinked',
-      'isLinked' : 'is linked',
+      'isLinked': 'is linked',
       'linkAndModify': 'this is linked and @.upper:modified',
       'modified': 'modified',
       'linkMany': '@:many @.capitalize:locale @:messages',
@@ -36,17 +36,21 @@ class JsonAssetLoader extends AssetLoader {
       'messages': 'messages',
       'linkedWithBrackets': 'linked with @.lower:(brackets).',
       'brackets': 'Brackets',
+      'nestedArguments': 'this is {} @.lower:nestedArg',
+      'nestedArg': 'nested {}{}',
+      'nestedNamedArguments': '{firstArg} is a @:nestedNamedArg',
+      'nestedNamedArg': 'nested {secondArg}{thirdArg}',
       'nested': {
         'super': {
           'duper': {
             'nested': 'nested.super.duper.nested',
             'nested_with_arg': 'nested.super.duper.nested_with_arg {}',
-            'nested_with_named_arg': 'nested.super.duper.nested_with_named_arg {arg}'
+            'nested_with_named_arg':
+                'nested.super.duper.nested_with_named_arg {arg}'
           }
         }
       },
       'path': '$fullPath'
     });
   }
-
 }

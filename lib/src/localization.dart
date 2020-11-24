@@ -13,7 +13,8 @@ class Localization {
   String path;
   bool useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
-  final RegExp _linkKeyMatcher = RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
+  final RegExp _linkKeyMatcher =
+      RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
   final RegExp _bracketsMatcher = RegExp(r'[()]');
   final _modifiers = <String, String Function(String)>{
@@ -57,24 +58,31 @@ class Localization {
     final matches = _linkKeyMatcher.allMatches(res);
     var result = res;
 
-    for ( final match in matches) {
+    for (final match in matches) {
       final link = match[0];
       final linkPrefixMatches = _linkKeyPrefixMatcher.allMatches(link);
       final linkPrefix = linkPrefixMatches.first[0];
       final formatterName = linkPrefixMatches.first[1];
 
       // Remove the leading @:, @.case: and the brackets
-      final linkPlaceholder = link.replaceFirst(linkPrefix, '').replaceAll(_bracketsMatcher, '');
+      final linkPlaceholder =
+          link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
 
       var translated = _resolve(linkPlaceholder);
 
-      if (_modifiers.containsKey(formatterName)) {
-        translated = _modifiers[formatterName](translated);
-      } else {
-        if (logging) printWarning('Undefined modifier $formatterName, available modifiers: ${_modifiers.toString()}');
+      if (formatterName != null) {
+        if (_modifiers.containsKey(formatterName)) {
+          translated = _modifiers[formatterName](translated);
+        } else {
+          if (logging) {
+            printWarning(
+                'Undefined modifier $formatterName, available modifiers: ${_modifiers.toString()}');
+          }
+        }
       }
 
-      result = translated.isEmpty ? result : result.replaceFirst(link, translated);
+      result =
+          translated.isEmpty ? result : result.replaceAll(link, translated);
     }
 
     return result;

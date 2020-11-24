@@ -53,10 +53,12 @@ void main() {
     });
 
     test('localeFromString() succeeds', () async {
-      
-      expect(Locale('ar'),localeFromString('ar'));
-      expect(Locale('ar','DZ'),localeFromString('ar_DZ'));
-      expect(Locale.fromSubtags(languageCode:'ar' ,scriptCode:'Arab' , countryCode:'DZ' ),localeFromString('ar_Arab_DZ'));
+      expect(Locale('ar'), localeFromString('ar'));
+      expect(Locale('ar', 'DZ'), localeFromString('ar_DZ'));
+      expect(
+          Locale.fromSubtags(
+              languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
+          localeFromString('ar_Arab_DZ'));
     });
 
     test('load() Failed assertion', () async {
@@ -116,16 +118,36 @@ void main() {
         expect(Localization.instance.tr('linked'), 'this is linked');
       });
 
-      test('can resolve linked locale messages and apply modifiers' , () {
-        expect(Localization.instance.tr('linkAndModify'), 'this is linked and MODIFIED');
+      test('can resolve linked locale messages and apply modifiers', () {
+        expect(Localization.instance.tr('linkAndModify'),
+            'this is linked and MODIFIED');
       });
 
-      test('can resolve multiple linked locale messages and apply modifiers', () {
+      test('can resolve multiple linked locale messages and apply modifiers',
+          () {
         expect(Localization.instance.tr('linkMany'), 'many Locale messages');
       });
 
-      test('can resolve linked locale messages with brackets', (){
-        expect(Localization.instance.tr('linkedWithBrackets'), 'linked with brackets.');
+      test('can resolve linked locale messages with brackets', () {
+        expect(Localization.instance.tr('linkedWithBrackets'),
+            'linked with brackets.');
+      });
+
+      test('can resolve any number of nested arguments', () {
+        expect(
+            Localization.instance
+                .tr('nestedArguments', args: ['a', 'argument', '!']),
+            'this is a nested argument!');
+      });
+
+      test('can resolve nested named arguments', () {
+        expect(
+            Localization.instance.tr('nestedNamedArguments', namedArgs: {
+              'firstArg': 'this',
+              'secondArg': 'named argument',
+              'thirdArg': '!'
+            }),
+            'this is a nested named argument!');
       });
 
       test('returns missing resource as provided', () {
@@ -168,15 +190,17 @@ void main() {
 
       test('return resource and replaces named argument', () {
         expect(
-          Localization.instance.tr('test_replace_named', namedArgs: {'arg1': 'one', 'arg2': 'two'}),
+          Localization.instance.tr('test_replace_named',
+              namedArgs: {'arg1': 'one', 'arg2': 'two'}),
           'test named replace one two',
         );
       });
 
-      test('returns resource and replaces named argument in any nest level', () {
+      test('returns resource and replaces named argument in any nest level',
+          () {
         expect(
-          Localization.instance
-              .tr('nested.super.duper.nested_with_named_arg', namedArgs: {'arg': 'what a nest'}),
+          Localization.instance.tr('nested.super.duper.nested_with_named_arg',
+              namedArgs: {'arg': 'what a nest'}),
           'nested.super.duper.nested_with_named_arg what a nest',
         );
       });
