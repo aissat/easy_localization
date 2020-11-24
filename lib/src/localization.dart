@@ -52,7 +52,7 @@ class Localization {
     return _replaceArgs(res, args);
   }
 
-  String _replaceLinks(String res) {
+  String _replaceLinks(String res, {bool logging = true}) {
     // TODO: add recursion detection and a resolve stack.
     final matches = _linkKeyMatcher.allMatches(res);
     var result = res;
@@ -68,7 +68,11 @@ class Localization {
 
       var translated = _resolve(linkPlaceholder);
 
-      translated = _modifiers.containsKey(formatterName) ? _modifiers[formatterName](translated) : translated;
+      if (_modifiers.containsKey(formatterName)) {
+        translated = _modifiers[formatterName](translated);
+      } else {
+        if (logging) printWarning('Undefined modifier $formatterName, available modifiers: ${_modifiers.toString()}');
+      }
 
       result = translated.isEmpty ? result : result.replaceFirst(link, translated);
     }
