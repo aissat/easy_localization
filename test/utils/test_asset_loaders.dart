@@ -34,8 +34,8 @@ class JsonAssetLoader extends AssetLoader {
       'many': 'many',
       'locale': 'locale',
       'messages': 'messages',
-      'linkedWithBrackets': 'linked with @.capitalize:(brackets).',
-      'brackets': 'brackets',
+      'linkedWithBrackets': 'linked with @.lower:(brackets).',
+      'brackets': 'Brackets',
       'nested': {
         'super': {
           'duper': {

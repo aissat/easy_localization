@@ -125,7 +125,7 @@ void main() {
       });
 
       test('can resolve linked locale messages with brackets', (){
-        expect(Localization.instance.tr('linkedWithBrackets'), 'linked with Brackets.');
+        expect(Localization.instance.tr('linkedWithBrackets'), 'linked with brackets.');
       });
 
       test('returns missing resource as provided', () {
