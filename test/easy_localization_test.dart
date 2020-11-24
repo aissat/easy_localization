@@ -7,6 +7,7 @@ import 'package:easy_localization/src/localization.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
+// import '../lib/src/localization.dart';
 import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
@@ -109,6 +110,22 @@ void main() {
           Localization.instance.tr('nested.but.not.nested'),
           'nested but not nested',
         );
+      });
+
+      test('can resolve linked locale messages', () {
+        expect(Localization.instance.tr('linked'), 'this is linked');
+      });
+
+      test('can resolve linked locale messages and apply modifiers' , () {
+        expect(Localization.instance.tr('linkAndModify'), 'this is linked and MODIFIED');
+      });
+
+      test('can resolve multiple linked locale messages and apply modifiers', () {
+        expect(Localization.instance.tr('linkMany'), 'many Locale messages');
+      });
+
+      test('can resolve linked locale messages with brackets', (){
+        expect(Localization.instance.tr('linkedWithBrackets'), 'linked with Brackets.');
       });
 
       test('returns missing resource as provided', () {

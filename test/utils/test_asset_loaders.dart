@@ -26,6 +26,16 @@ class JsonAssetLoader extends AssetLoader {
         'other': '{} other days'
       },
       'nested.but.not.nested': 'nested but not nested',
+      'linked': 'this @:isLinked',
+      'isLinked' : 'is linked',
+      'linkAndModify': 'this is linked and @.upper:modified',
+      'modified': 'modified',
+      'linkMany': '@:many @.capitalize:locale @:messages',
+      'many': 'many',
+      'locale': 'locale',
+      'messages': 'messages',
+      'linkedWithBrackets': 'linked with @.capitalize:(brackets).',
+      'brackets': 'brackets',
       'nested': {
         'super': {
           'duper': {
