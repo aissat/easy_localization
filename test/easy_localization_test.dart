@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'dart:async';
 import 'dart:ui';
 
@@ -53,10 +54,12 @@ void main() {
     });
 
     test('localeFromString() succeeds', () async {
-      
-      expect(Locale('ar'),localeFromString('ar'));
-      expect(Locale('ar','DZ'),localeFromString('ar_DZ'));
-      expect(Locale.fromSubtags(languageCode:'ar' ,scriptCode:'Arab' , countryCode:'DZ' ),localeFromString('ar_Arab_DZ'));
+      expect(Locale('ar'), localeFromString('ar'));
+      expect(Locale('ar', 'DZ'), localeFromString('ar_DZ'));
+      expect(
+          Locale.fromSubtags(
+              languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
+          localeFromString('ar_Arab_DZ'));
     });
 
     test('load() Failed assertion', () async {
@@ -152,15 +155,17 @@ void main() {
 
       test('return resource and replaces named argument', () {
         expect(
-          Localization.instance.tr('test_replace_named', namedArgs: {'arg1': 'one', 'arg2': 'two'}),
+          Localization.instance.tr('test_replace_named',
+              namedArgs: {'arg1': 'one', 'arg2': 'two'}),
           'test named replace one two',
         );
       });
 
-      test('returns resource and replaces named argument in any nest level', () {
+      test('returns resource and replaces named argument in any nest level',
+          () {
         expect(
-          Localization.instance
-              .tr('nested.super.duper.nested_with_named_arg', namedArgs: {'arg': 'what a nest'}),
+          Localization.instance.tr('nested.super.duper.nested_with_named_arg',
+              namedArgs: {'arg': 'what a nest'}),
           'nested.super.duper.nested_with_named_arg what a nest',
         );
       });
