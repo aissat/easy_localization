@@ -36,7 +36,7 @@ class JsonAssetLoader extends AssetLoader {
       'messages': 'messages',
       'linkedWithBrackets': 'linked with @.lower:(brackets).',
       'brackets': 'Brackets',
-      'nestedArguments': 'this is {} @.lower:nestedArg',
+      'nestedArguments': 'this is {} @.undefiend:nestedArg',
       'nestedArg': 'nested {}{}',
       'nestedNamedArguments': '{firstArg} is a @:nestedNamedArg',
       'nestedNamedArg': 'nested {secondArg}{thirdArg}',

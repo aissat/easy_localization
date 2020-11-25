@@ -76,7 +76,7 @@ class Localization {
         } else {
           if (logging) {
             printWarning(
-                'Undefined modifier $formatterName, available modifiers: ${_modifiers.toString()}');
+                'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
           }
         }
       }
