@@ -69,7 +69,7 @@ class Localization {
     ]);
   }
 
-  String _gender(String key, {String? gender}) => Intl.genderLogic(
+  String _gender(String key, {required String gender}) => Intl.genderLogic(
         gender,
         female: _resolve(key + '.female'),
         male: _resolve(key + '.male'),
@@ -84,7 +84,7 @@ class Localization {
       printError('Plural key [$key.$subKey] required');
       return '$key.$subKey';
     } else {
-      return resource;
+      return resource!;
     }
   }
 
