@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl.dart' show NumberFormat;
 
+// import '../lib/src/localization.dart';
 import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
@@ -113,6 +114,42 @@ void main() {
           Localization.instance.tr('nested.but.not.nested'),
           'nested but not nested',
         );
+      });
+
+      test('can resolve linked locale messages', () {
+        expect(Localization.instance.tr('linked'), 'this is linked');
+      });
+
+      test('can resolve linked locale messages and apply modifiers', () {
+        expect(Localization.instance.tr('linkAndModify'),
+            'this is linked and MODIFIED');
+      });
+
+      test('can resolve multiple linked locale messages and apply modifiers',
+          () {
+        expect(Localization.instance.tr('linkMany'), 'many Locale messages');
+      });
+
+      test('can resolve linked locale messages with brackets', () {
+        expect(Localization.instance.tr('linkedWithBrackets'),
+            'linked with brackets.');
+      });
+
+      test('can resolve any number of nested arguments', () {
+        expect(
+            Localization.instance
+                .tr('nestedArguments', args: ['a', 'argument', '!']),
+            'this is a nested argument!');
+      });
+
+      test('can resolve nested named arguments', () {
+        expect(
+            Localization.instance.tr('nestedNamedArguments', namedArgs: {
+              'firstArg': 'this',
+              'secondArg': 'named argument',
+              'thirdArg': '!'
+            }),
+            'this is a nested named argument!');
       });
 
       test('returns missing resource as provided', () {
