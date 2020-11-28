@@ -13,6 +13,15 @@ class Localization {
   String path;
   bool useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
+  final RegExp _linkKeyMatcher =
+      RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
+  final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
+  final RegExp _bracketsMatcher = RegExp(r'[()]');
+  final _modifiers = <String, String Function(String)>{
+    'upper': (String val) => val.toUpperCase(),
+    'lower': (String val) => val.toLowerCase(),
+    'capitalize': (String val) => '${val[0].toUpperCase()}${val.substring(1)}'
+  };
 
   Localization();
 
@@ -37,9 +46,46 @@ class Localization {
       res = _resolve(key);
     }
 
+    res = _replaceLinks(res);
+
     res = _replaceNamedArgs(res, namedArgs);
 
     return _replaceArgs(res, args);
+  }
+
+  String _replaceLinks(String res, {bool logging = true}) {
+    // TODO: add recursion detection and a resolve stack.
+    final matches = _linkKeyMatcher.allMatches(res);
+    var result = res;
+
+    for (final match in matches) {
+      final link = match[0];
+      final linkPrefixMatches = _linkKeyPrefixMatcher.allMatches(link);
+      final linkPrefix = linkPrefixMatches.first[0];
+      final formatterName = linkPrefixMatches.first[1];
+
+      // Remove the leading @:, @.case: and the brackets
+      final linkPlaceholder =
+          link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
+
+      var translated = _resolve(linkPlaceholder);
+
+      if (formatterName != null) {
+        if (_modifiers.containsKey(formatterName)) {
+          translated = _modifiers[formatterName](translated);
+        } else {
+          if (logging) {
+            printWarning(
+                'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
+          }
+        }
+      }
+
+      result =
+          translated.isEmpty ? result : result.replaceAll(link, translated);
+    }
+
+    return result;
   }
 
   String _replaceArgs(String res, List<String> args) {
