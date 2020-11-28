@@ -297,13 +297,13 @@ print('dateLogging'.tr(namedArguments: {'currentDate': DateTime.now().toIso8601S
 ### Formatting linked translations:
 
 Formatting linked locale messages
-If the language distinguish cases of character, you may need control the case of the linked locale messages. Linked messages can be formatted with modifier @.modifier:key
+If the language distinguishes cases of character, you may need to control the case of the linked locale messages. Linked messages can be formatted with modifier `@.modifier:key`
 
 The below modifiers are available currently.
 
-- upper: Uppercase all characters in the linked message.
-- lower: Lowercase all characters in the linked message.
-- capitalize: Capitalize the first character in the linked message.
+- `upper`: Uppercase all characters in the linked message.
+- `lower`: Lowercase all characters in the linked message.
+- `capitalize`: Capitalize the first character in the linked message.
 
 Example:
 
