@@ -1,5 +1,5 @@
 # Changelog
-### [2.4.0]
+### [2.3.4]
 
 - Added linked translations
 ### [2.3.3]
