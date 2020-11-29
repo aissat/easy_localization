@@ -1,5 +1,7 @@
 # Changelog
+### [2.4.0]
 
+- Added linked translations
 ### [2.3.3]
 
 - Updated pubspec dependencies
