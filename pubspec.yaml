@@ -2,7 +2,7 @@ name: easy_localization
 description: 'Easy and Fast internationalizing and localization your Flutter Apps, this package simplify the internationalizing process .'
 homepage: 'https://github.com/aissat/easy_localization'
 issue_tracker: 'https://github.com/aissat/easy_localization/issues'
-version: 2.3.4-nullsafety.0
+version: 2.3.4-nullsafety.1
 environment:
   sdk: '>=2.12.0-0 <3.0.0'
 dependencies:
