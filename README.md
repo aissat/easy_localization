@@ -20,6 +20,7 @@ Easy and Fast internationalization for your Flutter Apps
 ## Why easy_localization?
 
 - 🚀 Easy translations for many languages
+- 🛡️ Null safety
 - 🔌 Load translations as JSON, CSV, Yaml, Xml using [Easy Localization Loader](https://github.com/aissat/easy_localization_loader)
 - 💾 React and persist to locale changes
 - ⚡ Supports plural, gender, nesting, RTL locales and more
