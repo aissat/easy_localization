@@ -12,6 +12,7 @@ import 'localization.dart';
 import 'translations.dart';
 
 //If web then import intl_browser else intl_standalone
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:intl/intl_standalone.dart'
     if (dart.library.html) 'package:intl/intl_browser.dart';
 
@@ -32,17 +33,17 @@ part 'utils.dart';
 ///  ```
 class EasyLocalization extends StatefulWidget {
   /// Place for your main page widget.
-  final Widget child;
+  late final Widget child;
 
   /// List of supported locales.
   /// {@macro flutter.widgets.widgetsApp.supportedLocales}
-  final List<Locale> supportedLocales;
+  late final List<Locale> supportedLocales;
 
   /// Locale when the locale is not in the list
-  final Locale fallbackLocale;
+  final Locale? fallbackLocale;
 
   /// Overrides device locale.
-  final Locale startLocale;
+  final Locale? startLocale;
 
   /// Trigger for using only language code for reading localization files.
   /// @Default value false
@@ -59,7 +60,7 @@ class EasyLocalization extends StatefulWidget {
   /// path: 'assets/translations',
   /// path: 'assets/translations/lang.csv',
   /// ```
-  final String path;
+  late final String path;
 
   /// Class loader for localization files.
   /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
@@ -73,21 +74,21 @@ class EasyLocalization extends StatefulWidget {
   /// Preloader page color @Default value `preloaderColor = Colors.white`
   /// Background color for EmptyPreloaderWidget.
   /// If you use a different color background, change the color to avoid flickering
-  final Color preloaderColor;
+  final Color? preloaderColor;
 
   /// Shows your custom widget while translation is loading.
   /// @Default value `preloaderWidget = EmptyPreloaderWidget()`
-  final Widget preloaderWidget;
+  final Widget? preloaderWidget;
 
   /// Shows a custom error widget when an error is encountered instead of the default error widget.
   /// @Default value `errorWidget = FutureErrorWidget()`
-  final Widget Function(String message) errorWidget;
+  final Widget Function(String message)? errorWidget;
 
   EasyLocalization({
-    Key key,
-    @required this.child,
-    @required this.supportedLocales,
-    @required this.path,
+    Key? key,
+    required this.child,
+    required this.supportedLocales,
+    required this.path,
     this.fallbackLocale,
     this.startLocale,
     this.useOnlyLangCode = false,
@@ -96,10 +97,7 @@ class EasyLocalization extends StatefulWidget {
     this.preloaderColor = Colors.white,
     this.preloaderWidget = const EmptyPreloaderWidget(),
     this.errorWidget,
-  })  : assert(child != null),
-        assert(supportedLocales != null && supportedLocales.isNotEmpty),
-        assert(path != null && path.isNotEmpty),
-        assert(preloaderWidget != null),
+  })  : assert(preloaderWidget != null),
         super(key: key) {
     log('Start', name: 'Easy Localization');
   }
@@ -114,8 +112,8 @@ class EasyLocalization extends StatefulWidget {
 class _EasyLocalizationState extends State<EasyLocalization> {
   ///Init EasyLocalizationBloc
   final bloc = _EasyLocalizationBloc();
-  _EasyLocalizationDelegate delegate;
-  Locale locale;
+  late _EasyLocalizationDelegate delegate;
+  late Locale locale;
 
   @override
   void dispose() {
@@ -137,11 +135,11 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   }
 
   void _init() async {
-    Locale _savedLocale;
+    Locale? _savedLocale;
     Locale _osLocale;
     if (widget.saveLocale) _savedLocale = await loadSavedLocale();
     if (_savedLocale == null && widget.startLocale != null) {
-      locale = _getFallbackLocale(widget.supportedLocales, widget.startLocale);
+      locale = _getFallbackLocale(widget.supportedLocales, widget.startLocale!);
       log('Start locale loaded ${locale.toString()}',
           name: 'Easy Localization');
     }
@@ -177,7 +175,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   //Get fallback Locale
   Locale _getFallbackLocale(
-      List<Locale> supportedLocales, Locale fallbackLocale) {
+      List<Locale> supportedLocales, Locale? fallbackLocale) {
     //If fallbackLocale not set then return first from supportedLocales
     if (fallbackLocale != null) {
       return fallbackLocale;
@@ -193,9 +191,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     return localeFromString(_deviceLocale);
   }
 
-  Future<Locale> loadSavedLocale() async {
+  Future<Locale?> loadSavedLocale() async {
     final _preferences = await SharedPreferences.getInstance();
-    final _strLocale = _preferences.getString('locale');
+    final String? _strLocale = _preferences.getString('locale');
     final locale = _strLocale != null ? localeFromString(_strLocale) : null;
 
     return locale;
@@ -203,7 +201,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   Widget build(BuildContext context) {
-    Widget returnWidget;
+    Widget? returnWidget;
     log('Build', name: 'Easy Localization');
     return Container(
       color: widget.preloaderColor,
@@ -213,27 +211,27 @@ class _EasyLocalizationState extends State<EasyLocalization> {
           if (snapshot.connectionState == ConnectionState.waiting &&
               !snapshot.hasData &&
               !snapshot.hasError) {
-            returnWidget = widget.preloaderWidget;
+            returnWidget = widget.preloaderWidget!;
           } else if (snapshot.hasData && !snapshot.hasError) {
             returnWidget = _EasyLocalizationProvider(
               widget,
-              snapshot.data.locale,
+              snapshot.data!.locale!,
               bloc: bloc,
               delegate: _EasyLocalizationDelegate(
-                translations: snapshot.data.translations,
+                translations: snapshot.data!.translations,
                 supportedLocales: widget.supportedLocales,
               ),
             );
           } else if (snapshot.hasError) {
             returnWidget = widget.errorWidget != null
-                ? widget.errorWidget(
-                    snapshot.error,
+                ? widget.errorWidget!(
+                    snapshot.error as String,
                   )
                 : FutureErrorWidget(
-                    msg: snapshot.error,
+                    msg: snapshot.error as String,
                   );
           }
-          return returnWidget;
+          return returnWidget!;
         },
       ),
     );
@@ -243,8 +241,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalization parent;
   final Locale _locale;
-  final _EasyLocalizationBloc bloc;
-  final _EasyLocalizationDelegate delegate;
+  late final _EasyLocalizationBloc bloc;
+  late final _EasyLocalizationDelegate delegate;
 
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
   ///
@@ -269,7 +267,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
   _EasyLocalizationProvider(this.parent, this._locale,
-      {Key key, this.bloc, this.delegate})
+      {Key? key, required this.bloc, required this.delegate})
       : super(key: key, child: parent.child) {
     log('Init provider', name: 'Easy Localization');
   }
@@ -278,7 +276,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   Locale get locale => _locale;
 
   /// Get fallback locale
-  Locale get fallbackLocale => parent.fallbackLocale;
+  Locale get fallbackLocale => parent.fallbackLocale!;
   // Locale get startLocale => parent.startLocale;
 
   /// Change app locale
@@ -316,12 +314,12 @@ class _EasyLocalizationProvider extends InheritedWidget {
   }
 
   static _EasyLocalizationProvider of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
+      context.dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>()!;
 }
 
 class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
-  final List<Locale> supportedLocales;
-  final Translations translations;
+  final List<Locale>? supportedLocales;
+  final Translations? translations;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
@@ -332,7 +330,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool isSupported(Locale locale) => supportedLocales.contains(locale);
+  bool isSupported(Locale locale) => supportedLocales!.contains(locale);
 
   @override
   Future<Localization> load(Locale value) {

@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'dart:async';
 import 'dart:ui';
 
@@ -5,7 +6,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/localization.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:intl/intl.dart' show NumberFormat;
 
 // import '../lib/src/localization.dart';
 import 'utils/test_asset_loaders.dart';

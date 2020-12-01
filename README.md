@@ -257,7 +257,7 @@ print('day'.plural(21)); // output: 21 день
 var money = plural('money', 10.23) // output: You have 10.23 dollars
 ```
 
-### 🔥 Linked translations:
+### 🔗 Linked translations:
 
 If there's a translation key that will always have the same concrete text as another one you can just link to it. To link to another translation key, all you have to do is to prefix its contents with an `@:` sign followed by the full name of the translation key including the namespace you want to link to.
 

@@ -6,45 +6,44 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-
+import 'package:intl/intl.dart';
 import 'generated/locale_keys.g.dart';
 
 void main() {
   runApp(EasyLocalization(
-    child: MyApp(),
-    supportedLocales: [
-      Locale('en', 'US'),
-      Locale('ar', 'DZ'),
-      Locale('de', 'DE'),
-      Locale('ru', 'RU')
-    ],
-    path: 'resources/langs/langs.csv', //'resources/langs',
-    // fallbackLocale: Locale('en', 'US'),
-    // startLocale: Locale('de', 'DE'),
-    // saveLocale: false,
-    // useOnlyLangCode: true,
-    // preloaderColor: Colors.black,
-    // preloaderWidget: CustomPreloaderWidget(),
+      child: MyApp(),
+      supportedLocales: [
+        Locale('en', 'US'),
+        Locale('ar', 'DZ'),
+        Locale('de', 'DE'),
+        Locale('ru', 'RU')
+      ],
+      path: 'resources/langs/langs.csv', //'resources/langs',
+      // fallbackLocale: Locale('en', 'US'),
+      // startLocale: Locale('de', 'DE'),
+      // saveLocale: false,
+      // useOnlyLangCode: true,
+      // preloaderColor: Colors.black,
+      // preloaderWidget: CustomPreloaderWidget(),
 
-    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-    // install easy_localization_loader for enable custom loaders
-    // assetLoader: RootBundleAssetLoader()
-    // assetLoader: HttpAssetLoader()
-    // assetLoader: FileAssetLoader()
-    assetLoader: CsvAssetLoader()
-    // assetLoader: YamlAssetLoader() //multiple files
-    // assetLoader: YamlSingleAssetLoader() //single file
-    // assetLoader: XmlAssetLoader() //multiple files
-    // assetLoader: XmlSingleAssetLoader() //single file
-    // assetLoader: CodegenLoader()
-  ));
+      // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+      // install easy_localization_loader for enable custom loaders
+      // assetLoader: RootBundleAssetLoader()
+      // assetLoader: HttpAssetLoader()
+      // assetLoader: FileAssetLoader()
+      assetLoader: CsvAssetLoader()
+      // assetLoader: YamlAssetLoader() //multiple files
+      // assetLoader: YamlSingleAssetLoader() //single file
+      // assetLoader: XmlAssetLoader() //multiple files
+      // assetLoader: XmlSingleAssetLoader() //single file
+      // assetLoader: CodegenLoader()
+      ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    log(context.locale.toString(),
-        name: '${this} # locale Context');
+    log(context.locale.toString(), name: '${this} # locale Context');
     log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
       title: 'title'.tr(),
@@ -136,7 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
             ),
             Text(LocaleKeys.msg).tr(args: ['aissat', 'Flutter']),
-            Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+            Text(LocaleKeys.msg_named)
+                .tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
             Text(LocaleKeys.clicked).plural(counter),
             FlatButton(
               onPressed: () {
@@ -185,9 +185,7 @@ class CustomPreloaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     log('Loading custom preloder widget');
     return Container(
-      child: Center(
-        child: CircularProgressIndicator()
-      ),
+      child: Center(child: CircularProgressIndicator()),
     );
   }
 }

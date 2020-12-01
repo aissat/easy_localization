@@ -1,18 +1,18 @@
 part of '../easy_localization_app.dart';
 
 class Resource {
-  final Locale locale;
+  late final Locale? locale;
   final assetLoader;
-  final String path;
-  final bool useOnlyLangCode;
-  Translations _translations;
+  late final String path;
+  late final bool useOnlyLangCode;
+  late Translations _translations;
   Translations get translations => _translations;
-  Resource({this.locale, this.assetLoader, this.path, this.useOnlyLangCode});
+  Resource({this.locale, this.assetLoader, required this.path,required this.useOnlyLangCode});
 
   Future loadTranslations() async {
     Map<String, dynamic> data;
     useOnlyLangCode
-        ? data = await assetLoader.load(path, Locale(locale.languageCode))
+        ? data = await assetLoader.load(path, Locale(locale!.languageCode))
         : data = await assetLoader.load(path, locale);
     _translations = Translations(data);
   }

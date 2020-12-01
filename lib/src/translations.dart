@@ -3,7 +3,7 @@ class Translations {
   final Map<String, dynamic> _nestedKeysCache;
 
   Translations(this._translations) : _nestedKeysCache = {};
-  String get(String key) =>
+  String? get(String key) =>
       (isNestedKey(key) ? getNested(key) : _translations[key]);
 
   String getNested(String key) {
