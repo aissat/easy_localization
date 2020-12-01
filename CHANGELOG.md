@@ -1,8 +1,5 @@
 # Changelog
-#### [2.4.0]
 
-- Null safety
-  
 ### [2.3.4]
 
 - Added linked translations
