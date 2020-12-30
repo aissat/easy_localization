@@ -34,10 +34,10 @@ class MyWidget extends StatelessWidget {
   }
 }
 
-void main() {
+void main() async {
   SharedPreferences.setMockInitialValues({});
+  await EasyLocalization.ensureInitialized();
   group('BuildContext', () {
-
     testWidgets(
       '[EasyLocalization] locale test',
       (WidgetTester tester) async {
@@ -55,7 +55,7 @@ void main() {
           expect(_context.locale, Locale('en', 'US'));
 
           var l = Locale('en', 'US');
-          _context.locale = l;
+          await _context.setLocale(l);
           await tester.pumpAndSettle();
           expect(_context.locale, Locale('en', 'US'));
 
@@ -71,8 +71,8 @@ void main() {
           expect(_context.locale, Locale('en', 'US'));
 
           l = Locale('ar', 'DZ');
-          expect(() {
-            _context.locale = l;
+          expect(() async {
+            await _context.setLocale(l);
           }, throwsAssertionError);
           await tester.pumpAndSettle();
           expect(_context.locale, Locale('en', 'US'));
@@ -109,27 +109,28 @@ void main() {
           expect(plural('day', 3, context: _context), '3 other days');
 
           var l = Locale('en', 'US');
-          _context.locale = l;
+          await _context.setLocale(l);
           await tester.pumpAndSettle();
           expect(_context.locale, l);
 
           l = Locale('ar', 'DZ');
-          _context.locale = l;
+          await _context.setLocale(l);
           await tester.idle();
           await tester.pumpAndSettle();
           expect(_context.locale, l);
 
           l = Locale('en', 'US');
-          _context.locale = l;
+          await _context.setLocale(l);
           await tester.idle();
           await tester.pumpAndSettle();
           expect(_context.locale, l);
 
           l = Locale('en', 'UK');
-          expect(() => {_context.locale = l}, throwsAssertionError);
+          expect(
+              () async => {await _context.setLocale(l)}, throwsAssertionError);
 
           l = Locale('ar', 'DZ');
-          _context.locale = l;
+          await _context.setLocale(l);
           await tester.idle();
           await tester.pumpAndSettle();
           expect(_context.locale, l);
@@ -151,7 +152,7 @@ void main() {
           // The async delegator load will require build on the next frame. Thus, pump
           await tester.pumpAndSettle();
 
-          _context.locale = Locale('ar', 'DZ');
+          await _context.setLocale(Locale('ar', 'DZ'));
 
           await tester.pumpAndSettle();
 
@@ -226,10 +227,11 @@ void main() {
     );
 
     group('SharedPreferences deleteSaveLocale()', () {
-      setUpAll(() {
+      setUpAll(() async {
         SharedPreferences.setMockInitialValues({
           'locale': 'ar_DZ',
         });
+        await EasyLocalization.ensureInitialized();
       });
       testWidgets(
         '[EasyLocalization] deleteSaveLocale  test',
@@ -257,7 +259,7 @@ void main() {
       testWidgets(
         '[EasyLocalization] after deleteSaveLocale test',
         (WidgetTester tester) async {
-          await tester.runAsync(() async {
+          await tester.runAsync(() async {            
             await tester.pumpWidget(EasyLocalization(
               child: MyApp(),
               path: 'i18n',

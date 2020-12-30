@@ -134,11 +134,24 @@ class MyApp extends StatelessWidget {
 | startLocale      | false    |                           | Overrides device locale. |
 | saveLocale       | false    | `true`                    | Save locale in device storage. |
 | useOnlyLangCode  | false    | `false`                   | Trigger for using only language code for reading localization files.</br></br>Example:</br>`en.json //useOnlyLangCode: true`</br>`en-US.json //useOnlyLangCode: false`  |
-| preloaderColor   | false    | `Colors.white`            | Background color for EmptyPreloaderWidget.</br>If you use a different color background, change the color to avoid flickering |
-| preloaderWidget  | false    | `EmptyPreloaderWidget()`  | Shows your custom widget while translation is loading. |
 | errorWidget  | false    | `FutureErrorWidget()`  | Shows a custom error widget when an error occurs. |
 
 ## Usage
+
+### 🔥 Initialize library
+
+Call `EasyLocalization.ensureInitialized()` in your main before runApp.
+
+```dart
+void main() async{
+  // ...
+  await EasyLocalization.ensureInitialized();
+  // ...
+  runApp(....)
+  // ...
+}
+```
+
 
 ### 🔥 Change or get locale
 

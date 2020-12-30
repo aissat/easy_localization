@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/src/easy_localization_state.dart';
 import 'package:easy_localization/src/localization.dart';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
-// import '../lib/src/localization.dart';
 import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
@@ -21,15 +22,25 @@ dynamic overridePrint(Function() testFn) => () {
 
 void main() {
   group('localization', () {
-    var r1 = Resource(
-        locale: Locale('en'),
+    var r1 = EasyLocalizationState(
+        forceLocale: Locale('en'),
         path: 'path/en.json',
+        supportedLocales: [Locale('en')],
         useOnlyLangCode: true,
+        saveLocale: false,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
         assetLoader: JsonAssetLoader());
-    var r2 = Resource(
-        locale: Locale('en', 'us'),
+    var r2 = EasyLocalizationState(
+        forceLocale: Locale('en', 'us'),
+        supportedLocales: [Locale('en', 'us')],
         path: 'path/en-us.json',
         useOnlyLangCode: false,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
+        saveLocale: false,
         assetLoader: JsonAssetLoader());
     setUpAll(() async {
       await r1.loadTranslations();
@@ -88,11 +99,17 @@ void main() {
     });
 
     group('tr', () {
-      var r = Resource(
-          locale: Locale('en'),
+      var r = EasyLocalizationState(
+          forceLocale: Locale('en'),
+          supportedLocales: [Locale('en')],
           path: 'path',
           useOnlyLangCode: true,
+          onLoadError: (FlutterError e) {
+            log(e.toString());
+          },
+          saveLocale: false,
           assetLoader: JsonAssetLoader());
+
       setUpAll(() async {
         await r.loadTranslations();
         Localization.load(Locale('en'), translations: r.translations);
