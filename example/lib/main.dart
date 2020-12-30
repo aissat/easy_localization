@@ -1,15 +1,17 @@
-import 'dart:developer';
 import 'dart:ui';
 
-import 'lang_view.dart';
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 import 'generated/locale_keys.g.dart';
+import 'lang_view.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   runApp(EasyLocalization(
     child: MyApp(),
     supportedLocales: [
@@ -23,8 +25,6 @@ void main() {
     // startLocale: Locale('de', 'DE'),
     // saveLocale: false,
     // useOnlyLangCode: true,
-    // preloaderColor: Colors.black,
-    // preloaderWidget: CustomPreloaderWidget(),
 
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // install easy_localization_loader for enable custom loaders
@@ -43,11 +43,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    log(context.locale.toString(),
-        name: '${this} # locale Context');
-    log('title'.tr().toString(), name: '${this} # locale');
+    // SOS: you cannot use translations here since Material app is responsible for
+    // causing our delegate to load the translation files.
+    // log(context.locale.toString(),
+    //     name: '${this} # locale Context');
+    // log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
-      title: 'title'.tr(),
+      title: 'title',
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
@@ -173,20 +175,6 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: incrementCounter,
         child: Text('+1'),
-      ),
-    );
-  }
-}
-
-class CustomPreloaderWidget extends StatelessWidget {
-  const CustomPreloaderWidget({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    log('Loading custom preloder widget');
-    return Container(
-      child: Center(
-        child: CircularProgressIndicator()
       ),
     );
   }
