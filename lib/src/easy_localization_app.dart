@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:easy_localization/src/easy_localization_state.dart';
+import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -94,18 +94,18 @@ class EasyLocalization extends StatefulWidget {
   /// so that savedLocale is loaded and used from the
   /// start.
   static void ensureInitialized() async =>
-      EasyLocalizationState.initEasyLocation();
+      EasyLocalizationController.initEasyLocation();
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
   _EasyLocalizationDelegate delegate;
-  EasyLocalizationState localeState;
+  EasyLocalizationController localizationController;
   FlutterError translationsLoadError;
 
   @override
   void initState() {
     log('Init state', name: 'Easy Localization');
-    localeState = EasyLocalizationState(
+    localizationController = EasyLocalizationController(
       saveLocale: widget.saveLocale,
       fallbackLocale: widget.fallbackLocale,
       supportedLocales: widget.supportedLocales,
@@ -119,7 +119,8 @@ class _EasyLocalizationState extends State<EasyLocalization> {
         });
       },
     );
-    localeState.addListener(() {
+    // causes localization to rebuild with new language
+    localizationController.addListener(() {
       if (mounted) setState(() {});
     });
     super.initState();
@@ -127,7 +128,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void dispose() {
-    localeState.dispose();
+    localizationController.dispose();
     super.dispose();
   }
 
@@ -141,9 +142,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     }
     return _EasyLocalizationProvider(
       widget,
-      localeState,
+      localizationController,
       delegate: _EasyLocalizationDelegate(
-        easyLocalizationState: localeState,
+        localizationController: localizationController,
         supportedLocales: widget.supportedLocales,
       ),
     );
@@ -152,7 +153,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
 class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalization parent;
-  final EasyLocalizationState _localeState;
+  final EasyLocalizationController _localeState;
   final Locale currentLocale;
   final _EasyLocalizationDelegate delegate;
 
@@ -217,13 +218,13 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
 class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final List<Locale> supportedLocales;
-  final EasyLocalizationState easyLocalizationState;
+  final EasyLocalizationController localizationController;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
   _EasyLocalizationDelegate(
-      {this.easyLocalizationState, this.supportedLocales}) {
+      {this.localizationController, this.supportedLocales}) {
     log('Init Localization Delegate', name: 'Easy Localization');
   }
 
@@ -233,11 +234,11 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   @override
   Future<Localization> load(Locale value) async {
     log('Load Localization Delegate', name: 'Easy Localization');
-    if (easyLocalizationState.translations == null) {
-      await easyLocalizationState.loadTranslations();
+    if (localizationController.translations == null) {
+      await localizationController.loadTranslations();
     }
 
-    Localization.load(value, translations: easyLocalizationState.translations);
+    Localization.load(value, translations: localizationController.translations);
     return Future.value(Localization.instance);
   }
 

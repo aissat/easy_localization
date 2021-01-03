@@ -145,6 +145,9 @@ Call `EasyLocalization.ensureInitialized()` in your main before runApp.
 ```dart
 void main() async{
   // ...
+  // Needs to be called so that we can await for EasyLocalization.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+
   await EasyLocalization.ensureInitialized();
   // ...
   runApp(....)

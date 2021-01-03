@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'translations.dart';
 
-class EasyLocalizationState extends ChangeNotifier {
+class EasyLocalizationController extends ChangeNotifier {
   static Locale _savedLocale;
   static Locale _osLocale;
 
@@ -22,15 +22,15 @@ class EasyLocalizationState extends ChangeNotifier {
   Translations _translations;
   Translations get translations => _translations;
 
-  EasyLocalizationState({
-    Locale startLocale,
-    Locale fallbackLocale,
+  EasyLocalizationController({
     @required List<Locale> supportedLocales,
     @required this.saveLocale,
     @required this.assetLoader,
     @required this.path,
     @required this.useOnlyLangCode,
     @required this.onLoadError,
+    Locale startLocale,
+    Locale fallbackLocale,
     Locale forceLocale, // used for testing
   }) {
     if (forceLocale != null) {
