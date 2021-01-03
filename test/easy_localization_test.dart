@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization/src/easy_localization_state.dart';
+import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +22,7 @@ dynamic overridePrint(Function() testFn) => () {
 
 void main() {
   group('localization', () {
-    var r1 = EasyLocalizationState(
+    var r1 = EasyLocalizationController(
         forceLocale: Locale('en'),
         path: 'path/en.json',
         supportedLocales: [Locale('en')],
@@ -32,7 +32,7 @@ void main() {
           log(e.toString());
         },
         assetLoader: JsonAssetLoader());
-    var r2 = EasyLocalizationState(
+    var r2 = EasyLocalizationController(
         forceLocale: Locale('en', 'us'),
         supportedLocales: [Locale('en', 'us')],
         path: 'path/en-us.json',
@@ -99,7 +99,7 @@ void main() {
     });
 
     group('tr', () {
-      var r = EasyLocalizationState(
+      var r = EasyLocalizationController(
           forceLocale: Locale('en'),
           supportedLocales: [Locale('en')],
           path: 'path',

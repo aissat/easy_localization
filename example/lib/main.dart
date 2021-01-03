@@ -43,13 +43,7 @@ void main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // SOS: you cannot use translations here since Material app is responsible for
-    // causing our delegate to load the translation files.
-    // log(context.locale.toString(),
-    //     name: '${this} # locale Context');
-    // log('title'.tr().toString(), name: '${this} # locale');
     return MaterialApp(
-      title: 'title',
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
