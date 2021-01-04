@@ -46,30 +46,30 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
   parser.addOption('source-dir',
       abbr: 'S',
       defaultsTo: 'resources/langs',
-      callback: (String x) => generateOptions.sourceDir = x,
+      callback: (String? x) => generateOptions.sourceDir = x,
       help: 'Folder containing localization files');
 
   parser.addOption('source-file',
       abbr: 's',
-      callback: (String x) => generateOptions.sourceFile = x,
+      callback: (String? x) => generateOptions.sourceFile = x,
       help: 'File to use for localization');
 
   parser.addOption('output-dir',
       abbr: 'O',
       defaultsTo: 'lib/generated',
-      callback: (String x) => generateOptions.outputDir = x,
+      callback: (String? x) => generateOptions.outputDir = x,
       help: 'Output folder stores for the generated file');
 
   parser.addOption('output-file',
       abbr: 'o',
       defaultsTo: 'codegen_loader.g.dart',
-      callback: (String x) => generateOptions.outputFile = x,
+      callback: (String? x) => generateOptions.outputFile = x,
       help: 'Output file name');
 
   parser.addOption('format',
       abbr: 'f',
       defaultsTo: 'json',
-      callback: (String x) => generateOptions.format = x,
+      callback: (String? x) => generateOptions.format = x,
       help: 'Support json or keys formats',
       allowed: ['json', 'keys']);
 
