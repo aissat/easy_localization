@@ -76,7 +76,7 @@ String tr(String key,
 /// var money = plural('money', 10.23) // output: You have 10.23 dollars```
 /// {@endtemplate}
 String plural(String key, num value,
-    {BuildContext context, NumberFormat format}) {
+    {BuildContext context, List<String> args, NumberFormat format}) {
   return context == null
       ? Localization.instance.plural(key, value, format: format)
       : Localization.of(context).plural(key, value, format: format);

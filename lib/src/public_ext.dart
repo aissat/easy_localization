@@ -37,7 +37,8 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 
   /// {@macro plural}
-  Text plural(num value, {BuildContext context, NumberFormat format}) =>
+  Text plural(num value,
+          {BuildContext context, List<String> args, NumberFormat format}) =>
       Text(ez.plural(data, value, context: context, format: format),
           key: key,
           style: style,
