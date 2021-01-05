@@ -1,8 +1,52 @@
-on: [push, pull_request]
-name: Flutter Tester
+name: Test and Publish
+
+on:
+
+  push:
+    branches: ['*']
+    tags: ['v*','V*']
+
+  pull_request:
+    branches: ['*']
+    tags: ['v*','V*']
+
 jobs:
   test:
-    name: Tester
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'dev' # or: 'dev' or 'beta'
+
+    - name: Install packages dependencies
+      run: flutter packages get
+
+    - name: Run tests
+      run: flutter test
+
+    - name: Run tests coverage
+      run: flutter test --coverage
+
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v1.0.1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    if: "contains(github.event.head_commit.message, '[pub]') &&
+         contains('
+          refs/heads/master
+          refs/heads/pub
+          refs/heads/develop',
+          github.ref) "
+
+    name: Publish
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
