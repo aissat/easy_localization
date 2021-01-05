@@ -89,7 +89,13 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   Locale get locale => EasyLocalization.of(this).locale;
 
   /// Change app locale
-  set locale(Locale val) => EasyLocalization.of(this).locale = val;
+  void setLocale(Locale val) async => EasyLocalization.of(this).setLocale(val);
+
+  /// Old Change app locale
+  @Deprecated(
+      'This is the func used in the old version of EasyLocalization. The modern func is `setLocale(val)` . '
+      'This feature was deprecated after v3.0.0')
+  set locale(Locale val) => EasyLocalization.of(this).setLocale(val);
 
   /// Get List of supported locales.
   List<Locale> get supportedLocales =>

@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
 
-class EmptyPreloaderWidget extends StatelessWidget {
-  const EmptyPreloaderWidget();
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.shrink();
-  }
-}
-
 class FutureErrorWidget extends StatelessWidget {
   final String msg;
   const FutureErrorWidget({this.msg = 'Loading ...'});
