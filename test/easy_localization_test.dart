@@ -267,6 +267,21 @@ void main() {
                 .plural('day', 3, format: NumberFormat.currency()),
             'USD3.00 other days');
       });
+
+      test('zero with args', () {
+        expect(Localization.instance.plural('money', 0, args: ['John', '0']),
+            'John has no money');
+      });
+
+      test('one with args', () {
+        expect(Localization.instance.plural('money', 1, args: ['John', '1']),
+            'John has 1 dollar');
+      });
+
+      test('other with args', () {
+        expect(Localization.instance.plural('money', 3, args: ['John', '3']),
+            'John has 3 dollars');
+      });
     });
 
     group('extensions', () {

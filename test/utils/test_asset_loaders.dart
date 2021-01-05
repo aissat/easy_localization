@@ -25,6 +25,11 @@ class JsonAssetLoader extends AssetLoader {
         'many': '{} many days',
         'other': '{} other days'
       },
+      'money': {
+        'zero': '{} has no money',
+        'one': '{} has {} dollar',
+        'other': '{} has {} dollars',
+      },
       'nested.but.not.nested': 'nested but not nested',
       'linked': 'this @:isLinked',
       'isLinked': 'is linked',
