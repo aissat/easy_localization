@@ -222,6 +222,7 @@ You can use extension methods of [String] or [Text] widget, you can also use `pl
 | -------- | -------- | -------- |
 | context| `BuildContext` | The location in the tree where this widget builds|
 | value| `num` | Number value for pluralization |
+| args| `List<String>` | List of localized strings. Replaces `{}` left to right |
 | format| `NumberFormat` | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
 
 Example:
@@ -241,6 +242,12 @@ Example:
     "one": "You have {} dollar",
     "many": "You have {} dollars",
     "other": "You have {} dollars"
+  },
+  "money_args": {
+    "zero": "{} has no money",
+    "one": "{} has {} dollar",
+    "many": "{} has {} dollars",
+    "other": "{} has {} dollars"
   }
 }
 ```
@@ -254,7 +261,7 @@ Text('money').plural(1000000, format: NumberFormat.compact(locale: context.local
 print('day'.plural(21)); // output: 21 день
 
 //Static function
-var money = plural('money', 10.23) // output: You have 10.23 dollars
+var money = plural('money_args', 10.23, args: ['John', '10.23']) // output: John has 10.23 dollars
 ```
 
 ### Linked translations:
