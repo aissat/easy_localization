@@ -1,8 +1,17 @@
-on: [push, pull_request]
-name: Flutter Tester
+name: Test and Publish
+
+on:
+  push:
+    branches: ['*']
+    tags: ['v*','V*']
+
+  pull_request:
+    branches: ['*']
+    tags: ['v*','V*']
+
 jobs:
   test:
-    name: Tester
+    name: Test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -12,15 +21,55 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: 'dev' # or: 'dev' or 'beta'
-    - name: Install flutter dependencies
-      run: flutter pub get
+
     - name: Install packages dependencies
-      run: flutter packages get
+      run: flutter pub get
+
     - name: Run tests
       run: flutter test
+
     - name: Run tests coverage
       run: flutter test --coverage
+
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v1.0.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  publish:
+    if: "(contains(github.event.head_commit.message, '[pub]') &&
+        contains('
+          refs/heads/master
+          refs/heads/develop
+          refs/tags
+          refs/tags/releases',
+          github.ref)) ||
+        startsWith('
+          refs/tags/
+          refs/tags/releases/',
+          github.ref)"
+
+    name: Publish
+    needs: [test]
+    runs-on: ubuntu-latest
+
+    container:
+      image:  google/dart:latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Dry run pub publish
+      run: dart pub publish --dry-run || true
+
+    - name: Setup credentials
+      run: |
+        pwd
+        mkdir -p ~/.pub-cache
+        cat <<EOF> ~/.pub-cache/credentials.json
+        {"accessToken":"${{ secrets.OAUTH_ACCESS_TOKEN }}","refreshToken":"${{ secrets.OAUTH_REFRESH_TOKEN }}","idToken":"${{ secrets.OAUTH_ID_TOKEN }}","tokenEndpoint":"https://accounts.google.com/o/oauth2/token","scopes":["openid","https://www.googleapis.com/auth/userinfo.email"],"expiration":1609800070574}
+        EOF
+
+    - name: Publish pkg
+      run: dart pub publish --force
