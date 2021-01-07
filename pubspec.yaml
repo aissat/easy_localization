@@ -12,17 +12,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ">=0.16.0 <=0.17.0-nullsafety.2"
+  intl: ">=0.16.0 <0.17.0"
   shared_preferences: ^0.5.12+4
   args: ^1.6.0
-  path: ^1.8.0-nullsafety.3
+  path: ^1.7.0
   flutter_localizations:
     sdk: flutter
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.10.0-nullsafety.3
+  pedantic: ^1.9.2
 
 flutter:
   assets:
