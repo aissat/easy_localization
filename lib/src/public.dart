@@ -66,6 +66,12 @@ String tr(String key,
 ///     "one": "You have {} dollar",
 ///     "many": "You have {} dollars",
 ///     "other": "You have {} dollars"
+///   },
+///   "money_args": {
+///     "zero": "{} has no money",
+///     "one": "{} has {} dollar",
+///     "many": "{} has {} dollars",
+///     "other": "{} has {} dollars"
 ///   }
 /// }
 /// ```
@@ -73,11 +79,13 @@ String tr(String key,
 ///```dart
 /// Text('money').plural(1000000, format: NumberFormat.compact(locale: context.locale.toString())) // output: You have 1M dollars
 /// print('day'.plural(21)); // output: 21 день
-/// var money = plural('money', 10.23) // output: You have 10.23 dollars```
+/// var money = plural('money', 10.23) // output: You have 10.23 dollars
+/// var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
+/// ```
 /// {@endtemplate}
 String plural(String key, num value,
     {BuildContext context, List<String> args, NumberFormat format}) {
   return context == null
-      ? Localization.instance.plural(key, value, format: format)
-      : Localization.of(context).plural(key, value, format: format);
+      ? Localization.instance.plural(key, value, args: args, format: format)
+      : Localization.of(context).plural(key, value, args: args, format: format);
 }

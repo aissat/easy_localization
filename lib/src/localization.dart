@@ -101,7 +101,8 @@ class Localization {
     return res;
   }
 
-  String plural(String key, num value, {List<String> args, NumberFormat format}) {
+  String plural(String key, num value,
+      {List<String> args, NumberFormat format}) {
     final res = Intl.pluralLogic(value,
         zero: _resolvePlural(key, 'zero'),
         one: _resolvePlural(key, 'one'),
@@ -110,9 +111,8 @@ class Localization {
         many: _resolvePlural(key, 'many'),
         other: _resolvePlural(key, 'other'),
         locale: _locale.languageCode);
-    return _replaceArgs(res, args == null ? [
-      format == null ? '$value' : format.format(value),
-    ] : args);
+    return _replaceArgs(
+        res, args ?? [format == null ? '$value' : format.format(value)]);
   }
 
   String _gender(String key, {String gender}) => Intl.genderLogic(
