@@ -3,7 +3,10 @@
 Easy and Fast internationalization for your Flutter Apps
 </h1>
 
-![Pub Version](https://img.shields.io/pub/v/easy_localization?style=flat-square)
+[![Pub Version](https://img.shields.io/pub/v/easy_localization?style=flat-square&logo=dart)](https://pub.dev/packages/easy_localization)
+[![likes](https://badges.bar/easy_localization/likes)](https://pub.dev/packages/easy_localization/score)
+[![likes](https://badges.bar/easy_localization/popularity)](https://pub.dev/packages/easy_localization/score)
+[![likes](https://badges.bar/easy_localization/pub%20points)](https://pub.dev/packages/easy_localization/score)
 ![Code Climate issues](https://img.shields.io/github/issues/aissat/easy_localization?style=flat-square)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/aissat/easy_localization?style=flat-square)
 ![GitHub contributors](https://img.shields.io/github/contributors/aissat/easy_localization?style=flat-square)
@@ -26,7 +29,6 @@ Easy and Fast internationalization for your Flutter Apps
 - ⁉️ Error widget for missing translations
 - ❤️ Extension methods on `Text` and `BuildContext`
 - 💻 Code generation for localization files and keys.
-- 👍 Uses BLoC pattern 
 
 ## Getting Started
 
@@ -95,7 +97,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main() {
+void main() async {
+  await EasyLocalization.ensureInitialized();
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
@@ -154,7 +157,6 @@ void main() async{
   // ...
 }
 ```
-
 
 ### 🔥 Change or get locale
 
@@ -360,7 +362,7 @@ Example:
 RaisedButton(
   onPressed: (){
     context.deleteSaveLocale();
-  },              
+  },
   child: Text(LocaleKeys.reset_locale).tr(),
 )
 ```
@@ -397,23 +399,25 @@ Code generation supports only json files, for more information run in terminal `
 ### 🔌 Localization asset loader class
 
 Steps:
-1. Open your terminal in the folder's path containing your project 
+
+1. Open your terminal in the folder's path containing your project
 2. Run in terminal `flutter pub run easy_localization:generate`
 3. Change asset loader and past import.
 
-```dart
-import 'generated/codegen_loader.g.dart';
-...
-void main(){
-  runApp(EasyLocalization(
-    child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-    path: 'resources/langs',
-    assetLoader: CodegenLoader()
-  ));
-}
-...
-```
+  ```dart
+  import 'generated/codegen_loader.g.dart';
+  ...
+  void main(){
+    runApp(EasyLocalization(
+      child: MyApp(),
+      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+      path: 'resources/langs',
+      assetLoader: CodegenLoader()
+    ));
+  }
+  ...
+  ```
+  
 4. All done!
 
 ### 🔑 Localization keys
