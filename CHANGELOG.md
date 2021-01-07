@@ -1,5 +1,16 @@
 # Changelog
 
+### [3.0.0]
+
+- Added Formatting linked translations
+- Updated `plural()` function, with arguments
+  ```dart
+    var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
+  ```
+- Removed preloader widget ~~`preloaderWidget`~~
+- Added `EasyLocalization.ensureInitialized()`, Needs to be called
+- fixed many issues.
+
 ### [2.3.3]
 
 - Updated pubspec dependencies
