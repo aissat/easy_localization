@@ -37,8 +37,9 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 
   /// {@macro plural}
-  Text plural(num value, {BuildContext context, NumberFormat format}) =>
-      Text(ez.plural(data, value, context: context, format: format),
+  Text plural(num value,
+          {BuildContext context, List<String> args, NumberFormat format}) =>
+      Text(ez.plural(data, value, context: context, args: args, format: format),
           key: key,
           style: style,
           strutStyle: strutStyle,
@@ -66,8 +67,8 @@ extension StringTranslateExtension on String {
       ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
 
   /// {@macro plural}
-  String plural(num value, {NumberFormat format}) =>
-      ez.plural(this, value, format: format);
+  String plural(num value, {List<String> args, NumberFormat format}) =>
+      ez.plural(this, value, args: args, format: format);
 }
 
 /// BuildContext extension method for acces to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]
