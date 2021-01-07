@@ -194,7 +194,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   // Locale get startLocale => parent.startLocale;
 
   /// Change app locale
-  void setLocale(Locale _locale) async {
+  Future<void> setLocale(Locale _locale) async {
     // Check old locale
     if (_locale != _localeState.locale) {
       assert(parent.supportedLocales.contains(_locale));
@@ -203,7 +203,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   }
 
   /// Clears a saved locale from device storage
-  void deleteSaveLocale() async {
+  Future<void> deleteSaveLocale() async {
     await _localeState.deleteSaveLocale();
   }
 

@@ -71,5 +71,7 @@ jobs:
         {"accessToken":"${{ secrets.OAUTH_ACCESS_TOKEN }}","refreshToken":"${{ secrets.OAUTH_REFRESH_TOKEN }}","idToken":"${{ secrets.OAUTH_ID_TOKEN }}","tokenEndpoint":"https://accounts.google.com/o/oauth2/token","scopes":["openid","https://www.googleapis.com/auth/userinfo.email"],"expiration":1609800070574}
         EOF
 
+    - name: code format
+      run: dart format lib/*/*.dart lib/*.dart
     - name: Publish pkg
       run: dart pub publish --force
