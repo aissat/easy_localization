@@ -616,7 +616,7 @@ void main() async {
           await tester.pumpAndSettle();
 
           expect(EasyLocalization.of(_context).locale, Locale('ar', 'DZ'));
-          EasyLocalization.of(_context).deleteSaveLocale();
+          await EasyLocalization.of(_context).deleteSaveLocale();
         });
       },
     );
