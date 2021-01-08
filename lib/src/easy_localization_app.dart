@@ -93,7 +93,7 @@ class EasyLocalization extends StatefulWidget {
   /// ensureInitialized needs to be called in main
   /// so that savedLocale is loaded and used from the
   /// start.
-  static void ensureInitialized() async =>
+  static Future<void> ensureInitialized() async =>
       EasyLocalizationController.initEasyLocation();
 }
 
