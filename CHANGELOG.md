@@ -2,8 +2,8 @@
 
 ### [3.0.0]
 
-- Added Formatting linked translations
-- Updated `plural()` function, with arguments
+- Added Formatting linked translations [more](https://github.com/aissat/easy_localization#linked-translations)
+- Updated `plural()` function, with arguments [more](https://github.com/aissat/easy_localization#linked-translations)
   ```dart
     var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
   ```
