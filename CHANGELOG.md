@@ -10,6 +10,7 @@
 - Removed preloader widget ~~`preloaderWidget`~~
 - Added `EasyLocalization.ensureInitialized()`, Needs to be called
 - fixed many issues.
+- customizable logger [EasyLogger]
 
 ### [2.3.3]
 

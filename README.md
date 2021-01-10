@@ -29,7 +29,6 @@ Easy and Fast internationalization for your Flutter Apps
 - ⁉️ Error widget for missing translations
 - ❤️ Extension methods on `Text` and `BuildContext`
 - 💻 Code generation for localization files and keys.
-- 🖨️ Customizable logger.
 
 ## Getting Started
 
@@ -286,7 +285,7 @@ var money = plural('money', 10.23) // output: You have 10.23 dollars
 var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
 ```
 
-### Linked translations:
+### 🔥 Linked translations:
 
 If there's a translation key that will always have the same concrete text as another one you can just link to it. To link to another translation key, all you have to do is to prefix its contents with an `@:` sign followed by the full name of the translation key including the namespace you want to link to.
 
@@ -323,7 +322,7 @@ Example:
 print('dateLogging'.tr(namedArguments: {'currentDate': DateTime.now().toIso8601String()})); //Output: INFO: the date today is 2020-11-27T16:40:42.657.
 ```
 
-### Formatting linked translations:
+#### Formatting linked translations:
 
 Formatting linked locale messages
 If the language distinguishes cases of character, you may need to control the case of the linked locale messages. Linked messages can be formatted with modifier `@.modifier:key`
@@ -443,11 +442,9 @@ print(LocaleKeys.title.tr()); //String
 Text(LocaleKeys.title).tr(); //Widget
 ```
 
-<p align="center">
-    <a href="https://gitpod.io/#https://github.com/aissat/easy_localization" target="_blank">
-        <img src="https://gitpod.io/button/open-in-gitpod.svg" width=200 />
-    </a>
-</p>
+### 🖨️ Logger
+
+///TODO: add info about configure
 
 ## Screenshots
 
