@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:easy_localization/src/easy_localization_controller.dart';
+import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -81,20 +81,21 @@ class EasyLocalization extends StatefulWidget {
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
         super(key: key) {
-    log('Start', name: 'Easy Localization');
+    EasyLocalization.logger('Start');
   }
 
   @override
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
-  static _EasyLocalizationProvider of(BuildContext context) =>
-      _EasyLocalizationProvider.of(context);
+  static _EasyLocalizationProvider of(BuildContext context) => _EasyLocalizationProvider.of(context);
 
   /// ensureInitialized needs to be called in main
   /// so that savedLocale is loaded and used from the
   /// start.
-  static Future<void> ensureInitialized() async =>
-      EasyLocalizationController.initEasyLocation();
+  static Future<void> ensureInitialized() async => EasyLocalizationController.initEasyLocation();
+
+  /// Customizable logger
+  static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
@@ -104,7 +105,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void initState() {
-    log('Init state', name: 'Easy Localization');
+    EasyLocalization.logger('Init state');
     localizationController = EasyLocalizationController(
       saveLocale: widget.saveLocale,
       fallbackLocale: widget.fallbackLocale,
@@ -134,7 +135,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   Widget build(BuildContext context) {
-    log('Build', name: 'Easy Localization');
+    EasyLocalization.logger('Build');
     if (translationsLoadError != null) {
       return widget.errorWidget != null
           ? widget.errorWidget(translationsLoadError)
@@ -179,11 +180,10 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
-  _EasyLocalizationProvider(this.parent, this._localeState,
-      {Key key, this.delegate})
+  _EasyLocalizationProvider(this.parent, this._localeState, {Key key, this.delegate})
       : currentLocale = _localeState.locale,
         super(key: key, child: parent.child) {
-    log('Init provider', name: 'Easy Localization');
+    EasyLocalization.logger('Init provider');
   }
 
   /// Get current locale
@@ -223,9 +223,8 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate(
-      {this.localizationController, this.supportedLocales}) {
-    log('Init Localization Delegate', name: 'Easy Localization');
+  _EasyLocalizationDelegate({this.localizationController, this.supportedLocales}) {
+    EasyLocalization.logger('Init Localization Delegate');
   }
 
   @override
@@ -233,7 +232,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale value) async {
-    log('Load Localization Delegate', name: 'Easy Localization');
+    EasyLocalization.logger('Load Localization Delegate');
     if (localizationController.translations == null) {
       await localizationController.loadTranslations();
     }
