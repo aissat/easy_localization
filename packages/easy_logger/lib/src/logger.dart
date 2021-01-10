@@ -5,19 +5,21 @@ import 'logger_printer.dart';
 
 /// Easy Logger
 class EasyLogger {
-  EasyLogger(
-      {this.name,
-      this.enableBuildModes = const <BuildMode>[
-        BuildMode.profile,
-        BuildMode.debug,
-      ],
-      this.enableLevels = const <EasyLoggerLevel>[
-        EasyLoggerLevel.debug,
-        EasyLoggerLevel.info,
-        EasyLoggerLevel.error,
-        EasyLoggerLevel.warning,
-      ],
-      EasyLogPrinter printer}) {
+  EasyLogger({
+    this.name,
+    this.enableBuildModes = const <BuildMode>[
+      BuildMode.profile,
+      BuildMode.debug,
+    ],
+    this.enableLevels = const <EasyLoggerLevel>[
+      EasyLoggerLevel.debug,
+      EasyLoggerLevel.info,
+      EasyLoggerLevel.error,
+      EasyLoggerLevel.warning,
+    ],
+    EasyLogPrinter printer,
+    this.defaultLevel = EasyLoggerLevel.info,
+  }) {
     _printer = printer ?? easyLogDefaultPrinter;
     _currentBuildMode = _getCurrentBuildMode();
   }
@@ -26,6 +28,7 @@ class EasyLogger {
   String name;
   List<BuildMode> enableBuildModes;
   List<EasyLoggerLevel> enableLevels;
+  EasyLoggerLevel defaultLevel;
 
   EasyLogPrinter _printer;
   EasyLogPrinter get printer => _printer;
@@ -50,7 +53,8 @@ class EasyLogger {
     return true;
   }
 
-  void call(Object object, {StackTrace stackTrace, EasyLoggerLevel level = EasyLoggerLevel.info}) {
+  void call(Object object, {StackTrace stackTrace, EasyLoggerLevel level}) {
+    level ??= defaultLevel;
     if (isEnabled(level)) {
       _printer(object, stackTrace: stackTrace, level: level, name: name);
     }
