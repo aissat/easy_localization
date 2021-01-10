@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl_standalone.dart'
-    if (dart.library.html) 'package:intl/intl_browser.dart';
+import 'package:intl/intl_standalone.dart' if (dart.library.html) 'package:intl/intl_browser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'translations.dart';
@@ -37,25 +34,21 @@ class EasyLocalizationController extends ChangeNotifier {
       _locale = forceLocale;
     } else if (_savedLocale == null && startLocale != null) {
       _locale = _getFallbackLocale(supportedLocales, startLocale);
-      log('Start locale loaded ${_locale.toString()}',
-          name: 'Easy Localization');
+      EasyLocalization.logger('Start locale loaded ${_locale.toString()}');
     }
     // If saved locale then get
     else if (saveLocale && _savedLocale != null) {
-      log('Saved locale loaded ${_savedLocale.toString()}',
-          name: 'Easy Localization');
+      EasyLocalization.logger('Saved locale loaded ${_savedLocale.toString()}');
       _locale = _savedLocale;
     } else {
       // From Device Locale
-      _locale = supportedLocales.firstWhere(
-          (locale) => _checkInitLocale(locale, _osLocale),
+      _locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale, _osLocale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
   }
 
   //Get fallback Locale
-  Locale _getFallbackLocale(
-      List<Locale> supportedLocales, Locale fallbackLocale) {
+  Locale _getFallbackLocale(List<Locale> supportedLocales, Locale fallbackLocale) {
     //If fallbackLocale not set then return first from supportedLocales
     if (fallbackLocale != null) {
       return fallbackLocale;
@@ -113,6 +106,6 @@ class EasyLocalizationController extends ChangeNotifier {
     _savedLocale = null;
     final _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('locale', null);
-    log('Saved locale deleted', name: 'Easy Localization');
+    EasyLocalization.logger('Saved locale deleted');
   }
 }
