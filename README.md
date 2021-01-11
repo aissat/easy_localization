@@ -444,7 +444,38 @@ Text(LocaleKeys.title).tr(); //Widget
 
 ### 🖨️ Logger
 
-///TODO: add info about configure
+[Easy Localization] logger based on [Easy logger]
+
+You can customize logger for you project
+
+Change enabled build modes: 
+
+```dart
+EasyLocalization.logger.enableBuildModes = [BuildMode.profile, BuildMode.debug, BuildMode.release];
+```
+
+Change level messages: 
+
+```dart
+EasyLocalization.logger.enableLevels = [LevelMessages.debug, LevelMessages.info, LevelMessages.error, LevelMessages.warning];
+```
+
+Customize default printer function: 
+
+```dart
+EasyLogPrinter customLogPrinter = (
+  Object object, {
+  String name,
+  StackTrace stackTrace,
+  LevelMessages level,
+}) {
+  print('$name: ${object.toString()}');
+};
+
+EasyLocalization.logger.printer = customLogPrinter;
+```
+
+///TODO: add lint to [Easy Logger] git.
 
 ## Screenshots
 
