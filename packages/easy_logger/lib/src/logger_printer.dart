@@ -2,21 +2,23 @@ import 'dart:developer';
 
 import '../easy_logger.dart';
 
-typedef EasyLogPrinter = Function(Object object, {String name, EasyLoggerLevel level, StackTrace stackTrace});
+/// Type for function printing/logging in [EasyLogger].
+typedef EasyLogPrinter = Function(Object object, {String name, LevelMessages level, StackTrace stackTrace});
 
-EasyLogPrinter easyLogDefaultPrinter = (Object object, {String name, StackTrace stackTrace, EasyLoggerLevel level}) {
+/// Default function printing.
+EasyLogPrinter easyLogDefaultPrinter = (Object object, {String name, StackTrace stackTrace, LevelMessages level}) {
   String _prepareString() {
     switch (level) {
-      case EasyLoggerLevel.debug:
+      case LevelMessages.debug:
         // white
         return '\u001b[37m[INFO] ${object.toString()}\u001b[0m';
-      case EasyLoggerLevel.info:
+      case LevelMessages.info:
         // green
         return '\u001b[32m[INFO] ${object.toString()}\u001b[0m';
-      case EasyLoggerLevel.warning:
+      case LevelMessages.warning:
         // blue
         return '\u001B[34m[WARNING] ${object.toString()}\u001b[0m';
-      case EasyLoggerLevel.error:
+      case LevelMessages.error:
         // red
         return '\u001b[31m[ERROR] ${object.toString()}\u001b[0m';
       default:

@@ -1,4 +1,4 @@
-/// Build mode enum for
+/// Build mode enum used in [EasyLogger].
 enum BuildMode {
   /// Release build mode
   release,
@@ -10,8 +10,8 @@ enum BuildMode {
   debug
 }
 
-/// Levels messages
-enum EasyLoggerLevel {
+/// Levels messages enum used in [EasyLogger].
+enum LevelMessages {
   ///Debug level message
   debug,
 
