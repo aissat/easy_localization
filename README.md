@@ -29,6 +29,7 @@ Easy and Fast internationalization for your Flutter Apps
 - ⁉️ Error widget for missing translations
 - ❤️ Extension methods on `Text` and `BuildContext`
 - 💻 Code generation for localization files and keys.
+- 🖨️ Customizable logger.
 
 ## Getting Started
 
