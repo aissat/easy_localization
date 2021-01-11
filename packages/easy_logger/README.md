@@ -94,3 +94,14 @@ Or insert into class object
 ```dart
 logger.printer = customLogPrinter;
 ```
+
+## 🖨️ Helpers
+
+For easest using logger you can send messages without `level` parameter.
+
+```dart
+  logger.debug('your log text');
+  logger.info('your log text');
+  logger.warning('your log text');
+  logger.error('your log text');
+```
