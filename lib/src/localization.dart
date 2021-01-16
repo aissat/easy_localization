@@ -13,7 +13,8 @@ class Localization {
   String path;
   bool useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
-  final RegExp _linkKeyMatcher = RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
+  final RegExp _linkKeyMatcher =
+      RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
   final RegExp _bracketsMatcher = RegExp(r'[()]');
   final _modifiers = <String, String Function(String)>{
@@ -26,7 +27,8 @@ class Localization {
 
   static Localization _instance;
   static Localization get instance => _instance ?? (_instance = Localization());
-  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization);
+  static Localization of(BuildContext context) =>
+      Localizations.of<Localization>(context, Localization);
 
   static bool load(Locale locale, {Translations translations}) {
     instance._locale = locale;
@@ -34,7 +36,8 @@ class Localization {
     return translations == null ? false : true;
   }
 
-  String tr(String key, {List<String> args, Map<String, String> namedArgs, String gender}) {
+  String tr(String key,
+      {List<String> args, Map<String, String> namedArgs, String gender}) {
     String res;
 
     if (gender != null) {
@@ -62,7 +65,8 @@ class Localization {
       final formatterName = linkPrefixMatches.first[1];
 
       // Remove the leading @:, @.case: and the brackets
-      final linkPlaceholder = link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
+      final linkPlaceholder =
+          link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
 
       var translated = _resolve(linkPlaceholder);
 
@@ -71,13 +75,14 @@ class Localization {
           translated = _modifiers[formatterName](translated);
         } else {
           if (logging) {
-            EasyLocalization.logger
-                .warning('Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
+            EasyLocalization.logger.warning(
+                'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
           }
         }
       }
 
-      result = translated.isEmpty ? result : result.replaceAll(link, translated);
+      result =
+          translated.isEmpty ? result : result.replaceAll(link, translated);
     }
 
     return result;
@@ -91,11 +96,13 @@ class Localization {
 
   String _replaceNamedArgs(String res, Map<String, String> args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{$key}'), value));
+    args.forEach((String key, String value) =>
+        res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 
-  String plural(String key, num value, {List<String> args, NumberFormat format}) {
+  String plural(String key, num value,
+      {List<String> args, NumberFormat format}) {
     final res = Intl.pluralLogic(value,
         zero: _resolvePlural(key, 'zero'),
         one: _resolvePlural(key, 'one'),
@@ -104,7 +111,8 @@ class Localization {
         many: _resolvePlural(key, 'many'),
         other: _resolvePlural(key, 'other'),
         locale: _locale.languageCode);
-    return _replaceArgs(res, args ?? [format == null ? '$value' : format.format(value)]);
+    return _replaceArgs(
+        res, args ?? [format == null ? '$value' : format.format(value)]);
   }
 
   String _gender(String key, {String gender}) => Intl.genderLogic(
