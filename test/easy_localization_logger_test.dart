@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 List<String> printLog = [];
 dynamic overridePrint(Function() testFn) => () {
@@ -14,6 +15,8 @@ dynamic overridePrint(Function() testFn) => () {
     };
 
 void main() async {
+  SharedPreferences.setMockInitialValues({});
+
   group('Logger testing', () {
     test('Logger enable', () {
       expect(EasyLocalization.logger, equals(EasyLocalization.logger));
