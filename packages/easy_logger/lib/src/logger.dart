@@ -106,7 +106,8 @@ class EasyLogger {
 
   /// Helper for main callable function.
   /// Call logger function with level [LevelMessages.info]
-  void info(Object object, {StackTrace stackTrace}) => call(object, stackTrace: stackTrace, level: LevelMessages.info);
+  void info(Object object, {StackTrace stackTrace}) =>
+      call(object, stackTrace: stackTrace, level: LevelMessages.info);
 
   /// Helper for main callable function.
   /// Call logger function with level [LevelMessages.warning]

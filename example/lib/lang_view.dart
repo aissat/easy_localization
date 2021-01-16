@@ -94,7 +94,7 @@ class LanguageView extends StatelessWidget {
           subtitle: Text(
             subtitle,
           ),
-          onTap: () async{
+          onTap: () async {
             log(locale.toString(), name: toString());
             await context.setLocale(locale); //BuildContext extension method
             //EasyLocalization.of(context).locale = locale;

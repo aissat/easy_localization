@@ -64,7 +64,8 @@ void main() async {
       StackTrace testStackTrace;
       testStackTrace = StackTrace.fromString('test stack');
 
-      EasyLocalization.logger('print error', level: LevelMessages.error, stackTrace: testStackTrace);
+      EasyLocalization.logger('print error',
+          level: LevelMessages.error, stackTrace: testStackTrace);
       expect(printLog.first, contains('print error'));
       expect(printLog.first, contains('[ERROR]'));
       expect(printLog.last, contains('test stack'));

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl_standalone.dart' if (dart.library.html) 'package:intl/intl_browser.dart';
+import 'package:intl/intl_standalone.dart'
+    if (dart.library.html) 'package:intl/intl_browser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'translations.dart';
@@ -42,13 +43,15 @@ class EasyLocalizationController extends ChangeNotifier {
       _locale = _savedLocale;
     } else {
       // From Device Locale
-      _locale = supportedLocales.firstWhere((locale) => _checkInitLocale(locale, _osLocale),
+      _locale = supportedLocales.firstWhere(
+          (locale) => _checkInitLocale(locale, _osLocale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
   }
 
   //Get fallback Locale
-  Locale _getFallbackLocale(List<Locale> supportedLocales, Locale fallbackLocale) {
+  Locale _getFallbackLocale(
+      List<Locale> supportedLocales, Locale fallbackLocale) {
     //If fallbackLocale not set then return first from supportedLocales
     if (fallbackLocale != null) {
       return fallbackLocale;

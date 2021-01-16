@@ -8,7 +8,10 @@ Locale localeFromString(String localeString) {
       return Locale(localeList.first, localeList.last);
     case 3:
       return Locale.fromSubtags(
-          languageCode: localeList.first, scriptCode: localeList[1], countryCode: localeList.last);
+        languageCode: localeList.first,
+        scriptCode: localeList[1],
+        countryCode: localeList.last,
+      );
     default:
       return Locale(localeList.first);
   }
