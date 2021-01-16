@@ -88,12 +88,14 @@ class EasyLocalization extends StatefulWidget {
   @override
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
-  static _EasyLocalizationProvider of(BuildContext context) => _EasyLocalizationProvider.of(context);
+  static _EasyLocalizationProvider of(BuildContext context) =>
+      _EasyLocalizationProvider.of(context);
 
   /// ensureInitialized needs to be called in main
   /// so that savedLocale is loaded and used from the
   /// start.
-  static Future<void> ensureInitialized() async => EasyLocalizationController.initEasyLocation();
+  static Future<void> ensureInitialized() async =>
+      EasyLocalizationController.initEasyLocation();
 
   /// Customizable logger
   static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
@@ -181,7 +183,8 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
-  _EasyLocalizationProvider(this.parent, this._localeState, {Key key, this.delegate})
+  _EasyLocalizationProvider(this.parent, this._localeState,
+      {Key key, this.delegate})
       : currentLocale = _localeState.locale,
         super(key: key, child: parent.child) {
     EasyLocalization.logger('Init provider');
@@ -224,7 +227,8 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate({this.localizationController, this.supportedLocales}) {
+  _EasyLocalizationDelegate(
+      {this.localizationController, this.supportedLocales}) {
     EasyLocalization.logger('Init Localization Delegate');
   }
 

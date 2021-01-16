@@ -44,7 +44,10 @@ void main() {
         saveLocale: false,
         assetLoader: JsonAssetLoader());
     setUpAll(() async {
-      EasyLocalization.logger.enableLevels = <LevelMessages>[LevelMessages.error, LevelMessages.warning];
+      EasyLocalization.logger.enableLevels = <LevelMessages>[
+        LevelMessages.error,
+        LevelMessages.warning,
+      ];
 
       await r1.loadTranslations();
       await r2.loadTranslations();
