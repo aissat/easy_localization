@@ -14,5 +14,5 @@ linter:
     avoid_classes_with_only_static_members: false
     sort_constructors_first: true
     prefer_single_quotes: true
-    public_member_api_docs: true    
+    public_member_api_docs: true
     always_specify_types: true
