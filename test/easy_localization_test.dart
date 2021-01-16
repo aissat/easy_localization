@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
+import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +44,8 @@ void main() {
         saveLocale: false,
         assetLoader: JsonAssetLoader());
     setUpAll(() async {
+      EasyLocalization.logger.enableLevels = <LevelMessages>[LevelMessages.error, LevelMessages.warning];
+
       await r1.loadTranslations();
       await r2.loadTranslations();
       Localization.load(Locale('en'), translations: r1.translations);
@@ -59,16 +62,13 @@ void main() {
     });
 
     test('load() succeeds', () async {
-      expect(
-          Localization.load(Locale('en'), translations: r1.translations), true);
+      expect(Localization.load(Locale('en'), translations: r1.translations), true);
     });
 
     test('localeFromString() succeeds', () async {
       expect(Locale('ar'), localeFromString('ar'));
       expect(Locale('ar', 'DZ'), localeFromString('ar_DZ'));
-      expect(
-          Locale.fromSubtags(
-              languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
+      expect(Locale.fromSubtags(languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
           localeFromString('ar_Arab_DZ'));
     });
 
@@ -82,19 +82,15 @@ void main() {
     });
 
     test('load() correctly sets locale path', () async {
-      expect(
-          Localization.load(Locale('en'), translations: r1.translations), true);
+      expect(Localization.load(Locale('en'), translations: r1.translations), true);
       expect(Localization.instance.tr('path'), 'path/en.json');
     });
 
     test('load() respects useOnlyLangCode', () async {
-      expect(
-          Localization.load(Locale('en'), translations: r1.translations), true);
+      expect(Localization.load(Locale('en'), translations: r1.translations), true);
       expect(Localization.instance.tr('path'), 'path/en.json');
 
-      expect(
-          Localization.load(Locale('en', 'us'), translations: r2.translations),
-          true);
+      expect(Localization.load(Locale('en', 'us'), translations: r2.translations), true);
       expect(Localization.instance.tr('path'), 'path/en-us.json');
     });
 
@@ -136,34 +132,25 @@ void main() {
       });
 
       test('can resolve linked locale messages and apply modifiers', () {
-        expect(Localization.instance.tr('linkAndModify'),
-            'this is linked and MODIFIED');
+        expect(Localization.instance.tr('linkAndModify'), 'this is linked and MODIFIED');
       });
 
-      test('can resolve multiple linked locale messages and apply modifiers',
-          () {
+      test('can resolve multiple linked locale messages and apply modifiers', () {
         expect(Localization.instance.tr('linkMany'), 'many Locale messages');
       });
 
       test('can resolve linked locale messages with brackets', () {
-        expect(Localization.instance.tr('linkedWithBrackets'),
-            'linked with brackets.');
+        expect(Localization.instance.tr('linkedWithBrackets'), 'linked with brackets.');
       });
 
       test('can resolve any number of nested arguments', () {
-        expect(
-            Localization.instance
-                .tr('nestedArguments', args: ['a', 'argument', '!']),
-            'this is a nested argument!');
+        expect(Localization.instance.tr('nestedArguments', args: ['a', 'argument', '!']), 'this is a nested argument!');
       });
 
       test('can resolve nested named arguments', () {
         expect(
-            Localization.instance.tr('nestedNamedArguments', namedArgs: {
-              'firstArg': 'this',
-              'secondArg': 'named argument',
-              'thirdArg': '!'
-            }),
+            Localization.instance.tr('nestedNamedArguments',
+                namedArgs: {'firstArg': 'this', 'secondArg': 'named argument', 'thirdArg': '!'}),
             'this is a nested named argument!');
       });
 
@@ -174,8 +161,7 @@ void main() {
       test('reports missing resource', overridePrint(() {
         printLog = [];
         expect(Localization.instance.tr('test_missing'), 'test_missing');
-        expect(printLog.first,
-            '\u001B[34m[WARNING] Easy Localization: Localization key [test_missing] not found\u001b[0m');
+        expect(printLog.first, contains('Localization key [test_missing] not found'));
       }));
 
       test('returns resource and replaces argument', () {
@@ -186,8 +172,7 @@ void main() {
       });
       test('returns resource and replaces argument in any nest level', () {
         expect(
-          Localization.instance
-              .tr('nested.super.duper.nested_with_arg', args: ['what a nest']),
+          Localization.instance.tr('nested.super.duper.nested_with_arg', args: ['what a nest']),
           'nested.super.duper.nested_with_arg what a nest',
         );
       });
@@ -199,25 +184,20 @@ void main() {
         );
       });
 
-      test(
-          'should raise exception if provided arguments length is different from the count of {} in the resource',
-          () {
+      test('should raise exception if provided arguments length is different from the count of {} in the resource', () {
         // @TODO
       });
 
       test('return resource and replaces named argument', () {
         expect(
-          Localization.instance.tr('test_replace_named',
-              namedArgs: {'arg1': 'one', 'arg2': 'two'}),
+          Localization.instance.tr('test_replace_named', namedArgs: {'arg1': 'one', 'arg2': 'two'}),
           'test named replace one two',
         );
       });
 
-      test('returns resource and replaces named argument in any nest level',
-          () {
+      test('returns resource and replaces named argument in any nest level', () {
         expect(
-          Localization.instance.tr('nested.super.duper.nested_with_named_arg',
-              namedArgs: {'arg': 'what a nest'}),
+          Localization.instance.tr('nested.super.duper.nested_with_named_arg', namedArgs: {'arg': 'what a nest'}),
           'nested.super.duper.nested_with_named_arg what a nest',
         );
       });
@@ -235,13 +215,11 @@ void main() {
 
       test('gender returns the correct resource and replaces args', () {
         expect(
-          Localization.instance
-              .tr('gender_and_replace', gender: 'male', args: ['one']),
+          Localization.instance.tr('gender_and_replace', gender: 'male', args: ['one']),
           'Hi one man ;)',
         );
         expect(
-          Localization.instance
-              .tr('gender_and_replace', gender: 'female', args: ['one']),
+          Localization.instance.tr('gender_and_replace', gender: 'female', args: ['one']),
           'Hello one girl :)',
         );
       });
@@ -279,25 +257,19 @@ void main() {
       });
 
       test('with number format', () {
-        expect(
-            Localization.instance
-                .plural('day', 3, format: NumberFormat.currency()),
-            'USD3.00 other days');
+        expect(Localization.instance.plural('day', 3, format: NumberFormat.currency()), 'USD3.00 other days');
       });
 
       test('zero with args', () {
-        expect(Localization.instance.plural('money', 0, args: ['John', '0']),
-            'John has no money');
+        expect(Localization.instance.plural('money', 0, args: ['John', '0']), 'John has no money');
       });
 
       test('one with args', () {
-        expect(Localization.instance.plural('money', 1, args: ['John', '1']),
-            'John has 1 dollar');
+        expect(Localization.instance.plural('money', 1, args: ['John', '1']), 'John has 1 dollar');
       });
 
       test('other with args', () {
-        expect(Localization.instance.plural('money', 3, args: ['John', '3']),
-            'John has 3 dollars');
+        expect(Localization.instance.plural('money', 3, args: ['John', '3']), 'John has 3 dollars');
       });
     });
 
