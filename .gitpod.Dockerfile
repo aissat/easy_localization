@@ -5,7 +5,7 @@ USER gitpod
 WORKDIR /home/gitpod
 
 RUN git clone https://github.com/flutter/flutter && \
-    /home/gitpod/flutter/bin/flutter channel master && \
+    /home/gitpod/flutter/bin/flutter channel stable && \
     /home/gitpod/flutter/bin/flutter upgrade && \
     /home/gitpod/flutter/bin/flutter config --enable-web && \
     /home/gitpod/flutter/bin/flutter --version
