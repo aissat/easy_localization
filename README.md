@@ -463,6 +463,13 @@ EasyLocalization.logger.enableLevels = [LevelMessages.debug, LevelMessages.info,
 
 Read more about [Easy Logger](https://github.com/aissat/easy_localization/blob/master/packages/easy_logger/README.md)
 
+
+<p align="center">
+    <a href="https://gitpod.io/#https://github.com/aissat/easy_localization" target="_blank">
+        <img src="https://gitpod.io/button/open-in-gitpod.svg" width=200 />
+    </a>
+</p>
+
 ## Screenshots
 
 | Arabic RTL | English LTR | Error widget |
