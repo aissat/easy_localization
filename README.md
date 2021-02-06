@@ -444,7 +444,7 @@ Text(LocaleKeys.title).tr(); //Widget
 
 ### 🖨️ Logger
 
-[Easy Localization] logger based on [Easy logger]
+[Easy Localization] logger based on [Easy Logger]
 
 You can customize logger for you project
 
@@ -460,22 +460,7 @@ Change level messages:
 EasyLocalization.logger.enableLevels = [LevelMessages.debug, LevelMessages.info, LevelMessages.error, LevelMessages.warning];
 ```
 
-Customize default printer function: 
-
-```dart
-EasyLogPrinter customLogPrinter = (
-  Object object, {
-  String name,
-  StackTrace stackTrace,
-  LevelMessages level,
-}) {
-  print('$name: ${object.toString()}');
-};
-
-EasyLocalization.logger.printer = customLogPrinter;
-```
-
-///TODO: add lint to [Easy Logger] git.
+Read more about [Easy Logger](https://github.com/aissat/easy_localization/blob/master/packages/easy_logger/README.md)
 
 ## Screenshots
 
