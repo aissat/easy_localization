@@ -17,17 +17,17 @@ void main() {
   group('Utils', () {
     group('Locales', () {
       test('localeFromString only language code', () {
-        var locale = localeFromString('en');
+        var locale = 'en'.toLocale();
         expect(locale, Locale('en'));
       });
 
       test('localeFromString language code and country code', () {
-        var locale = localeFromString('en_US');
+        var locale = 'en_US'.toLocale();
         expect(locale, Locale('en', 'US'));
       });
 
       test('localeFromString language, country, script code', () {
-        var locale = localeFromString('zh_Hant_HK');
+        var locale = 'zh_Hant_HK'.toLocale();
         expect(
             locale,
             Locale.fromSubtags(
@@ -37,14 +37,14 @@ void main() {
       test('localeToString', () {
         var locale = Locale.fromSubtags(
             languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK');
-        var string = localeToString(locale);
+        var string = locale.toStringWithSeparator();
         expect(string, 'zh_Hant_HK');
       });
 
       test('localeToString custom separator', () {
         var locale = Locale.fromSubtags(
             languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK');
-        var string = localeToString(locale, separator: '|');
+        var string = locale.toStringWithSeparator(separator: '|');
         expect(string, 'zh|Hant|HK');
       });
     });

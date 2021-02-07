@@ -103,9 +103,9 @@ class EasyLocalizationController extends ChangeNotifier {
   static Future<void> initEasyLocation() async {
     final _preferences = await SharedPreferences.getInstance();
     final _strLocale = _preferences.getString('locale');
-    _savedLocale = _strLocale != null ? localeFromString(_strLocale) : null;
+    _savedLocale = _strLocale != null ? _strLocale.toLocale() : null;
     final _foundPlatformLocale = await findSystemLocale();
-    _deviceLocale = localeFromString(_foundPlatformLocale);
+    _deviceLocale = _foundPlatformLocale.toLocale();
     EasyLocalization.logger('Localization initialized');
   }
 
