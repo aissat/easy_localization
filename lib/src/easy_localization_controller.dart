@@ -8,7 +8,7 @@ import 'translations.dart';
 
 class EasyLocalizationController extends ChangeNotifier {
   static Locale _savedLocale;
-  static Locale _systemLocale;
+  static Locale _deviceLocale;
 
   Locale _locale;
 
@@ -45,7 +45,7 @@ class EasyLocalizationController extends ChangeNotifier {
     } else {
       // From Device Locale
       _locale = supportedLocales.firstWhere(
-          (locale) => _checkInitLocale(locale, _systemLocale),
+          (locale) => _checkInitLocale(locale, _deviceLocale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
   }
@@ -61,12 +61,12 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  bool _checkInitLocale(Locale locale, Locale _systemLocale) {
+  bool _checkInitLocale(Locale locale, Locale _deviceLocale) {
     // If supported locale not contain countryCode then check only languageCode
     if (locale.countryCode == null) {
-      return (locale.languageCode == _systemLocale.languageCode);
+      return (locale.languageCode == _deviceLocale.languageCode);
     } else {
-      return (locale == _systemLocale);
+      return (locale == _deviceLocale);
     }
   }
 
@@ -104,8 +104,8 @@ class EasyLocalizationController extends ChangeNotifier {
     final _preferences = await SharedPreferences.getInstance();
     final _strLocale = _preferences.getString('locale');
     _savedLocale = _strLocale != null ? localeFromString(_strLocale) : null;
-    final _deviceLocale = await findSystemLocale();
-    _systemLocale = localeFromString(_deviceLocale);
+    final _foundPlatformLocale = await findSystemLocale();
+    _deviceLocale = localeFromString(_foundPlatformLocale);
     EasyLocalization.logger('Localization initialized');
   }
 
@@ -116,11 +116,11 @@ class EasyLocalizationController extends ChangeNotifier {
     EasyLocalization.logger('Saved locale deleted');
   }
 
-  Locale get deviceLocale => _systemLocale;
+  Locale get deviceLocale => _deviceLocale;
 
   Future<void> resetLocale() async {
-    EasyLocalization.logger('Reset locale to platform locale $_systemLocale');
+    EasyLocalization.logger('Reset locale to platform locale $_deviceLocale');
 
-    await setLocale(_systemLocale);
+    await setLocale(_deviceLocale);
   }
 }
