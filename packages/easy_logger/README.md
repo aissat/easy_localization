@@ -69,6 +69,25 @@ try {
 }
 ```
 
+### 🖨️ Customise message or build levels
+
+[EasyLogger] supported Flutter build modes. Read more about [Build modes](https://flutter.dev/docs/testing/build-modes)
+
+```dart
+// only debug and profile modes
+logger.enableBuildModes = [BuildMode.debug, BuildMode.profile]
+
+// logger off
+logger.enableLevels = []
+```
+
+You can customize what levels of messages you need
+
+```dart
+// show only errors
+logger.enableBuildModes = [LevelMessages.error]
+
+```
 
 ### 🖨️ Customise printer function
 
