@@ -353,6 +353,31 @@ Output:
 print('example.emptyNameError'.tr()); //Output: Please fill in your full name
 ```
 
+### 🔥 Reset locale `resetLocale()`
+
+Reset locale to device locale
+
+Example:
+
+```dart
+RaisedButton(
+  onPressed: (){
+    context.resetLocale();
+  },
+  child: Text(LocaleKeys.reset_locale).tr(),
+)
+```
+
+### 🔥 Get device locale `deviceLocale`
+
+Get device locale
+
+Example:
+
+```dart
+print(${context.deviceLocale.toString()}) // OUTPUT: en_US
+```
+
 ### 🔥 Delete save locale `deleteSaveLocale()`
 
 Clears a saved locale from device storage
