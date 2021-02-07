@@ -8,7 +8,7 @@ import 'translations.dart';
 
 class EasyLocalizationController extends ChangeNotifier {
   static Locale _savedLocale;
-  static Locale _osLocale;
+  static Locale _systemLocale;
 
   Locale _locale;
 
@@ -17,6 +17,7 @@ class EasyLocalizationController extends ChangeNotifier {
   final String path;
   final bool saveLocale;
   final bool useOnlyLangCode;
+
   Translations _translations;
   Translations get translations => _translations;
 
@@ -44,7 +45,7 @@ class EasyLocalizationController extends ChangeNotifier {
     } else {
       // From Device Locale
       _locale = supportedLocales.firstWhere(
-          (locale) => _checkInitLocale(locale, _osLocale),
+          (locale) => _checkInitLocale(locale, _systemLocale),
           orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
     }
   }
@@ -60,12 +61,12 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  bool _checkInitLocale(Locale locale, Locale _osLocale) {
-    // If suported locale not contain countryCode then check only languageCode
+  bool _checkInitLocale(Locale locale, Locale _systemLocale) {
+    // If supported locale not contain countryCode then check only languageCode
     if (locale.countryCode == null) {
-      return (locale.languageCode == _osLocale.languageCode);
+      return (locale.languageCode == _systemLocale.languageCode);
     } else {
-      return (locale == _osLocale);
+      return (locale == _systemLocale);
     }
   }
 
@@ -102,7 +103,7 @@ class EasyLocalizationController extends ChangeNotifier {
     final _strLocale = _preferences.getString('locale');
     _savedLocale = _strLocale != null ? localeFromString(_strLocale) : null;
     final _deviceLocale = await findSystemLocale();
-    _osLocale = localeFromString(_deviceLocale);
+    _systemLocale = localeFromString(_deviceLocale);
   }
 
   Future<void> deleteSaveLocale() async {
@@ -111,4 +112,8 @@ class EasyLocalizationController extends ChangeNotifier {
     await _preferences.setString('locale', null);
     EasyLocalization.logger('Saved locale deleted');
   }
+
+  Locale get deviceLocale => _systemLocale;
+
+  Future<void> resetLocale() => setLocale(_systemLocale);
 }
