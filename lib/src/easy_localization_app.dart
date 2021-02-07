@@ -82,7 +82,7 @@ class EasyLocalization extends StatefulWidget {
         assert(supportedLocales != null && supportedLocales.isNotEmpty),
         assert(path != null && path.isNotEmpty),
         super(key: key) {
-    EasyLocalization.logger('Start');
+    EasyLocalization.logger.debug('Start');
   }
 
   @override
@@ -108,7 +108,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   void initState() {
-    EasyLocalization.logger('Init state');
+    EasyLocalization.logger.debug('Init state');
     localizationController = EasyLocalizationController(
       saveLocale: widget.saveLocale,
       fallbackLocale: widget.fallbackLocale,
@@ -138,7 +138,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
 
   @override
   Widget build(BuildContext context) {
-    EasyLocalization.logger('Build');
+    EasyLocalization.logger.debug('Build');
     if (translationsLoadError != null) {
       return widget.errorWidget != null
           ? widget.errorWidget(translationsLoadError)
@@ -187,7 +187,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
       {Key key, this.delegate})
       : currentLocale = _localeState.locale,
         super(key: key, child: parent.child) {
-    EasyLocalization.logger('Init provider');
+    EasyLocalization.logger.debug('Init provider');
   }
 
   /// Get current locale
@@ -235,7 +235,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   _EasyLocalizationDelegate(
       {this.localizationController, this.supportedLocales}) {
-    EasyLocalization.logger('Init Localization Delegate');
+    EasyLocalization.logger.debug('Init Localization Delegate');
   }
 
   @override
@@ -243,7 +243,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   @override
   Future<Localization> load(Locale value) async {
-    EasyLocalization.logger('Load Localization Delegate');
+    EasyLocalization.logger.debug('Load Localization Delegate');
     if (localizationController.translations == null) {
       await localizationController.loadTranslations();
     }

@@ -106,7 +106,7 @@ class EasyLocalizationController extends ChangeNotifier {
     _savedLocale = _strLocale != null ? _strLocale.toLocale() : null;
     final _foundPlatformLocale = await findSystemLocale();
     _deviceLocale = _foundPlatformLocale.toLocale();
-    EasyLocalization.logger('Localization initialized');
+    EasyLocalization.logger.debug('Localization initialized');
   }
 
   Future<void> deleteSaveLocale() async {
