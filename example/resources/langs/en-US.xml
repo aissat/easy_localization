@@ -34,6 +34,6 @@
          <username>Username</username>
       </reset_password>
    </profile>
-   <reset_locale>Reset Saved Language</reset_locale>
+   <reset_locale>Reset Language</reset_locale>
    <title>Hello</title>
 </en_US>
