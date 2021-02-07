@@ -10,8 +10,8 @@ EasyLogPrinter easyLogDefaultPrinter =
   String _coloredString(String string) {
     switch (level) {
       case LevelMessages.debug:
-        // white
-        return '\u001b[37m$string\u001b[0m';
+        // gray
+        return '\u001b[90m$string\u001b[0m';
       case LevelMessages.info:
         // green
         return '\u001b[32m$string\u001b[0m';
