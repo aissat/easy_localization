@@ -443,22 +443,45 @@ print(LocaleKeys.title.tr()); //String
 Text(LocaleKeys.title).tr(); //Widget
 ```
 
-### 🖨️ Logger
+## 🖨️ Logger
 
 [Easy Localization] logger based on [Easy Logger]
 
 You can customize logger for you project
 
-Change enabled build modes: 
+### Show only lost keys message
+
+Lost translations keys logged like warning messages. Change [Easy Logger] level for display only errors and warnings.
 
 ```dart
-EasyLocalization.logger.enableBuildModes = [BuildMode.profile, BuildMode.debug, BuildMode.release];
+EasyLocalization.logger.enableLevels = [LevelMessages.error, LevelMessages.warning];
 ```
 
-Change level messages: 
+### Logger off
+
+For disable logger, change Build Modes in [Easy Logger] to empty List;
 
 ```dart
-EasyLocalization.logger.enableLevels = [LevelMessages.debug, LevelMessages.info, LevelMessages.error, LevelMessages.warning];
+EasyLocalization.logger.enableBuildModes = [];
+```
+
+### Catching logger messages
+
+For catching logger messages you need override default printer function.
+
+```dart
+EasyLogPrinter customLogPrinter = (
+  Object object, {
+  String name,
+  StackTrace stackTrace,
+  LevelMessages level,
+}) {
+  ///Your function
+  print('$name: ${object.toString()}');
+};
+
+/// override printer to custom
+EasyLocalization.logger.printer = customLogPrinter;
 ```
 
 Read more about [Easy Logger](https://github.com/aissat/easy_localization/blob/master/packages/easy_logger/README.md)
