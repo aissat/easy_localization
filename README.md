@@ -511,12 +511,29 @@ EasyLocalization.logger.printer = customLogPrinter;
 
 Read more about [Easy Logger](https://github.com/aissat/easy_localization/blob/master/packages/easy_logger/README.md)
 
+## ➕ Extensions helpers
+
+### String to locale
+
+```dart
+'en_US'.toLocale(); // Locale('en', 'US')
+
+//with custom separator
+'en|US'.toLocale(separator: '|') // Locale('en', 'US')
+```
+### Locale to String with separator
+
+```dart
+Locale('en', 'US').toStringWithSeparator(separator: '|') // en|US
+```
+
 
 <p align="center">
     <a href="https://gitpod.io/#https://github.com/aissat/easy_localization" target="_blank">
         <img src="https://gitpod.io/button/open-in-gitpod.svg" width=200 />
     </a>
 </p>
+
 
 ## Screenshots
 

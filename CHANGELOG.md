@@ -12,6 +12,7 @@
 - fixed many issues.
 - customizable logger [EasyLogger]
 - device locale and reset device locale
+- extensions helpers
 
 ### [2.3.3]
 
