@@ -22,4 +22,4 @@ gender.male,Hi man ;) , مرحبا يا رجل,Hi Mann ;) ,Привет мужы
 gender.female,Hello girl :), مرحبا بك يا فتاة,Hallo Frau :),Привет девчуля :)
 gender.with_arg.male,Hi man ;) {},{} مرحبا يا رجل,Hi Mann ;) {},Привет мужык ;) {}
 gender.with_arg.female,Hello girl :) {},{} مرحبا بك يا فتاة,Hallo Frau :) {},Привет девчуля :) {}
-reset_locale,Reset Saved Language,إعادة تعيين اللغة المحفوظة,Gespeicherte Sprache zurГјcksettzen,Сбросить сохраненный язык
+reset_locale,Reset Language,إعادة ضبط اللغة,Gespeicherte Sprache zurГјcksettzen,Сбросить язык
