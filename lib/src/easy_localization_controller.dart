@@ -89,6 +89,7 @@ class EasyLocalizationController extends ChangeNotifier {
     _locale = l;
     await loadTranslations();
     notifyListeners();
+    EasyLocalization.logger('Locale $locale changed');
     await _saveLocale(_locale);
   }
 
@@ -96,6 +97,7 @@ class EasyLocalizationController extends ChangeNotifier {
     if (!saveLocale) return;
     final _preferences = await SharedPreferences.getInstance();
     await _preferences.setString('locale', locale.toString());
+    EasyLocalization.logger('Locale $locale saved');
   }
 
   static Future<void> initEasyLocation() async {
@@ -104,6 +106,7 @@ class EasyLocalizationController extends ChangeNotifier {
     _savedLocale = _strLocale != null ? localeFromString(_strLocale) : null;
     final _deviceLocale = await findSystemLocale();
     _systemLocale = localeFromString(_deviceLocale);
+    EasyLocalization.logger('Localization initialized');
   }
 
   Future<void> deleteSaveLocale() async {
@@ -115,5 +118,9 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Locale get deviceLocale => _systemLocale;
 
-  Future<void> resetLocale() => setLocale(_systemLocale);
+  Future<void> resetLocale() async {
+    EasyLocalization.logger('Reset locale to platform locale $_systemLocale');
+
+    await setLocale(_systemLocale);
+  }
 }
