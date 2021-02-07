@@ -11,6 +11,7 @@
 - Added `EasyLocalization.ensureInitialized()`, Needs to be called
 - fixed many issues.
 - customizable logger [EasyLogger]
+- device locale and reset device locale
 
 ### [2.3.3]
 
