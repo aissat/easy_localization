@@ -35,7 +35,7 @@
             <username>المستخدم</username>
          </reset_password>
       </profile>
-      <reset_locale>إعادة تعيين اللغة المحفوظة</reset_locale>
+      <reset_locale>إعادة ضبط اللغة</reset_locale>
       <title>السلام</title>
    </ar_DZ>
    <de_DE>
@@ -73,7 +73,7 @@
             <username>Name</username>
          </reset_password>
       </profile>
-      <reset_locale>Gespeicherte Sprache zurücksettzen</reset_locale>
+      <reset_locale>Sprache zurücksetzen</reset_locale>
       <title>Hallo</title>
    </de_DE>
    <en_US>
@@ -111,7 +111,7 @@
             <username>Username</username>
          </reset_password>
       </profile>
-      <reset_locale>Reset Saved Language</reset_locale>
+      <reset_locale>Reset Language</reset_locale>
       <title>Hello</title>
    </en_US>
    <ru_RU>
@@ -149,7 +149,7 @@
             <username>Логин</username>
          </reset_password>
       </profile>
-      <reset_locale>Сбросить сохраненный язык</reset_locale>
+      <reset_locale>Сбросить язык</reset_locale>
       <title>Привет!</title>
    </ru_RU>
 </langs>

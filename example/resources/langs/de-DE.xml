@@ -34,6 +34,6 @@
          <username>Name</username>
       </reset_password>
    </profile>
-   <reset_locale>Gespeicherte Sprache zurücksettzen</reset_locale>
+   <reset_locale>Sprache zurücksetzen</reset_locale>
    <title>Hallo</title>
 </de_DE>
