@@ -99,7 +99,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
