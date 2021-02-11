@@ -126,18 +126,19 @@ class MyApp extends StatelessWidget {
 
 ### 📜 Easy localization widget properties
 
-| Properties       | Required | Default                   | Description |
-| ---------------- | -------- | ------------------------- | ----------- |
-| key              | false    |                           | Widget key. |
-| child            | true     |                           | Place for your main page widget. |
-| supportedLocales | true     |                           | List of supported locales. |
-| path             | true     |                           | Path to your folder with localization files. |
-| assetLoader      | false    | `RootBundleAssetLoader()` | Class loader for localization files. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
-| fallbackLocale   | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.|
-| startLocale      | false    |                           | Overrides device locale. |
-| saveLocale       | false    | `true`                    | Save locale in device storage. |
-| useOnlyLangCode  | false    | `false`                   | Trigger for using only language code for reading localization files.</br></br>Example:</br>`en.json //useOnlyLangCode: true`</br>`en-US.json //useOnlyLangCode: false`  |
-| errorWidget  | false    | `FutureErrorWidget()`  | Shows a custom error widget when an error occurs. |
+| Properties              | Required | Default                   | Description |
+| ----------------------- | -------- | ------------------------- | ----------- |
+| key                     | false    |                           | Widget key. |
+| child                   | true     |                           | Place for your main page widget. |
+| supportedLocales        | true     |                           | List of supported locales. |
+| path                    | true     |                           | Path to your folder with localization files. |
+| assetLoader             | false    | `RootBundleAssetLoader()` | Class loader for localization files. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
+| fallbackLocale          | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.|
+| startLocale             | false    |                           | Overrides device locale. |
+| saveLocale              | false    | `true`                    | Save locale in device storage. |
+| useFallbackTranslations | false    | `false`                   | If a localization key is not found in the locale file, try to use the fallbackLocale file.  |
+| useOnlyLangCode         | false    | `false`                   | Trigger for using only language code for reading localization files.</br></br>Example:</br>`en.json //useOnlyLangCode: true`</br>`en-US.json //useOnlyLangCode: false`  |
+| errorWidget             | false    | `FutureErrorWidget()`     | Shows a custom error widget when an error occurs. |
 
 ## Usage
 
