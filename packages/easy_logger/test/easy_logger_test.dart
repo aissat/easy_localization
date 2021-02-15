@@ -4,7 +4,7 @@ import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 List<String> printLog = <String>[];
-ZoneSpecification spec;
+ZoneSpecification? spec;
 dynamic Function() overridePrint(Function() testFn) => () {
       spec = ZoneSpecification(
         print: (_, __, ___, String msg) {
@@ -15,7 +15,7 @@ dynamic Function() overridePrint(Function() testFn) => () {
       return Zone.current.fork(specification: spec).run(testFn);
     };
 
-EasyLogger logger;
+late EasyLogger logger;
 void main() {
   group('Logger testing print', () {
     logger = EasyLogger(name: 'test logger');

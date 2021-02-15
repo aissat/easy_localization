@@ -2,11 +2,11 @@ import '../easy_logger.dart';
 
 /// Type for function printing/logging in [EasyLogger].
 typedef EasyLogPrinter = Function(Object object,
-    {String name, LevelMessages level, StackTrace stackTrace});
+    {String? name, LevelMessages? level, StackTrace? stackTrace});
 
 /// Default function printing.
 EasyLogPrinter easyLogDefaultPrinter =
-    (Object object, {String name, StackTrace stackTrace, LevelMessages level}) {
+    (Object object, {String? name, StackTrace? stackTrace, LevelMessages? level}) {
   String _coloredString(String string) {
     switch (level) {
       case LevelMessages.debug:
