@@ -17,7 +17,7 @@ import 'package:flutter/services.dart';
 /// ```
 abstract class AssetLoader {
   const AssetLoader();
-  Future<Map<String, dynamic>> load(String path, Locale locale);
+  Future<Map<String, dynamic>?> load(String path, Locale locale);
 }
 
 ///
@@ -31,7 +31,7 @@ class RootBundleAssetLoader extends AssetLoader {
   }
 
   @override
-  Future<Map<String, dynamic>> load(String path, Locale locale) async {
+  Future<Map<String, dynamic>?> load(String path, Locale locale) async {
     var localePath = getLocalePath(path, locale);
     EasyLocalization.logger.debug('Load asset from $path');
     return json.decode(await rootBundle.loadString(localePath));

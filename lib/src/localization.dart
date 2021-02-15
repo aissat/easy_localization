@@ -6,47 +6,47 @@ import 'package:intl/intl.dart';
 import 'translations.dart';
 
 class Localization {
-  Translations _translations;
-  Locale _locale;
+  Translations? _translations;
+  late Locale _locale;
   set translations(val) => _translations = val;
 
-  String path;
-  bool useOnlyLangCode;
+  String? path;
+  bool? useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
   final RegExp _linkKeyMatcher =
       RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
   final RegExp _bracketsMatcher = RegExp(r'[()]');
-  final _modifiers = <String, String Function(String)>{
-    'upper': (String val) => val.toUpperCase(),
-    'lower': (String val) => val.toLowerCase(),
-    'capitalize': (String val) => '${val[0].toUpperCase()}${val.substring(1)}'
+  final _modifiers = <String, String Function(String?)>{
+    'upper': (String? val) => val!.toUpperCase(),
+    'lower': (String? val) => val!.toLowerCase(),
+    'capitalize': (String? val) => '${val![0].toUpperCase()}${val.substring(1)}'
   };
 
   Localization();
 
-  static Localization _instance;
+  static Localization? _instance;
   static Localization get instance => _instance ?? (_instance = Localization());
-  static Localization of(BuildContext context) =>
+  static Localization? of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
-  static bool load(Locale locale, {Translations translations}) {
+  static bool load(Locale locale, {Translations? translations}) {
     instance._locale = locale;
     instance._translations = translations;
     return translations == null ? false : true;
   }
 
-  String tr(String key,
-      {List<String> args, Map<String, String> namedArgs, String gender}) {
-    String res;
+  String? tr(String? key,
+      {List<String>? args, Map<String, String>? namedArgs, String? gender}) {
+    String? res;
 
     if (gender != null) {
-      res = _gender(key, gender: gender);
+      res = _gender(key!, gender: gender);
     } else {
       res = _resolve(key);
     }
 
-    res = _replaceLinks(res);
+    res = _replaceLinks(res!);
 
     res = _replaceNamedArgs(res, namedArgs);
 
@@ -59,9 +59,9 @@ class Localization {
     var result = res;
 
     for (final match in matches) {
-      final link = match[0];
+      final link = match[0]!;
       final linkPrefixMatches = _linkKeyPrefixMatcher.allMatches(link);
-      final linkPrefix = linkPrefixMatches.first[0];
+      final linkPrefix = linkPrefixMatches.first[0]!;
       final formatterName = linkPrefixMatches.first[1];
 
       // Remove the leading @:, @.case: and the brackets
@@ -72,7 +72,7 @@ class Localization {
 
       if (formatterName != null) {
         if (_modifiers.containsKey(formatterName)) {
-          translated = _modifiers[formatterName](translated);
+          translated = _modifiers[formatterName]!(translated);
         } else {
           if (logging) {
             EasyLocalization.logger.warning(
@@ -82,27 +82,27 @@ class Localization {
       }
 
       result =
-          translated.isEmpty ? result : result.replaceAll(link, translated);
+          translated!.isEmpty ? result : result.replaceAll(link, translated);
     }
 
     return result;
   }
 
-  String _replaceArgs(String res, List<String> args) {
+  String? _replaceArgs(String? res, List<String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String str) => res = res.replaceFirst(_replaceArgRegex, str));
+    args.forEach((String str) => res = res!.replaceFirst(_replaceArgRegex, str));
     return res;
   }
 
-  String _replaceNamedArgs(String res, Map<String, String> args) {
+  String _replaceNamedArgs(String res, Map<String, String>? args) {
     if (args == null || args.isEmpty) return res;
     args.forEach((String key, String value) =>
         res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 
-  String plural(String key, num value,
-      {List<String> args, NumberFormat format}) {
+  String? plural(String? key, num value,
+      {List<String>? args, NumberFormat? format}) {
     final res = Intl.pluralLogic(value,
         zero: _resolvePlural(key, 'zero'),
         one: _resolvePlural(key, 'one'),
@@ -115,7 +115,7 @@ class Localization {
         res, args ?? [format == null ? '$value' : format.format(value)]);
   }
 
-  String _gender(String key, {String gender}) => Intl.genderLogic(
+  String? _gender(String key, {required String gender}) => Intl.genderLogic(
         gender,
         female: _resolve(key + '.female'),
         male: _resolve(key + '.male'),
@@ -123,8 +123,8 @@ class Localization {
         locale: _locale.languageCode,
       );
 
-  String _resolvePlural(String key, String subKey) {
-    final resource = _translations.get('$key.$subKey');
+  String? _resolvePlural(String? key, String subKey) {
+    final resource = _translations!.get('$key.$subKey');
 
     if (resource == null && subKey == 'other') {
       EasyLocalization.logger.error('Plural key [$key.$subKey] required');
@@ -134,8 +134,8 @@ class Localization {
     }
   }
 
-  String _resolve(String key, {bool logging = true}) {
-    final resource = _translations.get(key);
+  String? _resolve(String? key, {bool logging = true}) {
+    final resource = _translations!.get(key);
     if (resource == null) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');

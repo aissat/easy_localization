@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(LocaleKeys.title).tr(context: context),
         //Text(AppLocalizations.of(context).tr('title')),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Icon(Icons.language),
             onPressed: () {
               Navigator.push(
@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(LocaleKeys.msg_named)
                 .tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
             Text(LocaleKeys.clicked).plural(counter),
-            FlatButton(
+            TextButton(
               onPressed: () {
                 incrementCounter();
               },
@@ -155,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 20,
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 context.resetLocale();
               },
