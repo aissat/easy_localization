@@ -185,7 +185,7 @@ void main() async {
           expect(plural('day', 3, context: _context), '3 أيام');
 
           var l = Locale('en', 'US');
-          _context.locale = l;
+          await _context.setLocale(l);
           expect(_context.locale, l);
 
           l = Locale('ar', 'DZ');
