@@ -34,6 +34,6 @@
          <username>Логин</username>
       </reset_password>
    </profile>
-   <reset_locale>Сбросить сохраненный язык</reset_locale>
+   <reset_locale>Сбросить язык</reset_locale>
    <title>Привет!</title>
 </ru_RU>

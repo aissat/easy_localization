@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -28,13 +27,13 @@ class RootBundleAssetLoader extends AssetLoader {
   const RootBundleAssetLoader();
 
   String getLocalePath(String basePath, Locale locale) {
-    return '$basePath/${localeToString(locale, separator: "-")}.json';
+    return '$basePath/${locale.toStringWithSeparator(separator: "-")}.json';
   }
 
   @override
   Future<Map<String, dynamic>> load(String path, Locale locale) async {
     var localePath = getLocalePath(path, locale);
-    log('Load asset from $path', name: 'Easy Localization');
+    EasyLocalization.logger.debug('Load asset from $path');
     return json.decode(await rootBundle.loadString(localePath));
   }
 }

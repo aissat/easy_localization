@@ -75,7 +75,7 @@ class Localization {
           translated = _modifiers[formatterName](translated);
         } else {
           if (logging) {
-            printWarning(
+            EasyLocalization.logger.warning(
                 'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
           }
         }
@@ -127,7 +127,7 @@ class Localization {
     final resource = _translations.get('$key.$subKey');
 
     if (resource == null && subKey == 'other') {
-      printError('Plural key [$key.$subKey] required');
+      EasyLocalization.logger.error('Plural key [$key.$subKey] required');
       return '$key.$subKey';
     } else {
       return resource;
@@ -137,7 +137,9 @@ class Localization {
   String _resolve(String key, {bool logging = true}) {
     final resource = _translations.get(key);
     if (resource == null) {
-      if (logging) printWarning('Localization key [$key] not found');
+      if (logging) {
+        EasyLocalization.logger.warning('Localization key [$key] not found');
+      }
       return key;
     }
     return resource;

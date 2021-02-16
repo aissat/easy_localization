@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
+import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -43,6 +44,11 @@ void main() {
         saveLocale: false,
         assetLoader: JsonAssetLoader());
     setUpAll(() async {
+      EasyLocalization.logger.enableLevels = <LevelMessages>[
+        LevelMessages.error,
+        LevelMessages.warning,
+      ];
+
       await r1.loadTranslations();
       await r2.loadTranslations();
       Localization.load(Locale('en'), translations: r1.translations);
@@ -64,12 +70,12 @@ void main() {
     });
 
     test('localeFromString() succeeds', () async {
-      expect(Locale('ar'), localeFromString('ar'));
-      expect(Locale('ar', 'DZ'), localeFromString('ar_DZ'));
+      expect(Locale('ar'), 'ar'.toLocale());
+      expect(Locale('ar', 'DZ'), 'ar_DZ'.toLocale());
       expect(
           Locale.fromSubtags(
               languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
-          localeFromString('ar_Arab_DZ'));
+          'ar_Arab_DZ'.toLocale());
     });
 
     test('load() Failed assertion', () async {
@@ -175,7 +181,7 @@ void main() {
         printLog = [];
         expect(Localization.instance.tr('test_missing'), 'test_missing');
         expect(printLog.first,
-            '\u001B[34m[WARNING] Easy Localization: Localization key [test_missing] not found\u001b[0m');
+            contains('Localization key [test_missing] not found'));
       }));
 
       test('returns resource and replaces argument', () {

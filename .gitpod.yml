@@ -1,0 +1,16 @@
+image:
+  file: .gitpod.Dockerfile
+
+# List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - init: |
+      flutter upgrade
+      flutter update-packages --force-upgrade
+      flutter run -d web-server --no-resident
+ports:
+  - port: 8080
+    onOpen: notify
+vscode:
+  extensions:
+    - Dart-Code.dart-code@3.10.0-beta.2:tUOuxmX97tnVRlRhi8Z1og==
+    - Dart-Code.flutter@3.9.1:Ef3b5HLzz0C/TIa0n9xSyA==
