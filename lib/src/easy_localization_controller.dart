@@ -10,7 +10,8 @@ class EasyLocalizationController extends ChangeNotifier {
   static Locale? _savedLocale;
   static Locale? _deviceLocale;
 
-  Locale _locale, _fallbackLocale;
+  late Locale _locale;
+  Locale? _fallbackLocale;
 
   final Function(FlutterError e) onLoadError;
   final assetLoader;
@@ -18,21 +19,21 @@ class EasyLocalizationController extends ChangeNotifier {
   final bool useFallbackTranslations;
   final bool saveLocale;
   final bool useOnlyLangCode;
-  Translations _translations, _fallbackTranslations;
-  Translations get translations => _translations;
-  Translations get fallbackTranslations => _fallbackTranslations;
+  Translations? _translations, _fallbackTranslations;
+  Translations? get translations => _translations;
+  Translations? get fallbackTranslations => _fallbackTranslations;
 
   EasyLocalizationController({
-    @required List<Locale> supportedLocales,
-    @required this.useFallbackTranslations,
-    @required this.saveLocale,
-    @required this.assetLoader,
-    @required this.path,
-    @required this.useOnlyLangCode,
-    @required this.onLoadError,
-    Locale startLocale,
-    Locale fallbackLocale,
-    Locale forceLocale, // used for testing
+    required List<Locale> supportedLocales,
+    required this.useFallbackTranslations,
+    required this.saveLocale,
+    required this.assetLoader,
+    required this.path,
+    required this.useOnlyLangCode,
+    required this.onLoadError,
+    Locale? startLocale,
+    Locale? fallbackLocale,
+    Locale? forceLocale, // used for testing
   }) {
     _fallbackLocale = fallbackLocale;
     if (forceLocale != null) {
@@ -79,7 +80,7 @@ class EasyLocalizationController extends ChangeNotifier {
       data = await loadTranslationData(_locale);
       _translations = Translations(data);
       if (useFallbackTranslations && _fallbackLocale != null) {
-        data = await loadTranslationData(_fallbackLocale);
+        data = await loadTranslationData(_fallbackLocale!);
         _fallbackTranslations = Translations(data);
       }
     } on FlutterError catch (e) {
