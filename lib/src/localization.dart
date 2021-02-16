@@ -6,9 +6,8 @@ import 'package:intl/intl.dart';
 import 'translations.dart';
 
 class Localization {
-  Translations? _translations;
-  late Locale _locale;
-  set translations(val) => _translations = val;
+  Translations _translations, _fallbackTranslations;
+  Locale _locale;
 
   String? path;
   bool? useOnlyLangCode;
@@ -30,9 +29,10 @@ class Localization {
   static Localization? of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
-  static bool load(Locale locale, {Translations? translations}) {
+  static bool load(Locale locale, {Translations translations, Translations fallbackTranslations}) {
     instance._locale = locale;
     instance._translations = translations;
+    instance._fallbackTranslations = fallbackTranslations;
     return translations == null ? false : true;
   }
 
@@ -134,13 +134,19 @@ class Localization {
     }
   }
 
-  String? _resolve(String? key, {bool logging = true}) {
-    final resource = _translations!.get(key);
+  String _resolve(String key, {bool logging = true}) {
+    var resource = _translations.get(key);
     if (resource == null) {
-      if (logging) {
-        EasyLocalization.logger.warning('Localization key [$key] not found');
+      if (logging) EasyLocalization.logger.warning('Localization key [$key] not found');
+      if (_fallbackTranslations == null) {
+        return key;
+      } else {
+        resource = _fallbackTranslations.get(key);
+        if (resource == null) {
+          if (logging) EasyLocalization.logger.warning('Fallback localization key [$key] not found');
+          return key;
+        }
       }
-      return key;
     }
     return resource;
   }
