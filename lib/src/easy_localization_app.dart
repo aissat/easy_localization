@@ -68,7 +68,7 @@ class EasyLocalization extends StatefulWidget {
   final assetLoader;
 
   /// Save locale in device storage.
-  /// @Default value false
+  /// @Default value true
   final bool saveLocale;
 
   /// Shows a custom error widget when an error is encountered instead of the default error widget.
