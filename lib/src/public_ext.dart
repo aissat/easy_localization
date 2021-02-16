@@ -104,8 +104,6 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   /// Get fallback locale
   Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
 
-  // Locale get startLocale => EasyLocalization.of(this).startLocale;
-
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
   /// retrun
   /// ```dart
@@ -120,5 +118,12 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
       EasyLocalization.of(this).delegates;
 
   /// Clears a saved locale from device storage
-  void deleteSaveLocale() => EasyLocalization.of(this).deleteSaveLocale();
+  Future<void> deleteSaveLocale() =>
+      EasyLocalization.of(this).deleteSaveLocale();
+
+  /// Getting device locale from platform
+  Locale get deviceLocale => EasyLocalization.of(this).deviceLocale;
+
+  /// Reset locale to platform locale
+  Future<void> resetLocale() => EasyLocalization.of(this).resetLocale();
 }

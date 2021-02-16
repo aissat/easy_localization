@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/localization.dart';
+import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -37,7 +40,12 @@ class MyWidget extends StatelessWidget {
 
 void main() async {
   SharedPreferences.setMockInitialValues({});
+  EasyLocalization.logger.enableLevels = <LevelMessages>[
+    LevelMessages.error,
+    LevelMessages.warning,
+  ];
   await EasyLocalization.ensureInitialized();
+
   testWidgets(
     '[EasyLocalization with  JsonAssetLoader]  test',
     (WidgetTester tester) async {
@@ -165,7 +173,8 @@ void main() async {
         await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
         await tester.pumpAndSettle();
-        final trFinder = find.byWidgetPredicate((widget) => widget is ErrorWidget);
+        final trFinder =
+            find.byWidgetPredicate((widget) => widget is ErrorWidget);
         expect(trFinder, findsOneWidget);
         await tester.pump();
       });
@@ -495,7 +504,7 @@ void main() async {
   });
 
   group('SharedPreferences saveLocale', () {
-    setUpAll(() async{
+    setUpAll(() async {
       SharedPreferences.setMockInitialValues({
         'locale': 'ar',
       });
@@ -638,6 +647,54 @@ void main() async {
           // The async delegator load will require build on the next frame. Thus, pump
           await tester.pumpAndSettle();
 
+          expect(EasyLocalization.of(_context).locale, Locale('en', 'US'));
+        });
+      },
+    );
+
+    testWidgets(
+      '[EasyLocalization] device locale  test',
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: 'i18n',
+            supportedLocales: [
+              Locale('en', 'US'),
+              Locale('ar', 'DZ')
+            ], // Locale('en', 'US'), Locale('ar','DZ')
+          ));
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).deviceLocale.toString(),
+              Platform.localeName);
+        });
+      },
+    );
+
+    testWidgets(
+      '[EasyLocalization] reset device locale  test',
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(EasyLocalization(
+            child: MyApp(),
+            path: 'i18n',
+            supportedLocales: [
+              Locale('en', 'US'),
+              Locale('ar', 'DZ')
+            ], // Locale('en', 'US'), Locale('ar','DZ')
+            startLocale: Locale('ar', 'DZ'),
+          ));
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(EasyLocalization.of(_context).locale, Locale('ar', 'DZ'));
+          // reset to device locale
+          await _context.resetLocale();
+          await tester.pumpAndSettle();
           expect(EasyLocalization.of(_context).locale, Locale('en', 'US'));
         });
       },

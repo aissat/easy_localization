@@ -29,6 +29,7 @@ Easy and Fast internationalization for your Flutter Apps
 - ⁉️ Error widget for missing translations
 - ❤️ Extension methods on `Text` and `BuildContext`
 - 💻 Code generation for localization files and keys.
+- 🖨️ Customizable logger.
 
 ## Getting Started
 
@@ -98,7 +99,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
@@ -286,7 +289,7 @@ var money = plural('money', 10.23) // output: You have 10.23 dollars
 var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
 ```
 
-### Linked translations:
+### 🔥 Linked translations:
 
 If there's a translation key that will always have the same concrete text as another one you can just link to it. To link to another translation key, all you have to do is to prefix its contents with an `@:` sign followed by the full name of the translation key including the namespace you want to link to.
 
@@ -323,7 +326,7 @@ Example:
 print('dateLogging'.tr(namedArguments: {'currentDate': DateTime.now().toIso8601String()})); //Output: INFO: the date today is 2020-11-27T16:40:42.657.
 ```
 
-### Formatting linked translations:
+#### Formatting linked translations:
 
 Formatting linked locale messages
 If the language distinguishes cases of character, you may need to control the case of the linked locale messages. Linked messages can be formatted with modifier `@.modifier:key`
@@ -351,6 +354,31 @@ Output:
 
 ```dart
 print('example.emptyNameError'.tr()); //Output: Please fill in your full name
+```
+
+### 🔥 Reset locale `resetLocale()`
+
+Reset locale to device locale
+
+Example:
+
+```dart
+RaisedButton(
+  onPressed: (){
+    context.resetLocale();
+  },
+  child: Text(LocaleKeys.reset_locale).tr(),
+)
+```
+
+### 🔥 Get device locale `deviceLocale`
+
+Get device locale
+
+Example:
+
+```dart
+print(${context.deviceLocale.toString()}) // OUTPUT: en_US
 ```
 
 ### 🔥 Delete save locale `deleteSaveLocale()`
@@ -443,11 +471,72 @@ print(LocaleKeys.title.tr()); //String
 Text(LocaleKeys.title).tr(); //Widget
 ```
 
+## 🖨️ Logger
+
+[Easy Localization] logger based on [Easy Logger]
+
+You can customize logger for you project
+
+### Show only lost keys message
+
+Lost translations keys logged like warning messages. Change [Easy Logger] level for display only errors and warnings.
+
+```dart
+EasyLocalization.logger.enableLevels = [LevelMessages.error, LevelMessages.warning];
+```
+
+### Logger off
+
+For disable logger, change Build Modes in [Easy Logger] to empty List;
+
+```dart
+EasyLocalization.logger.enableBuildModes = [];
+```
+
+### Catching logger messages
+
+For catching logger messages you need override default printer function.
+
+```dart
+EasyLogPrinter customLogPrinter = (
+  Object object, {
+  String name,
+  StackTrace stackTrace,
+  LevelMessages level,
+}) {
+  ///Your function
+  print('$name: ${object.toString()}');
+};
+
+/// override printer to custom
+EasyLocalization.logger.printer = customLogPrinter;
+```
+
+Read more about [Easy Logger](https://github.com/aissat/easy_localization/blob/master/packages/easy_logger/README.md)
+
+## ➕ Extensions helpers
+
+### String to locale
+
+```dart
+'en_US'.toLocale(); // Locale('en', 'US')
+
+//with custom separator
+'en|US'.toLocale(separator: '|') // Locale('en', 'US')
+```
+### Locale to String with separator
+
+```dart
+Locale('en', 'US').toStringWithSeparator(separator: '|') // en|US
+```
+
+
 <p align="center">
     <a href="https://gitpod.io/#https://github.com/aissat/easy_localization" target="_blank">
         <img src="https://gitpod.io/button/open-in-gitpod.svg" width=200 />
     </a>
 </p>
+
 
 ## Screenshots
 
