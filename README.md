@@ -106,7 +106,7 @@ void main() async {
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
-      path: 'assets/translations', // <-- change patch to your
+      path: 'assets/translations', // <-- change the path of the translation files 
       fallbackLocale: Locale('en', 'US'),
       child: MyApp()
     ),
