@@ -10,19 +10,21 @@ class EasyLocalizationController extends ChangeNotifier {
   static Locale _savedLocale;
   static Locale _deviceLocale;
 
-  Locale _locale;
+  Locale _locale, _fallbackLocale;
 
   final Function(FlutterError e) onLoadError;
   final assetLoader;
   final String path;
+  final bool useFallbackTranslations;
   final bool saveLocale;
   final bool useOnlyLangCode;
-
-  Translations _translations;
+  Translations _translations, _fallbackTranslations;
   Translations get translations => _translations;
+  Translations get fallbackTranslations => _fallbackTranslations;
 
   EasyLocalizationController({
     @required List<Locale> supportedLocales,
+    @required this.useFallbackTranslations,
     @required this.saveLocale,
     @required this.assetLoader,
     @required this.path,
@@ -32,6 +34,7 @@ class EasyLocalizationController extends ChangeNotifier {
     Locale fallbackLocale,
     Locale forceLocale, // used for testing
   }) {
+    _fallbackLocale = fallbackLocale;
     if (forceLocale != null) {
       _locale = forceLocale;
     } else if (_savedLocale == null && startLocale != null) {
@@ -73,14 +76,24 @@ class EasyLocalizationController extends ChangeNotifier {
   Future loadTranslations() async {
     Map<String, dynamic> data;
     try {
-      useOnlyLangCode
-          ? data = await assetLoader.load(path, Locale(_locale.languageCode))
-          : data = await assetLoader.load(path, _locale);
+      data = await loadTranslationData(_locale);
       _translations = Translations(data);
+      if (useFallbackTranslations && _fallbackLocale != null) {
+        data = await loadTranslationData(_fallbackLocale);
+        _fallbackTranslations = Translations(data);
+      }
     } on FlutterError catch (e) {
       onLoadError(e);
     } catch (e) {
       onLoadError(FlutterError(e.toString()));
+    }
+  }
+
+  Future loadTranslationData(Locale locale) async {
+    if (useOnlyLangCode) {
+      return assetLoader.load(path, Locale(locale.languageCode));
+    } else {
+      return assetLoader.load(path, locale);
     }
   }
 

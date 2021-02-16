@@ -28,6 +28,7 @@ void main() {
         path: 'path/en.json',
         supportedLocales: [Locale('en')],
         useOnlyLangCode: true,
+        useFallbackTranslations: false,
         saveLocale: false,
         onLoadError: (FlutterError e) {
           log(e.toString());
@@ -38,6 +39,7 @@ void main() {
         supportedLocales: [Locale('en', 'us')],
         path: 'path/en-us.json',
         useOnlyLangCode: false,
+        useFallbackTranslations: false,
         onLoadError: (FlutterError e) {
           log(e.toString());
         },
@@ -67,6 +69,11 @@ void main() {
     test('load() succeeds', () async {
       expect(
           Localization.load(Locale('en'), translations: r1.translations), true);
+    });
+
+    test('load() with fallback succeeds', () async {
+      expect(
+          Localization.load(Locale('en'), translations: r1.translations, fallbackTranslations: r2.translations), true);
     });
 
     test('localeFromString() succeeds', () async {
@@ -107,9 +114,11 @@ void main() {
     group('tr', () {
       var r = EasyLocalizationController(
           forceLocale: Locale('en'),
-          supportedLocales: [Locale('en')],
+          supportedLocales: [Locale('en'), Locale('fb')],
+          fallbackLocale: Locale('fb'),
           path: 'path',
           useOnlyLangCode: true,
+          useFallbackTranslations: true,
           onLoadError: (FlutterError e) {
             log(e.toString());
           },
@@ -118,7 +127,7 @@ void main() {
 
       setUpAll(() async {
         await r.loadTranslations();
-        Localization.load(Locale('en'), translations: r.translations);
+        Localization.load(Locale('en'), translations: r.translations, fallbackTranslations: r.fallbackTranslations);
       });
       test('finds and returns resource', () {
         expect(Localization.instance.tr('test'), 'test');
@@ -180,8 +189,25 @@ void main() {
       test('reports missing resource', overridePrint(() {
         printLog = [];
         expect(Localization.instance.tr('test_missing'), 'test_missing');
-        expect(printLog.first,
+        final logIterator = printLog.iterator;
+        logIterator.moveNext();
+        expect(logIterator.current,
             contains('Localization key [test_missing] not found'));
+        logIterator.moveNext();
+        expect(logIterator.current,
+            contains('Fallback localization key [test_missing] not found'));
+      }));
+
+      test('uses fallback translations', overridePrint(() {
+        printLog = [];
+        expect(Localization.instance.tr('test_missing_fallback'), 'fallback!');
+      }));
+
+      test('reports missing resource with fallback', overridePrint(() {
+        printLog = [];
+        expect(Localization.instance.tr('test_missing_fallback'), 'fallback!');
+        expect(printLog.first,
+            contains('Localization key [test_missing_fallback] not found'));
       }));
 
       test('returns resource and replaces argument', () {

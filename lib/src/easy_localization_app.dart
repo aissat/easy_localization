@@ -46,6 +46,14 @@ class EasyLocalization extends StatefulWidget {
   /// ```
   final bool useOnlyLangCode;
 
+  /// If a localization key is not found in the locale file, try to use the fallbackLocale file.
+  /// @Default value false
+  /// Example:
+  /// ```
+  /// useFallbackTranslations: true
+  /// ```
+  final bool useFallbackTranslations;
+
   /// Path to your folder with localization files.
   /// Example:
   /// ```dart
@@ -75,6 +83,7 @@ class EasyLocalization extends StatefulWidget {
     this.fallbackLocale,
     this.startLocale,
     this.useOnlyLangCode = false,
+    this.useFallbackTranslations = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.errorWidget,
@@ -116,6 +125,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       startLocale: widget.startLocale,
       assetLoader: widget.assetLoader,
       useOnlyLangCode: widget.useOnlyLangCode,
+      useFallbackTranslations: widget.useFallbackTranslations,
       path: widget.path,
       onLoadError: (FlutterError e) {
         setState(() {
@@ -248,7 +258,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
       await localizationController.loadTranslations();
     }
 
-    Localization.load(value, translations: localizationController.translations);
+    Localization.load(value, translations: localizationController.translations, fallbackTranslations: localizationController.fallbackTranslations);
     return Future.value(Localization.instance);
   }
 
