@@ -87,5 +87,6 @@ String? plural(String key, num value,
     {BuildContext? context, List<String>? args, NumberFormat? format}) {
   return context == null
       ? Localization.instance.plural(key, value, args: args, format: format)
-      : Localization.of(context)!.plural(key, value, args: args, format: format);
+      : Localization.of(context)!
+          .plural(key, value, args: args, format: format);
 }

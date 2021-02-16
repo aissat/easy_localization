@@ -50,7 +50,7 @@ void main() async {
       '[EasyLocalization] locale test',
       (WidgetTester tester) async {
         await tester.runAsync(() async {
-        await tester.pumpWidget(EasyLocalization(
+          await tester.pumpWidget(EasyLocalization(
             child: MyApp(),
             path: 'i18n',
             supportedLocales: [Locale('en', 'US')],
@@ -85,9 +85,6 @@ void main() async {
           }, throwsAssertionError);
           await tester.pump();
           expect(_context.locale, Locale('en', 'US'));
-
-        
-          
         });
       },
     );
@@ -146,7 +143,6 @@ void main() async {
           // await tester.idle();
           await tester.pump();
           expect(_context.locale, l);
-        
         });
       },
     );
@@ -191,7 +187,6 @@ void main() async {
           l = Locale('ar', 'DZ');
           await _context.setLocale(l);
           expect(_context.locale, l);
-
         });
       },
     );

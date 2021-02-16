@@ -30,7 +30,8 @@ class Localization {
   static Localization? of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
-  static bool load(Locale locale, {Translations? translations, Translations? fallbackTranslations}) {
+  static bool load(Locale locale,
+      {Translations? translations, Translations? fallbackTranslations}) {
     instance._locale = locale;
     instance._translations = translations;
     instance._fallbackTranslations = fallbackTranslations;
@@ -102,22 +103,22 @@ class Localization {
     return res;
   }
 
-  static PluralRule? _pluralRule(String? locale, num howMany){
+  static PluralRule? _pluralRule(String? locale, num howMany) {
     startRuleEvaluation(howMany);
-    return  pluralRules[locale] ;
+    return pluralRules[locale];
   }
 
   String? plural(String key, num value,
       {List<String>? args, NumberFormat? format}) {
     late var pluralCase;
     late var res;
-    var pluralRule =  _pluralRule(_locale.languageCode,value);
+    var pluralRule = _pluralRule(_locale.languageCode, value);
     switch (value) {
       case 0:
-        pluralCase = PluralCase.ZERO ;
+        pluralCase = PluralCase.ZERO;
         break;
       case 1:
-        pluralCase = PluralCase.ONE ;
+        pluralCase = PluralCase.ONE;
         break;
       case 2:
         pluralCase = PluralCase.TWO;
@@ -127,26 +128,25 @@ class Localization {
     }
     switch (pluralCase) {
       case PluralCase.ZERO:
-        res= _resolvePlural(key, 'zero');
+        res = _resolvePlural(key, 'zero');
         break;
       case PluralCase.ONE:
-        res=  _resolvePlural(key, 'one');
+        res = _resolvePlural(key, 'one');
         break;
       case PluralCase.TWO:
-        res= _resolvePlural(key, 'two');
+        res = _resolvePlural(key, 'two');
         break;
       case PluralCase.FEW:
-        res=  _resolvePlural(key, 'few');
+        res = _resolvePlural(key, 'few');
         break;
       case PluralCase.MANY:
-        res= _resolvePlural(key, 'many');
+        res = _resolvePlural(key, 'many');
         break;
       case PluralCase.OTHER:
-        res= _resolvePlural(key, 'other');
+        res = _resolvePlural(key, 'other');
         break;
       default:
-        throw ArgumentError.value(
-            value, 'howMany', 'Invalid plural argument');
+        throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
 
     return _replaceArgs(
@@ -165,18 +165,20 @@ class Localization {
   String _resolve(String key, {bool logging = true}) {
     var resource = _translations!.get(key);
     if (resource == null) {
-      if (logging) EasyLocalization.logger.warning('Localization key [$key] not found');
+      if (logging)
+        EasyLocalization.logger.warning('Localization key [$key] not found');
       if (_fallbackTranslations == null) {
         return key;
       } else {
         resource = _fallbackTranslations!.get(key);
         if (resource == null) {
-          if (logging) EasyLocalization.logger.warning('Fallback localization key [$key] not found');
+          if (logging)
+            EasyLocalization.logger
+                .warning('Fallback localization key [$key] not found');
           return key;
         }
       }
     }
     return resource;
   }
-
 }

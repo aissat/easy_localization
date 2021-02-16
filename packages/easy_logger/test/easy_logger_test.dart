@@ -61,7 +61,8 @@ void main() {
       StackTrace testStackTrace;
       testStackTrace = StackTrace.fromString('test stack');
 
-      logger('print error', level: LevelMessages.error, stackTrace: testStackTrace);
+      logger('print error',
+          level: LevelMessages.error, stackTrace: testStackTrace);
       expect(printLog.first, contains('print error'));
       expect(printLog.first, contains('[ERROR]'));
       expect(printLog.last, contains('test stack'));

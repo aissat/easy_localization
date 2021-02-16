@@ -83,7 +83,6 @@ void main() async {
     },
   );
 
-
   testWidgets(
     '[EasyLocalization with  RootBundleAssetLoader] test',
     (WidgetTester tester) async {
@@ -377,8 +376,7 @@ void main() async {
         // The async delegator load will require build on the next frame. Thus, pump
         await tester.pump();
 
-        expect(
-            EasyLocalization.of(_context)!.supportedLocales, [Locale('ar')]);
+        expect(EasyLocalization.of(_context)!.supportedLocales, [Locale('ar')]);
         expect(EasyLocalization.of(_context)!.locale, Locale('ar'));
         expect(EasyLocalization.of(_context)!.fallbackLocale, Locale('ar'));
       });
@@ -403,8 +401,7 @@ void main() async {
         // The async delegator load will require build on the next frame. Thus, pump
         await tester.pump();
 
-        expect(
-            EasyLocalization.of(_context)!.supportedLocales, [Locale('ar')]);
+        expect(EasyLocalization.of(_context)!.supportedLocales, [Locale('ar')]);
         expect(EasyLocalization.of(_context)!.locale, Locale('ar'));
         expect(EasyLocalization.of(_context)!.fallbackLocale, null);
       });

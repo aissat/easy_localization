@@ -5,8 +5,8 @@ typedef EasyLogPrinter = Function(Object object,
     {String? name, LevelMessages? level, StackTrace? stackTrace});
 
 /// Default function printing.
-EasyLogPrinter easyLogDefaultPrinter =
-    (Object object, {String? name, StackTrace? stackTrace, LevelMessages? level}) {
+EasyLogPrinter easyLogDefaultPrinter = (Object object,
+    {String? name, StackTrace? stackTrace, LevelMessages? level}) {
   String _coloredString(String string) {
     switch (level) {
       case LevelMessages.debug:

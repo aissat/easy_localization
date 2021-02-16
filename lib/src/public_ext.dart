@@ -40,7 +40,8 @@ extension TextTranslateExtension on Text {
   Text plural(num value,
           {BuildContext? context, List<String>? args, NumberFormat? format}) =>
       Text(
-          ez.plural(data!, value, context: context, args: args, format: format)!,
+          ez.plural(data!, value,
+              context: context, args: args, format: format)!,
           key: key,
           style: style,
           strutStyle: strutStyle,
