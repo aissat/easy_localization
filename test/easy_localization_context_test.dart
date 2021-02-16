@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-BuildContext? _context;
+late BuildContext _context;
 
 class MyApp extends StatelessWidget {
   @override
@@ -38,34 +38,35 @@ class MyWidget extends StatelessWidget {
 }
 
 void main() async {
+  await EasyLocalization.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
   EasyLocalization.logger.enableLevels = <LevelMessages>[
     LevelMessages.error,
     LevelMessages.warning,
   ];
 
-  await EasyLocalization.ensureInitialized();
   group('BuildContext', () {
     testWidgets(
       '[EasyLocalization] locale test',
       (WidgetTester tester) async {
         await tester.runAsync(() async {
-          await tester.pumpWidget(EasyLocalization(
+        await tester.pumpWidget(EasyLocalization(
             child: MyApp(),
             path: 'i18n',
             supportedLocales: [Locale('en', 'US')],
           ));
-          await tester.idle();
+          // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
-          await tester.pumpAndSettle();
+          // await tester.pump();
+          await tester.pump();
 
-          expect(_context!.supportedLocales, [Locale('en', 'US')]);
-          expect(_context!.locale, Locale('en', 'US'));
+          expect(_context.supportedLocales, [Locale('en', 'US')]);
+          expect(_context.locale, Locale('en', 'US'));
 
           var l = Locale('en', 'US');
-          await _context!.setLocale(l);
-          await tester.pumpAndSettle();
-          expect(_context!.locale, Locale('en', 'US'));
+          await _context.setLocale(l);
+          await tester.pump();
+          expect(_context.locale, Locale('en', 'US'));
 
           final trFinder = find.text('test');
           expect(trFinder, findsOneWidget);
@@ -76,14 +77,17 @@ void main() async {
           expect(plural('day', 1, context: _context), '1 day');
           expect(plural('day', 2, context: _context), '2 days');
           expect(plural('day', 3, context: _context), '3 other days');
-          expect(_context!.locale, Locale('en', 'US'));
+          expect(_context.locale, Locale('en', 'US'));
 
           l = Locale('ar', 'DZ');
           expect(() async {
-            await _context!.setLocale(l);
+            await _context.setLocale(l);
           }, throwsAssertionError);
-          await tester.pumpAndSettle();
-          expect(_context!.locale, Locale('en', 'US'));
+          await tester.pump();
+          expect(_context.locale, Locale('en', 'US'));
+
+        
+          
         });
       },
     );
@@ -97,14 +101,14 @@ void main() async {
             path: 'i18n',
             supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
           ));
-          await tester.idle();
+          // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
-          await tester.pumpAndSettle();
+          await tester.pump();
 
-          expect(Localization.of(_context!), isInstanceOf<Localization>());
-          expect(_context!.supportedLocales,
+          expect(Localization.of(_context), isInstanceOf<Localization>());
+          expect(_context.supportedLocales,
               [Locale('en', 'US'), Locale('ar', 'DZ')]);
-          expect(_context!.locale, Locale('en', 'US'));
+          expect(_context.locale, Locale('en', 'US'));
 
           var trFinder = find.text('test');
           expect(trFinder, findsOneWidget);
@@ -117,31 +121,32 @@ void main() async {
           expect(plural('day', 3, context: _context), '3 other days');
 
           var l = Locale('en', 'US');
-          await _context!.setLocale(l);
-          await tester.pumpAndSettle();
-          expect(_context!.locale, l);
+          await _context.setLocale(l);
+          await tester.pump();
+          expect(_context.locale, l);
 
           l = Locale('ar', 'DZ');
-          await _context!.setLocale(l);
-          await tester.idle();
-          await tester.pumpAndSettle();
-          expect(_context!.locale, l);
+          await _context.setLocale(l);
+          // await tester.idle();
+          await tester.pump();
+          expect(_context.locale, l);
 
           l = Locale('en', 'US');
-          await _context!.setLocale(l);
-          await tester.idle();
-          await tester.pumpAndSettle();
-          expect(_context!.locale, l);
+          await _context.setLocale(l);
+          // await tester.idle();
+          await tester.pump();
+          expect(_context.locale, l);
 
           l = Locale('en', 'UK');
           expect(
-              () async => {await _context!.setLocale(l)}, throwsAssertionError);
+              () async => {await _context.setLocale(l)}, throwsAssertionError);
 
           l = Locale('ar', 'DZ');
-          await _context!.setLocale(l);
-          await tester.idle();
-          await tester.pumpAndSettle();
-          expect(_context!.locale, l);
+          await _context.setLocale(l);
+          // await tester.idle();
+          await tester.pump();
+          expect(_context.locale, l);
+        
         });
       },
     );
@@ -156,32 +161,37 @@ void main() async {
             supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
           ));
 
-          await tester.idle();
+          // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
-          await tester.pumpAndSettle();
+          await tester.pump();
 
-          await _context!.setLocale(Locale('ar', 'DZ'));
+          await _context.setLocale(Locale('ar', 'DZ'));
 
-          await tester.pumpAndSettle();
+          await tester.pump();
 
-          expect(_context!.supportedLocales,
+          expect(_context.supportedLocales,
               [Locale('en', 'US'), Locale('ar', 'DZ')]);
-          expect(_context!.locale, Locale('ar', 'DZ'));
+          expect(_context.locale, Locale('ar', 'DZ'));
 
           var trFinder = find.text('اختبار');
           expect(trFinder, findsOneWidget);
           var pluralFinder = find.text('1 يوم');
           expect(pluralFinder, findsOneWidget);
 
-          expect(Localization.of(_context!), isInstanceOf<Localization>());
+          expect(Localization.of(_context), isInstanceOf<Localization>());
           expect(tr('test', context: _context), 'اختبار');
           expect(plural('day', 1, context: _context), '1 يوم');
           expect(plural('day', 2, context: _context), '2 أيام');
           expect(plural('day', 3, context: _context), '3 أيام');
 
-          // var l = Locale('en', 'US');
-          // _context.locale = l;
-          // expect(_context.locale, l);
+          var l = Locale('en', 'US');
+          _context.locale = l;
+          expect(_context.locale, l);
+
+          l = Locale('ar', 'DZ');
+          await _context.setLocale(l);
+          expect(_context.locale, l);
+
         });
       },
     );
@@ -198,13 +208,13 @@ void main() async {
             supportedLocales: [Locale('ar')],
             fallbackLocale: Locale('ar'),
           ));
-          await tester.idle();
+          // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
-          await tester.pumpAndSettle();
+          await tester.pump();
 
-          expect(_context!.supportedLocales, [Locale('ar')]);
-          expect(_context!.locale, Locale('ar'));
-          expect(_context!.fallbackLocale, Locale('ar'));
+          expect(_context.supportedLocales, [Locale('ar')]);
+          expect(_context.locale, Locale('ar'));
+          expect(_context.fallbackLocale, Locale('ar'));
         });
       },
     );
@@ -223,13 +233,13 @@ void main() async {
               Locale('ar')
             ], // Locale('en', 'US'), Locale('ar','DZ')
           ));
-          await tester.idle();
+          // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
-          await tester.pumpAndSettle();
+          await tester.pump();
 
-          expect(_context!.supportedLocales, [Locale('ar')]);
-          expect(_context!.locale, Locale('ar'));
-          expect(_context!.fallbackLocale, null);
+          expect(_context.supportedLocales, [Locale('ar')]);
+          expect(_context.locale, Locale('ar'));
+          expect(_context.fallbackLocale, null);
         });
       },
     );
@@ -254,12 +264,12 @@ void main() async {
                 Locale('ar', 'DZ')
               ], // Locale('en', 'US'), Locale('ar','DZ')
             ));
-            await tester.idle();
+            // await tester.idle();
             // The async delegator load will require build on the next frame. Thus, pump
-            await tester.pumpAndSettle();
+            await tester.pump();
 
-            expect(_context!.locale, Locale('ar', 'DZ'));
-            await _context!.deleteSaveLocale();
+            expect(_context.locale, Locale('ar', 'DZ'));
+            await _context.deleteSaveLocale();
           });
         },
       );
@@ -277,11 +287,11 @@ void main() async {
                 Locale('ar', 'DZ')
               ], // Locale('en', 'US'), Locale('ar','DZ')
             ));
-            await tester.idle();
+            // await tester.idle();
             // The async delegator load will require build on the next frame. Thus, pump
-            await tester.pumpAndSettle();
+            await tester.pump();
 
-            expect(_context!.locale, Locale('en', 'US'));
+            expect(_context.locale, Locale('en', 'US'));
           });
         },
       );
@@ -298,11 +308,11 @@ void main() async {
                 Locale('ar', 'DZ')
               ], // Locale('en', 'US'), Locale('ar','DZ')
             ));
-            await tester.idle();
+            // await tester.idle();
             // The async delegator load will require build on the next frame. Thus, pump
-            await tester.pumpAndSettle();
+            await tester.pump();
 
-            expect(_context!.deviceLocale.toString(), Platform.localeName);
+            expect(_context.deviceLocale.toString(), Platform.localeName);
           });
         },
       );
@@ -320,15 +330,15 @@ void main() async {
               ], // Locale('en', 'US'), Locale('ar','DZ')
               startLocale: Locale('ar', 'DZ'),
             ));
-            await tester.idle();
+            // await tester.idle();
             // The async delegator load will require build on the next frame. Thus, pump
-            await tester.pumpAndSettle();
+            await tester.pump();
 
-            expect(_context!.locale, Locale('ar', 'DZ'));
+            expect(_context.locale, Locale('ar', 'DZ'));
             // reset to device locale
-            await _context!.resetLocale();
-            await tester.pumpAndSettle();
-            expect(_context!.locale, Locale('en', 'US'));
+            await _context.resetLocale();
+            await tester.pump();
+            expect(_context.locale, Locale('en', 'US'));
           });
         },
       );
