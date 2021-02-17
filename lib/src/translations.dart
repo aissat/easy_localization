@@ -20,8 +20,9 @@ class Translations {
       if (value is Map<String, dynamic>) value = value[keys[i]];
     }
 
-    if (value == null)
+    if (value == null) {
       throw Exception('Cannot cache a key that is not nested.');
+    }
 
     cacheNestedKey(key, value);
     return value;
