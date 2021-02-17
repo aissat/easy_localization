@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization_loader/easy_localization_loader.dart';
+//import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'generated/locale_keys.g.dart';
 import 'lang_view.dart';
@@ -13,31 +13,31 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
-      child: MyApp(),
-      supportedLocales: [
-        Locale('en', 'US'),
-        Locale('ar', 'DZ'),
-        Locale('de', 'DE'),
-        Locale('ru', 'RU')
-      ],
-      path: 'resources/langs/langs.csv', //'resources/langs',
-      // fallbackLocale: Locale('en', 'US'),
-      // startLocale: Locale('de', 'DE'),
-      // saveLocale: false,
-      // useOnlyLangCode: true,
+    child: MyApp(),
+    supportedLocales: [
+      Locale('en', 'US'),
+      Locale('ar', 'DZ'),
+      Locale('de', 'DE'),
+      Locale('ru', 'RU')
+    ],
+    path: 'resources/langs',
+    // fallbackLocale: Locale('en', 'US'),
+    // startLocale: Locale('de', 'DE'),
+    // saveLocale: false,
+    // useOnlyLangCode: true,
 
-      // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
-      // install easy_localization_loader for enable custom loaders
-      // assetLoader: RootBundleAssetLoader()
-      // assetLoader: HttpAssetLoader()
-      // assetLoader: FileAssetLoader()
-      assetLoader: CsvAssetLoader()
-      // assetLoader: YamlAssetLoader() //multiple files
-      // assetLoader: YamlSingleAssetLoader() //single file
-      // assetLoader: XmlAssetLoader() //multiple files
-      // assetLoader: XmlSingleAssetLoader() //single file
-      // assetLoader: CodegenLoader()
-      ));
+    // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
+    // install easy_localization_loader for enable custom loaders
+    // assetLoader: RootBundleAssetLoader()
+    // assetLoader: HttpAssetLoader()
+    // assetLoader: FileAssetLoader()
+    // assetLoader: CsvAssetLoader()
+    // assetLoader: YamlAssetLoader() //multiple files
+    // assetLoader: YamlSingleAssetLoader() //single file
+    // assetLoader: XmlAssetLoader() //multiple files
+    // assetLoader: XmlSingleAssetLoader() //single file
+    // assetLoader: CodegenLoader()
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -125,9 +125,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(FontAwesome.male),
+                FaIcon(FontAwesomeIcons.male),
                 Switch(value: _gender, onChanged: switchGender),
-                Icon(FontAwesome.female),
+                FaIcon(FontAwesomeIcons.female),
               ],
             ),
             Spacer(
