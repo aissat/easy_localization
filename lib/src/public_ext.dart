@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'easy_localization_app.dart';
 import 'public.dart' as ez;
 
-/// Text widget extension method for acces to [tr()] and [plural()]
+/// Text widget extension method for access to [tr()] and [plural()]
 /// Example :
 /// ```drat
 /// Text('title').tr()
@@ -18,11 +18,11 @@ extension TextTranslateExtension on Text {
           Map<String, String>? namedArgs,
           String? gender}) =>
       Text(
-          ez.tr(data!,
+          ez.tr(data ?? '',
               context: context,
               args: args,
               namedArgs: namedArgs,
-              gender: gender)!,
+              gender: gender),
           key: key,
           style: style,
           strutStyle: strutStyle,
@@ -40,8 +40,13 @@ extension TextTranslateExtension on Text {
   Text plural(num value,
           {BuildContext? context, List<String>? args, NumberFormat? format}) =>
       Text(
-          ez.plural(data!, value,
-              context: context, args: args, format: format)!,
+          ez.plural(
+            data ?? '',
+            value,
+            context: context,
+            args: args,
+            format: format,
+          ),
           key: key,
           style: style,
           strutStyle: strutStyle,
@@ -56,7 +61,7 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 }
 
-/// Strings extension method for acces to [tr()] and [plural()]
+/// Strings extension method for access to [tr()] and [plural()]
 /// Example :
 /// ```drat
 /// 'title'.tr()
@@ -64,18 +69,23 @@ extension TextTranslateExtension on Text {
 /// ```
 extension StringTranslateExtension on String {
   /// {@macro tr}
-  String? tr(
-          {List<String>? args,
-          Map<String, String>? namedArgs,
-          String? gender}) =>
+  String tr({
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? gender,
+  }) =>
       ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
 
   /// {@macro plural}
-  String? plural(num value, {List<String>? args, NumberFormat? format}) =>
+  String plural(
+    num value, {
+    List<String>? args,
+    NumberFormat? format,
+  }) =>
       ez.plural(this, value, args: args, format: format);
 }
 
-/// BuildContext extension method for acces to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]
+/// BuildContext extension method for access to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]
 ///
 /// Example :
 ///
@@ -110,7 +120,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   Locale? get fallbackLocale => EasyLocalization.of(this)!.fallbackLocale;
 
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
-  /// retrun
+  /// return
   /// ```dart
   ///   delegates = [
   ///     delegate
@@ -127,7 +137,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
       EasyLocalization.of(this)!.deleteSaveLocale();
 
   /// Getting device locale from platform
-  Locale? get deviceLocale => EasyLocalization.of(this)!.deviceLocale;
+  Locale get deviceLocale => EasyLocalization.of(this)!.deviceLocale;
 
   /// Reset locale to platform locale
   Future<void> resetLocale() => EasyLocalization.of(this)!.resetLocale();

@@ -8,7 +8,7 @@ import 'translations.dart';
 
 class EasyLocalizationController extends ChangeNotifier {
   static Locale? _savedLocale;
-  static Locale? _deviceLocale;
+  static late Locale _deviceLocale;
 
   late Locale _locale;
   Locale? _fallbackLocale;
@@ -99,6 +99,7 @@ class EasyLocalizationController extends ChangeNotifier {
   }
 
   Locale get locale => _locale;
+
   Future<void> setLocale(Locale l) async {
     _locale = l;
     await loadTranslations();
@@ -130,11 +131,11 @@ class EasyLocalizationController extends ChangeNotifier {
     EasyLocalization.logger('Saved locale deleted');
   }
 
-  Locale? get deviceLocale => _deviceLocale;
+  Locale get deviceLocale => _deviceLocale;
 
   Future<void> resetLocale() async {
     EasyLocalization.logger('Reset locale to platform locale $_deviceLocale');
 
-    await setLocale(_deviceLocale!);
+    await setLocale(_deviceLocale);
   }
 }

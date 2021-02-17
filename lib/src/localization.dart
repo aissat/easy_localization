@@ -10,8 +10,6 @@ class Localization {
   Translations? _translations, _fallbackTranslations;
   late Locale _locale;
 
-  String? path;
-  bool? useOnlyLangCode;
   final RegExp _replaceArgRegex = RegExp(r'{}');
   final RegExp _linkKeyMatcher =
       RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
@@ -30,17 +28,24 @@ class Localization {
   static Localization? of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
-  static bool load(Locale locale,
-      {Translations? translations, Translations? fallbackTranslations}) {
+  static bool load(
+    Locale locale, {
+    Translations? translations,
+    Translations? fallbackTranslations,
+  }) {
     instance._locale = locale;
     instance._translations = translations;
     instance._fallbackTranslations = fallbackTranslations;
     return translations == null ? false : true;
   }
 
-  String tr(String key,
-      {List<String>? args, Map<String, String>? namedArgs, String? gender}) {
-    String? res;
+  String tr(
+    String key, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? gender,
+  }) {
+    late String res;
 
     if (gender != null) {
       res = _gender(key, gender: gender);
@@ -108,7 +113,7 @@ class Localization {
     return pluralRules[locale];
   }
 
-  String? plural(String key, num value,
+  String plural(String key, num value,
       {List<String>? args, NumberFormat? format}) {
     late var pluralCase;
     late var res;
@@ -165,16 +170,18 @@ class Localization {
   String _resolve(String key, {bool logging = true}) {
     var resource = _translations!.get(key);
     if (resource == null) {
-      if (logging)
+      if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
+      }
       if (_fallbackTranslations == null) {
         return key;
       } else {
         resource = _fallbackTranslations!.get(key);
         if (resource == null) {
-          if (logging)
+          if (logging) {
             EasyLocalization.logger
                 .warning('Fallback localization key [$key] not found');
+          }
           return key;
         }
       }

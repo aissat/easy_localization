@@ -14,9 +14,9 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.0.0-nullsafety
-  intl: ^0.17.0
+  intl: '>=0.17.0-0 <=0.17.0'
   args: ^2.0.0
-  path: ^1.8.0
+  path: '>=1.8.0-0 <=1.8.0'
   easy_logger: 
     path: packages/easy_logger
   flutter_localizations:
