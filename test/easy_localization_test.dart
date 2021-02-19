@@ -151,6 +151,20 @@ void main() {
         );
       });
 
+      test('won\'t fail for missing key (no periods)', () {
+        expect(
+          Localization.instance.tr('Processing'),
+          'Processing',
+        );
+      });
+
+      test('won\'t fail for missing key with periods', () {
+        expect(
+          Localization.instance.tr('Processing.'),
+          'Processing.',
+        );
+      });
+
       test('can resolve linked locale messages', () {
         expect(Localization.instance.tr('linked'), 'this is linked');
       });

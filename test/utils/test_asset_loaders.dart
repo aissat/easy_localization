@@ -30,6 +30,10 @@ class JsonAssetLoader extends AssetLoader {
         'one': '{} has {} dollar',
         'other': '{} has {} dollars',
       },
+      'nested_periods': {
+        'Processing': 'Processing',
+        'Processing.': 'Processing.',
+      },
       'nested.but.not.nested': 'nested but not nested',
       'linked': 'this @:isLinked',
       'isLinked': 'is linked',

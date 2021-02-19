@@ -3,8 +3,20 @@ class Translations {
   final Map<String?, dynamic> _nestedKeysCache;
 
   Translations(this._translations) : _nestedKeysCache = {};
-  String? get(String key) =>
-      (isNestedKey(key) ? getNested(key) : _translations![key]);
+  String? get(String key) {
+    String? returnValue;
+
+    /// Try to look it up as a nested key
+    if (isNestedKey(key)) {
+      returnValue = getNested(key);
+    }
+
+    /// If we failed to find the key as a nested key, then fall back
+    /// to looking it up like normal.
+    returnValue ??= _translations?[key];
+
+    return returnValue;
+  }
 
   String? getNested(String key) {
     if (isNestedCached(key)) return _nestedKeysCache[key];
@@ -20,11 +32,12 @@ class Translations {
       if (value is Map<String, dynamic>) value = value[keys[i]];
     }
 
-    if (value == null) {
-      throw Exception('Cannot cache a key that is not nested.');
+    /// If we found the value, cache it. If the value is null then
+    /// we're not going to cache it, and returning null instead.
+    if (value != null) {
+      cacheNestedKey(key, value);
     }
 
-    cacheNestedKey(key, value);
     return value;
   }
 
