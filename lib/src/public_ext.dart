@@ -13,8 +13,7 @@ import 'public.dart' as ez;
 extension TextTranslateExtension on Text {
   /// {@macro tr}
   Text tr(
-          {BuildContext? context,
-          List<String>? args,
+          {List<String>? args,
           Map<String, String>? namedArgs,
           String? gender}) =>
       Text(
@@ -38,8 +37,11 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 
   /// {@macro plural}
-  Text plural(num value,
-          {BuildContext? context, List<String>? args, NumberFormat? format}) =>
+  Text plural(
+    num value, {
+    List<String>? args,
+    NumberFormat? format,
+  }) =>
       Text(
           ez.plural(
             data ?? '',
