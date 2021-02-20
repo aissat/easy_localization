@@ -3,6 +3,8 @@
 ### [3.0.0]
 
 - **BREAKING**: Added `EasyLocalization.ensureInitialized()`, Needs to be called
+- **BREAKING**: Added support null safety
+- **BREAKING**: removed context parameter from `plural()` and `tr()`
 - Added Formatting linked translations [more](https://github.com/aissat/easy_localization#linked-translations)
 - Updated `plural()` function, with arguments [more](https://github.com/aissat/easy_localization#linked-translations)
   ```dart
