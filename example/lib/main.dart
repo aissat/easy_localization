@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.title).tr(context: context),
+        title: Text(LocaleKeys.title).tr(),
         actions: <Widget>[
           TextButton(
             child: Icon(
