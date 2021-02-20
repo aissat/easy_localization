@@ -18,11 +18,12 @@ extension TextTranslateExtension on Text {
           Map<String, String>? namedArgs,
           String? gender}) =>
       Text(
-          ez.tr(data ?? '',
-              context: context,
-              args: args,
-              namedArgs: namedArgs,
-              gender: gender),
+          ez.tr(
+            data ?? '',
+            args: args,
+            namedArgs: namedArgs,
+            gender: gender,
+          ),
           key: key,
           style: style,
           strutStyle: strutStyle,
@@ -43,7 +44,6 @@ extension TextTranslateExtension on Text {
           ez.plural(
             data ?? '',
             value,
-            context: context,
             args: args,
             format: format,
           ),
