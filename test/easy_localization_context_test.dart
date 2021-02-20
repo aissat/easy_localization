@@ -37,12 +37,13 @@ class MyWidget extends StatelessWidget {
 }
 
 void main() async {
-  SharedPreferences.setMockInitialValues({});
-  await EasyLocalization.ensureInitialized();
   EasyLocalization.logger.enableLevels = <LevelMessages>[
     LevelMessages.error,
     LevelMessages.warning,
   ];
+
+  SharedPreferences.setMockInitialValues({});
+  await EasyLocalization.ensureInitialized();
 
   group('BuildContext', () {
     testWidgets(
