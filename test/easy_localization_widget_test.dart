@@ -30,8 +30,8 @@ class MyWidget extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Text('test').tr(context: context),
-          Text('day').plural(1, context: context),
+          Text('test').tr(),
+          Text('day').plural(1),
         ],
       ),
     );
