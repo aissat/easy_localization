@@ -3,9 +3,9 @@ description: Easy and Fast internationalizing and localization your Flutter Apps
 # author: AISSAT abdelwahab <mr.aissat@gmail.com>
 homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
-publish_to: none
+# publish_to: none
 
-version: 3.0.0-nullsafety.1
+version: 3.0.0
 
 environment:
   sdk: '>=2.12.0-0 <3.0.0'
@@ -17,7 +17,7 @@ dependencies:
   intl: '>=0.17.0-0 <=0.17.0'
   args: ^2.0.0
   path: '>=1.8.0-0 <=1.8.0'
-  easy_logger: ^0.0.2-nullsafety
+  easy_logger: ^0.0.2
   flutter_localizations:
     sdk: flutter
 

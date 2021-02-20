@@ -1,6 +1,6 @@
 name: easy_logger
 description: Easy logger
-version: 0.0.2-nullsafety
+version: 0.0.2
 
 environment:
   sdk: '>=2.12.0-0 <3.0.0'
