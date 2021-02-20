@@ -31,16 +31,14 @@ import 'localization.dart';
 /// Text('gender').tr(gender: _gender ? "female" : "male"), // gender
 /// ```
 /// {@endtemplate}
-String tr(String key,
-    {BuildContext context,
-    List<String> args,
-    Map<String, String> namedArgs,
-    String gender}) {
-  return context == null
-      ? Localization.instance
-          .tr(key, args: args, namedArgs: namedArgs, gender: gender)
-      : Localization.of(context)
-          .tr(key, args: args, namedArgs: namedArgs, gender: gender);
+String tr(
+  String key, {
+  List<String>? args,
+  Map<String, String>? namedArgs,
+  String? gender,
+}) {
+  return Localization.instance
+      .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
 /// {@template plural}
@@ -83,9 +81,11 @@ String tr(String key,
 /// var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
 /// ```
 /// {@endtemplate}
-String plural(String key, num value,
-    {BuildContext context, List<String> args, NumberFormat format}) {
-  return context == null
-      ? Localization.instance.plural(key, value, args: args, format: format)
-      : Localization.of(context).plural(key, value, args: args, format: format);
+String plural(
+  String key,
+  num value, {
+  List<String>? args,
+  NumberFormat? format,
+}) {
+  return Localization.instance.plural(key, value, args: args, format: format);
 }

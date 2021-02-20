@@ -26,9 +26,11 @@ Easy and Fast internationalization for your Flutter Apps
 - 🔌 Load translations as JSON, CSV, Yaml, Xml using [Easy Localization Loader](https://github.com/aissat/easy_localization_loader)
 - 💾 React and persist to locale changes
 - ⚡ Supports plural, gender, nesting, RTL locales and more
+- ↩️ Fallback locale keys redirection
 - ⁉️ Error widget for missing translations
 - ❤️ Extension methods on `Text` and `BuildContext`
 - 💻 Code generation for localization files and keys.
+- 🛡️ Null safety
 - 🖨️ Customizable logger.
 
 ## Getting Started
@@ -196,7 +198,6 @@ var title = tr('title') //Static function
 
 | Name | Type | Description |
 | -------- | -------- | -------- |
-| context| `BuildContext` | The location in the tree where this widget builds |
 | args| `List<String>` | List of localized strings. Replaces `{}` left to right |
 | namedArgs| `Map<String, String>` | Map of localized strings. Replaces the name keys `{key_name}` according to its name |
 | gender | `String` | Gender switcher. Changes the localized string based on gender string |
@@ -242,7 +243,6 @@ You can use extension methods of [String] or [Text] widget, you can also use `pl
 
 | Name | Type | Description |
 | -------- | -------- | -------- |
-| context| `BuildContext` | The location in the tree where this widget builds|
 | value| `num` | Number value for pluralization |
 | args| `List<String>` | List of localized strings. Replaces `{}` left to right |
 | format| `NumberFormat` | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |

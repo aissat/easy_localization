@@ -40,36 +40,36 @@ GenerateOptions _generateOption(List<String> args) {
   return generateOptions;
 }
 
-ArgParser _generateArgParser(GenerateOptions generateOptions) {
+ArgParser _generateArgParser(GenerateOptions? generateOptions) {
   var parser = ArgParser();
 
   parser.addOption('source-dir',
       abbr: 'S',
       defaultsTo: 'resources/langs',
-      callback: (String x) => generateOptions.sourceDir = x,
+      callback: (String? x) => generateOptions!.sourceDir = x,
       help: 'Folder containing localization files');
 
   parser.addOption('source-file',
       abbr: 's',
-      callback: (String x) => generateOptions.sourceFile = x,
+      callback: (String? x) => generateOptions!.sourceFile = x,
       help: 'File to use for localization');
 
   parser.addOption('output-dir',
       abbr: 'O',
       defaultsTo: 'lib/generated',
-      callback: (String x) => generateOptions.outputDir = x,
+      callback: (String? x) => generateOptions!.outputDir = x,
       help: 'Output folder stores for the generated file');
 
   parser.addOption('output-file',
       abbr: 'o',
       defaultsTo: 'codegen_loader.g.dart',
-      callback: (String x) => generateOptions.outputFile = x,
+      callback: (String? x) => generateOptions!.outputFile = x,
       help: 'Output file name');
 
   parser.addOption('format',
       abbr: 'f',
       defaultsTo: 'json',
-      callback: (String x) => generateOptions.format = x,
+      callback: (String? x) => generateOptions!.format = x,
       help: 'Support json or keys formats',
       allowed: ['json', 'keys']);
 
@@ -77,12 +77,12 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
 }
 
 class GenerateOptions {
-  String sourceDir;
-  String sourceFile;
-  String templateLocale;
-  String outputDir;
-  String outputFile;
-  String format;
+  String? sourceDir;
+  String? sourceFile;
+  String? templateLocale;
+  String? outputDir;
+  String? outputFile;
+  String? format;
 
   @override
   String toString() {
@@ -92,8 +92,8 @@ class GenerateOptions {
 
 void handleLangFiles(GenerateOptions options) async {
   final current = Directory.current;
-  final source = Directory.fromUri(Uri.parse(options.sourceDir));
-  final output = Directory.fromUri(Uri.parse(options.outputDir));
+  final source = Directory.fromUri(Uri.parse(options.sourceDir!));
+  final output = Directory.fromUri(Uri.parse(options.outputDir!));
   final sourcePath = Directory(path.join(current.path, source.path));
   final outputPath =
       Directory(path.join(current.path, output.path, options.outputFile));
@@ -133,7 +133,7 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
 }
 
 void generateFile(
-    List<FileSystemEntity> files, Directory outputPath, String format) async {
+    List<FileSystemEntity> files, Directory outputPath, String? format) async {
   var generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
@@ -179,7 +179,7 @@ abstract class  LocaleKeys {
   classBuilder.writeln(file);
 }
 
-String _resolve(Map<String, dynamic> translations, [String accKey]) {
+String _resolve(Map<String, dynamic> translations, [String? accKey]) {
   var fileContent = '';
 
   final sortedKeys = translations.keys.toList();
@@ -234,7 +234,7 @@ class CodegenLoader extends AssetLoader{
     listLocales.add('"$localeName": $localeName');
     final fileData = File(file.path);
 
-    Map<String, dynamic> data = json.decode(await fileData.readAsString());
+    Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
     final mapString = JsonEncoder.withIndent('  ').convert(data);
     gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';

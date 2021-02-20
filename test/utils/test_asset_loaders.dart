@@ -30,6 +30,10 @@ class JsonAssetLoader extends AssetLoader {
         'one': '{} has {} dollar',
         'other': '{} has {} dollars',
       },
+      'nested_periods': {
+        'Processing': 'Processing',
+        'Processing.': 'Processing.',
+      },
       'nested.but.not.nested': 'nested but not nested',
       'linked': 'this @:isLinked',
       'isLinked': 'is linked',
@@ -56,7 +60,8 @@ class JsonAssetLoader extends AssetLoader {
         }
       },
       'path': '$fullPath',
-      'test_missing_fallback': (locale.languageCode == 'fb' ? 'fallback!' : null),
+      'test_missing_fallback':
+          (locale.languageCode == 'fb' ? 'fallback!' : null),
     });
   }
 }

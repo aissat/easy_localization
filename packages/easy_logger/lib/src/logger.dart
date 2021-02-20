@@ -19,14 +19,14 @@ class EasyLogger {
       LevelMessages.error,
       LevelMessages.warning,
     ],
-    EasyLogPrinter printer,
+    EasyLogPrinter? printer,
     this.defaultLevel = LevelMessages.info,
   }) {
     _printer = printer ?? easyLogDefaultPrinter;
     _currentBuildMode = _getCurrentBuildMode();
   }
 
-  BuildMode _currentBuildMode;
+  BuildMode? _currentBuildMode;
 
   /// Name prefix in the logging line.
   /// @Default value `''` empty string.
@@ -48,11 +48,11 @@ class EasyLogger {
   /// @Default value `LevelMessages.info`
   LevelMessages defaultLevel;
 
-  EasyLogPrinter _printer;
+  EasyLogPrinter? _printer;
 
   /// Print function that generates and printing log lines
   /// @Default value `easyLogDefaultPrinter`
-  EasyLogPrinter get printer => _printer;
+  EasyLogPrinter? get printer => _printer;
 
   /// Printer function setter.
   /// You can change the standard print function to a custom one.
@@ -69,7 +69,7 @@ class EasyLogger {
   ///
   /// logger.printer = customLogPrinter;
   /// ```
-  set printer(EasyLogPrinter newPrinter) => _printer = newPrinter;
+  set printer(EasyLogPrinter? newPrinter) => _printer = newPrinter;
 
   BuildMode _getCurrentBuildMode() {
     if (kReleaseMode) {
@@ -92,30 +92,30 @@ class EasyLogger {
   }
 
   /// The main callable function for handling log messages.
-  void call(Object object, {StackTrace stackTrace, LevelMessages level}) {
+  void call(Object object, {StackTrace? stackTrace, LevelMessages? level}) {
     level ??= defaultLevel;
     if (isEnabled(level)) {
-      _printer(object, stackTrace: stackTrace, level: level, name: name);
+      _printer!(object, stackTrace: stackTrace, level: level, name: name);
     }
   }
 
   /// Helper for main callable function.
   /// Call logger function with level [LevelMessages.debug]
-  void debug(Object object, {StackTrace stackTrace}) =>
+  void debug(Object object, {StackTrace? stackTrace}) =>
       call(object, stackTrace: stackTrace, level: LevelMessages.debug);
 
   /// Helper for main callable function.
   /// Call logger function with level [LevelMessages.info]
-  void info(Object object, {StackTrace stackTrace}) =>
+  void info(Object object, {StackTrace? stackTrace}) =>
       call(object, stackTrace: stackTrace, level: LevelMessages.info);
 
   /// Helper for main callable function.
   /// Call logger function with level [LevelMessages.warning]
-  void warning(Object object, {StackTrace stackTrace}) =>
+  void warning(Object object, {StackTrace? stackTrace}) =>
       call(object, stackTrace: stackTrace, level: LevelMessages.warning);
 
   /// Helper for main callable function.
   /// Call logger function with level [LevelMessages.error]
-  void error(Object object, {StackTrace stackTrace}) =>
+  void error(Object object, {StackTrace? stackTrace}) =>
       call(object, stackTrace: stackTrace, level: LevelMessages.error);
 }
