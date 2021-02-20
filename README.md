@@ -26,6 +26,7 @@ Easy and Fast internationalization for your Flutter Apps
 - 🔌 Load translations as JSON, CSV, Yaml, Xml using [Easy Localization Loader](https://github.com/aissat/easy_localization_loader)
 - 💾 React and persist to locale changes
 - ⚡ Supports plural, gender, nesting, RTL locales and more
+- ↩️ Fallback locale keys redirection
 - ⁉️ Error widget for missing translations
 - ❤️ Extension methods on `Text` and `BuildContext`
 - 💻 Code generation for localization files and keys.
