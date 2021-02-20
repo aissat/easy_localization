@@ -1,0 +1,18 @@
+#https://dart.dev/guides/language/analysis-options
+include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+  errors:
+    missing_required_param: warning
+    missing_return: warning
+    todo: ignore
+
+linter:
+  rules:
+    avoid_classes_with_only_static_members: false
+    sort_constructors_first: true
+    prefer_single_quotes: true
+    public_member_api_docs: true
+    always_specify_types: true

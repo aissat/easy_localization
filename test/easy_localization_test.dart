@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
-
+import 'package:easy_logger/easy_logger.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
@@ -20,17 +23,34 @@ dynamic overridePrint(Function() testFn) => () {
 
 void main() {
   group('localization', () {
-    var r1 = Resource(
-        locale: Locale('en'),
+    var r1 = EasyLocalizationController(
+        forceLocale: Locale('en'),
         path: 'path/en.json',
+        supportedLocales: [Locale('en')],
         useOnlyLangCode: true,
+        useFallbackTranslations: false,
+        saveLocale: false,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
         assetLoader: JsonAssetLoader());
-    var r2 = Resource(
-        locale: Locale('en', 'us'),
+    var r2 = EasyLocalizationController(
+        forceLocale: Locale('en', 'us'),
+        supportedLocales: [Locale('en', 'us')],
         path: 'path/en-us.json',
         useOnlyLangCode: false,
+        useFallbackTranslations: false,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
+        saveLocale: false,
         assetLoader: JsonAssetLoader());
     setUpAll(() async {
+      EasyLocalization.logger.enableLevels = <LevelMessages>[
+        LevelMessages.error,
+        LevelMessages.warning,
+      ];
+
       await r1.loadTranslations();
       await r2.loadTranslations();
       Localization.load(Locale('en'), translations: r1.translations);
@@ -51,11 +71,21 @@ void main() {
           Localization.load(Locale('en'), translations: r1.translations), true);
     });
 
+    test('load() with fallback succeeds', () async {
+      expect(
+          Localization.load(Locale('en'),
+              translations: r1.translations,
+              fallbackTranslations: r2.translations),
+          true);
+    });
+
     test('localeFromString() succeeds', () async {
-      
-      expect(Locale('ar'),localeFromString('ar'));
-      expect(Locale('ar','DZ'),localeFromString('ar_DZ'));
-      expect(Locale.fromSubtags(languageCode:'ar' ,scriptCode:'Arab' , countryCode:'DZ' ),localeFromString('ar_Arab_DZ'));
+      expect(Locale('ar'), 'ar'.toLocale());
+      expect(Locale('ar', 'DZ'), 'ar_DZ'.toLocale());
+      expect(
+          Locale.fromSubtags(
+              languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
+          'ar_Arab_DZ'.toLocale());
     });
 
     test('load() Failed assertion', () async {
@@ -85,14 +115,24 @@ void main() {
     });
 
     group('tr', () {
-      var r = Resource(
-          locale: Locale('en'),
+      var r = EasyLocalizationController(
+          forceLocale: Locale('en'),
+          supportedLocales: [Locale('en'), Locale('fb')],
+          fallbackLocale: Locale('fb'),
           path: 'path',
           useOnlyLangCode: true,
+          useFallbackTranslations: true,
+          onLoadError: (FlutterError e) {
+            log(e.toString());
+          },
+          saveLocale: false,
           assetLoader: JsonAssetLoader());
+
       setUpAll(() async {
         await r.loadTranslations();
-        Localization.load(Locale('en'), translations: r.translations);
+        Localization.load(Locale('en'),
+            translations: r.translations,
+            fallbackTranslations: r.fallbackTranslations);
       });
       test('finds and returns resource', () {
         expect(Localization.instance.tr('test'), 'test');
@@ -111,6 +151,56 @@ void main() {
         );
       });
 
+      test('won\'t fail for missing key (no periods)', () {
+        expect(
+          Localization.instance.tr('Processing'),
+          'Processing',
+        );
+      });
+
+      test('won\'t fail for missing key with periods', () {
+        expect(
+          Localization.instance.tr('Processing.'),
+          'Processing.',
+        );
+      });
+
+      test('can resolve linked locale messages', () {
+        expect(Localization.instance.tr('linked'), 'this is linked');
+      });
+
+      test('can resolve linked locale messages and apply modifiers', () {
+        expect(Localization.instance.tr('linkAndModify'),
+            'this is linked and MODIFIED');
+      });
+
+      test('can resolve multiple linked locale messages and apply modifiers',
+          () {
+        expect(Localization.instance.tr('linkMany'), 'many Locale messages');
+      });
+
+      test('can resolve linked locale messages with brackets', () {
+        expect(Localization.instance.tr('linkedWithBrackets'),
+            'linked with brackets.');
+      });
+
+      test('can resolve any number of nested arguments', () {
+        expect(
+            Localization.instance
+                .tr('nestedArguments', args: ['a', 'argument', '!']),
+            'this is a nested argument!');
+      });
+
+      test('can resolve nested named arguments', () {
+        expect(
+            Localization.instance.tr('nestedNamedArguments', namedArgs: {
+              'firstArg': 'this',
+              'secondArg': 'named argument',
+              'thirdArg': '!'
+            }),
+            'this is a nested named argument!');
+      });
+
       test('returns missing resource as provided', () {
         expect(Localization.instance.tr('test_missing'), 'test_missing');
       });
@@ -118,8 +208,25 @@ void main() {
       test('reports missing resource', overridePrint(() {
         printLog = [];
         expect(Localization.instance.tr('test_missing'), 'test_missing');
+        final logIterator = printLog.iterator;
+        logIterator.moveNext();
+        expect(logIterator.current,
+            contains('Localization key [test_missing] not found'));
+        logIterator.moveNext();
+        expect(logIterator.current,
+            contains('Fallback localization key [test_missing] not found'));
+      }));
+
+      test('uses fallback translations', overridePrint(() {
+        printLog = [];
+        expect(Localization.instance.tr('test_missing_fallback'), 'fallback!');
+      }));
+
+      test('reports missing resource with fallback', overridePrint(() {
+        printLog = [];
+        expect(Localization.instance.tr('test_missing_fallback'), 'fallback!');
         expect(printLog.first,
-            '\u001B[34m[WARNING] Easy Localization: Localization key [test_missing] not found\u001b[0m');
+            contains('Localization key [test_missing_fallback] not found'));
       }));
 
       test('returns resource and replaces argument', () {
@@ -151,15 +258,17 @@ void main() {
 
       test('return resource and replaces named argument', () {
         expect(
-          Localization.instance.tr('test_replace_named', namedArgs: {'arg1': 'one', 'arg2': 'two'}),
+          Localization.instance.tr('test_replace_named',
+              namedArgs: {'arg1': 'one', 'arg2': 'two'}),
           'test named replace one two',
         );
       });
 
-      test('returns resource and replaces named argument in any nest level', () {
+      test('returns resource and replaces named argument in any nest level',
+          () {
         expect(
-          Localization.instance
-              .tr('nested.super.duper.nested_with_named_arg', namedArgs: {'arg': 'what a nest'}),
+          Localization.instance.tr('nested.super.duper.nested_with_named_arg',
+              namedArgs: {'arg': 'what a nest'}),
           'nested.super.duper.nested_with_named_arg what a nest',
         );
       });
@@ -225,6 +334,21 @@ void main() {
             Localization.instance
                 .plural('day', 3, format: NumberFormat.currency()),
             'USD3.00 other days');
+      });
+
+      test('zero with args', () {
+        expect(Localization.instance.plural('money', 0, args: ['John', '0']),
+            'John has no money');
+      });
+
+      test('one with args', () {
+        expect(Localization.instance.plural('money', 1, args: ['John', '1']),
+            'John has 1 dollar');
+      });
+
+      test('other with args', () {
+        expect(Localization.instance.plural('money', 3, args: ['John', '3']),
+            'John has 3 dollars');
       });
     });
 

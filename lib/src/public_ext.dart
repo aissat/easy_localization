@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'easy_localization_app.dart';
 import 'public.dart' as ez;
 
-/// Text widget extension method for acces to [tr()] and [plural()]
+/// Text widget extension method for access to [tr()] and [plural()]
 /// Example :
 /// ```drat
 /// Text('title').tr()
@@ -13,16 +13,16 @@ import 'public.dart' as ez;
 extension TextTranslateExtension on Text {
   /// {@macro tr}
   Text tr(
-          {BuildContext context,
-          List<String> args,
-          Map<String, String> namedArgs,
-          String gender}) =>
+          {List<String>? args,
+          Map<String, String>? namedArgs,
+          String? gender}) =>
       Text(
-          ez.tr(data,
-              context: context,
-              args: args,
-              namedArgs: namedArgs,
-              gender: gender),
+          ez.tr(
+            data ?? '',
+            args: args,
+            namedArgs: namedArgs,
+            gender: gender,
+          ),
           key: key,
           style: style,
           strutStyle: strutStyle,
@@ -37,8 +37,18 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 
   /// {@macro plural}
-  Text plural(num value, {BuildContext context, NumberFormat format}) =>
-      Text(ez.plural(data, value, context: context, format: format),
+  Text plural(
+    num value, {
+    List<String>? args,
+    NumberFormat? format,
+  }) =>
+      Text(
+          ez.plural(
+            data ?? '',
+            value,
+            args: args,
+            format: format,
+          ),
           key: key,
           style: style,
           strutStyle: strutStyle,
@@ -53,7 +63,7 @@ extension TextTranslateExtension on Text {
           textWidthBasis: textWidthBasis);
 }
 
-/// Strings extension method for acces to [tr()] and [plural()]
+/// Strings extension method for access to [tr()] and [plural()]
 /// Example :
 /// ```drat
 /// 'title'.tr()
@@ -61,16 +71,23 @@ extension TextTranslateExtension on Text {
 /// ```
 extension StringTranslateExtension on String {
   /// {@macro tr}
-  String tr(
-          {List<String> args, Map<String, String> namedArgs, String gender}) =>
+  String tr({
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? gender,
+  }) =>
       ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
 
   /// {@macro plural}
-  String plural(num value, {NumberFormat format}) =>
-      ez.plural(this, value, format: format);
+  String plural(
+    num value, {
+    List<String>? args,
+    NumberFormat? format,
+  }) =>
+      ez.plural(this, value, args: args, format: format);
 }
 
-/// BuildContext extension method for acces to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]
+/// BuildContext extension method for access to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]
 ///
 /// Example :
 ///
@@ -85,22 +102,27 @@ extension StringTranslateExtension on String {
 /// ```
 extension BuildContextEasyLocalizationExtension on BuildContext {
   /// Get current locale
-  Locale get locale => EasyLocalization.of(this).locale;
+  Locale get locale => EasyLocalization.of(this)!.locale;
 
   /// Change app locale
-  set locale(Locale val) => EasyLocalization.of(this).locale = val;
+  Future<void> setLocale(Locale val) async =>
+      EasyLocalization.of(this)!.setLocale(val);
+
+  /// Old Change app locale
+  @Deprecated(
+      'This is the func used in the old version of EasyLocalization. The modern func is `setLocale(val)` . '
+      'This feature was deprecated after v3.0.0')
+  set locale(Locale val) => EasyLocalization.of(this)!.setLocale(val);
 
   /// Get List of supported locales.
   List<Locale> get supportedLocales =>
-      EasyLocalization.of(this).supportedLocales;
+      EasyLocalization.of(this)!.supportedLocales;
 
   /// Get fallback locale
-  Locale get fallbackLocale => EasyLocalization.of(this).fallbackLocale;
-
-  // Locale get startLocale => EasyLocalization.of(this).startLocale;
+  Locale? get fallbackLocale => EasyLocalization.of(this)!.fallbackLocale;
 
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
-  /// retrun
+  /// return
   /// ```dart
   ///   delegates = [
   ///     delegate
@@ -110,8 +132,15 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   ///   ],
   /// ```
   List<LocalizationsDelegate> get localizationDelegates =>
-      EasyLocalization.of(this).delegates;
+      EasyLocalization.of(this)!.delegates;
 
   /// Clears a saved locale from device storage
-  void deleteSaveLocale() => EasyLocalization.of(this).deleteSaveLocale();
+  Future<void> deleteSaveLocale() =>
+      EasyLocalization.of(this)!.deleteSaveLocale();
+
+  /// Getting device locale from platform
+  Locale get deviceLocale => EasyLocalization.of(this)!.deviceLocale;
+
+  /// Reset locale to platform locale
+  Future<void> resetLocale() => EasyLocalization.of(this)!.resetLocale();
 }

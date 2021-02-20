@@ -78,10 +78,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-void main(){
+void main() async{
   
   // WidgetsFlutterBinding.ensureInitialized();
-  //await EasyLocalization.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
     child: MyApp(),
@@ -90,7 +90,6 @@ void main(){
     // fallbackLocale: Locale('en', 'US'),
     // saveLocale: false,
     // useOnlyLangCode: true,
-    // preloaderColor: Colors.black,
 
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // install easy_localization_loader for enable custom loaders

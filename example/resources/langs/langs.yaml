@@ -28,7 +28,7 @@ en_US:
     with_arg:
       male: Hi man ;) {}
       female: Hello girl :) {}
-  reset_locale: Reset Saved Language
+  reset_locale: Reset Language
 
 ar_DZ:
   title: السلام
@@ -60,7 +60,7 @@ ar_DZ:
     with_arg:
       male: "{} مرحبا يا رجل"
       female: "{} مرحبا بك يا فتاة"
-  reset_locale: إعادة تعيين اللغة المحفوظة
+  reset_locale: إعادة ضبط اللغة
 
 de_DE:
   title: Hallo
@@ -92,7 +92,7 @@ de_DE:
     with_arg:
       male: Hi Mann ;) {}
       female: Hallo Frau :) {}
-  reset_locale: Gespeicherte Sprache zurücksettzen
+  reset_locale: Sprache zurücksetzen
 
 ru_RU:
   title: Привет!
@@ -124,4 +124,4 @@ ru_RU:
     with_arg:
       male: Привет мужык ;) {}
       female: Привет девчуля :) {}
-  reset_locale: Сбросить сохраненный язык
+  reset_locale: Сбросить язык

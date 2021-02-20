@@ -27,4 +27,4 @@ gender:
   with_arg:
     male: Привет мужык ;) {}
     female: Привет девчуля :) {}
-reset_locale: Сбросить сохраненный язык
+reset_locale: Сбросить язык

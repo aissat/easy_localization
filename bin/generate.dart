@@ -40,31 +40,36 @@ GenerateOptions _generateOption(List<String> args) {
   return generateOptions;
 }
 
-ArgParser _generateArgParser(GenerateOptions generateOptions) {
+ArgParser _generateArgParser(GenerateOptions? generateOptions) {
   var parser = ArgParser();
 
   parser.addOption('source-dir',
-      abbr: 's',
+      abbr: 'S',
       defaultsTo: 'resources/langs',
-      callback: (String x) => generateOptions.sourceDir = x,
+      callback: (String? x) => generateOptions!.sourceDir = x,
       help: 'Folder containing localization files');
+
+  parser.addOption('source-file',
+      abbr: 's',
+      callback: (String? x) => generateOptions!.sourceFile = x,
+      help: 'File to use for localization');
 
   parser.addOption('output-dir',
       abbr: 'O',
       defaultsTo: 'lib/generated',
-      callback: (String x) => generateOptions.outputDir = x,
+      callback: (String? x) => generateOptions!.outputDir = x,
       help: 'Output folder stores for the generated file');
 
   parser.addOption('output-file',
       abbr: 'o',
       defaultsTo: 'codegen_loader.g.dart',
-      callback: (String x) => generateOptions.outputFile = x,
+      callback: (String? x) => generateOptions!.outputFile = x,
       help: 'Output file name');
 
   parser.addOption('format',
       abbr: 'f',
       defaultsTo: 'json',
-      callback: (String x) => generateOptions.format = x,
+      callback: (String? x) => generateOptions!.format = x,
       help: 'Support json or keys formats',
       allowed: ['json', 'keys']);
 
@@ -72,22 +77,23 @@ ArgParser _generateArgParser(GenerateOptions generateOptions) {
 }
 
 class GenerateOptions {
-  String sourceDir;
-  String templateLocale;
-  String outputDir;
-  String outputFile;
-  String format;
+  String? sourceDir;
+  String? sourceFile;
+  String? templateLocale;
+  String? outputDir;
+  String? outputFile;
+  String? format;
 
   @override
   String toString() {
-    return 'format: $format sourceDir: $sourceDir outputDir: $outputDir outputFile: $outputFile';
+    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile';
   }
 }
 
 void handleLangFiles(GenerateOptions options) async {
   final current = Directory.current;
-  final source = Directory.fromUri(Uri.parse(options.sourceDir));
-  final output = Directory.fromUri(Uri.parse(options.outputDir));
+  final source = Directory.fromUri(Uri.parse(options.sourceDir!));
+  final output = Directory.fromUri(Uri.parse(options.outputDir!));
   final sourcePath = Directory(path.join(current.path, source.path));
   final outputPath =
       Directory(path.join(current.path, output.path, options.outputFile));
@@ -98,8 +104,18 @@ void handleLangFiles(GenerateOptions options) async {
   }
 
   var files = await dirContents(sourcePath);
-  //filtering format
-  files = files.where((f) => f.path.contains('.json')).toList();
+  if (options.sourceFile != null) {
+    final sourceFile = File(path.join(source.path, options.sourceFile));
+    if (!await sourceFile.exists()) {
+      printError('Source file does not exist (${sourceFile.toString()})');
+      return;
+    }
+    files = [sourceFile];
+  } else {
+    //filtering format
+    files = files.where((f) => f.path.contains('.json')).toList();
+  }
+
   if (files.isNotEmpty) {
     generateFile(files, outputPath, options.format);
   } else {
@@ -117,7 +133,7 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
 }
 
 void generateFile(
-    List<FileSystemEntity> files, Directory outputPath, String format) async {
+    List<FileSystemEntity> files, Directory outputPath, String? format) async {
   var generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
@@ -163,7 +179,7 @@ abstract class  LocaleKeys {
   classBuilder.writeln(file);
 }
 
-String _resolve(Map<String, dynamic> translations, [String accKey]) {
+String _resolve(Map<String, dynamic> translations, [String? accKey]) {
   var fileContent = '';
 
   final sortedKeys = translations.keys.toList();
@@ -193,6 +209,9 @@ Future _writeJson(
     StringBuffer classBuilder, List<FileSystemEntity> files) async {
   var gFile = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes
+
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
@@ -215,14 +234,14 @@ class CodegenLoader extends AssetLoader{
     listLocales.add('"$localeName": $localeName');
     final fileData = File(file.path);
 
-    Map<String, dynamic> data = json.decode(await fileData.readAsString());
+    Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
     final mapString = JsonEncoder.withIndent('  ').convert(data);
-    gFile += '  static const Map<String,dynamic> $localeName = $mapString;\n';
+    gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
   }
 
   gFile +=
-      '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
+      'static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
   classBuilder.writeln(gFile);
 }
 
