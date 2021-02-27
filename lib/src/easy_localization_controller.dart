@@ -133,6 +133,8 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Locale get deviceLocale => _deviceLocale;
 
+  Locale? get savedLocale => _savedLocale;
+
   Future<void> resetLocale() async {
     EasyLocalization.logger('Reset locale to platform locale $_deviceLocale');
 

@@ -141,6 +141,9 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   /// Getting device locale from platform
   Locale get deviceLocale => EasyLocalization.of(this)!.deviceLocale;
 
+  /// Getting saved locale from shared preferences
+  Locale? get savedLocale => EasyLocalization.of(this)!.savedLocale;
+
   /// Reset locale to platform locale
   Future<void> resetLocale() => EasyLocalization.of(this)!.resetLocale();
 }

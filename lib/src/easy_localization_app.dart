@@ -223,7 +223,10 @@ class _EasyLocalizationProvider extends InheritedWidget {
   /// Getting device locale from platform
   Locale get deviceLocale => _localeState.deviceLocale;
 
-  /// Reset locale to platform locale
+  /// Get current locale
+  Locale? get savedLocale => _localeState.savedLocale;
+
+  /// Getting saved locale from shared preferences
   Future<void> resetLocale() => _localeState.resetLocale();
 
   @override
