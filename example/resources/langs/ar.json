@@ -34,5 +34,6 @@
             "female": "{} مرحبا بك يا فتاة"
         }
     },
-    "reset_locale": "إعادة ضبط اللغة"
+    "reset_locale": "إعادة ضبط اللغة",
+    "separated_keys": "@file(resources/langs/separated_keys.json)"
 }

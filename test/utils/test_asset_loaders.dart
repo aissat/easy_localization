@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:easy_localization/src/asset_loader.dart';
 
-class JsonAssetLoader extends AssetLoader {
+class JsonAssetLoader implements AssetLoader {
   const JsonAssetLoader();
 
   @override
@@ -64,4 +64,7 @@ class JsonAssetLoader extends AssetLoader {
           (locale.languageCode == 'fb' ? 'fallback!' : null),
     });
   }
+
+  @override
+  Future<Map<String, dynamic>?> loadFromPath(String path) async {}
 }

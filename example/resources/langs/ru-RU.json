@@ -34,5 +34,6 @@
             "female": "Привет девчуля :) {}"
         }
     },
-    "reset_locale": "Сбросить язык"
+    "reset_locale": "Сбросить язык",
+    "separated_keys": "@file(resources/langs/separated_keys.json)"
 }

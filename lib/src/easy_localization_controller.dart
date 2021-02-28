@@ -75,13 +75,13 @@ class EasyLocalizationController extends ChangeNotifier {
   }
 
   Future loadTranslations() async {
-    Map<String, dynamic> data;
+    Map<String, dynamic>? _data;
     try {
-      data = await loadTranslationData(_locale);
-      _translations = Translations(data);
+      _data = await loadTranslationData(_locale, path);
+      _translations = Translations(_data);
       if (useFallbackTranslations && _fallbackLocale != null) {
-        data = await loadTranslationData(_fallbackLocale!);
-        _fallbackTranslations = Translations(data);
+        _data = await loadTranslationData(_fallbackLocale!, path);
+        _fallbackTranslations = Translations(_data);
       }
     } on FlutterError catch (e) {
       onLoadError(e);
@@ -90,12 +90,51 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  Future loadTranslationData(Locale locale) async {
+  Future<Map<String, dynamic>?> loadTranslationData(
+      Locale locale, String path) async {
+    Map<String, dynamic>? _data;
     if (useOnlyLangCode) {
-      return assetLoader.load(path, Locale(locale.languageCode));
+      _data = await assetLoader.load(path, Locale(locale.languageCode));
     } else {
-      return assetLoader.load(path, locale);
+      _data = await assetLoader.load(path, locale);
     }
+    _data = await loadSeparatedData(_data);
+    return _data;
+  }
+
+  final RegExp regExpParentheses = RegExp(r'\(([^\)]+)\)', multiLine: false);
+
+  Future<Map<String, dynamic>?> loadSeparatedData(
+      Map<String, dynamic>? loadedData) async {
+    //check locales tree on separated file
+    Future<MapEntry<String, dynamic>> _checkAndLoad(
+        String key, dynamic value) async {
+      if (value is String) {
+        if (value.startsWith('@file')) {
+          var math = regExpParentheses.firstMatch(value)?.group(1);
+          if (math != null) {
+            var fileData = await assetLoader.loadFromPath(math);
+            // check again loaded data to separated data
+            fileData = await loadSeparatedData(fileData);
+            EasyLocalization.logger
+                .debug('Separated key $key loaded from $math');
+            return MapEntry(key, fileData);
+          }
+        }
+      } else if (value is Map<String, dynamic>) {
+        var fileData = await loadSeparatedData(value);
+        return MapEntry(key, fileData);
+      }
+      return MapEntry(key, value);
+    }
+
+    var newEntries = <MapEntry<String, dynamic>>[];
+    var newMap = <String, dynamic>{};
+    for (var entry in loadedData!.entries) {
+      newEntries.add(await _checkAndLoad(entry.key, entry.value));
+    }
+    newMap.addEntries(newEntries);
+    return newMap;
   }
 
   Locale get locale => _locale;

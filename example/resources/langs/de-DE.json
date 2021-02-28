@@ -34,5 +34,6 @@
       "female": "Hallo Frau :) {}"
     }
   },
-  "reset_locale": "Sprache zurücksetzen"
+  "reset_locale": "Sprache zurücksetzen",
+  "separated_keys": "@file(resources/langs/separated_keys.json)"
 }
