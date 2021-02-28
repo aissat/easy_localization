@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 const _preservedKeywords = [
@@ -73,6 +74,11 @@ ArgParser _generateArgParser(GenerateOptions? generateOptions) {
       help: 'Support json or keys formats',
       allowed: ['json', 'keys']);
 
+  parser.addFlag('separated-keys',
+      defaultsTo: true,
+      callback: (bool? x) => generateOptions!.separatedKeys = x,
+      help: 'Load separated files');
+
   return parser;
 }
 
@@ -83,10 +89,11 @@ class GenerateOptions {
   String? outputDir;
   String? outputFile;
   String? format;
+  bool? separatedKeys;
 
   @override
   String toString() {
-    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile';
+    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile separatedKeys: $separatedKeys';
   }
 }
 
@@ -117,7 +124,7 @@ void handleLangFiles(GenerateOptions options) async {
   }
 
   if (files.isNotEmpty) {
-    generateFile(files, outputPath, options.format);
+    generateFile(files, outputPath, options);
   } else {
     printError('Source path empty');
   }
@@ -132,8 +139,8 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
   return completer.future;
 }
 
-void generateFile(
-    List<FileSystemEntity> files, Directory outputPath, String? format) async {
+void generateFile(List<FileSystemEntity> files, Directory outputPath,
+    GenerateOptions options) async {
   var generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
@@ -141,16 +148,13 @@ void generateFile(
 
   var classBuilder = StringBuffer();
 
-  switch (format) {
+  switch (options.format) {
     case 'json':
-      await _writeJson(classBuilder, files);
+      await _writeJson(classBuilder, files, options);
       break;
     case 'keys':
-      await _writeKeys(classBuilder, files);
+      await _writeKeys(classBuilder, files, options);
       break;
-    // case 'csv':
-    //   await _writeCsv(classBuilder, files);
-    // break;
     default:
       printError('Format not support');
   }
@@ -161,25 +165,68 @@ void generateFile(
   printInfo('All done! File generated in ${outputPath.path}');
 }
 
-Future _writeKeys(
-    StringBuffer classBuilder, List<FileSystemEntity> files) async {
+final RegExp regExpParentheses = RegExp(r'\(([^\)]+)\)', multiLine: false);
+
+Future<Map<String, dynamic>?> loadData(String path) async {
+  final fileData = File(path);
+
+  return json.decode(await fileData.readAsString());
+}
+
+Future<Map<String, dynamic>?> loadSeparatedData(
+    Map<String, dynamic>? loadedData) async {
+  //check locales tree on separated file
+  Future<MapEntry<String, dynamic>> _checkAndLoad(
+      String key, dynamic value) async {
+    if (value is String) {
+      if (value.startsWith('@file')) {
+        var math = regExpParentheses.firstMatch(value)?.group(1);
+        if (math != null) {
+          var fileData = await loadData(math);
+          // check again loaded data to separated data
+          fileData = await loadSeparatedData(fileData);
+          printInfo('Separated key $key loaded from $math');
+          return MapEntry(key, fileData);
+        }
+      }
+    } else if (value is Map<String, dynamic>) {
+      var fileData = await loadSeparatedData(value);
+      return MapEntry(key, fileData);
+    }
+    return MapEntry(key, value);
+  }
+
+  var newEntries = <MapEntry<String, dynamic>>[];
+  var newMap = <String, dynamic>{};
+  for (var entry in loadedData!.entries) {
+    newEntries.add(await _checkAndLoad(entry.key, entry.value));
+  }
+  newMap.addEntries(newEntries);
+  return newMap;
+}
+
+Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
+    GenerateOptions options) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
 ''';
 
-  final fileData = File(files.first.path);
+  var data = await loadData(files.first.path);
+  if (options.separatedKeys == true) {
+    data = await loadSeparatedData(data);
+  }
 
-  Map<String, dynamic> translations =
-      json.decode(await fileData.readAsString());
-
-  file += _resolve(translations);
+  file += _resolve(data);
 
   classBuilder.writeln(file);
 }
 
-String _resolve(Map<String, dynamic> translations, [String? accKey]) {
+String _resolve(Map<String, dynamic>? translations, [String? accKey]) {
+  if (translations == null) {
+    return '';
+  }
   var fileContent = '';
 
   final sortedKeys = translations.keys.toList();
@@ -205,8 +252,8 @@ String _resolve(Map<String, dynamic> translations, [String? accKey]) {
   return fileContent;
 }
 
-Future _writeJson(
-    StringBuffer classBuilder, List<FileSystemEntity> files) async {
+Future _writeJson(StringBuffer classBuilder, List<FileSystemEntity> files,
+    GenerateOptions options) async {
   var gFile = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
@@ -216,13 +263,16 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
 
-class CodegenLoader extends AssetLoader{
+class CodegenLoader implements AssetLoader{
   const CodegenLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale ) {
+  Future<Map<String, dynamic>?> load(String fullPath, Locale locale ) {
     return Future.value(mapLocales[locale.toString()]);
   }
+
+  @override
+  Future<Map<String, dynamic>?> loadFromPath(String path) async {}
 
   ''';
 
@@ -231,39 +281,28 @@ class CodegenLoader extends AssetLoader{
   for (var file in files) {
     final localeName =
         path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
-    listLocales.add('"$localeName": $localeName');
-    final fileData = File(file.path);
 
-    Map<String, dynamic>? data = json.decode(await fileData.readAsString());
+    var localeCheckExists = Intl.verifiedLocale(
+        localeName, NumberFormat.localeExists,
+        onFailure: (_) => null);
 
-    final mapString = JsonEncoder.withIndent('  ').convert(data);
-    gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
+    if (localeCheckExists != null) {
+      listLocales.add('"$localeName": $localeName');
+
+      var data = await loadData(file.path);
+      if (options.separatedKeys == true) {
+        data = await loadSeparatedData(data);
+      }
+
+      final mapString = JsonEncoder.withIndent('  ').convert(data);
+      gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
+    }
   }
 
   gFile +=
       'static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
   classBuilder.writeln(gFile);
 }
-
-// _writeCsv(StringBuffer classBuilder, List<FileSystemEntity> files) async {
-//   List<String> listLocales = List();
-//   final fileData = File(files.first.path);
-
-//   // CSVParser csvParser = CSVParser(await fileData.readAsString());
-
-//   // List listLangs = csvParser.getLanguages();
-//   for(String localeName in listLangs){
-//     listLocales.add('"$localeName": $localeName');
-//     String mapString = JsonEncoder.withIndent("  ").convert(csvParser.getLanguageMap(localeName)) ;
-
-//     classBuilder.writeln(
-//       '  static const Map<String,dynamic> $localeName = ${mapString};\n');
-//   }
-
-//   classBuilder.writeln(
-//       '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
-
-// }
 
 void printInfo(String info) {
   print('\u001b[32measy localization: $info\u001b[0m');

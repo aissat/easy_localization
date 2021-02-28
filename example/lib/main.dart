@@ -163,6 +163,10 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Text(LocaleKeys.reset_locale).tr(),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(LocaleKeys.separated_keys_separated_keys_deep_loaded.tr()),
             Spacer(
               flex: 1,
             ),
