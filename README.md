@@ -175,7 +175,7 @@ It's more easiest way change locale or get parameters 😉.
 Example:
 
 ```dart
-context.locale = Locale('en', 'US');
+context.setLocale(Locale('en', 'US'));
 
 print(context.locale.toString());
 ```
