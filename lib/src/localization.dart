@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+
 import 'plural_rules.dart';
 import 'translations.dart';
 
@@ -11,8 +12,7 @@ class Localization {
   late Locale _locale;
 
   final RegExp _replaceArgRegex = RegExp(r'{}');
-  final RegExp _linkKeyMatcher =
-      RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
+  final RegExp _linkKeyMatcher = RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
   final RegExp _bracketsMatcher = RegExp(r'[()]');
   final _modifiers = <String, String Function(String?)>{
@@ -45,7 +45,7 @@ class Localization {
     Map<String, String>? namedArgs,
     String? gender,
   }) {
-    late String res;
+    late var res;
 
     if (gender != null) {
       res = _gender(key, gender: gender);
@@ -57,7 +57,7 @@ class Localization {
 
     res = _replaceNamedArgs(res, namedArgs);
 
-    return _replaceArgs(res, args);
+    return _replaceArgs(res ?? key, args);
   }
 
   String _replaceLinks(String res, {bool logging = true}) {
@@ -72,10 +72,9 @@ class Localization {
       final formatterName = linkPrefixMatches.first[1];
 
       // Remove the leading @:, @.case: and the brackets
-      final linkPlaceholder =
-          link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
+      final linkPlaceholder = link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
 
-      var translated = _resolve(linkPlaceholder);
+      var translated = _resolve(linkPlaceholder) ?? '';
 
       if (formatterName != null) {
         if (_modifiers.containsKey(formatterName)) {
@@ -88,8 +87,7 @@ class Localization {
         }
       }
 
-      result =
-          translated.isEmpty ? result : result.replaceAll(link, translated);
+      result = translated.isEmpty ? result : result.replaceAll(link, translated);
     }
 
     return result;
@@ -103,8 +101,7 @@ class Localization {
 
   String _replaceNamedArgs(String res, Map<String, String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String key, String value) =>
-        res = res.replaceAll(RegExp('{$key}'), value));
+    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 
@@ -113,8 +110,7 @@ class Localization {
     return pluralRules[locale];
   }
 
-  String plural(String key, num value,
-      {List<String>? args, NumberFormat? format}) {
+  String plural(String key, num value, {List<String>? args, NumberFormat? format}) {
     late var pluralCase;
     late var res;
     var pluralRule = _pluralRule(_locale.languageCode, value);
@@ -154,35 +150,34 @@ class Localization {
         throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
 
-    return _replaceArgs(
-        res, args ?? [format == null ? '$value' : format.format(value)]);
+    final String finalRes = res ?? _resolvePlural(key, 'other') ?? key;
+
+    return _replaceArgs(finalRes, args ?? [format == null ? '$value' : format.format(value)]);
   }
 
-  String _gender(String key, {required String gender}) {
-    return _resolve(key + '.$gender');
+  String? _gender(String key, {required String gender}) {
+    return _resolve('$key.$gender');
   }
 
-  String _resolvePlural(String key, String subKey) {
-    var resource = _resolve('$key.$subKey');
-    return resource;
+  String? _resolvePlural(String key, String subKey) {
+    return _resolve('$key.$subKey');
   }
 
-  String _resolve(String key, {bool logging = true}) {
+  String? _resolve(String key, {bool logging = true}) {
     var resource = _translations?.get(key);
     if (resource == null) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
       if (_fallbackTranslations == null) {
-        return key;
+        return null;
       } else {
         resource = _fallbackTranslations?.get(key);
         if (resource == null) {
           if (logging) {
-            EasyLocalization.logger
-                .warning('Fallback localization key [$key] not found');
+            EasyLocalization.logger.warning('Fallback localization key [$key] not found');
           }
-          return key;
+          return null;
         }
       }
     }
