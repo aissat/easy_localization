@@ -45,7 +45,7 @@ class Localization {
     Map<String, String>? namedArgs,
     String? gender,
   }) {
-    late var res;
+    late String? res;
 
     if (gender != null) {
       res = _gender(key, gender: gender);
@@ -53,11 +53,11 @@ class Localization {
       res = _resolve(key);
     }
 
-    res = _replaceLinks(res);
+    res = _replaceLinks(res ?? key);
 
     res = _replaceNamedArgs(res, namedArgs);
 
-    return _replaceArgs(res ?? key, args);
+    return _replaceArgs(res, args);
   }
 
   String _replaceLinks(String res, {bool logging = true}) {
