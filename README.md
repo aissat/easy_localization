@@ -168,7 +168,7 @@ void main() async{
 
 Easy localization uses extension methods [BuildContext] for access to locale.
 
-It's more easiest way change locale or get parameters 😉.
+It's the easiest way change locale or get parameters 😉.
 
 ℹ️ No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
@@ -207,7 +207,7 @@ Example:
 ``` json
 {
    "msg":"{} are written in the {} language",
-   "msg_named":"Easy localization are written in the {lang} language",
+   "msg_named":"Easy localization is written in the {lang} language",
    "msg_mixed":"{} are written in the {lang} language",
    "gender":{
       "male":"Hi man ;) {}",
@@ -463,7 +463,7 @@ import 'generated/locale_keys.g.dart';
 ```
 4. All done!
 
-How to usage generated keys:
+How to use generated keys:
 
 ```dart
 print(LocaleKeys.title.tr()); //String
