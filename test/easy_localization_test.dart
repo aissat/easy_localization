@@ -330,7 +330,7 @@ void main() {
       });
 
       test('other as fallback', () {
-        expect(Localization.instance.plural('hat_other', -1), 'other hats');
+        expect(Localization.instance.plural('hat_other', 1), 'other hats');
       });
 
       test('with number format', () {

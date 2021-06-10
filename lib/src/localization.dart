@@ -109,7 +109,10 @@ class Localization {
   }
 
   String _resolvePlural(String key, String subKey) {
-    var resource = _resolve('$key.$subKey');
+    final tag = '$key.$subKey';
+    var resource = _resolve(tag);
+    if (resource == tag && subKey != 'other')
+      resource = _resolve('$key.other');
     return resource;
   }
 
@@ -120,6 +123,7 @@ class Localization {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
       if (_fallbackTranslations == null) {
+
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);
