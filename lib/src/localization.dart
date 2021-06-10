@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'plural_rules.dart';
 import 'translations.dart';
 
 class Localization {
@@ -11,8 +10,7 @@ class Localization {
   late Locale _locale;
 
   final RegExp _replaceArgRegex = RegExp(r'{}');
-  final RegExp _linkKeyMatcher =
-      RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
+  final RegExp _linkKeyMatcher = RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
   final RegExp _bracketsMatcher = RegExp(r'[()]');
   final _modifiers = <String, String Function(String?)>{
@@ -25,26 +23,16 @@ class Localization {
 
   static Localization? _instance;
   static Localization get instance => _instance ?? (_instance = Localization());
-  static Localization? of(BuildContext context) =>
-      Localizations.of<Localization>(context, Localization);
+  static Localization? of(BuildContext context) => Localizations.of<Localization>(context, Localization);
 
-  static bool load(
-    Locale locale, {
-    Translations? translations,
-    Translations? fallbackTranslations,
-  }) {
+  static bool load(Locale locale, {Translations? translations, Translations? fallbackTranslations}) {
     instance._locale = locale;
     instance._translations = translations;
     instance._fallbackTranslations = fallbackTranslations;
     return translations == null ? false : true;
   }
 
-  String tr(
-    String key, {
-    List<String>? args,
-    Map<String, String>? namedArgs,
-    String? gender,
-  }) {
+  String tr(String key, {List<String>? args, Map<String, String>? namedArgs, String? gender}) {
     late String res;
 
     if (gender != null) {
@@ -72,8 +60,7 @@ class Localization {
       final formatterName = linkPrefixMatches.first[1];
 
       // Remove the leading @:, @.case: and the brackets
-      final linkPlaceholder =
-          link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
+      final linkPlaceholder = link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
 
       var translated = _resolve(linkPlaceholder);
 
@@ -82,14 +69,13 @@ class Localization {
           translated = _modifiers[formatterName]!(translated);
         } else {
           if (logging) {
-            EasyLocalization.logger.warning(
-                'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
+            EasyLocalization.logger
+                .warning('Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
           }
         }
       }
 
-      result =
-          translated.isEmpty ? result : result.replaceAll(link, translated);
+      result = translated.isEmpty ? result : result.replaceAll(link, translated);
     }
 
     return result;
@@ -103,59 +89,19 @@ class Localization {
 
   String _replaceNamedArgs(String res, Map<String, String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String key, String value) =>
-        res = res.replaceAll(RegExp('{$key}'), value));
+    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 
-  static PluralRule? _pluralRule(String? locale, num howMany) {
-    startRuleEvaluation(howMany);
-    return pluralRules[locale];
-  }
-
-  String plural(String key, num value,
-      {List<String>? args, NumberFormat? format}) {
-    late var pluralCase;
-    late var res;
-    var pluralRule = _pluralRule(_locale.languageCode, value);
-    switch (value) {
-      case 0:
-        pluralCase = PluralCase.ZERO;
-        break;
-      case 1:
-        pluralCase = PluralCase.ONE;
-        break;
-      case 2:
-        pluralCase = PluralCase.TWO;
-        break;
-      default:
-        pluralCase = pluralRule!();
-    }
-    switch (pluralCase) {
-      case PluralCase.ZERO:
-        res = _resolvePlural(key, 'zero');
-        break;
-      case PluralCase.ONE:
-        res = _resolvePlural(key, 'one');
-        break;
-      case PluralCase.TWO:
-        res = _resolvePlural(key, 'two');
-        break;
-      case PluralCase.FEW:
-        res = _resolvePlural(key, 'few');
-        break;
-      case PluralCase.MANY:
-        res = _resolvePlural(key, 'many');
-        break;
-      case PluralCase.OTHER:
-        res = _resolvePlural(key, 'other');
-        break;
-      default:
-        throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
-    }
-
-    return _replaceArgs(
-        res, args ?? [format == null ? '$value' : format.format(value)]);
+  String plural(String key, num value, {List<String>? args, NumberFormat? format}) {
+    final zero = _resolvePlural(key, 'zero');
+    final one = _resolvePlural(key, 'one');
+    final two = _resolvePlural(key, 'two');
+    final few = _resolvePlural(key, 'few');
+    final many = _resolvePlural(key, 'many');
+    final other = _resolvePlural(key, 'other');
+    final res = Intl.plural(value, locale: _locale.languageCode, zero: zero, one: one, two: two, few: few, many: many, other: other);
+    return _replaceArgs(res, args ?? [format == null ? '$value' : format.format(value)]);
   }
 
   String _gender(String key, {required String gender}) {
@@ -179,8 +125,7 @@ class Localization {
         resource = _fallbackTranslations?.get(key);
         if (resource == null) {
           if (logging) {
-            EasyLocalization.logger
-                .warning('Fallback localization key [$key] not found');
+            EasyLocalization.logger.warning('Fallback localization key [$key] not found');
           }
           return key;
         }
@@ -188,4 +133,5 @@ class Localization {
     }
     return resource;
   }
+
 }
