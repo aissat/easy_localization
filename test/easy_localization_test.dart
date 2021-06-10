@@ -307,14 +307,14 @@ void main() {
       // });
 
       test('zero', () {
-        expect(Localization.instance.plural('day', 0), '0 days');
+        expect(Localization.instance.plural('hat', 0), 'no hats');
       });
 
       test('one', () {
-        expect(Localization.instance.plural('day', 1), '1 day');
+        expect(Localization.instance.plural('hat', 1), 'one hat');
       });
       test('two', () {
-        expect(Localization.instance.plural('day', 2), '2 days');
+        expect(Localization.instance.plural('hat', 2), 'two hats');
       });
 
       test('few', () {
@@ -326,7 +326,11 @@ void main() {
       });
 
       test('other', () {
-        expect(Localization.instance.plural('day', 3), '3 other days');
+        expect(Localization.instance.plural('hat', -1), 'other hats');
+      });
+
+      test('other as fallback', () {
+        expect(Localization.instance.plural('hat_other', -1), 'other hats');
       });
 
       test('with number format', () {
