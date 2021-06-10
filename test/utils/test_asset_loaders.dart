@@ -25,6 +25,17 @@ class JsonAssetLoader extends AssetLoader {
         'many': '{} many days',
         'other': '{} other days'
       },
+      'hat': {
+        'zero': 'no hats',
+        'one': 'one hat',
+        'two': 'two hats',
+        'few': 'few hats',
+        'many': 'many hats',
+        'other': 'other hats'
+      },
+      'hat_other': {
+        'other': 'other hats'
+      },
       'money': {
         'zero': '{} has no money',
         'one': '{} has {} dollar',
