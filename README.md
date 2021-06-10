@@ -20,11 +20,6 @@ Easy and Fast internationalization for your Flutter Apps
 ![Sponsors](https://img.shields.io/opencollective/all/flutter_easy_localization?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 
-## About this fork
-This fork serves specifically to provide a temporary fix the issue 
-[#352](https://github.com/aissat/easy_localization/issues/352) introduced on the version 3.0.0 of the official 
-[easy_localization](https://github.com/aissat/easy_localization) package.
-
 ## Why easy_localization?
 
 - 🚀 Easy translations for many languages
