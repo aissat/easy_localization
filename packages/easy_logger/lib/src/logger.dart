@@ -22,7 +22,7 @@ class EasyLogger {
     EasyLogPrinter? printer,
     this.defaultLevel = LevelMessages.info,
   }) {
-    _printer = printer ?? easyLogDefaultPrinter;
+    this.printer = printer ?? easyLogDefaultPrinter;
     _currentBuildMode = _getCurrentBuildMode();
   }
 
@@ -48,13 +48,7 @@ class EasyLogger {
   /// @Default value `LevelMessages.info`
   LevelMessages defaultLevel;
 
-  EasyLogPrinter? _printer;
-
-  /// Print function that generates and printing log lines
-  /// @Default value `easyLogDefaultPrinter`
-  EasyLogPrinter? get printer => _printer;
-
-  /// Printer function setter.
+  /// Printer function instance.
   /// You can change the standard print function to a custom one.
   /// Example:
   /// ```dart
@@ -69,7 +63,7 @@ class EasyLogger {
   ///
   /// logger.printer = customLogPrinter;
   /// ```
-  set printer(EasyLogPrinter? newPrinter) => _printer = newPrinter;
+  EasyLogPrinter? printer;
 
   BuildMode _getCurrentBuildMode() {
     if (kReleaseMode) {
@@ -95,7 +89,7 @@ class EasyLogger {
   void call(Object object, {StackTrace? stackTrace, LevelMessages? level}) {
     level ??= defaultLevel;
     if (isEnabled(level)) {
-      _printer!(object, stackTrace: stackTrace, level: level, name: name);
+      printer!(object, stackTrace: stackTrace, level: level, name: name);
     }
   }
 
