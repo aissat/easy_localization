@@ -424,6 +424,46 @@ Code generation supports only json files, for more information run in terminal `
 | --output-dir | -O | lib/generated | Output folder stores for the generated file |
 | --output-file | -o | codegen_loader.g.dart | Output file name |
 | --format | -f | json | Support json or keys formats |
+| --[no-]skip-object-keys | -x | false | Ignores keys defining nested object except for pluarl(), gender() keywords. See example below  |
+
+`Skip-object-keys` example
+```json
+ "generic": {
+        "username": "Username"
+    },
+    "login": {
+        "header" : {
+            "title": "title",
+            "something": "example"
+        },
+        "day": {
+            "zero":"{} дней",
+            "one": "{} день",
+            "two": "{} дня",
+            "few": "{} дня",
+            "many": "{} дней",
+            "other": "{} дней"
+        }
+    },
+```
+
+Generated keys file with enabled option `skip-object-keys`
+```dart
+static const generic_username = 'generic.username';
+static const login_header_title = 'login.header.title';
+static const login_header_someting = 'login.header.someting';
+static const login_day = 'login.day';
+```
+otherwise
+```dart
+  static const generic_username = 'generic.username';
+  static const generic = 'generic';
+  static const login_header_title = 'login.header.title';
+  static const login_header_something = 'login.header.someting';
+  static const login_header = 'login.header';
+  static const login_day = 'login.day';
+  static const login = 'login';
+```
 
 ### 🔌 Localization asset loader class
 
