@@ -74,11 +74,11 @@ ArgParser _generateArgParser(GenerateOptions? generateOptions) {
       allowed: ['json', 'keys']);
 
   parser.addFlag(
-    'skip-object-keys',
-    abbr: 'x',
+    'skip-unnecessary-keys',
+    abbr: 'u',
     defaultsTo: false,
-    callback: (bool? x) => generateOptions!.skipObjectKeys = x,
-    help: 'If true - skip keys of nested objects.',
+    callback: (bool? x) => generateOptions!.skipUnnecessaryKeys = x,
+    help: 'If true - Skip unnecessary keys of nested objects.',
   );
 
   return parser;
@@ -91,11 +91,11 @@ class GenerateOptions {
   String? outputDir;
   String? outputFile;
   String? format;
-  bool? skipObjectKeys;
+  bool? skipUnnecessaryKeys;
 
   @override
   String toString() {
-    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile skipObjectKeys: $skipObjectKeys';
+    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile skipUnnecessaryKeys: $skipUnnecessaryKeys';
   }
 }
 
@@ -155,7 +155,7 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath,
       await _writeJson(classBuilder, files);
       break;
     case 'keys':
-      await _writeKeys(classBuilder, files, options.skipObjectKeys);
+      await _writeKeys(classBuilder, files, options.skipUnnecessaryKeys);
       break;
     // case 'csv':
     //   await _writeCsv(classBuilder, files);
@@ -194,7 +194,7 @@ String _resolve(Map<String, dynamic> translations, bool? skipObjectKeys,
 
   final sortedKeys = translations.keys.toList();
 
-  final canIgnoreKeys = skipObjectKeys != null && skipObjectKeys;
+  final canIgnoreKeys = skipObjectKeys == true;
 
   bool containsPreservedKeywords(Map<String, dynamic> map) =>
       map.keys.any((element) => _preservedKeywords.contains(element));
