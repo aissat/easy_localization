@@ -171,7 +171,7 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath,
 }
 
 Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
-    bool? skipObjectKeys) async {
+    bool? skipUnnecessaryKeys) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
@@ -183,18 +183,18 @@ abstract class  LocaleKeys {
   Map<String, dynamic> translations =
       json.decode(await fileData.readAsString());
 
-  file += _resolve(translations, skipObjectKeys);
+  file += _resolve(translations, skipUnnecessaryKeys);
 
   classBuilder.writeln(file);
 }
 
-String _resolve(Map<String, dynamic> translations, bool? skipObjectKeys,
+String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
     [String? accKey]) {
   var fileContent = '';
 
   final sortedKeys = translations.keys.toList();
 
-  final canIgnoreKeys = skipObjectKeys == true;
+  final canIgnoreKeys = skipUnnecessaryKeys == true;
 
   bool containsPreservedKeywords(Map<String, dynamic> map) =>
       map.keys.any((element) => _preservedKeywords.contains(element));
@@ -212,7 +212,8 @@ String _resolve(Map<String, dynamic> translations, bool? skipObjectKeys,
         nextAccKey = '$accKey.$key';
       }
 
-      fileContent += _resolve(translations[key], skipObjectKeys, nextAccKey);
+      fileContent +=
+          _resolve(translations[key], skipUnnecessaryKeys, nextAccKey);
     }
 
     if (!_preservedKeywords.contains(key)) {
