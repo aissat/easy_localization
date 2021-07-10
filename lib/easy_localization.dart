@@ -1,5 +1,7 @@
 library easy_localization;
 
+export 'package:easy_localization/src/easy_localization_controller.dart';
+export 'package:easy_localization/src/localization.dart';
 export 'package:easy_localization/src/easy_localization_app.dart';
 export 'package:easy_localization/src/asset_loader.dart';
 export 'package:easy_localization/src/public.dart';
