@@ -209,7 +209,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   /// Change app locale
   Future<void> setLocale(Locale _locale) async {
     // Check old locale
-    if (_locale != _localeState.locale) {
+    if (_locale != _localeState.savedLocale) {
       assert(parent.supportedLocales.contains(_locale));
       await _localeState.setLocale(_locale);
     }
@@ -223,12 +223,16 @@ class _EasyLocalizationProvider extends InheritedWidget {
   /// Getting device locale from platform
   Locale get deviceLocale => _localeState.deviceLocale;
 
-  /// Reset locale to platform locale
+  /// Get current locale
+  Locale? get savedLocale => _localeState.savedLocale;
+
+  /// Getting saved locale from shared preferences
   Future<void> resetLocale() => _localeState.resetLocale();
 
   @override
   bool updateShouldNotify(_EasyLocalizationProvider oldWidget) {
-    return oldWidget.currentLocale != locale;
+    return oldWidget.currentLocale != locale ||
+        oldWidget.savedLocale != savedLocale;
   }
 
   static _EasyLocalizationProvider? of(BuildContext context) =>

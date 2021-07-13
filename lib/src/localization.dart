@@ -115,22 +115,9 @@ class Localization {
 
   String plural(String key, num value,
       {List<String>? args, NumberFormat? format}) {
-    late var pluralCase;
     late var res;
     var pluralRule = _pluralRule(_locale.languageCode, value);
-    switch (value) {
-      case 0:
-        pluralCase = PluralCase.ZERO;
-        break;
-      case 1:
-        pluralCase = PluralCase.ONE;
-        break;
-      case 2:
-        pluralCase = PluralCase.TWO;
-        break;
-      default:
-        pluralCase = pluralRule!();
-    }
+    late var pluralCase = pluralRule!();
     switch (pluralCase) {
       case PluralCase.ZERO:
         res = _resolvePlural(key, 'zero');
@@ -148,10 +135,9 @@ class Localization {
         res = _resolvePlural(key, 'many');
         break;
       case PluralCase.OTHER:
+      default:
         res = _resolvePlural(key, 'other');
         break;
-      default:
-        throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
 
     return _replaceArgs(

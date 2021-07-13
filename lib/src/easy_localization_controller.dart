@@ -102,6 +102,7 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> setLocale(Locale l) async {
     _locale = l;
+    _savedLocale = l;
     await loadTranslations();
     notifyListeners();
     EasyLocalization.logger('Locale $locale changed');
@@ -125,13 +126,18 @@ class EasyLocalizationController extends ChangeNotifier {
   }
 
   Future<void> deleteSaveLocale() async {
+    _locale = _deviceLocale;
     _savedLocale = null;
+    await loadTranslations();
+    notifyListeners();
     final _preferences = await SharedPreferences.getInstance();
     await _preferences.remove('locale');
     EasyLocalization.logger('Saved locale deleted');
   }
 
   Locale get deviceLocale => _deviceLocale;
+
+  Locale? get savedLocale => _savedLocale;
 
   Future<void> resetLocale() async {
     EasyLocalization.logger('Reset locale to platform locale $_deviceLocale');
