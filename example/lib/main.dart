@@ -13,7 +13,6 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
-    child: MyApp(),
     supportedLocales: [
       Locale('en', 'US'),
       Locale('ar', 'DZ'),
@@ -21,6 +20,7 @@ void main() async {
       Locale('ru', 'RU')
     ],
     path: 'resources/langs',
+    child: MyApp(),
     // fallbackLocale: Locale('en', 'US'),
     // startLocale: Locale('de', 'DE'),
     // saveLocale: false,
@@ -87,10 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(LocaleKeys.title).tr(),
         actions: <Widget>[
           TextButton(
-            child: Icon(
-              Icons.language,
-              color: Colors.white,
-            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -98,6 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     builder: (_) => LanguageView(), fullscreenDialog: true),
               );
             },
+            child: Icon(
+              Icons.language,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

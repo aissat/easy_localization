@@ -51,10 +51,10 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'path',
           supportedLocales: [Locale('en', 'US')],
           assetLoader: JsonAssetLoader(),
+          child: MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -88,10 +88,10 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           assetLoader: RootBundleAssetLoader(),
           supportedLocales: [Locale('en', 'US')],
+          child: MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -118,9 +118,9 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           supportedLocales: [Locale('en', 'US')],
+          child: MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -147,9 +147,9 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18',
           supportedLocales: [Locale('en', 'US')],
+          child: MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -166,9 +166,9 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           supportedLocales: [Locale('en', 'US')],
+          child: MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -209,9 +209,9 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+          child: MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -267,9 +267,9 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+          child: MyApp(),
         ));
 
         // await tester.idle();
@@ -307,14 +307,14 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           saveLocale: false,
           useOnlyLangCode: true,
           supportedLocales: [
             Locale('en'),
             Locale('ar')
-          ], // Locale('en', 'US'), Locale('ar','DZ')
+          ],
+          child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -336,14 +336,14 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           saveLocale: false,
           useOnlyLangCode: true,
           supportedLocales: [
             Locale('en'),
             Locale('ar')
-          ], // Locale('en', 'US'), Locale('ar','DZ')
+          ],
+          child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -365,12 +365,12 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           saveLocale: false,
           useOnlyLangCode: true,
           supportedLocales: [Locale('ar')],
           fallbackLocale: Locale('ar'),
+          child: MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -388,14 +388,14 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          child: MyApp(),
           path: 'i18n',
           saveLocale: false,
           useOnlyLangCode: true,
           // fallbackLocale:Locale('en') ,
           supportedLocales: [
             Locale('ar')
-          ], // Locale('en', 'US'), Locale('ar','DZ')
+          ],
+          child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -420,10 +420,10 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             // fallbackLocale:Locale('en') ,
-            supportedLocales: [Locale('en'), Locale('ar')], //
+            supportedLocales: [Locale('en'), Locale('ar')],
+            child: MyApp(), //
           ));
           // await tester.idle();
           await tester.pump(Duration(seconds: 2));
@@ -442,10 +442,10 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             // fallbackLocale:Locale('en') ,
-            supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')], //
+            supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+            child: MyApp(), //
           ));
           // await tester.idle();
           await tester.pump(Duration(seconds: 2));
@@ -464,11 +464,11 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             startLocale: Locale('ar', 'DZ'),
             // fallbackLocale:Locale('en') ,
-            supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')], //
+            supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+            child: MyApp(), //
           ));
           // await tester.idle();
           await tester.pump(Duration(seconds: 2));
@@ -497,7 +497,6 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             saveLocale: true,
             // fallbackLocale:Locale('en') ,
@@ -505,7 +504,8 @@ void main() async {
             supportedLocales: [
               Locale('en'),
               Locale('ar')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            ],
+            child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
           ));
           // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -533,14 +533,14 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             saveLocale: true,
             // fallbackLocale:Locale('en') ,
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            ],
+            child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
           ));
           // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -559,14 +559,14 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             saveLocale: false,
             // fallbackLocale:Locale('en') ,
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            ],
+            child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
           ));
           // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -593,13 +593,13 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             // fallbackLocale:Locale('en') ,
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            ],
+            child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
           ));
           // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -616,13 +616,13 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             // fallbackLocale:Locale('en') ,
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            ],
+            child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
           ));
           // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -638,12 +638,12 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            ],
+            child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
           ));
           // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -660,13 +660,13 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
             ], // Locale('en', 'US'), Locale('ar','DZ')
             startLocale: Locale('ar', 'DZ'),
+            child: MyApp(),
           ));
           // await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -686,12 +686,12 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            ],
+            child: MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
           ));
           await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
@@ -708,13 +708,13 @@ void main() async {
       (WidgetTester tester) async {
         await tester.runAsync(() async {
           await tester.pumpWidget(EasyLocalization(
-            child: MyApp(),
             path: 'i18n',
             supportedLocales: [
               Locale('en', 'US'),
               Locale('ar', 'DZ')
             ], // Locale('en', 'US'), Locale('ar','DZ')
             startLocale: Locale('ar', 'DZ'),
+            child: MyApp(),
           ));
           await tester.idle();
           // The async delegator load will require build on the next frame. Thus, pump
