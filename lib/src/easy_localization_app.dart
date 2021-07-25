@@ -103,7 +103,7 @@ class EasyLocalization extends StatefulWidget {
   /// so that savedLocale is loaded and used from the
   /// start.
   static Future<void> ensureInitialized() async =>
-      EasyLocalizationController.initEasyLocation();
+      await EasyLocalizationController.initEasyLocation();
 
   /// Customizable logger
   static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
