@@ -15,7 +15,7 @@ import 'localization.dart';
 /// ```json
 /// {
 ///    "msg":"{} are written in the {} language",
-///    "msg_named":"Easy localization are written in the {lang} language",
+///    "msg_named":"Easy localization is written in the {lang} language",
 ///    "msg_mixed":"{} are written in the {lang} language",
 ///    "gender":{
 ///       "male":"Hi man ;) {}",
@@ -37,8 +37,7 @@ String tr(
   Map<String, String>? namedArgs,
   String? gender,
 }) {
-  return Localization.instance
-      .tr(key, args: args, namedArgs: namedArgs, gender: gender);
+  return Localization.instance.tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
 /// {@template plural}

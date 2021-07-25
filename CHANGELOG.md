@@ -1,5 +1,11 @@
 # Changelog
 
+### [3.0.1]
+
+- added option allowing skip keys of nested object
+- fixed plural bug
+- fixed typos
+
 ### [3.0.0]
 
 - **BREAKING**: Added `EasyLocalization.ensureInitialized()`, Needs to be called
