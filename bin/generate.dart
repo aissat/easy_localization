@@ -254,7 +254,7 @@ class CodegenLoader extends AssetLoader{
 
   for (var file in files) {
     final localeName =
-        path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
+        path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '');
     listLocales.add('"$localeName": $localeName');
     final fileData = File(file.path);
 
