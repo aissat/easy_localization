@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 /// ```
 ///class FileAssetLoader extends AssetLoader {
 ///  @override
-///  Future<Map<String, dynamic>> load(String path, Locale locale) async {
+///  Future<Map<String, dynamic>> load(String fullPath, Locale locale) async {
 ///    final file = File(path);
 ///    return json.decode(await file.readAsString());
 ///  }
@@ -17,7 +17,7 @@ import 'package:flutter/services.dart';
 /// ```
 abstract class AssetLoader {
   const AssetLoader();
-  Future<Map<String, dynamic>?> load(String path, Locale locale);
+  Future<Map<String, dynamic>?> load(String fullPath, Locale locale);
 }
 
 ///
