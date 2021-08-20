@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -164,18 +165,35 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath,
       printError('Format not support');
   }
 
-  classBuilder.writeln('}');
   generatedFile.writeAsStringSync(classBuilder.toString());
 
   printInfo('All done! File generated in ${outputPath.path}');
 }
 
-Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
-    bool? skipUnnecessaryKeys) async {
+class _NestedTranslationObject {
+  final bool isRootObject;
+  final String className;
+  final Map<String, dynamic> translations;
+  final bool shouldHaveValueGetter;
+  final String value;
+
+  _NestedTranslationObject({
+    required this.className,
+    required this.translations,
+    required this.isRootObject,
+    this.shouldHaveValueGetter = false,
+    this.value = '',
+  });
+}
+
+Future _writeKeys(
+  StringBuffer classBuilder,
+  List<FileSystemEntity> files,
+  bool? skipUnnecessaryKeys,
+) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
 ''';
 
   final fileData = File(files.first.path);
@@ -183,50 +201,113 @@ abstract class  LocaleKeys {
   Map<String, dynamic> translations =
       json.decode(await fileData.readAsString());
 
-  file += _resolve(translations, skipUnnecessaryKeys);
+  final processingQueue = Queue<_NestedTranslationObject>.from([
+    _NestedTranslationObject(
+      className: 'LocaleKeys',
+      translations: translations,
+      isRootObject: true,
+    )
+  ]);
+
+  while (processingQueue.isNotEmpty) {
+    file += _processKeys(processingQueue, skipUnnecessaryKeys);
+  }
 
   classBuilder.writeln(file);
 }
 
-String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
-    [String? accKey]) {
-  var fileContent = '';
+bool _containsOnlyPreservedKeywords(Map<String, dynamic> map) =>
+    map.keys.every((element) => _preservedKeywords.contains(element));
+
+bool _containsPreservedKeywords(Map<String, dynamic> map) =>
+    map.keys.any((element) => _preservedKeywords.contains(element));
+
+String _processKeys(
+  Queue<_NestedTranslationObject> processingQueue,
+  bool? skipUnnecessaryKeys,
+) {
+  var classContent = '';
+
+  final nestedObject = processingQueue.removeFirst();
+
+  classContent += nestedObject.isRootObject ? 'abstract class' : 'class';
+  classContent += ' ${nestedObject.className} ';
+  classContent += '{\n';
+  classContent +=
+      nestedObject.isRootObject ? '' : '  const ${nestedObject.className}();\n';
+  if (nestedObject.shouldHaveValueGetter) {
+    classContent += '  String val() => \'${nestedObject.value}\';\n';
+  }
+
+  final translations = nestedObject.translations;
 
   final sortedKeys = translations.keys.toList();
 
   final canIgnoreKeys = skipUnnecessaryKeys == true;
 
-  bool containsPreservedKeywords(Map<String, dynamic> map) =>
-      map.keys.any((element) => _preservedKeywords.contains(element));
-
   for (var key in sortedKeys) {
-    var ignoreKey = false;
-    if (translations[key] is Map) {
-      // If key does not contain keys for plural(), gender() etc. and option is enabled -> ignore it
-      ignoreKey = !containsPreservedKeywords(
+    final nestedValue =
+        nestedObject.isRootObject ? key : '${nestedObject.value}.$key';
+
+    if (translations[key] is Map &&
+        !_containsOnlyPreservedKeywords(translations[key])) {
+      final nestedClassName = nestedObject.isRootObject
+          ? '_$key'
+          : '${nestedObject.className}_$key';
+
+      final ignoreKey = !_containsPreservedKeywords(
               translations[key] as Map<String, dynamic>) &&
           canIgnoreKeys;
 
-      var nextAccKey = key;
-      if (accKey != null) {
-        nextAccKey = '$accKey.$key';
-      }
+      processingQueue.addLast(_NestedTranslationObject(
+        className: nestedClassName,
+        translations: translations[key],
+        isRootObject: false,
+        value: nestedValue,
+        shouldHaveValueGetter: !ignoreKey,
+      ));
 
-      fileContent +=
-          _resolve(translations[key], skipUnnecessaryKeys, nextAccKey);
-    }
-
-    if (!_preservedKeywords.contains(key)) {
-      accKey != null && !ignoreKey
-          ? fileContent +=
-              '  static const ${accKey.replaceAll('.', '_')}\_$key = \'$accKey.$key\';\n'
-          : !ignoreKey
-              ? fileContent += '  static const $key = \'$key\';\n'
-              : null;
+      classContent += _writeNestedObjectField(
+        name: key,
+        className: nestedClassName,
+        isRootObject: nestedObject.isRootObject,
+      );
+    } else if (!_preservedKeywords.contains(key)) {
+      classContent += _writeKeyField(
+        name: key,
+        value: nestedValue,
+        isRootObjcet: nestedObject.isRootObject,
+      );
     }
   }
 
-  return fileContent;
+  return classContent + '}\n\n';
+}
+
+String _writeNestedObjectField({
+  required String name,
+  required String className,
+  required bool isRootObject,
+}) {
+  var field = '  ';
+  field += isRootObject ? 'static const ' : 'final ';
+  field += name;
+  field += ' = ';
+  field += isRootObject ? '$className()' : 'const $className()';
+  return field + ';\n';
+}
+
+String _writeKeyField({
+  required String name,
+  required String value,
+  required bool isRootObjcet,
+}) {
+  var field = '  ';
+  field += isRootObjcet ? 'static const ' : 'final ';
+  field += name;
+  field += ' = ';
+  field += "'$value'";
+  return field + ';\n';
 }
 
 Future _writeJson(
