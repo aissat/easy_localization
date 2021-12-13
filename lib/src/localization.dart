@@ -174,10 +174,10 @@ class Localization {
   String _resolve(String key, {bool logging = true}) {
     var resource = _translations?.get(key);
     if (resource == null) {
-      if (logging) {
-        EasyLocalization.logger.warning('Localization key [$key] not found');
-      }
       if (_fallbackTranslations == null) {
+        if (logging) {
+          EasyLocalization.logger.warning('Localization key [$key] not found');
+        }
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);
