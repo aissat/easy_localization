@@ -7,11 +7,11 @@ class Localization {
   Translations? _translations, _fallbackTranslations;
   late Locale _locale;
 
-  final RegExp _replaceArgRegex = RegExp(r'{}');
+  final RegExp _replaceArgRegex = RegExp('{}');
   final RegExp _linkKeyMatcher =
       RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
-  final RegExp _bracketsMatcher = RegExp(r'[()]');
+  final RegExp _bracketsMatcher = RegExp('[()]');
   final _modifiers = <String, String Function(String?)>{
     'upper': (String? val) => val!.toUpperCase(),
     'lower': (String? val) => val!.toLowerCase(),
