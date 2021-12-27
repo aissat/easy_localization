@@ -377,10 +377,10 @@ void main() {
         );
       });
 
-      test('named args and default key', () {
+      test('named args and value name', () {
         expect(
           Localization.instance.plural('money_named_args', 3,
-              namedArgs: {'name': 'John'}, defaultKey: 'money'),
+              namedArgs: {'name': 'John'}, valueName: 'money'),
           'John has 3 dollars',
         );
       });

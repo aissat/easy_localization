@@ -41,7 +41,7 @@ extension TextTranslateExtension on Text {
     num value, {
     List<String>? args,
     Map<String, String>? namedArgs,
-    String? defaultKey,
+    String? name,
     NumberFormat? format,
   }) =>
       Text(
@@ -50,7 +50,7 @@ extension TextTranslateExtension on Text {
             value,
             args: args,
             namedArgs: namedArgs,
-            defaultKey: defaultKey,
+            name: name,
             format: format,
           ),
           key: key,
@@ -87,7 +87,7 @@ extension StringTranslateExtension on String {
     num value, {
     List<String>? args,
     Map<String, String>? namedArgs,
-    String? defaultKey,
+    String? name,
     NumberFormat? format,
   }) =>
       ez.plural(
@@ -95,7 +95,7 @@ extension StringTranslateExtension on String {
         value,
         args: args,
         namedArgs: namedArgs,
-        defaultKey: defaultKey,
+        name: name,
         format: format,
       );
 }
