@@ -241,11 +241,13 @@ You can use extension methods of [String] or [Text] widget, you can also use `pl
 
 #### Arguments:
 
-| Name   | Type           | Description                                                                                                                  |
-| ------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| value  | `num`          | Number value for pluralization                                                                                               |
-| args   | `List<String>` | List of localized strings. Replaces `{}` left to right                                                                       |
-| format | `NumberFormat` | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
+| Name      | Type                  | Description                                                                                                                  |
+| --------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| value     | `num`                 | Number value for pluralization                                                                                               |
+| args      | `List<String>`        | List of localized strings. Replaces `{}` left to right                                                                       |
+| namedArgs | `Map<String, String>` | Map of localized strings. Replaces the name keys `{key_name}` according to its name                                          |
+| name      | `String`              | Name of number value. Replaces `{$name}` to value                                                                            |
+| format    | `NumberFormat`        | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
 
 Example:
 
@@ -270,6 +272,12 @@ Example:
     "one": "{} has {} dollar",
     "many": "{} has {} dollars",
     "other": "{} has {} dollars"
+  },
+  "money_named_args": {
+    "zero": "{name} has no money",
+    "one": "{name} has {money} dollar",
+    "many": "{name} has {money} dollars",
+    "other": "{name} has {money} dollars"
   }
 }
 ```
@@ -287,6 +295,10 @@ var money = plural('money', 10.23) // output: You have 10.23 dollars
 
 //Static function with arguments
 var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
+
+//Static function with named arguments
+var money = plural('money_named_args', 10.23, namedArgs: {'name': 'Jane', 'money': '10.23'})  // output: Jane has 10.23 dollars
+var money = plural('money_named_args', 10.23, namedArgs: {'name': 'Jane'}, name: 'money')  // output: Jane has 10.23 dollars
 ```
 
 ### 🔥 Linked translations:

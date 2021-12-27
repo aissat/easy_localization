@@ -115,7 +115,7 @@ class Localization {
     num value, {
     List<String>? args,
     Map<String, String>? namedArgs,
-    String? defaultKey,
+    String? name,
     NumberFormat? format,
   }) {
     late var pluralCase;
@@ -161,8 +161,8 @@ class Localization {
 
     res = _replaceNamedArgs(
       res,
-      defaultKey != null
-          ? {if (namedArgs != null) ...namedArgs, defaultKey: formattedValue}
+      name != null
+          ? {if (namedArgs != null) ...namedArgs, name: formattedValue}
           : namedArgs,
     );
 
