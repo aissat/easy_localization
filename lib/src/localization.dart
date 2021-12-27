@@ -115,6 +115,7 @@ class Localization {
     num value, {
     List<String>? args,
     Map<String, String>? namedArgs,
+    String? defaultKey,
     NumberFormat? format,
   }) {
     late var pluralCase;
@@ -156,10 +157,16 @@ class Localization {
         throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
 
-    res = _replaceNamedArgs(res, namedArgs);
+    final formattedValue = format == null ? '$value' : format.format(value);
 
-    return _replaceArgs(
-        res, args ?? [format == null ? '$value' : format.format(value)]);
+    res = _replaceNamedArgs(
+      res,
+      defaultKey != null
+          ? {if (namedArgs != null) ...namedArgs, defaultKey: formattedValue}
+          : namedArgs,
+    );
+
+    return _replaceArgs(res, args ?? [formattedValue]);
   }
 
   String _gender(String key, {required String gender}) {

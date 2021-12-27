@@ -376,6 +376,14 @@ void main() {
           'John has 3 dollars',
         );
       });
+
+      test('named args and default key', () {
+        expect(
+          Localization.instance.plural('money_named_args', 3,
+              namedArgs: {'name': 'John'}, defaultKey: 'money'),
+          'John has 3 dollars',
+        );
+      });
     });
 
     group('extensions', () {

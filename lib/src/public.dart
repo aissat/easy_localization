@@ -85,7 +85,15 @@ String plural(
   num value, {
   List<String>? args,
   Map<String, String>? namedArgs,
+  String? defaultKey,
   NumberFormat? format,
 }) {
-  return Localization.instance.plural(key, value, args: args, namedArgs: namedArgs, format: format);
+  return Localization.instance.plural(
+    key,
+    value,
+    args: args,
+    namedArgs: namedArgs,
+    defaultKey: defaultKey,
+    format: format,
+  );
 }
