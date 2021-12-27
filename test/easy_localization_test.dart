@@ -380,7 +380,7 @@ void main() {
       test('named args and value name', () {
         expect(
           Localization.instance.plural('money_named_args', 3,
-              namedArgs: {'name': 'John'}, valueName: 'money'),
+              namedArgs: {'name': 'John'}, name: 'money'),
           'John has 3 dollars',
         );
       });
