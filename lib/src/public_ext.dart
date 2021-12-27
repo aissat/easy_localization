@@ -82,9 +82,10 @@ extension StringTranslateExtension on String {
   String plural(
     num value, {
     List<String>? args,
+    Map<String, String>? namedArgs,
     NumberFormat? format,
   }) =>
-      ez.plural(this, value, args: args, format: format);
+      ez.plural(this, value, args: args, namedArgs: namedArgs, format: format);
 }
 
 /// BuildContext extension method for access to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]

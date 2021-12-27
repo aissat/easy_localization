@@ -352,6 +352,30 @@ void main() {
         expect(Localization.instance.plural('money', 3, args: ['John', '3']),
             'John has 3 dollars');
       });
+
+      test('zero with named args', () {
+        expect(
+          Localization.instance.plural('money_named_args', 0,
+              namedArgs: {'name': 'John', 'money': '0'}),
+          'John has no money',
+        );
+      });
+
+      test('one with named args', () {
+        expect(
+          Localization.instance.plural('money_named_args', 1,
+              namedArgs: {'name': 'John', 'money': '1'}),
+          'John has 1 dollar',
+        );
+      });
+
+      test('other with named args', () {
+        expect(
+          Localization.instance.plural('money_named_args', 3,
+              namedArgs: {'name': 'John', 'money': '3'}),
+          'John has 3 dollars',
+        );
+      });
     });
 
     group('extensions', () {

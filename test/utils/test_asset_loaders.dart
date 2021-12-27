@@ -41,6 +41,11 @@ class JsonAssetLoader extends AssetLoader {
         'one': '{} has {} dollar',
         'other': '{} has {} dollars',
       },
+      'money_named_args': {
+        'zero': '{name} has no money',
+        'one': '{name} has {money} dollar',
+        'other': '{name} has {money} dollars',
+      },
       'nested_periods': {
         'Processing': 'Processing',
         'Processing.': 'Processing.',

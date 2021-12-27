@@ -110,8 +110,13 @@ class Localization {
     return pluralRules[locale];
   }
 
-  String plural(String key, num value,
-      {List<String>? args, NumberFormat? format}) {
+  String plural(
+    String key,
+    num value, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    NumberFormat? format,
+  }) {
     late var pluralCase;
     late var res;
     var pluralRule = _pluralRule(_locale.languageCode, value);
@@ -150,6 +155,8 @@ class Localization {
       default:
         throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
+
+    res = _replaceNamedArgs(res, namedArgs);
 
     return _replaceArgs(
         res, args ?? [format == null ? '$value' : format.format(value)]);
