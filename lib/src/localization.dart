@@ -159,12 +159,10 @@ class Localization {
 
     final formattedValue = format == null ? '$value' : format.format(value);
 
-    res = _replaceNamedArgs(
-      res,
-      name != null
-          ? {if (namedArgs != null) ...namedArgs, name: formattedValue}
-          : namedArgs,
-    );
+    if (name != null) {
+      namedArgs = {...?namedArgs, name: formattedValue};
+    }
+    res = _replaceNamedArgs(res, namedArgs);
 
     return _replaceArgs(res, args ?? [formattedValue]);
   }
