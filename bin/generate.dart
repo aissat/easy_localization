@@ -216,17 +216,36 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
           _resolve(translations[key], skipUnnecessaryKeys, nextAccKey);
     }
 
-    if (!_preservedKeywords.contains(key)) {
-      accKey != null && !ignoreKey
-          ? fileContent +=
-              '  static const ${accKey.replaceAll('.', '_')}\_$key = \'$accKey.$key\';\n'
-          : !ignoreKey
-              ? fileContent += '  static const $key = \'$key\';\n'
-              : null;
+    if (_preservedKeywords.contains(key)) {
+      continue;
+    }
+    if (accKey != null && !ignoreKey) {
+      final String keyName = '${accKey.replaceAll('.', '_')}\_$key';
+      final String keyNameCamel = _toCamelCase(keyName);
+      fileContent += '  static const $keyNameCamel = \'$accKey.$key\';\n';
+    } else {
+      !ignoreKey ? fileContent += '  static const $key = \'$key\';\n' : null;
     }
   }
 
   return fileContent;
+}
+
+String _toCamelCase(String key) {
+  final List<String> list = key.split("_");
+  final List<String> listCamelCase = [];
+
+  for (int i = 0; i < list.length; i++) {
+    final String word = list[i];
+    if (i == 0) {
+      listCamelCase.add(word.toLowerCase());
+      continue;
+    }
+    final String camelCaseWord =
+        "${word[0].toUpperCase()}${word.substring(1).toLowerCase()}";
+    listCamelCase.add(camelCaseWord);
+  }
+  return listCamelCase.join("");
 }
 
 Future _writeJson(
