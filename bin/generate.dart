@@ -233,8 +233,9 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
 
 String _toCamelCase(String key) {
   final List<String> list = key.split("_");
-  final List<String> listCamelCase = [];
+  if (list.length == 1) return key;
 
+  final List<String> listCamelCase = [];
   for (int i = 0; i < list.length; i++) {
     final String word = list[i];
     if (i == 0) {
