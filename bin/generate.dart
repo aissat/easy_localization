@@ -239,11 +239,10 @@ String _toCamelCase(String key) {
   for (int i = 0; i < list.length; i++) {
     final String word = list[i];
     if (i == 0) {
-      listCamelCase.add(word.toLowerCase());
+      listCamelCase.add(word);
       continue;
     }
-    final String camelCaseWord =
-        "${word[0].toUpperCase()}${word.substring(1).toLowerCase()}";
+    final String camelCaseWord = "${word[0].toUpperCase()}${word.substring(1)}";
     listCamelCase.add(camelCaseWord);
   }
   return listCamelCase.join("");
