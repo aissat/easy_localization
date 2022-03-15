@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'plural_rules.dart';
 import 'translations.dart';
 
@@ -10,11 +7,11 @@ class Localization {
   Translations? _translations, _fallbackTranslations;
   late Locale _locale;
 
-  final RegExp _replaceArgRegex = RegExp(r'{}');
+  final RegExp _replaceArgRegex = RegExp('{}');
   final RegExp _linkKeyMatcher =
       RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
-  final RegExp _bracketsMatcher = RegExp(r'[()]');
+  final RegExp _bracketsMatcher = RegExp('[()]');
   final _modifiers = <String, String Function(String?)>{
     'upper': (String? val) => val!.toUpperCase(),
     'lower': (String? val) => val!.toLowerCase(),
@@ -113,8 +110,14 @@ class Localization {
     return pluralRules[locale];
   }
 
-  String plural(String key, num value,
-      {List<String>? args, NumberFormat? format}) {
+  String plural(
+    String key,
+    num value, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? name,
+    NumberFormat? format,
+  }) {
     late var pluralCase;
     late var res;
     var pluralRule = _pluralRule(_locale.languageCode, value);
@@ -154,8 +157,14 @@ class Localization {
         throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
 
-    return _replaceArgs(
-        res, args ?? [format == null ? '$value' : format.format(value)]);
+    final formattedValue = format == null ? '$value' : format.format(value);
+
+    if (name != null) {
+      namedArgs = {...?namedArgs, name: formattedValue};
+    }
+    res = _replaceNamedArgs(res, namedArgs);
+
+    return _replaceArgs(res, args ?? [formattedValue]);
   }
 
   String _gender(String key, {required String gender}) {

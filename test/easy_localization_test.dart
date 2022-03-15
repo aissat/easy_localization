@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
@@ -8,7 +7,6 @@ import 'package:easy_localization/src/localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 
 import 'utils/test_asset_loaders.dart';
 
@@ -353,6 +351,38 @@ void main() {
       test('other with args', () {
         expect(Localization.instance.plural('money', 3, args: ['John', '3']),
             'John has 3 dollars');
+      });
+
+      test('zero with named args', () {
+        expect(
+          Localization.instance.plural('money_named_args', 0,
+              namedArgs: {'name': 'John', 'money': '0'}),
+          'John has no money',
+        );
+      });
+
+      test('one with named args', () {
+        expect(
+          Localization.instance.plural('money_named_args', 1,
+              namedArgs: {'name': 'John', 'money': '1'}),
+          'John has 1 dollar',
+        );
+      });
+
+      test('other with named args', () {
+        expect(
+          Localization.instance.plural('money_named_args', 3,
+              namedArgs: {'name': 'John', 'money': '3'}),
+          'John has 3 dollars',
+        );
+      });
+
+      test('named args and value name', () {
+        expect(
+          Localization.instance.plural('money_named_args', 3,
+              namedArgs: {'name': 'John'}, name: 'money'),
+          'John has 3 dollars',
+        );
       });
     });
 

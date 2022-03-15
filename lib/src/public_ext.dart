@@ -40,6 +40,8 @@ extension TextTranslateExtension on Text {
   Text plural(
     num value, {
     List<String>? args,
+    Map<String, String>? namedArgs,
+    String? name,
     NumberFormat? format,
   }) =>
       Text(
@@ -47,6 +49,8 @@ extension TextTranslateExtension on Text {
             data ?? '',
             value,
             args: args,
+            namedArgs: namedArgs,
+            name: name,
             format: format,
           ),
           key: key,
@@ -82,9 +86,18 @@ extension StringTranslateExtension on String {
   String plural(
     num value, {
     List<String>? args,
+    Map<String, String>? namedArgs,
+    String? name,
     NumberFormat? format,
   }) =>
-      ez.plural(this, value, args: args, format: format);
+      ez.plural(
+        this,
+        value,
+        args: args,
+        namedArgs: namedArgs,
+        name: name,
+        format: format,
+      );
 }
 
 /// BuildContext extension method for access to [locale], [supportedLocales], [fallbackLocale], [delegates] and [deleteSaveLocale()]
