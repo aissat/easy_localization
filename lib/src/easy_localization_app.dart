@@ -75,19 +75,23 @@ class EasyLocalization extends StatefulWidget {
   /// @Default value `errorWidget = ErrorWidget()`
   final Widget Function(FlutterError? message)? errorWidget;
 
-  EasyLocalization({
-    Key? key,
-    required this.child,
-    required this.supportedLocales,
-    required this.path,
-    this.fallbackLocale,
-    this.startLocale,
-    this.useOnlyLangCode = false,
-    this.useFallbackTranslations = false,
-    this.assetLoader = const RootBundleAssetLoader(),
-    this.saveLocale = true,
-    this.errorWidget,
-  })  : assert(supportedLocales.isNotEmpty),
+  /// callback when key is not available in translations of the locale
+  final Function(String key, Locale locale)? onLocaleKeyNotFound;
+
+  EasyLocalization(
+      {Key? key,
+      required this.child,
+      required this.supportedLocales,
+      required this.path,
+      this.fallbackLocale,
+      this.startLocale,
+      this.useOnlyLangCode = false,
+      this.useFallbackTranslations = false,
+      this.assetLoader = const RootBundleAssetLoader(),
+      this.saveLocale = true,
+      this.errorWidget,
+      this.onLocaleKeyNotFound})
+      : assert(supportedLocales.isNotEmpty),
         assert(path.isNotEmpty),
         super(key: key) {
     EasyLocalization.logger.debug('Start');
@@ -159,6 +163,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       delegate: _EasyLocalizationDelegate(
         localizationController: localizationController,
         supportedLocales: widget.supportedLocales,
+        onLocaleKeyNotFound: widget.onLocaleKeyNotFound,
       ),
     );
   }
@@ -238,12 +243,16 @@ class _EasyLocalizationProvider extends InheritedWidget {
 class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final List<Locale>? supportedLocales;
   final EasyLocalizationController? localizationController;
+  final Function(String key, Locale locale)? onLocaleKeyNotFound;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate(
-      {this.localizationController, this.supportedLocales}) {
+  _EasyLocalizationDelegate({
+    this.localizationController,
+    this.supportedLocales,
+    this.onLocaleKeyNotFound,
+  }) {
     EasyLocalization.logger.debug('Init Localization Delegate');
   }
 
@@ -259,7 +268,9 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
 
     Localization.load(value,
         translations: localizationController!.translations,
-        fallbackTranslations: localizationController!.fallbackTranslations);
+        fallbackTranslations: localizationController!.fallbackTranslations,
+        onLocaleKeyNotFound: onLocaleKeyNotFound);
+
     return Future.value(Localization.instance);
   }
 
