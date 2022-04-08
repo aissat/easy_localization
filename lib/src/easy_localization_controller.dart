@@ -82,7 +82,7 @@ class EasyLocalizationController extends ChangeNotifier {
       if (useFallbackTranslations && _fallbackLocale != null) {
         Map<String, dynamic>? baseLangData;
         if (_locale.countryCode != null && _locale.countryCode!.isNotEmpty) {
-          baseLangData = await loadTranslationData(Locale(locale.languageCode));
+          baseLangData = await loadBaseLangTranslationData(Locale(locale.languageCode));
         }
         data = await loadTranslationData(_fallbackLocale!);
         if (baseLangData != null) {
@@ -95,6 +95,16 @@ class EasyLocalizationController extends ChangeNotifier {
     } catch (e) {
       onLoadError(FlutterError(e.toString()));
     }
+  }
+
+  Future<Map<String, dynamic>?> loadBaseLangTranslationData(Locale locale) async {
+    try {
+      return await loadTranslationData(Locale(locale.languageCode));
+    } on FlutterError catch (e) {
+      // Disregard asset not found FlutterError when attempting to load base language fallback
+      EasyLocalization.logger.warning(e.message);
+    }
+    return null;
   }
 
   Future loadTranslationData(Locale locale) async {
