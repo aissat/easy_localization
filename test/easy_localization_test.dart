@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
+
 dynamic overridePrint(Function() testFn) => () {
       var spec = ZoneSpecification(print: (_, __, ___, String msg) {
         // Add to log instead of printing to stdout
@@ -297,12 +298,25 @@ void main() {
     });
 
     group('plural', () {
-      // setUpAll(() async {
-      //   await Localization.load(Locale('en-US'),
-      //       path: 'path',
-      //       useOnlyLangCode: true,
-      //       assetLoader: JsonAssetLoader());
-      // });
+      var r = EasyLocalizationController(
+          forceLocale: Locale('en'),
+          supportedLocales: [Locale('en'), Locale('fb')],
+          fallbackLocale: Locale('fb'),
+          path: 'path',
+          useOnlyLangCode: true,
+          useFallbackTranslations: true,
+          onLoadError: (FlutterError e) {
+            log(e.toString());
+          },
+          saveLocale: false,
+          assetLoader: JsonAssetLoader());
+
+      setUpAll(() async {
+        await r.loadTranslations();
+        Localization.load(Locale('en'),
+            translations: r.translations,
+            fallbackTranslations: r.fallbackTranslations);
+      });
 
       test('zero', () {
         expect(Localization.instance.plural('hat', 0), 'no hats');
@@ -329,6 +343,13 @@ void main() {
 
       test('other as fallback', () {
         expect(Localization.instance.plural('hat_other', 1), 'other hats');
+      });
+
+      test('other as fallback and fallback translation priority', () {
+        expect(
+          Localization.instance.plural('test_fallback_plurals', 2),
+          '2 seconds', // isNot('fallback two'),
+        );
       });
 
       test('with number format', () {
