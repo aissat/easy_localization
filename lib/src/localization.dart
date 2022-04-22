@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
+
 import 'plural_rules.dart';
 import 'translations.dart';
 
@@ -173,20 +174,20 @@ class Localization {
 
   String _resolvePlural(String key, String subKey) {
     final tag = '$key.$subKey';
-    var resource = _resolve(tag);
+    var resource = _resolve(tag, fallback: false);
     if (resource == tag && subKey != 'other') {
       resource = _resolve('$key.other');
     }
     return resource;
   }
 
-  String _resolve(String key, {bool logging = true}) {
+  String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
     if (resource == null) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
-      if (_fallbackTranslations == null) {
+      if (_fallbackTranslations == null || !fallback) {
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);
