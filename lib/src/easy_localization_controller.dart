@@ -48,29 +48,35 @@ class EasyLocalizationController extends ChangeNotifier {
       _locale = _savedLocale!;
     } else {
       // From Device Locale
-      _locale = supportedLocales.firstWhere(
-          (locale) => _checkInitLocale(locale, _deviceLocale),
-          orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
+      _locale = selectLocaleFrom(
+        supportedLocales,
+        _deviceLocale,
+        fallbackLocale: fallbackLocale,
+      );
     }
   }
 
+  @visibleForTesting
+  static Locale selectLocaleFrom(
+    List<Locale> supportedLocales,
+    Locale deviceLocale, {
+    Locale? fallbackLocale,
+  }) {
+    final selectedLocale = supportedLocales.firstWhere(
+      (locale) => locale.supports(deviceLocale),
+      orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale),
+    );
+    return selectedLocale;
+  }
+
   //Get fallback Locale
-  Locale _getFallbackLocale(
+  static Locale _getFallbackLocale(
       List<Locale> supportedLocales, Locale? fallbackLocale) {
     //If fallbackLocale not set then return first from supportedLocales
     if (fallbackLocale != null) {
       return fallbackLocale;
     } else {
       return supportedLocales.first;
-    }
-  }
-
-  bool _checkInitLocale(Locale locale, Locale? _deviceLocale) {
-    // If supported locale not contain countryCode then check only languageCode
-    if (locale.countryCode == null) {
-      return (locale.languageCode == _deviceLocale!.languageCode);
-    } else {
-      return (locale == _deviceLocale);
     }
   }
 
@@ -154,5 +160,27 @@ class EasyLocalizationController extends ChangeNotifier {
     EasyLocalization.logger('Reset locale to platform locale $_deviceLocale');
 
     await setLocale(_deviceLocale);
+  }
+}
+
+@visibleForTesting
+extension LocaleExtension on Locale {
+  bool supports(Locale locale) {
+    if (this == locale) {
+      return true;
+    }
+    if (languageCode != locale.languageCode) {
+      return false;
+    }
+    if (countryCode != null &&
+        countryCode!.isNotEmpty &&
+        countryCode != locale.countryCode) {
+      return false;
+    }
+    if (scriptCode != null && scriptCode != locale.scriptCode) {
+      return false;
+    }
+
+    return true;
   }
 }

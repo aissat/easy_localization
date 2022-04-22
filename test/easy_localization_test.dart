@@ -112,6 +112,56 @@ void main() {
       expect(Localization.instance.tr('path'), 'path/en-us.json');
     });
 
+    group('locale', () {
+      test('locale supports device locale', () {
+        const en = Locale('en');
+        const en2 = Locale('en', '');
+        const enUS = Locale('en', 'US');
+        const enGB = Locale('en', 'GB');
+        expect(en.supports(enUS), isTrue);
+        expect(en2.supports(enUS), isTrue);
+        expect(enUS.supports(enUS), isTrue);
+        expect(enGB.supports(enUS), isFalse);
+
+        const zh = Locale('zh', '');
+        const zh2 = Locale('zh', '');
+        const zhCN = Locale('zh', 'CN');
+        const zhHans =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        const zhHant =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
+        const zhHansCN = Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN');
+        expect(zh.supports(zhHansCN), isTrue);
+        expect(zh2.supports(zhHansCN), isTrue);
+        expect(zhCN.supports(zhHansCN), isTrue);
+        expect(zhHans.supports(zhHansCN), isTrue);
+        expect(zhHant.supports(zhHansCN), isFalse);
+        expect(zhHansCN.supports(zhHansCN), isTrue);
+      });
+
+      test('select locale from device locale', () {
+        const en = Locale('en', '');
+        const zh = Locale('zh', '');
+        const zhHans =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        const zhHant =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
+        const zhHansCN = Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN');
+
+        expect(
+          EasyLocalizationController.selectLocaleFrom([en, zh], zhHansCN),
+          zh,
+        );
+        expect(
+          EasyLocalizationController.selectLocaleFrom(
+              [zhHant, zhHans], zhHansCN),
+          zhHans,
+        );
+      });
+    });
+
     group('tr', () {
       var r = EasyLocalizationController(
           forceLocale: Locale('en'),
