@@ -173,9 +173,11 @@ class Localization {
   }
 
   String _resolvePlural(String key, String subKey) {
+    if (subKey == 'other') return _resolve('$key.other');
+
     final tag = '$key.$subKey';
-    var resource = _resolve(tag, fallback: false);
-    if (resource == tag && subKey != 'other') {
+    var resource = _resolve(tag, logging: false, fallback: false);
+    if (resource == tag) {
       resource = _resolve('$key.other');
     }
     return resource;
