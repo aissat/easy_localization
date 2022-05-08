@@ -78,6 +78,19 @@ class JsonAssetLoader extends AssetLoader {
       'path': '$fullPath',
       'test_missing_fallback':
           (locale.languageCode == 'fb' ? 'fallback!' : null),
+      'test_fallback_plurals': (locale.languageCode == 'fb'
+          ? {
+              'zero': 'fallback zero',
+              'one': 'fallback one',
+              'two': 'fallback two',
+              'few': 'fallback few',
+              'many': 'fallback many',
+              'other': 'fallback other',
+            }
+          : {
+              'one': '{} second',
+              'other': '{} seconds',
+            }),
     });
   }
 }

@@ -176,22 +176,24 @@ class Localization {
   }
 
   String _resolvePlural(String key, String subKey) {
+    if (subKey == 'other') return _resolve('$key.other');
+
     final tag = '$key.$subKey';
-    var resource = _resolve(tag);
-    if (resource == tag && subKey != 'other') {
+    var resource = _resolve(tag, logging: false, fallback: false);
+    if (resource == tag) {
       resource = _resolve('$key.other');
     }
     return resource;
   }
 
-  String _resolve(String key, {bool logging = true}) {
+  String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
     if (resource == null) {
       if (_onLocaleKeyNotFound != null) _onLocaleKeyNotFound!(key, _locale);
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
-      if (_fallbackTranslations == null) {
+      if (_fallbackTranslations == null || !fallback) {
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);

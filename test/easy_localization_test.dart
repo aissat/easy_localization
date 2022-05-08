@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
+
 dynamic overridePrint(Function() testFn) => () {
       var spec = ZoneSpecification(print: (_, __, ___, String msg) {
         // Add to log instead of printing to stdout
@@ -110,6 +111,56 @@ void main() {
           Localization.load(Locale('en', 'us'), translations: r2.translations),
           true);
       expect(Localization.instance.tr('path'), 'path/en-us.json');
+    });
+
+    group('locale', () {
+      test('locale supports device locale', () {
+        const en = Locale('en');
+        const en2 = Locale('en', '');
+        const enUS = Locale('en', 'US');
+        const enGB = Locale('en', 'GB');
+        expect(en.supports(enUS), isTrue);
+        expect(en2.supports(enUS), isTrue);
+        expect(enUS.supports(enUS), isTrue);
+        expect(enGB.supports(enUS), isFalse);
+
+        const zh = Locale('zh', '');
+        const zh2 = Locale('zh', '');
+        const zhCN = Locale('zh', 'CN');
+        const zhHans =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        const zhHant =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
+        const zhHansCN = Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN');
+        expect(zh.supports(zhHansCN), isTrue);
+        expect(zh2.supports(zhHansCN), isTrue);
+        expect(zhCN.supports(zhHansCN), isTrue);
+        expect(zhHans.supports(zhHansCN), isTrue);
+        expect(zhHant.supports(zhHansCN), isFalse);
+        expect(zhHansCN.supports(zhHansCN), isTrue);
+      });
+
+      test('select locale from device locale', () {
+        const en = Locale('en', '');
+        const zh = Locale('zh', '');
+        const zhHans =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        const zhHant =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
+        const zhHansCN = Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN');
+
+        expect(
+          EasyLocalizationController.selectLocaleFrom([en, zh], zhHansCN),
+          zh,
+        );
+        expect(
+          EasyLocalizationController.selectLocaleFrom(
+              [zhHant, zhHans], zhHansCN),
+          zhHans,
+        );
+      });
     });
 
     group('tr', () {
@@ -297,12 +348,25 @@ void main() {
     });
 
     group('plural', () {
-      // setUpAll(() async {
-      //   await Localization.load(Locale('en-US'),
-      //       path: 'path',
-      //       useOnlyLangCode: true,
-      //       assetLoader: JsonAssetLoader());
-      // });
+      var r = EasyLocalizationController(
+          forceLocale: Locale('en'),
+          supportedLocales: [Locale('en'), Locale('fb')],
+          fallbackLocale: Locale('fb'),
+          path: 'path',
+          useOnlyLangCode: true,
+          useFallbackTranslations: true,
+          onLoadError: (FlutterError e) {
+            log(e.toString());
+          },
+          saveLocale: false,
+          assetLoader: JsonAssetLoader());
+
+      setUpAll(() async {
+        await r.loadTranslations();
+        Localization.load(Locale('en'),
+            translations: r.translations,
+            fallbackTranslations: r.fallbackTranslations);
+      });
 
       test('zero', () {
         expect(Localization.instance.plural('hat', 0), 'no hats');
@@ -330,6 +394,16 @@ void main() {
       test('other as fallback', () {
         expect(Localization.instance.plural('hat_other', 1), 'other hats');
       });
+
+      test('other as fallback and fallback translations priority',
+          overridePrint(() {
+        printLog = [];
+        expect(
+          Localization.instance.plural('test_fallback_plurals', 2),
+          '2 seconds', // isNot('fallback two'),
+        );
+        expect(printLog, isEmpty);
+      }));
 
       test('with number format', () {
         expect(
