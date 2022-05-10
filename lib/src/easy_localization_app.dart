@@ -71,7 +71,6 @@ class EasyLocalization extends StatefulWidget {
   /// @Default value true
   final bool saveLocale;
 
-
   final bool logEnable;
 
   /// Shows a custom error widget when an error is encountered instead of the default error widget.
@@ -94,23 +93,30 @@ class EasyLocalization extends StatefulWidget {
   })  : assert(supportedLocales.isNotEmpty),
         assert(path.isNotEmpty),
         super(key: key) {
+    if (logEnable)
+      logger = EasyLogger(
+          name: '🌎 Easy Localization',
+          enableBuildModes: logEnable
+              ? []
+              : const <BuildMode>[
+                  BuildMode.profile,
+                  BuildMode.debug,
+                ]);
     EasyLocalization.logger.debug('Start');
   }
 
   @override
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
-  static _EasyLocalizationProvider? of(BuildContext context) =>
-      _EasyLocalizationProvider.of(context);
+  static _EasyLocalizationProvider? of(BuildContext context) => _EasyLocalizationProvider.of(context);
 
   /// ensureInitialized needs to be called in main
   /// so that savedLocale is loaded and used from the
   /// start.
-  static Future<void> ensureInitialized() async =>
-      await EasyLocalizationController.initEasyLocation();
+  static Future<void> ensureInitialized() async => await EasyLocalizationController.initEasyLocation();
 
   /// Customizable logger
-  static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization',enable: false);
+  static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
@@ -196,8 +202,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
-  _EasyLocalizationProvider(this.parent, this._localeState,
-      {Key? key, required this.delegate})
+  _EasyLocalizationProvider(this.parent, this._localeState, {Key? key, required this.delegate})
       : currentLocale = _localeState.locale,
         super(key: key, child: parent.child) {
     EasyLocalization.logger.debug('Init provider');
@@ -208,6 +213,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   /// Get fallback locale
   Locale? get fallbackLocale => parent.fallbackLocale;
+
   // Locale get startLocale => parent.startLocale;
 
   /// Change app locale
@@ -246,8 +252,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate(
-      {this.localizationController, this.supportedLocales}) {
+  _EasyLocalizationDelegate({this.localizationController, this.supportedLocales}) {
     EasyLocalization.logger.debug('Init Localization Delegate');
   }
 
