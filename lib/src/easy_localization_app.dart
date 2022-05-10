@@ -71,6 +71,9 @@ class EasyLocalization extends StatefulWidget {
   /// @Default value true
   final bool saveLocale;
 
+
+  final bool logEnable;
+
   /// Shows a custom error widget when an error is encountered instead of the default error widget.
   /// @Default value `errorWidget = ErrorWidget()`
   final Widget Function(FlutterError? message)? errorWidget;
@@ -82,6 +85,7 @@ class EasyLocalization extends StatefulWidget {
     required this.path,
     this.fallbackLocale,
     this.startLocale,
+    this.logEnable = true,
     this.useOnlyLangCode = false,
     this.useFallbackTranslations = false,
     this.assetLoader = const RootBundleAssetLoader(),
@@ -106,7 +110,7 @@ class EasyLocalization extends StatefulWidget {
       await EasyLocalizationController.initEasyLocation();
 
   /// Customizable logger
-  static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
+  static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization',enable: false);
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {

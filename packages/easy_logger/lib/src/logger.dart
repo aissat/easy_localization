@@ -9,6 +9,7 @@ class EasyLogger {
   /// Callable class, [more info](https://dart.dev/guides/language/language-tour#callable-classes)
   EasyLogger({
     this.name = '',
+    this.enable = true,
     this.enableBuildModes = const <BuildMode>[
       BuildMode.profile,
       BuildMode.debug,
@@ -35,6 +36,8 @@ class EasyLogger {
   /// [YourName] same log text
   /// ```
   String name;
+
+  bool enable;
 
   /// List of available build modes in which logging is enabled.
   /// @Default value `const <LevelMessages>[BuildMode.profile, BuildMode.debug]`
@@ -88,6 +91,7 @@ class EasyLogger {
   /// The main callable function for handling log messages.
   void call(Object object, {StackTrace? stackTrace, LevelMessages? level}) {
     level ??= defaultLevel;
+    if (!enable) return;
     if (isEnabled(level)) {
       printer!(object, stackTrace: stackTrace, level: level, name: name);
     }
