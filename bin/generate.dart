@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -30,7 +31,7 @@ bool _isHelpCommand(List<String> args) {
 
 void _printHelperDisplay() {
   var parser = _generateArgParser(null);
-  print(parser.usage);
+  log(parser.usage);
 }
 
 GenerateOptions _generateOption(List<String> args) {
@@ -290,9 +291,9 @@ class CodegenLoader extends AssetLoader{
 // }
 
 void printInfo(String info) {
-  print('\u001b[32measy localization: $info\u001b[0m');
+  log('\u001b[32measy localization: $info\u001b[0m');
 }
 
 void printError(String error) {
-  print('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
+  log('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
 }

@@ -14,6 +14,7 @@ class EasyLocalizationController extends ChangeNotifier {
   Locale? _fallbackLocale;
 
   final Function(FlutterError e) onLoadError;
+  // ignore: prefer_typing_uninitialized_variables
   final assetLoader;
   final String path;
   final bool useFallbackTranslations;

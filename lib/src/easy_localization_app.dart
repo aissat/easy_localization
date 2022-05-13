@@ -65,6 +65,7 @@ class EasyLocalization extends StatefulWidget {
   /// Class loader for localization files.
   /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
   /// @Default value `const RootBundleAssetLoader()`
+  // ignore: prefer_typing_uninitialized_variables
   final assetLoader;
 
   /// Save locale in device storage.
