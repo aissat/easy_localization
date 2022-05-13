@@ -88,7 +88,8 @@ class EasyLocalizationController extends ChangeNotifier {
       if (useFallbackTranslations && _fallbackLocale != null) {
         Map<String, dynamic>? baseLangData;
         if (_locale.countryCode != null && _locale.countryCode!.isNotEmpty) {
-          baseLangData = await loadBaseLangTranslationData(Locale(locale.languageCode));
+          baseLangData =
+              await loadBaseLangTranslationData(Locale(locale.languageCode));
         }
         data = await loadTranslationData(_fallbackLocale!);
         if (baseLangData != null) {
@@ -103,7 +104,8 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>?> loadBaseLangTranslationData(Locale locale) async {
+  Future<Map<String, dynamic>?> loadBaseLangTranslationData(
+      Locale locale) async {
     try {
       return await loadTranslationData(Locale(locale.languageCode));
     } on FlutterError catch (e) {
@@ -133,24 +135,24 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> _saveLocale(Locale? locale) async {
     if (!saveLocale) return;
-    final _preferences = await SharedPreferences.getInstance();
-    await _preferences.setString('locale', locale.toString());
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString('locale', locale.toString());
     EasyLocalization.logger('Locale $locale saved');
   }
 
   static Future<void> initEasyLocation() async {
-    final _preferences = await SharedPreferences.getInstance();
-    final _strLocale = _preferences.getString('locale');
-    _savedLocale = _strLocale != null ? _strLocale.toLocale() : null;
-    final _foundPlatformLocale = await findSystemLocale();
-    _deviceLocale = _foundPlatformLocale.toLocale();
+    final preferences = await SharedPreferences.getInstance();
+    final strLocale = preferences.getString('locale');
+    _savedLocale = strLocale?.toLocale();
+    final foundPlatformLocale = await findSystemLocale();
+    _deviceLocale = foundPlatformLocale.toLocale();
     EasyLocalization.logger.debug('Localization initialized');
   }
 
   Future<void> deleteSaveLocale() async {
     _savedLocale = null;
-    final _preferences = await SharedPreferences.getInstance();
-    await _preferences.remove('locale');
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.remove('locale');
     EasyLocalization.logger('Saved locale deleted');
   }
 

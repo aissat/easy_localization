@@ -219,7 +219,7 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
     if (!_preservedKeywords.contains(key)) {
       accKey != null && !ignoreKey
           ? fileContent +=
-              '  static const ${accKey.replaceAll('.', '_')}\_$key = \'$accKey.$key\';\n'
+              '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
           : !ignoreKey
               ? fileContent += '  static const $key = \'$key\';\n'
               : null;
@@ -260,12 +260,12 @@ class CodegenLoader extends AssetLoader{
 
     Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
-    final mapString = JsonEncoder.withIndent('  ').convert(data);
+    final mapString = const JsonEncoder.withIndent('  ').convert(data);
     gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
   }
 
   gFile +=
-      'static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
+      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
   classBuilder.writeln(gFile);
 }
 

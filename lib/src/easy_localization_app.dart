@@ -94,8 +94,10 @@ class EasyLocalization extends StatefulWidget {
   }
 
   @override
+  // ignore: library_private_types_in_public_api
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
+  // ignore: library_private_types_in_public_api
   static _EasyLocalizationProvider? of(BuildContext context) =>
       _EasyLocalizationProvider.of(context);
 
@@ -207,11 +209,11 @@ class _EasyLocalizationProvider extends InheritedWidget {
   // Locale get startLocale => parent.startLocale;
 
   /// Change app locale
-  Future<void> setLocale(Locale _locale) async {
+  Future<void> setLocale(Locale locale) async {
     // Check old locale
-    if (_locale != _localeState.locale) {
-      assert(parent.supportedLocales.contains(_locale));
-      await _localeState.setLocale(_locale);
+    if (locale != _localeState.locale) {
+      assert(parent.supportedLocales.contains(locale));
+      await _localeState.setLocale(locale);
     }
   }
 
