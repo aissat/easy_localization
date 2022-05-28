@@ -37,7 +37,8 @@ String tr(
   Map<String, String>? namedArgs,
   String? gender,
 }) {
-  return Localization.instance.tr(key, args: args, namedArgs: namedArgs, gender: gender);
+  return Localization.instance
+      .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
 /// {@template plural}

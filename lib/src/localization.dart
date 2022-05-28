@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
+
 import 'plural_rules.dart';
 import 'translations.dart';
 
@@ -94,7 +95,9 @@ class Localization {
 
   String _replaceArgs(String res, List<String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String str) => res = res.replaceFirst(_replaceArgRegex, str));
+    for (var str in args) {
+      res = res.replaceFirst(_replaceArgRegex, str);
+    }
     return res;
   }
 
@@ -118,8 +121,8 @@ class Localization {
     String? name,
     NumberFormat? format,
   }) {
-    late var pluralCase;
-    late var res;
+    late PluralCase pluralCase;
+    late String res;
     var pluralRule = _pluralRule(_locale.languageCode, value);
     switch (value) {
       case 0:
@@ -168,25 +171,27 @@ class Localization {
   }
 
   String _gender(String key, {required String gender}) {
-    return _resolve(key + '.$gender');
+    return _resolve('$key.$gender');
   }
 
   String _resolvePlural(String key, String subKey) {
+    if (subKey == 'other') return _resolve('$key.other');
+
     final tag = '$key.$subKey';
-    var resource = _resolve(tag);
-    if (resource == tag && subKey != 'other') {
+    var resource = _resolve(tag, logging: false, fallback: false);
+    if (resource == tag) {
       resource = _resolve('$key.other');
     }
     return resource;
   }
 
-  String _resolve(String key, {bool logging = true}) {
+  String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
     if (resource == null) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
-      if (_fallbackTranslations == null) {
+      if (_fallbackTranslations == null || !fallback) {
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -30,7 +31,7 @@ bool _isHelpCommand(List<String> args) {
 
 void _printHelperDisplay() {
   var parser = _generateArgParser(null);
-  print(parser.usage);
+  log(parser.usage);
 }
 
 GenerateOptions _generateOption(List<String> args) {
@@ -216,36 +217,17 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
           _resolve(translations[key], skipUnnecessaryKeys, nextAccKey);
     }
 
-    if (_preservedKeywords.contains(key)) {
-      continue;
-    }
-    if (accKey != null && !ignoreKey) {
-      final String keyName = '${accKey.replaceAll('.', '_')}\_$key';
-      final String keyNameCamel = _toCamelCase(keyName);
-      fileContent += '  static const $keyNameCamel = \'$accKey.$key\';\n';
-    } else {
-      !ignoreKey ? fileContent += '  static const $key = \'$key\';\n' : null;
+    if (!_preservedKeywords.contains(key)) {
+      accKey != null && !ignoreKey
+          ? fileContent +=
+              '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
+          : !ignoreKey
+              ? fileContent += '  static const $key = \'$key\';\n'
+              : null;
     }
   }
 
   return fileContent;
-}
-
-String _toCamelCase(String key) {
-  final List<String> list = key.split("_");
-  if (list.length == 1) return key;
-
-  final List<String> listCamelCase = [];
-  for (int i = 0; i < list.length; i++) {
-    final String word = list[i];
-    if (i == 0) {
-      listCamelCase.add(word);
-      continue;
-    }
-    final String camelCaseWord = "${word[0].toUpperCase()}${word.substring(1)}";
-    listCamelCase.add(camelCaseWord);
-  }
-  return listCamelCase.join("");
 }
 
 Future _writeJson(
@@ -279,12 +261,12 @@ class CodegenLoader extends AssetLoader{
 
     Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
-    final mapString = JsonEncoder.withIndent('  ').convert(data);
+    final mapString = const JsonEncoder.withIndent('  ').convert(data);
     gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
   }
 
   gFile +=
-      'static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
+      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
   classBuilder.writeln(gFile);
 }
 
@@ -309,9 +291,9 @@ class CodegenLoader extends AssetLoader{
 // }
 
 void printInfo(String info) {
-  print('\u001b[32measy localization: $info\u001b[0m');
+  log('\u001b[32measy localization: $info\u001b[0m');
 }
 
 void printError(String error) {
-  print('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
+  log('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
 }

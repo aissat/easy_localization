@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'utils/test_asset_loaders.dart';
 
 var printLog = [];
+
 dynamic overridePrint(Function() testFn) => () {
       var spec = ZoneSpecification(print: (_, __, ___, String msg) {
         // Add to log instead of printing to stdout
@@ -22,19 +23,19 @@ dynamic overridePrint(Function() testFn) => () {
 void main() {
   group('localization', () {
     var r1 = EasyLocalizationController(
-        forceLocale: Locale('en'),
+        forceLocale: const Locale('en'),
         path: 'path/en.json',
-        supportedLocales: [Locale('en')],
+        supportedLocales: const [Locale('en')],
         useOnlyLangCode: true,
         useFallbackTranslations: false,
         saveLocale: false,
         onLoadError: (FlutterError e) {
           log(e.toString());
         },
-        assetLoader: JsonAssetLoader());
+        assetLoader: const JsonAssetLoader());
     var r2 = EasyLocalizationController(
-        forceLocale: Locale('en', 'us'),
-        supportedLocales: [Locale('en', 'us')],
+        forceLocale: const Locale('en', 'us'),
+        supportedLocales: const [Locale('en', 'us')],
         path: 'path/en-us.json',
         useOnlyLangCode: false,
         useFallbackTranslations: false,
@@ -42,7 +43,7 @@ void main() {
           log(e.toString());
         },
         saveLocale: false,
-        assetLoader: JsonAssetLoader());
+        assetLoader: const JsonAssetLoader());
     setUpAll(() async {
       EasyLocalization.logger.enableLevels = <LevelMessages>[
         LevelMessages.error,
@@ -51,7 +52,7 @@ void main() {
 
       await r1.loadTranslations();
       await r2.loadTranslations();
-      Localization.load(Locale('en'), translations: r1.translations);
+      Localization.load(const Locale('en'), translations: r1.translations);
     });
     test('is a localization object', () {
       expect(Localization.instance, isInstanceOf<Localization>());
@@ -66,29 +67,30 @@ void main() {
 
     test('load() succeeds', () async {
       expect(
-          Localization.load(Locale('en'), translations: r1.translations), true);
+          Localization.load(const Locale('en'), translations: r1.translations),
+          true);
     });
 
     test('load() with fallback succeeds', () async {
       expect(
-          Localization.load(Locale('en'),
+          Localization.load(const Locale('en'),
               translations: r1.translations,
               fallbackTranslations: r2.translations),
           true);
     });
 
     test('localeFromString() succeeds', () async {
-      expect(Locale('ar'), 'ar'.toLocale());
-      expect(Locale('ar', 'DZ'), 'ar_DZ'.toLocale());
+      expect(const Locale('ar'), 'ar'.toLocale());
+      expect(const Locale('ar', 'DZ'), 'ar_DZ'.toLocale());
       expect(
-          Locale.fromSubtags(
+          const Locale.fromSubtags(
               languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
           'ar_Arab_DZ'.toLocale());
     });
 
     test('load() Failed assertion', () async {
       try {
-        Localization.load(Locale('en'), translations: null);
+        Localization.load(const Locale('en'), translations: null);
       } on AssertionError catch (e) {
         // throw  AssertionError('Expected ArgumentError');
         expect(e, isAssertionError);
@@ -97,26 +99,79 @@ void main() {
 
     test('load() correctly sets locale path', () async {
       expect(
-          Localization.load(Locale('en'), translations: r1.translations), true);
+          Localization.load(const Locale('en'), translations: r1.translations),
+          true);
       expect(Localization.instance.tr('path'), 'path/en.json');
     });
 
     test('load() respects useOnlyLangCode', () async {
       expect(
-          Localization.load(Locale('en'), translations: r1.translations), true);
+          Localization.load(const Locale('en'), translations: r1.translations),
+          true);
       expect(Localization.instance.tr('path'), 'path/en.json');
 
       expect(
-          Localization.load(Locale('en', 'us'), translations: r2.translations),
+          Localization.load(const Locale('en', 'us'),
+              translations: r2.translations),
           true);
       expect(Localization.instance.tr('path'), 'path/en-us.json');
     });
 
+    group('locale', () {
+      test('locale supports device locale', () {
+        const en = Locale('en');
+        const en2 = Locale('en', '');
+        const enUS = Locale('en', 'US');
+        const enGB = Locale('en', 'GB');
+        expect(en.supports(enUS), isTrue);
+        expect(en2.supports(enUS), isTrue);
+        expect(enUS.supports(enUS), isTrue);
+        expect(enGB.supports(enUS), isFalse);
+
+        const zh = Locale('zh', '');
+        const zh2 = Locale('zh', '');
+        const zhCN = Locale('zh', 'CN');
+        const zhHans =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        const zhHant =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
+        const zhHansCN = Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN');
+        expect(zh.supports(zhHansCN), isTrue);
+        expect(zh2.supports(zhHansCN), isTrue);
+        expect(zhCN.supports(zhHansCN), isTrue);
+        expect(zhHans.supports(zhHansCN), isTrue);
+        expect(zhHant.supports(zhHansCN), isFalse);
+        expect(zhHansCN.supports(zhHansCN), isTrue);
+      });
+
+      test('select locale from device locale', () {
+        const en = Locale('en', '');
+        const zh = Locale('zh', '');
+        const zhHans =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        const zhHant =
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
+        const zhHansCN = Locale.fromSubtags(
+            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN');
+
+        expect(
+          EasyLocalizationController.selectLocaleFrom([en, zh], zhHansCN),
+          zh,
+        );
+        expect(
+          EasyLocalizationController.selectLocaleFrom(
+              [zhHant, zhHans], zhHansCN),
+          zhHans,
+        );
+      });
+    });
+
     group('tr', () {
       var r = EasyLocalizationController(
-          forceLocale: Locale('en'),
-          supportedLocales: [Locale('en'), Locale('fb')],
-          fallbackLocale: Locale('fb'),
+          forceLocale: const Locale('en'),
+          supportedLocales: const [Locale('en'), Locale('fb')],
+          fallbackLocale: const Locale('fb'),
           path: 'path',
           useOnlyLangCode: true,
           useFallbackTranslations: true,
@@ -124,11 +179,11 @@ void main() {
             log(e.toString());
           },
           saveLocale: false,
-          assetLoader: JsonAssetLoader());
+          assetLoader: const JsonAssetLoader());
 
       setUpAll(() async {
         await r.loadTranslations();
-        Localization.load(Locale('en'),
+        Localization.load(const Locale('en'),
             translations: r.translations,
             fallbackTranslations: r.fallbackTranslations);
       });
@@ -297,12 +352,25 @@ void main() {
     });
 
     group('plural', () {
-      // setUpAll(() async {
-      //   await Localization.load(Locale('en-US'),
-      //       path: 'path',
-      //       useOnlyLangCode: true,
-      //       assetLoader: JsonAssetLoader());
-      // });
+      var r = EasyLocalizationController(
+          forceLocale: const Locale('en'),
+          supportedLocales: const [Locale('en'), Locale('fb')],
+          fallbackLocale: const Locale('fb'),
+          path: 'path',
+          useOnlyLangCode: true,
+          useFallbackTranslations: true,
+          onLoadError: (FlutterError e) {
+            log(e.toString());
+          },
+          saveLocale: false,
+          assetLoader: const JsonAssetLoader());
+
+      setUpAll(() async {
+        await r.loadTranslations();
+        Localization.load(const Locale('en'),
+            translations: r.translations,
+            fallbackTranslations: r.fallbackTranslations);
+      });
 
       test('zero', () {
         expect(Localization.instance.plural('hat', 0), 'no hats');
@@ -330,6 +398,16 @@ void main() {
       test('other as fallback', () {
         expect(Localization.instance.plural('hat_other', 1), 'other hats');
       });
+
+      test('other as fallback and fallback translations priority',
+          overridePrint(() {
+        printLog = [];
+        expect(
+          Localization.instance.plural('test_fallback_plurals', 2),
+          '2 seconds', // isNot('fallback two'),
+        );
+        expect(printLog, isEmpty);
+      }));
 
       test('with number format', () {
         expect(
