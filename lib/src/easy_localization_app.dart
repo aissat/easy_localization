@@ -72,6 +72,10 @@ class EasyLocalization extends StatefulWidget {
   /// @Default value true
   final bool saveLocale;
 
+  /// Disable nested keys
+  /// @Default value false
+  final bool nestedKeysDisabled;
+
   /// Shows a custom error widget when an error is encountered instead of the default error widget.
   /// @Default value `errorWidget = ErrorWidget()`
   final Widget Function(FlutterError? message)? errorWidget;
@@ -87,6 +91,7 @@ class EasyLocalization extends StatefulWidget {
     this.useFallbackTranslations = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
+    this.nestedKeysDisabled = false,
     this.errorWidget,
   })  : assert(supportedLocales.isNotEmpty),
         assert(path.isNotEmpty),
@@ -122,6 +127,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     EasyLocalization.logger.debug('Init state');
     localizationController = EasyLocalizationController(
       saveLocale: widget.saveLocale,
+      nestedKeysDisabled: widget.nestedKeysDisabled,
       fallbackLocale: widget.fallbackLocale,
       supportedLocales: widget.supportedLocales,
       startLocale: widget.startLocale,

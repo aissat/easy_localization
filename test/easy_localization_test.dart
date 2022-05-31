@@ -32,6 +32,7 @@ void main() {
         onLoadError: (FlutterError e) {
           log(e.toString());
         },
+        nestedKeysDisabled: false,
         assetLoader: const JsonAssetLoader());
     var r2 = EasyLocalizationController(
         forceLocale: const Locale('en', 'us'),
@@ -43,6 +44,7 @@ void main() {
           log(e.toString());
         },
         saveLocale: false,
+        nestedKeysDisabled: false,
         assetLoader: const JsonAssetLoader());
     setUpAll(() async {
       EasyLocalization.logger.enableLevels = <LevelMessages>[
@@ -179,6 +181,7 @@ void main() {
             log(e.toString());
           },
           saveLocale: false,
+          nestedKeysDisabled: false,
           assetLoader: const JsonAssetLoader());
 
       setUpAll(() async {
@@ -363,6 +366,7 @@ void main() {
             log(e.toString());
           },
           saveLocale: false,
+          nestedKeysDisabled: false,
           assetLoader: const JsonAssetLoader());
 
       setUpAll(() async {

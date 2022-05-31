@@ -1,13 +1,18 @@
 class Translations {
   final Map<String, dynamic>? _translations;
   final Map<String?, dynamic> _nestedKeysCache;
+  final bool nestedKeysDisabled;
 
-  Translations(this._translations) : _nestedKeysCache = {};
+  Translations(
+    this._translations, {
+    required this.nestedKeysDisabled,
+  }) : _nestedKeysCache = {};
   String? get(String key) {
     String? returnValue;
 
     /// Try to look it up as a nested key
-    if (isNestedKey(key)) {
+    /// if nesting is disabled don't look up
+    if (!nestedKeysDisabled && isNestedKey(key)) {
       returnValue = getNested(key);
     }
 

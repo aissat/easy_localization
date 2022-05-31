@@ -19,6 +19,7 @@ class EasyLocalizationController extends ChangeNotifier {
   final String path;
   final bool useFallbackTranslations;
   final bool saveLocale;
+  final bool nestedKeysDisabled;
   final bool useOnlyLangCode;
   Translations? _translations, _fallbackTranslations;
   Translations? get translations => _translations;
@@ -32,6 +33,7 @@ class EasyLocalizationController extends ChangeNotifier {
     required this.path,
     required this.useOnlyLangCode,
     required this.onLoadError,
+    required this.nestedKeysDisabled,
     Locale? startLocale,
     Locale? fallbackLocale,
     Locale? forceLocale, // used for testing
@@ -85,7 +87,10 @@ class EasyLocalizationController extends ChangeNotifier {
     Map<String, dynamic> data;
     try {
       data = await loadTranslationData(_locale);
-      _translations = Translations(data);
+      _translations = Translations(
+        data,
+        nestedKeysDisabled: nestedKeysDisabled,
+      );
       if (useFallbackTranslations && _fallbackLocale != null) {
         Map<String, dynamic>? baseLangData;
         if (_locale.countryCode != null && _locale.countryCode!.isNotEmpty) {
@@ -96,7 +101,10 @@ class EasyLocalizationController extends ChangeNotifier {
         if (baseLangData != null) {
           data.addAll(baseLangData);
         }
-        _fallbackTranslations = Translations(data);
+        _fallbackTranslations = Translations(
+          data,
+          nestedKeysDisabled: nestedKeysDisabled,
+        );
       }
     } on FlutterError catch (e) {
       onLoadError(e);
