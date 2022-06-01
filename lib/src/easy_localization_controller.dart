@@ -94,7 +94,11 @@ class EasyLocalizationController extends ChangeNotifier {
         }
         data = await loadTranslationData(_fallbackLocale!);
         if (baseLangData != null) {
-          data.addAll(baseLangData);
+          try {
+            data.addAll(baseLangData);
+          } on UnsupportedError {
+            data = Map.of(data)..addAll(baseLangData);
+          }
         }
         _fallbackTranslations = Translations(data);
       }
