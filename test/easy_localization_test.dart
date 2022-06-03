@@ -499,4 +499,33 @@ void main() {
       });
     });
   });
+
+  group('onKeyNotFound', () {
+    var r = EasyLocalizationController(
+        forceLocale: const Locale('en'),
+        supportedLocales: const [Locale('en'), Locale('fb')],
+        fallbackLocale: const Locale('fb'),
+        path: 'path',
+        useOnlyLangCode: true,
+        useFallbackTranslations: true,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
+        saveLocale: false,
+        assetLoader: const JsonAssetLoader());
+
+    String? translationMissingKey;
+    setUpAll(() async {
+      r.loadTranslations();
+      Localization.load(const Locale('en'), translations: r.translations,
+          onLocaleKeyNotFound: ((key, locale) {
+        translationMissingKey = key;
+      }));
+    });
+
+    test('should call onLocaleKeyNotFound', () {
+      Localization.instance.tr('no_transaltion_key');
+      expect(translationMissingKey, "no_transaltion_key");
+    });
+  });
 }

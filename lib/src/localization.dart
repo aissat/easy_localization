@@ -191,7 +191,16 @@ class Localization {
   String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
     if (resource == null) {
-      if (_onLocaleKeyNotFound != null) _onLocaleKeyNotFound!(key, _locale);
+      if (_onLocaleKeyNotFound != null) {
+        try {
+          _onLocaleKeyNotFound!(key, _locale);
+        } catch (e, s) {
+          EasyLocalization.logger.warning(
+            'Error executing [onLocaleKeyNotFound] callback',
+            stackTrace: s,
+          );
+        }
+      }
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
