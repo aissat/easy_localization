@@ -98,7 +98,9 @@ class Localization {
 
   String _replaceArgs(String res, List<String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String str) => res = res.replaceFirst(_replaceArgRegex, str));
+    for (var str in args) {
+      res = res.replaceFirst(_replaceArgRegex, str);
+    }
     return res;
   }
 
@@ -122,8 +124,8 @@ class Localization {
     String? name,
     NumberFormat? format,
   }) {
-    late var pluralCase;
-    late var res;
+    late PluralCase pluralCase;
+    late String res;
     var pluralRule = _pluralRule(_locale.languageCode, value);
     switch (value) {
       case 0:
@@ -172,7 +174,7 @@ class Localization {
   }
 
   String _gender(String key, {required String gender}) {
-    return _resolve(key + '.$gender');
+    return _resolve('$key.$gender');
   }
 
   String _resolvePlural(String key, String subKey) {

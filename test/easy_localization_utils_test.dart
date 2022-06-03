@@ -18,31 +18,31 @@ void main() {
     group('Locales', () {
       test('localeFromString only language code', () {
         var locale = 'en'.toLocale();
-        expect(locale, Locale('en'));
+        expect(locale, const Locale('en'));
       });
 
       test('localeFromString language code and country code', () {
         var locale = 'en_US'.toLocale();
-        expect(locale, Locale('en', 'US'));
+        expect(locale, const Locale('en', 'US'));
       });
 
       test('localeFromString language, country, script code', () {
         var locale = 'zh_Hant_HK'.toLocale();
         expect(
             locale,
-            Locale.fromSubtags(
+            const Locale.fromSubtags(
                 languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK'));
       });
 
       test('localeToString', () {
-        var locale = Locale.fromSubtags(
+        var locale = const Locale.fromSubtags(
             languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK');
         var string = locale.toStringWithSeparator();
         expect(string, 'zh_Hant_HK');
       });
 
       test('localeToString custom separator', () {
-        var locale = Locale.fromSubtags(
+        var locale = const Locale.fromSubtags(
             languageCode: 'zh', scriptCode: 'Hant', countryCode: 'HK');
         var string = locale.toStringWithSeparator(separator: '|');
         expect(string, 'zh|Hant|HK');
