@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../easy_logger.dart';
 
 /// Type for function printing/logging in [EasyLogger].
@@ -42,10 +44,10 @@ EasyLogPrinter easyLogDefaultPrinter = (Object object,
     }
   }
 
-  print(_prepareObject());
+  debugPrint(_prepareObject());
 
   if (stackTrace != null) {
-    print(_coloredString('__________________________________'));
-    print(_coloredString(stackTrace.toString()));
+    debugPrint(_coloredString('__________________________________'));
+    debugPrint(_coloredString(stackTrace.toString()));
   }
 };
