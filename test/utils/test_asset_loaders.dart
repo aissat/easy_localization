@@ -61,6 +61,7 @@ class JsonAssetLoader extends AssetLoader {
       },
       'nested.but.not.nested': 'nested but not nested',
       'linked': 'this @:isLinked',
+      'linkedArg': 'this @:{arg}',
       'isLinked': 'is linked',
       'linkAndModify': 'this is linked and @.upper:modified',
       'modified': 'modified',

@@ -243,6 +243,12 @@ void main() {
         expect(Localization.instance.tr('linked'), 'this is linked');
       });
 
+      test('can resolve linked locale messages from arg', () {
+        expect(
+            Localization.instance.tr('linkedArg',
+                namedArgs: {'arg': 'isLinked'}), 'this is linked');
+      });
+
       test('can resolve linked locale messages and apply modifiers', () {
         expect(Localization.instance.tr('linkAndModify'),
             'this is linked and MODIFIED');

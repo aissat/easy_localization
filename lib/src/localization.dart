@@ -55,7 +55,9 @@ class Localization {
 
     res = _replaceNamedArgs(res, namedArgs);
 
-    return _replaceArgs(res, args);
+    res = _replaceArgs(res, args);
+
+    return _replaceLinks(res);
   }
 
   String _replaceLinks(String res, {bool logging = true}) {
