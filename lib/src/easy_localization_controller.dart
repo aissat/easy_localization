@@ -18,6 +18,7 @@ class EasyLocalizationController extends ChangeNotifier {
   final assetLoader;
   final String path;
   final bool useFallbackTranslations;
+  final bool useBaseLangTranslations;
   final bool saveLocale;
   final bool useOnlyLangCode;
   Translations? _translations, _fallbackTranslations;
@@ -27,6 +28,7 @@ class EasyLocalizationController extends ChangeNotifier {
   EasyLocalizationController({
     required List<Locale> supportedLocales,
     required this.useFallbackTranslations,
+    this.useBaseLangTranslations = false,
     required this.saveLocale,
     required this.assetLoader,
     required this.path,
@@ -88,7 +90,9 @@ class EasyLocalizationController extends ChangeNotifier {
       _translations = Translations(data);
       if (useFallbackTranslations && _fallbackLocale != null) {
         Map<String, dynamic>? baseLangData;
-        if (_locale.countryCode != null && _locale.countryCode!.isNotEmpty) {
+        if (useBaseLangTranslations &&
+            _locale.countryCode != null &&
+            _locale.countryCode!.isNotEmpty) {
           baseLangData =
               await loadBaseLangTranslationData(Locale(locale.languageCode));
         }
