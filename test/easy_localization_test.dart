@@ -81,6 +81,27 @@ void main() {
           true);
     });
 
+    test('merge fallbackLocale with locale without country code succeeds',
+        () async {
+      await EasyLocalizationController(
+        forceLocale: const Locale('es', 'AR'),
+        supportedLocales: const [
+          Locale('en'),
+          Locale('es'),
+          Locale('es', 'AR')
+        ],
+        path: 'path/en-us.json',
+        useOnlyLangCode: false,
+        useFallbackTranslations: true,
+        fallbackLocale: const Locale('en'),
+        onLoadError: (FlutterError e) {
+          throw e;
+        },
+        saveLocale: false,
+        assetLoader: const ImmutableJsonAssetLoader(),
+      ).loadTranslations();
+    });
+
     test('localeFromString() succeeds', () async {
       expect(const Locale('ar'), 'ar'.toLocale());
       expect(const Locale('ar', 'DZ'), 'ar_DZ'.toLocale());
