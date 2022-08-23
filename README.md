@@ -421,24 +421,22 @@ print(context.supportedLocales); // output: [en_US, ar_DZ, de_DE, ru_RU]
 
 print(context.fallbackLocale); // output: en_US
 ```
-
 ## 💻 Code generation
 
-Code generation supports only json files, for more information run in terminal `flutter pub run easy_localization:generate -h`
+Code generation supports ONLY json files.
 
 ### Command line arguments
 
 | Arguments                    | Short | Default               | Description                                                                 |
 | ---------------------------- | ----- | --------------------- | --------------------------------------------------------------------------- |
-| --help                       | -h    |                       | Help info                                                                   |
 | --source-dir                 | -S    | resources/langs       | Folder containing localization files                                        |
 | --source-file                | -s    | First file            | File to use for localization                                                |
 | --output-dir                 | -O    | lib/generated         | Output folder stores for the generated file                                 |
 | --output-file                | -o    | codegen_loader.g.dart | Output file name                                                            |
 | --format                     | -f    | json                  | Support json or keys formats                                                |
-| --[no-]skip-unnecessary-keys | -u    | false                 | Ignores keys defining nested object except for pluarl(), gender() keywords. |
+| --[no-]skip-unnecessary-keys | -u    | false                 | Ignores keys defining nested object except for preserved keywords           |
 
-### 🔌 Localization asset loader class
+Preserved keywords = ['few', 'many', 'one', 'other', 'two', 'zero', 'male', 'female']
 
 Steps:
 
