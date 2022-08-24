@@ -436,7 +436,65 @@ Code generation supports only json files, for more information run in terminal `
 | --output-dir                 | -O    | lib/generated         | Output folder stores for the generated file                                 |
 | --output-file                | -o    | codegen_loader.g.dart | Output file name                                                            |
 | --format                     | -f    | json                  | Support json or keys formats                                                |
-| --[no-]skip-unnecessary-keys | -u    | false                 | Ignores keys defining nested object except for pluarl(), gender() keywords. |
+| --[no-]skip-unnecessary-keys | -u    | false                 | Ignores keys defining nested object except for preserved keywords           |
+
+Preserved keywords are: **"few", "many", "one", "other", "two", "zero", "male", "female"**
+
+They keyords have effects **only** with "--skip-unnecessary-keys" flag, are meaningless otherwise.
+
+Example:
+```json
+ "generic": {
+        "username": "Username"
+    },
+    "login": {
+        "header" : {
+            "title": "title",
+            "something": "example"
+        },
+        "day": {
+            "zero":"{} дней",
+            "one": "{} день",
+            "two": "{} дня",
+            "few": "{} дня",
+            "many": "{} дней",
+            "other": "{} дней"
+        }
+    },
+```
+
+Generated keys file without `--skip-unnecessary-keys` flag
+
+```dart
+  static const generic_username = 'generic.username';
+  static const generic = 'generic';
+  static const login_header_title = 'login.header.title';
+  static const login_header_something = 'login.header.something';
+  static const login_header = 'login.header';
+  static const login_day_zero = 'login.day.zero';
+  static const login_day_one = 'login.day.one';
+  static const login_day_two = 'login.day.two';
+  static const login_day_few = 'login.day.few';
+  static const login_day_many = 'login.day.many';
+  static const login_day_other = 'login.day.other';
+  static const login_day = 'login.day';
+  static const login = 'login';
+```
+
+Generated keys file with `--skip-unnecessary-keys` flag
+
+```dart
+  static const generic = 'generic';
+  static const login_day_zero = 'login.day.zero';
+  static const login_day_one = 'login.day.one';
+  static const login_day_two = 'login.day.two';
+  static const login_day_few = 'login.day.few';
+  static const login_day_many = 'login.day.many';
+  static const login_day_other = 'login.day.other';
+  static const login_day = 'login.day';
+  static const login = 'login';
+```
+
 
 ### 🔌 Localization asset loader class
 
