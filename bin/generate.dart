@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -31,7 +30,7 @@ bool _isHelpCommand(List<String> args) {
 
 void _printHelperDisplay() {
   var parser = _generateArgParser(null);
-  log(parser.usage);
+  stdout.writeln(parser.usage);
 }
 
 GenerateOptions _generateOption(List<String> args) {
@@ -195,35 +194,36 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
 
   final sortedKeys = translations.keys.toList();
 
-  final canIgnoreKeys = skipUnnecessaryKeys == true;
+  final canIgnoreKeys = skipUnnecessaryKeys == true && accKey != null;
 
   bool containsPreservedKeywords(Map<String, dynamic> map) =>
       map.keys.any((element) => _preservedKeywords.contains(element));
 
   for (var key in sortedKeys) {
-    var ignoreKey = false;
-    if (translations[key] is Map) {
-      // If key does not contain keys for plural(), gender() etc. and option is enabled -> ignore it
-      ignoreKey = !containsPreservedKeywords(
-              translations[key] as Map<String, dynamic>) &&
-          canIgnoreKeys;
+    var ignoreKey = canIgnoreKeys;
 
-      var nextAccKey = key;
-      if (accKey != null) {
-        nextAccKey = '$accKey.$key';
-      }
+    if (translations[key] is Map) {
+      ignoreKey &=
+          !containsPreservedKeywords(translations[key] as Map<String, dynamic>);
+
+      var nextAccKey = (accKey == null ? key : '$accKey.$key');
 
       fileContent +=
           _resolve(translations[key], skipUnnecessaryKeys, nextAccKey);
+    } else {
+      ignoreKey &= !_preservedKeywords.contains(key);
     }
 
-    if (!_preservedKeywords.contains(key)) {
-      accKey != null && !ignoreKey
+    //ignoreKey = skipUnnecessaryKeys (by default is false, true only when "--skip-unnecessary-keys" or "-u")
+    //            AND accKey != null (true when the key is nested)
+    //            AND key is not a preserved keyword (_preservedKeywords)
+
+    // If "--skip-unnecessary-keys" -> ignore every nestested key that is not inside _preservedKeywords
+    if (!ignoreKey) {
+      accKey != null
           ? fileContent +=
               '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
-          : !ignoreKey
-              ? fileContent += '  static const $key = \'$key\';\n'
-              : null;
+          : fileContent += '  static const $key = \'$key\';\n';
     }
   }
 
@@ -291,9 +291,9 @@ class CodegenLoader extends AssetLoader{
 // }
 
 void printInfo(String info) {
-  log('\u001b[32measy localization: $info\u001b[0m');
+  stdout.writeln('\u001b[32measy localization: $info\u001b[0m');
 }
 
 void printError(String error) {
-  log('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
+  stderr.writeln('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
 }
