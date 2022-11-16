@@ -175,19 +175,19 @@ class Localization {
   }
 
   String _resolvePlural(String key, String subKey) {
-    if (subKey == 'other') return _resolve('$key.other');
+    if (subKey == 'other') return _resolve('$key.other', fallback: true);
 
     final tag = '$key.$subKey';
-    var resource = _resolve(tag, logging: false, fallback: false);
+    var resource = _resolve(tag, logging: false, fallback: true);
     if (resource == tag) {
-      resource = _resolve('$key.other');
+      resource = _resolve('$key.other', fallback: true);
     }
     return resource;
   }
 
   String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
-    if (resource == null) {
+    if (resource == null || resource.isEmpty) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
@@ -195,7 +195,7 @@ class Localization {
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);
-        if (resource == null) {
+        if (resource == null || resource.isEmpty) {
           if (logging) {
             EasyLocalization.logger
                 .warning('Fallback localization key [$key] not found');
