@@ -178,7 +178,7 @@ class Localization {
     if (subKey == 'other') return _resolve('$key.other');
 
     final tag = '$key.$subKey';
-    var resource = _resolve(tag, logging: false, fallback: false);
+    var resource = _resolve(tag, logging: false, fallback: _fallbackTranslations != null);
     if (resource == tag) {
       resource = _resolve('$key.other');
     }
