@@ -14,11 +14,13 @@ extension TextTranslateExtension on Text {
   /// {@macro tr}
   Text tr(
           {List<String>? args,
+          BuildContext? context,
           Map<String, String>? namedArgs,
           String? gender}) =>
       Text(
           ez.tr(
             data ?? '',
+            context: context,
             args: args,
             namedArgs: namedArgs,
             gender: gender,
@@ -39,6 +41,7 @@ extension TextTranslateExtension on Text {
   /// {@macro plural}
   Text plural(
     num value, {
+    BuildContext? context,
     List<String>? args,
     Map<String, String>? namedArgs,
     String? name,
@@ -48,6 +51,7 @@ extension TextTranslateExtension on Text {
           ez.plural(
             data ?? '',
             value,
+            context: context,
             args: args,
             namedArgs: namedArgs,
             name: name,
@@ -79,13 +83,16 @@ extension StringTranslateExtension on String {
     List<String>? args,
     Map<String, String>? namedArgs,
     String? gender,
+    BuildContext? context,
   }) =>
-      ez.tr(this, args: args, namedArgs: namedArgs, gender: gender);
+      ez.tr(this,
+          context: context, args: args, namedArgs: namedArgs, gender: gender);
 
   /// {@macro plural}
   String plural(
     num value, {
     List<String>? args,
+    BuildContext? context,
     Map<String, String>? namedArgs,
     String? name,
     NumberFormat? format,
@@ -93,6 +100,7 @@ extension StringTranslateExtension on String {
       ez.plural(
         this,
         value,
+        context: context,
         args: args,
         namedArgs: namedArgs,
         name: name,
