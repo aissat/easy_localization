@@ -176,6 +176,8 @@ Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
+// ignore_for_file: constant_identifier_names
+
 abstract class  LocaleKeys {
 ''';
 
@@ -245,7 +247,7 @@ class CodegenLoader extends AssetLoader{
   const CodegenLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale ) {
+  Future<Map<String, dynamic>> load(String path, Locale locale ) {
     return Future.value(mapLocales[locale.toString()]);
   }
 
