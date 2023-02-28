@@ -46,6 +46,6 @@ EasyLogPrinter easyLogDefaultPrinter = (Object object,
 
   if (stackTrace != null) {
     print(_coloredString('__________________________________'));
-    print(_coloredString('${stackTrace.toString()}'));
+    print(_coloredString(stackTrace.toString()));
   }
 };
