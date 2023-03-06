@@ -42,10 +42,10 @@ EasyLogPrinter easyLogDefaultPrinter = (Object object,
     }
   }
 
-  print(_prepareObject());
+  debugprint(_prepareObject());
 
   if (stackTrace != null) {
-    print(_coloredString('__________________________________'));
-    print(_coloredString('${stackTrace.toString()}'));
+    debugprint(_coloredString('__________________________________'));
+    debugprint(_coloredString('${stackTrace.toString()}'));
   }
 };

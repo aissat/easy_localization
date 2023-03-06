@@ -18,6 +18,9 @@ void main() async {
       Locale('ru', 'RU')
     ],
     path: 'resources/langs',
+    onLocaleKeyNotFound: (key, locale) {
+      print('Locale key not found $key ${locale.languageCode}');
+    },
     child: MyApp(),
     // fallbackLocale: Locale('en', 'US'),
     // startLocale: Locale('de', 'DE'),
