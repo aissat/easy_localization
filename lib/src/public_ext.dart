@@ -166,6 +166,35 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   /// Reset locale to platform locale
   Future<void> resetLocale() => EasyLocalization.of(this)!.resetLocale();
 
+  /// An extension method for translating your language keys.
+  /// Subscribes the widget on current [Localization] that provided from context.
+  /// Throws exception if [Localization] was not found.
+  ///
+  /// [key] Localization key
+  /// [args] List of localized strings. Replaces {} left to right
+  /// [namedArgs] Map of localized strings. Replaces the name keys {key_name} according to its name
+  /// [gender] Gender switcher. Changes the localized string based on gender string
+  ///
+  /// Example:
+  ///
+  /// ```json
+  /// {
+  ///    "msg":"{} are written in the {} language",
+  ///    "msg_named":"Easy localization is written in the {lang} language",
+  ///    "msg_mixed":"{} are written in the {lang} language",
+  ///    "gender":{
+  ///       "male":"Hi man ;) {}",
+  ///       "female":"Hello girl :) {}",
+  ///       "other":"Hello {}"
+  ///    }
+  /// }
+  /// ```
+  /// ```dart
+  /// Text(context.translate('msg', args: ['Easy localization', 'Dart']), // args
+  /// Text(context.translate('msg_named', namedArgs: {'lang': 'Dart'}),   // namedArgs
+  /// Text(context.translate('msg_mixed', args: ['Easy localization'], namedArgs: {'lang': 'Dart'}), // args and namedArgs
+  /// Text(context.translate('gender', gender: _gender ? "female" : "male"), // gender
+  /// ```
   String translate(
     String key, {
     List<String>? args,
