@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -164,4 +165,24 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
 
   /// Reset locale to platform locale
   Future<void> resetLocale() => EasyLocalization.of(this)!.resetLocale();
+
+  String translate(
+    String key, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? gender,
+  }) {
+    final localization = Localization.of(this);
+
+    if (localization == null) {
+      throw Exception('Localization not found for current context');
+    }
+
+    return localization.tr(
+      key,
+      args: args,
+      namedArgs: namedArgs,
+      gender: gender,
+    );
+  }
 }
