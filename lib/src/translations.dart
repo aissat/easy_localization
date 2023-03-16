@@ -13,7 +13,8 @@ class Translations {
 
     /// If we failed to find the key as a nested key, then fall back
     /// to looking it up like normal.
-    returnValue ??= _translations?[key];
+    var maybeValue = _translations?[key];
+    if (maybeValue is String) returnValue ??= maybeValue;
 
     return returnValue;
   }
