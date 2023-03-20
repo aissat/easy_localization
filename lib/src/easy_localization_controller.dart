@@ -87,19 +87,7 @@ class EasyLocalizationController extends ChangeNotifier {
       data = await loadTranslationData(_locale);
       _translations = Translations(data);
       if (useFallbackTranslations && _fallbackLocale != null) {
-        Map<String, dynamic>? baseLangData;
-        if (_locale.countryCode != null && _locale.countryCode!.isNotEmpty) {
-          baseLangData =
-              await loadBaseLangTranslationData(Locale(locale.languageCode));
-        }
         data = await loadTranslationData(_fallbackLocale!);
-        if (baseLangData != null) {
-          try {
-            data.addAll(baseLangData);
-          } on UnsupportedError {
-            data = Map.of(data)..addAll(baseLangData);
-          }
-        }
         _fallbackTranslations = Translations(data);
       }
     } on FlutterError catch (e) {
