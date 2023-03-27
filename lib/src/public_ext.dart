@@ -1,3 +1,4 @@
+import 'package:easy_localization/src/exceptions.dart';
 import 'package:easy_localization/src/localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -204,7 +205,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     final localization = Localization.of(this);
 
     if (localization == null) {
-      throw Exception('Localization not found for current context');
+      throw const LocalizationNotFoundException();
     }
 
     return localization.tr(
@@ -212,6 +213,30 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
       args: args,
       namedArgs: namedArgs,
       gender: gender,
+    );
+  }
+
+  String plural(
+    String key,
+    num number, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? name,
+    NumberFormat? format,
+  }) {
+    final localization = Localization.of(this);
+
+    if (localization == null) {
+      throw const LocalizationNotFoundException();
+    }
+
+    return localization.plural(
+      key,
+      number,
+      args: args,
+      namedArgs: namedArgs,
+      name: name,
+      format: format,
     );
   }
 }

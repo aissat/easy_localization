@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/src/exceptions.dart';
 import 'package:easy_localization/src/localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'utils/test_asset_loaders.dart';
 
 late BuildContext _context;
+late String _contextTranslationValue;
+late String _contextPluralValue;
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    this.child = const MyWidget(),
+    Key? key,
+  }) : super(key: key);
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class MyApp extends StatelessWidget {
       locale: EasyLocalization.of(context)!.locale,
       supportedLocales: EasyLocalization.of(context)!.supportedLocales,
       localizationsDelegates: EasyLocalization.of(context)!.delegates,
-      home: const MyWidget(),
+      home: child,
     );
   }
 }
@@ -36,6 +44,26 @@ class MyWidget extends StatelessWidget {
         children: <Widget>[
           const Text('test').tr(),
           const Text('day').plural(1),
+        ],
+      ),
+    );
+  }
+}
+
+class MyLocalizedWidget extends StatelessWidget {
+  const MyLocalizedWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(context) {
+    _context = context;
+    _contextTranslationValue = context.translate('test');
+    _contextPluralValue = context.plural('day', 1);
+
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Text(_contextTranslationValue),
+          Text(_contextPluralValue),
         ],
       ),
     );
@@ -715,6 +743,101 @@ void main() async {
           await tester.pumpAndSettle();
           expect(
               EasyLocalization.of(_context)!.locale, const Locale('en', 'US'));
+        });
+      },
+    );
+  });
+
+  group('Context extensions tests', () {
+    final testWidget = EasyLocalization(
+      path: 'i18n',
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('ar', 'DZ')
+      ], // Locale('en', 'US'), Locale('ar','DZ')
+      startLocale: const Locale('en', 'US'),
+      child: const MyApp(
+        child: MyLocalizedWidget(),
+      ),
+    );
+
+    testWidgets(
+      '[EasyLocalization] Throws LocalizationNotFoundException without EasyLocalization widget',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(const MyLocalizedWidget());
+        final exception = tester.takeException();
+
+        expect(
+          exception,
+          isA<LocalizationNotFoundException>(),
+        );
+      },
+    );
+
+    testWidgets(
+      '[EasyLocalization] context.translate and context.plural text widgets are in the tree',
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(testWidget);
+
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+          await tester.pumpAndSettle();
+
+          expect(
+            find.text(_contextTranslationValue),
+            findsOneWidget,
+          );
+          expect(
+            find.text(_contextPluralValue),
+            findsOneWidget,
+          );
+        });
+      },
+    );
+
+    testWidgets(
+      '[EasyLocalization] context.translate and context.plural provide relevant texts',
+      (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(testWidget);
+
+          const expectedEnTranslateTextWidgetValue = 'test';
+          const expectedArTranslateTextWidgetValue = 'اختبار';
+          const expectedEnPluralTextWidgetValue = '1 day';
+          const expectedArPluralTextWidgetValue = '1 يوم';
+          const arabyLocale = Locale('ar', 'DZ');
+
+          await tester.idle();
+          // The async delegator load will require build on the next frame. Thus, pump
+
+          await tester.pumpAndSettle();
+          final initialTranslationValue = _contextTranslationValue;
+          final initialPluralValue = _contextPluralValue;
+
+          expect(
+            initialTranslationValue == expectedEnTranslateTextWidgetValue,
+            true,
+          );
+          expect(
+            initialPluralValue == expectedEnPluralTextWidgetValue,
+            true,
+          );
+
+          EasyLocalization.of(_context)?.setLocale(arabyLocale);
+
+          await tester.pumpAndSettle();
+
+          expect(
+            initialTranslationValue != _contextTranslationValue &&
+                _contextTranslationValue == expectedArTranslateTextWidgetValue,
+            true,
+          );
+          expect(
+            initialPluralValue != _contextPluralValue &&
+                _contextPluralValue == expectedArPluralTextWidgetValue,
+            true,
+          );
         });
       },
     );
