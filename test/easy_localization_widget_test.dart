@@ -56,7 +56,7 @@ class MyLocalizedWidget extends StatelessWidget {
   @override
   Widget build(context) {
     _context = context;
-    _contextTranslationValue = context.translate('test');
+    _contextTranslationValue = context.tr('test');
     _contextPluralValue = context.plural('day', 1);
 
     return Scaffold(

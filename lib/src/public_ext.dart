@@ -191,12 +191,12 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   /// }
   /// ```
   /// ```dart
-  /// Text(context.translate('msg', args: ['Easy localization', 'Dart']), // args
-  /// Text(context.translate('msg_named', namedArgs: {'lang': 'Dart'}),   // namedArgs
-  /// Text(context.translate('msg_mixed', args: ['Easy localization'], namedArgs: {'lang': 'Dart'}), // args and namedArgs
-  /// Text(context.translate('gender', gender: _gender ? "female" : "male"), // gender
+  /// Text(context.tr('msg', args: ['Easy localization', 'Dart']), // args
+  /// Text(context.tr('msg_named', namedArgs: {'lang': 'Dart'}),   // namedArgs
+  /// Text(context.tr('msg_mixed', args: ['Easy localization'], namedArgs: {'lang': 'Dart'}), // args and namedArgs
+  /// Text(context.tr('gender', gender: _gender ? "female" : "male"), // gender
   /// ```
-  String translate(
+  String tr(
     String key, {
     List<String>? args,
     Map<String, String>? namedArgs,
