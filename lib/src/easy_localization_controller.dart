@@ -84,7 +84,7 @@ class EasyLocalizationController extends ChangeNotifier {
   Future loadTranslations() async {
     Map<String, dynamic> data;
     try {
-      data = await loadTranslationData(_locale);
+      data = Map.from(await loadTranslationData(_locale));
       _translations = Translations(data);
       if (useFallbackTranslations && _fallbackLocale != null) {
         Map<String, dynamic>? baseLangData;
@@ -92,7 +92,7 @@ class EasyLocalizationController extends ChangeNotifier {
           baseLangData =
               await loadBaseLangTranslationData(Locale(locale.languageCode));
         }
-        data = await loadTranslationData(_fallbackLocale!);
+        data = Map.from(await loadTranslationData(_fallbackLocale!));
         if (baseLangData != null) {
           try {
             data.addAll(baseLangData);
@@ -120,12 +120,18 @@ class EasyLocalizationController extends ChangeNotifier {
     return null;
   }
 
-  Future loadTranslationData(Locale locale) async {
+  Future<Map<String, dynamic>> loadTranslationData(Locale locale) async {
+    late Map<String, dynamic>? data;
+
     if (useOnlyLangCode) {
-      return assetLoader.load(path, Locale(locale.languageCode));
+      data = await assetLoader.load(path, Locale(locale.languageCode));
     } else {
-      return assetLoader.load(path, locale);
+      data = await assetLoader.load(path, locale);
     }
+
+    if (data == null) return {};
+
+    return data;
   }
 
   Locale get locale => _locale;
