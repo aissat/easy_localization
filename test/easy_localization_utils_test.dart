@@ -26,6 +26,12 @@ void main() {
         expect(locale, const Locale('en', 'US'));
       });
 
+      test('localeFromString language code and script code', () {
+        var locale = 'zh_Hant'.toLocale();
+        expect(locale,
+            const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'));
+      });
+
       test('localeFromString language, country, script code', () {
         var locale = 'zh_Hant_HK'.toLocale();
         expect(
