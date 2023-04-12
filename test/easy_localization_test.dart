@@ -103,6 +103,8 @@ void main() {
     test('localeFromString() succeeds', () async {
       expect(const Locale('ar'), 'ar'.toLocale());
       expect(const Locale('ar', 'DZ'), 'ar_DZ'.toLocale());
+      expect(const Locale.fromSubtags(languageCode: 'ar', scriptCode: 'Arab'),
+          'ar_Arab'.toLocale());
       expect(
           const Locale.fromSubtags(
               languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
