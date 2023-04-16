@@ -8,7 +8,7 @@ import 'public.dart' as ez;
 
 /// Text widget extension method for access to [tr()] and [plural()]
 /// Example :
-/// ```drat
+/// ```dart
 /// Text('title').tr()
 /// Text('day').plural(21)
 /// ```
@@ -75,7 +75,7 @@ extension TextTranslateExtension on Text {
 
 /// Strings extension method for access to [tr()] and [plural()]
 /// Example :
-/// ```drat
+/// ```dart
 /// 'title'.tr()
 /// 'day'.plural(21)
 /// ```
@@ -114,7 +114,7 @@ extension StringTranslateExtension on String {
 ///
 /// Example :
 ///
-/// ```drat
+/// ```dart
 /// context.locale = Locale('en', 'US');
 /// print(context.locale.toString());
 ///
