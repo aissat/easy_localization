@@ -6,7 +6,12 @@ Locale localeFromString(String localeString) {
   final localeList = localeString.split('_');
   switch (localeList.length) {
     case 2:
-      return Locale(localeList.first, localeList.last);
+      return localeList.last.length == 4 // scriptCode length is 4
+          ? Locale.fromSubtags(
+              languageCode: localeList.first,
+              scriptCode: localeList.last,
+            )
+          : Locale(localeList.first, localeList.last);
     case 3:
       return Locale.fromSubtags(
         languageCode: localeList.first,
@@ -39,7 +44,12 @@ extension StringToLocaleHelper on String {
     final localeList = split(separator);
     switch (localeList.length) {
       case 2:
-        return Locale(localeList.first, localeList.last);
+        return localeList.last.length == 4 // scriptCode length is 4
+            ? Locale.fromSubtags(
+                languageCode: localeList.first,
+                scriptCode: localeList.last,
+              )
+            : Locale(localeList.first, localeList.last);
       case 3:
         return Locale.fromSubtags(
           languageCode: localeList.first,

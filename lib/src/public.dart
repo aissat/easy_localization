@@ -33,12 +33,16 @@ import 'localization.dart';
 /// {@endtemplate}
 String tr(
   String key, {
+  BuildContext? context,
   List<String>? args,
   Map<String, String>? namedArgs,
   String? gender,
 }) {
-  return Localization.instance
-      .tr(key, args: args, namedArgs: namedArgs, gender: gender);
+  return context != null
+      ? Localization.of(context)!
+          .tr(key, args: args, namedArgs: namedArgs, gender: gender)
+      : Localization.instance
+          .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
 bool trExists(String key) {
@@ -100,16 +104,14 @@ String plural(
   String key,
   num value, {
   List<String>? args,
+  BuildContext? context,
   Map<String, String>? namedArgs,
   String? name,
   NumberFormat? format,
 }) {
-  return Localization.instance.plural(
-    key,
-    value,
-    args: args,
-    namedArgs: namedArgs,
-    name: name,
-    format: format,
-  );
+  return context != null
+      ? Localization.of(context)!.plural(key, value,
+          args: args, namedArgs: namedArgs, name: name, format: format)
+      : Localization.instance.plural(key, value,
+          args: args, namedArgs: namedArgs, name: name, format: format);
 }
