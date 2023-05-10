@@ -176,6 +176,8 @@ Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
+import 'package:easy_localization/easy_localization.dart';
+
 abstract class  LocaleKeys {
 ''';
 
@@ -222,7 +224,7 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
           ? fileContent +=
               '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
           : !ignoreKey
-              ? fileContent += '  static const $key = \'$key\';\n'
+              ? fileContent += '  static const $key = \'$key\'.tr();\n'
               : null;
     }
   }
