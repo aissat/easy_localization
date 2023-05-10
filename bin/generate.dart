@@ -224,7 +224,7 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
           ? fileContent +=
               '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
           : !ignoreKey
-              ? fileContent += '  static const $key = \'$key\'.tr();\n'
+              ? fileContent += '  static final $key = \'$key\'.tr();\n'
               : null;
     }
   }
