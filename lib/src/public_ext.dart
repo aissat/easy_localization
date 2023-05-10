@@ -90,6 +90,8 @@ extension StringTranslateExtension on String {
       ez.tr(this,
           context: context, args: args, namedArgs: namedArgs, gender: gender);
 
+  bool trExists() => ez.trExists(this);
+
   /// {@macro plural}
   String plural(
     num value, {
