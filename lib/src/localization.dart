@@ -22,7 +22,9 @@ class Localization {
   Localization();
 
   static Localization? _instance;
+
   static Localization get instance => _instance ?? (_instance = Localization());
+
   static Localization? of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization);
 
@@ -108,9 +110,9 @@ class Localization {
     return res;
   }
 
-  static PluralRule? _pluralRule(String? locale, num howMany) {
+  static PluralRule _pluralRule(String? locale, num howMany) {
     startRuleEvaluation(howMany);
-    return pluralRules[locale];
+    return pluralRules[locale] ?? () => PluralCase.OTHER;
   }
 
   String plural(
@@ -135,7 +137,7 @@ class Localization {
         pluralCase = PluralCase.TWO;
         break;
       default:
-        pluralCase = pluralRule!();
+        pluralCase = pluralRule();
     }
     switch (pluralCase) {
       case PluralCase.ZERO:
