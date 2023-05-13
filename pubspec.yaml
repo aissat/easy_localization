@@ -8,13 +8,13 @@ issue_tracker: https://github.com/aissat/easy_localization/issues
 version: 3.0.2-dev.5
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.12.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   shared_preferences: '>=2.0.0 <3.0.0'
-  intl: '>=0.17.0-0 <=0.17.0'
+  intl: '>=0.17.0-0 <=0.18.1'
   args: ^2.3.1
   path: ^1.8.1
   easy_logger: ^0.0.2
