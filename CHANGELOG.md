@@ -1,5 +1,15 @@
 # Changelog
 
+### [3.0.2]
+
+- support intl 18
+- support dart 3
+- added trExists extension
+- fix: handle invalid saved local
+- handle null returned by assetLoader
+- improve parsing scriptCode from local string
+- add tr-extension on build context
+
 ### [3.0.1]
 
 - added option allowing skip keys of nested object
