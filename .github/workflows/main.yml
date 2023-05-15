@@ -20,7 +20,7 @@ jobs:
         java-version: '12.x'
     - uses: subosito/flutter-action@v1
       with:
-        channel: 'dev' # or: 'dev' or 'beta'
+        channel: 'stable' # or: 'dev' or 'beta'
 
     - name: Install packages dependencies
       run: flutter pub get
@@ -53,6 +53,8 @@ jobs:
           github.ref)"
 
     name: Publish
+    permissions:
+      id-token: write # This is required for authentication using OIDC
     needs: [test]
     runs-on: ubuntu-latest
 
@@ -60,20 +62,10 @@ jobs:
       image:  google/dart:latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Dry run pub publish
-      run: dart pub publish --dry-run || true
-
-    - name: Setup credentials
-      run: |
-        pwd
-        mkdir -p ~/.pub-cache
-        cat <<EOF> ~/.pub-cache/credentials.json
-        {"accessToken":"${{ secrets.OAUTH_ACCESS_TOKEN }}","refreshToken":"${{ secrets.OAUTH_REFRESH_TOKEN }}","idToken":"${{ secrets.OAUTH_ID_TOKEN }}","tokenEndpoint":"https://accounts.google.com/o/oauth2/token","scopes":["openid","https://www.googleapis.com/auth/userinfo.email"],"expiration":1609800070574}
-        EOF
-
+    - uses: actions/checkout@v3
+    - uses: dart-lang/setup-dart@v1
+    - name: Install dependencies
+      run: dart pub get
     - name: code format
       run: dart format lib/*/*.dart lib/*.dart
     - name: Publish pkg
