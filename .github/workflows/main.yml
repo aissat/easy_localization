@@ -59,9 +59,7 @@ jobs:
       id-token: write # This is required for authentication using OIDC
     needs: [test]
     runs-on: ubuntu-latest
-
-    container:
-      image:  google/dart:latest
+    timeout-minutes: 15
 
     steps:
     - uses: actions/checkout@v3
