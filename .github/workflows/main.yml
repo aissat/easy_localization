@@ -9,6 +9,8 @@ on:
     branches: ['*']
     tags: ['v*','V*']
 
+  workflow_dispatch:
+
 jobs:
   test:
     name: Test
