@@ -66,6 +66,8 @@ jobs:
         with:
           channel: "stable"
 
+      - name: Add pub token
+        run: echo ${{secrets.OAUTH_ACCESS_TOKEN}} | dart pub token add https://pub.dev
       - name: Install dependencies
         run: dart pub get
       - name: code format
