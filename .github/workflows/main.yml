@@ -58,12 +58,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: subosito/flutter-action@v1
+    - uses: subosito/flutter-action@v2
       with:
         channel: 'stable' # or: 'dev' or 'beta'
-    - name: Install dependencies
-      run: flutter pub get
-    - name: code format
-      run: dart format lib/*/*.dart lib/*.dart
-    - name: Publish pkg
-      run: dart pub publish --force
+    - uses: dart-lang/setup-dart/blob/main/.github/workflows/publish.yml
