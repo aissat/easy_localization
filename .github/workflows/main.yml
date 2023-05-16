@@ -54,19 +54,25 @@ jobs:
       id-token: write # This is required for authentication using OIDC
     needs: [test]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Run a one-line script
-      id: vars
-      run: echo "pkg_tag=$(cat pubspec.yaml | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')" >> $GITHUB_OUTPUT
-    - uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
-    - name: Install dependencies
-      run: flutter pub get
-    - name: code format
-      run: dart format lib/*/*.dart lib/*.dart
-    - name: Publish pkg
-      run: dart pub publish --server=https://pub.dartlang.org -f
+      - uses: actions/checkout@v3
+      - name: Run a one-line script
+        id: vars
+        run: echo "pkg_tag=$(cat pubspec.yaml | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')" >> $GITHUB_OUTPUT
+      # - uses: mathieudutour/github-tag-action@v6.1
+      #   with:
+      #     custom_tag: ${{ steps.vars.outputs.pkg_tag }}
+      #     github_token: ${{ secrets.TOKEN }}
+      - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Install dependencies
+        run: dart pub get
+      - name: code format
+        run: dart format lib/*/*.dart lib/*.dart
+      - name: Publish pkg
+        run: dart pub publish --server=https://pub.dartlang.org -f
