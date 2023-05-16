@@ -629,3 +629,8 @@ example/ios/Runner.xcodeproj/project.pbxproj
 
 # Allow
 !/bin/
+
+easy_localization.iml
+example/.metadata
+example/android/app/src/debug/AndroidManifest.xml
+example/ios/Runner.xcodeproj/project.pbxproj
