@@ -16,7 +16,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
@@ -57,7 +57,13 @@ jobs:
     timeout-minutes: 15
 
     steps:
+    - uses: actions/checkout@v3
     - uses: subosito/flutter-action@v2
       with:
-        channel: 'stable' # or: 'dev' or 'beta'
-    - uses: dart-lang/setup-dart/blob/main/.github/workflows/publish.yml@v1
+        channel: 'stable'
+    - name: Install dependencies
+      run: flutter pub get
+    - name: code format
+      run: dart format lib/*/*.dart lib/*.dart
+    - name: Publish pkg
+      run: dart pub publish --force
