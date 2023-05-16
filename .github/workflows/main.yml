@@ -59,8 +59,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run a one-line script
-        id: vars
-        run: echo "pkg_tag=$(cat pubspec.yaml | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')" >> $GITHUB_OUTPUT
+      id: vars
+      run: echo "pkg_tag=$(cat pubspec.yaml | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')" >> $GITHUB_OUTPUT
     - uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
