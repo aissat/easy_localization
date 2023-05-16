@@ -37,17 +37,17 @@ jobs:
       run: flutter test --coverage
 
   publish:
-    if: "(contains(github.event.head_commit.message, '[pub]') &&
-        contains('
-          refs/heads/master
-          refs/heads/develop
-          refs/tags
-          refs/tags/releases',
-          github.ref)) ||
-        startsWith('
-          refs/tags/
-          refs/tags/releases/',
-          github.ref)"
+    # if: "(contains(github.event.head_commit.message, '[pub]') &&
+    #     contains('
+    #       refs/heads/master
+    #       refs/heads/develop
+    #       refs/tags
+    #       refs/tags/releases',
+    #       github.ref)) ||
+    #     startsWith('
+    #       refs/tags/
+    #       refs/tags/releases/',
+    #       github.ref)"
 
     name: Publish
     permissions:
@@ -60,4 +60,4 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         channel: 'stable' # or: 'dev' or 'beta'
-    - uses: dart-lang/setup-dart/blob/main/.github/workflows/publish.yml
+    - uses: dart-lang/setup-dart/blob/main/.github/workflows/publish.yml@v1
