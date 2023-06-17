@@ -15,7 +15,7 @@ import 'localization.dart';
 /// ```json
 /// {
 ///    "msg":"{} are written in the {} language",
-///    "msg_named":"Easy localization are written in the {lang} language",
+///    "msg_named":"Easy localization is written in the {lang} language",
 ///    "msg_mixed":"{} are written in the {lang} language",
 ///    "gender":{
 ///       "male":"Hi man ;) {}",
@@ -33,12 +33,21 @@ import 'localization.dart';
 /// {@endtemplate}
 String tr(
   String key, {
+  BuildContext? context,
   List<String>? args,
   Map<String, String>? namedArgs,
   String? gender,
 }) {
+  return context != null
+      ? Localization.of(context)!
+          .tr(key, args: args, namedArgs: namedArgs, gender: gender)
+      : Localization.instance
+          .tr(key, args: args, namedArgs: namedArgs, gender: gender);
+}
+
+bool trExists(String key) {
   return Localization.instance
-      .tr(key, args: args, namedArgs: namedArgs, gender: gender);
+      .exists(key);
 }
 
 /// {@template plural}
@@ -46,6 +55,9 @@ String tr(
 /// [key] Localization key
 /// [value] Number value for pluralization
 /// [BuildContext] The location in the tree where this widget builds
+/// [args] List of localized strings. Replaces {} left to right
+/// [namedArgs] Map of localized strings. Replaces the name keys {key_name} according to its name
+/// [name] Name of number value. Replaces {$name} to value
 /// [format] Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class
 ///
 /// Example:
@@ -70,6 +82,12 @@ String tr(
 ///     "one": "{} has {} dollar",
 ///     "many": "{} has {} dollars",
 ///     "other": "{} has {} dollars"
+///   },
+///   "money_named_args": {
+///     "zero": "{name} has no money",
+///     "one": "{name} has {money} dollar",
+///     "many": "{name} has {money} dollars",
+///     "other": "{name} has {money} dollars"
 ///   }
 /// }
 /// ```
@@ -79,13 +97,21 @@ String tr(
 /// print('day'.plural(21)); // output: 21 день
 /// var money = plural('money', 10.23) // output: You have 10.23 dollars
 /// var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
+/// var money = plural('money_named_args', 10.23, namedArgs: {'name': 'Jane'}, name: 'money')  // output: Jane has 10.23 dollars
 /// ```
 /// {@endtemplate}
 String plural(
   String key,
   num value, {
   List<String>? args,
+  BuildContext? context,
+  Map<String, String>? namedArgs,
+  String? name,
   NumberFormat? format,
 }) {
-  return Localization.instance.plural(key, value, args: args, format: format);
+  return context != null
+      ? Localization.of(context)!.plural(key, value,
+          args: args, namedArgs: namedArgs, name: name, format: format)
+      : Localization.instance.plural(key, value,
+          args: args, namedArgs: namedArgs, name: name, format: format);
 }

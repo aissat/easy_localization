@@ -65,6 +65,7 @@ class EasyLocalization extends StatefulWidget {
   /// Class loader for localization files.
   /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
   /// @Default value `const RootBundleAssetLoader()`
+  // ignore: prefer_typing_uninitialized_variables
   final assetLoader;
 
   /// Save locale in device storage.
@@ -94,8 +95,10 @@ class EasyLocalization extends StatefulWidget {
   }
 
   @override
+  // ignore: library_private_types_in_public_api
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
+  // ignore: library_private_types_in_public_api
   static _EasyLocalizationProvider? of(BuildContext context) =>
       _EasyLocalizationProvider.of(context);
 
@@ -103,7 +106,7 @@ class EasyLocalization extends StatefulWidget {
   /// so that savedLocale is loaded and used from the
   /// start.
   static Future<void> ensureInitialized() async =>
-      EasyLocalizationController.initEasyLocation();
+      await EasyLocalizationController.initEasyLocation();
 
   /// Customizable logger
   static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
@@ -207,11 +210,11 @@ class _EasyLocalizationProvider extends InheritedWidget {
   // Locale get startLocale => parent.startLocale;
 
   /// Change app locale
-  Future<void> setLocale(Locale _locale) async {
+  Future<void> setLocale(Locale locale) async {
     // Check old locale
-    if (_locale != _localeState.locale) {
-      assert(parent.supportedLocales.contains(_locale));
-      await _localeState.setLocale(_locale);
+    if (locale != _localeState.locale) {
+      assert(parent.supportedLocales.contains(locale));
+      await _localeState.setLocale(locale);
     }
   }
 

@@ -131,19 +131,19 @@ class MyApp extends StatelessWidget {
 
 ### 📜 Easy localization widget properties
 
-| Properties              | Required | Default                   | Description |
-| ----------------------- | -------- | ------------------------- | ----------- |
-| key                     | false    |                           | Widget key. |
-| child                   | true     |                           | Place for your main page widget. |
-| supportedLocales        | true     |                           | List of supported locales. |
-| path                    | true     |                           | Path to your folder with localization files. |
+| Properties              | Required | Default                   | Description                                                                                                                                                                   |
+| ----------------------- | -------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| key                     | false    |                           | Widget key.                                                                                                                                                                   |
+| child                   | true     |                           | Place for your main page widget.                                                                                                                                              |
+| supportedLocales        | true     |                           | List of supported locales.                                                                                                                                                    |
+| path                    | true     |                           | Path to your folder with localization files.                                                                                                                                  |
 | assetLoader             | false    | `RootBundleAssetLoader()` | Class loader for localization files. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
-| fallbackLocale          | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.|
-| startLocale             | false    |                           | Overrides device locale. |
-| saveLocale              | false    | `true`                    | Save locale in device storage. |
-| useFallbackTranslations | false    | `false`                   | If a localization key is not found in the locale file, try to use the fallbackLocale file.  |
-| useOnlyLangCode         | false    | `false`                   | Trigger for using only language code for reading localization files.</br></br>Example:</br>`en.json //useOnlyLangCode: true`</br>`en-US.json //useOnlyLangCode: false`  |
-| errorWidget             | false    | `FutureErrorWidget()`     | Shows a custom error widget when an error occurs. |
+| fallbackLocale          | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.                                                                                                     |
+| startLocale             | false    |                           | Overrides device locale.                                                                                                                                                      |
+| saveLocale              | false    | `true`                    | Save locale in device storage.                                                                                                                                                |
+| useFallbackTranslations | false    | `false`                   | If a localization key is not found in the locale file, try to use the fallbackLocale file.                                                                                    |
+| useOnlyLangCode         | false    | `false`                   | Trigger for using only language code for reading localization files.</br></br>Example:</br>`en.json //useOnlyLangCode: true`</br>`en-US.json //useOnlyLangCode: false`        |
+| errorWidget             | false    | `FutureErrorWidget()`     | Shows a custom error widget when an error occurs.                                                                                                                             |
 
 ## Usage
 
@@ -168,14 +168,14 @@ void main() async{
 
 Easy localization uses extension methods [BuildContext] for access to locale.
 
-It's more easiest way change locale or get parameters 😉.
+It's the easiest way change locale or get parameters 😉.
 
 ℹ️ No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
 Example:
 
 ```dart
-context.locale = Locale('en', 'US');
+context.setLocale(Locale('en', 'US'));
 
 print(context.locale.toString());
 ```
@@ -192,22 +192,24 @@ Text('title').tr() //Text widget
 print('title'.tr()); //String
 
 var title = tr('title') //Static function
+
+Text(context.tr('title')) //Extension on BuildContext
 ```
 
 #### Arguments:
 
-| Name | Type | Description |
-| -------- | -------- | -------- |
-| args| `List<String>` | List of localized strings. Replaces `{}` left to right |
-| namedArgs| `Map<String, String>` | Map of localized strings. Replaces the name keys `{key_name}` according to its name |
-| gender | `String` | Gender switcher. Changes the localized string based on gender string |
+| Name      | Type                  | Description                                                                         |
+| --------- | --------------------- | ----------------------------------------------------------------------------------- |
+| args      | `List<String>`        | List of localized strings. Replaces `{}` left to right                              |
+| namedArgs | `Map<String, String>` | Map of localized strings. Replaces the name keys `{key_name}` according to its name |
+| gender    | `String`              | Gender switcher. Changes the localized string based on gender string                |
 
 Example:
 
 ``` json
 {
    "msg":"{} are written in the {} language",
-   "msg_named":"Easy localization are written in the {lang} language",
+   "msg_named":"Easy localization is written in the {lang} language",
    "msg_mixed":"{} are written in the {lang} language",
    "gender":{
       "male":"Hi man ;) {}",
@@ -241,11 +243,13 @@ You can use extension methods of [String] or [Text] widget, you can also use `pl
 
 #### Arguments:
 
-| Name | Type | Description |
-| -------- | -------- | -------- |
-| value| `num` | Number value for pluralization |
-| args| `List<String>` | List of localized strings. Replaces `{}` left to right |
-| format| `NumberFormat` | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
+| Name      | Type                  | Description                                                                                                                  |
+| --------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| value     | `num`                 | Number value for pluralization                                                                                               |
+| args      | `List<String>`        | List of localized strings. Replaces `{}` left to right                                                                       |
+| namedArgs | `Map<String, String>` | Map of localized strings. Replaces the name keys `{key_name}` according to its name                                          |
+| name      | `String`              | Name of number value. Replaces `{$name}` to value                                                                            |
+| format    | `NumberFormat`        | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
 
 Example:
 
@@ -270,6 +274,12 @@ Example:
     "one": "{} has {} dollar",
     "many": "{} has {} dollars",
     "other": "{} has {} dollars"
+  },
+  "money_named_args": {
+    "zero": "{name} has no money",
+    "one": "{name} has {money} dollar",
+    "many": "{name} has {money} dollars",
+    "other": "{name} has {money} dollars"
   }
 }
 ```
@@ -285,8 +295,15 @@ print('day'.plural(21)); // output: 21 день
 //Static function
 var money = plural('money', 10.23) // output: You have 10.23 dollars
 
+//Text widget with plural BuildContext extension
+Text(context.plural('money', 10.23))
+
 //Static function with arguments
 var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
+
+//Static function with named arguments
+var money = plural('money_named_args', 10.23, namedArgs: {'name': 'Jane', 'money': '10.23'})  // output: Jane has 10.23 dollars
+var money = plural('money_named_args', 10.23, namedArgs: {'name': 'Jane'}, name: 'money')  // output: Jane has 10.23 dollars
 ```
 
 ### 🔥 Linked translations:
@@ -416,14 +433,15 @@ Code generation supports only json files, for more information run in terminal `
 
 ### Command line arguments
 
-| Arguments | Short |  Default | Description |
-| ------ | ------ |  ------ | ------ |
-| --help | -h |  | Help info |
-| --source-dir | -S | resources/langs | Folder containing localization files |
-| --source-file | -s | First file | File to use for localization |
-| --output-dir | -O | lib/generated | Output folder stores for the generated file |
-| --output-file | -o | codegen_loader.g.dart | Output file name |
-| --format | -f | json | Support json or keys formats |
+| Arguments                    | Short | Default               | Description                                                                 |
+| ---------------------------- | ----- | --------------------- | --------------------------------------------------------------------------- |
+| --help                       | -h    |                       | Help info                                                                   |
+| --source-dir                 | -S    | resources/langs       | Folder containing localization files                                        |
+| --source-file                | -s    | First file            | File to use for localization                                                |
+| --output-dir                 | -O    | lib/generated         | Output folder stores for the generated file                                 |
+| --output-file                | -o    | codegen_loader.g.dart | Output file name                                                            |
+| --format                     | -f    | json                  | Support json or keys formats                                                |
+| --[no-]skip-unnecessary-keys | -u    | false                 | Ignores keys defining nested object except for pluarl(), gender() keywords. |
 
 ### 🔌 Localization asset loader class
 
@@ -463,7 +481,7 @@ import 'generated/locale_keys.g.dart';
 ```
 4. All done!
 
-How to usage generated keys:
+How to use generated keys:
 
 ```dart
 print(LocaleKeys.title.tr()); //String
@@ -540,8 +558,8 @@ Locale('en', 'US').toStringWithSeparator(separator: '|') // en|US
 
 ## Screenshots
 
-| Arabic RTL | English LTR | Error widget |
-| ---------- | ----------- | ------------ |
+| Arabic RTL                                                                                                                  | English LTR                                                                                                                   | Error widget                                                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | ![Arabic RTL](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_ar.png "Arabic RTL") | ![English LTR](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_en.png "English LTR") | ![Error widget](https://raw.githubusercontent.com/aissat/easy_localization/master/screenshots/Screenshot_err.png "Error widget") |
 
 ## Donations

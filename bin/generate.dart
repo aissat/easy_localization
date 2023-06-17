@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -30,7 +31,7 @@ bool _isHelpCommand(List<String> args) {
 
 void _printHelperDisplay() {
   var parser = _generateArgParser(null);
-  print(parser.usage);
+  log(parser.usage);
 }
 
 GenerateOptions _generateOption(List<String> args) {
@@ -73,6 +74,14 @@ ArgParser _generateArgParser(GenerateOptions? generateOptions) {
       help: 'Support json or keys formats',
       allowed: ['json', 'keys']);
 
+  parser.addFlag(
+    'skip-unnecessary-keys',
+    abbr: 'u',
+    defaultsTo: false,
+    callback: (bool? x) => generateOptions!.skipUnnecessaryKeys = x,
+    help: 'If true - Skip unnecessary keys of nested objects.',
+  );
+
   return parser;
 }
 
@@ -83,10 +92,11 @@ class GenerateOptions {
   String? outputDir;
   String? outputFile;
   String? format;
+  bool? skipUnnecessaryKeys;
 
   @override
   String toString() {
-    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile';
+    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile skipUnnecessaryKeys: $skipUnnecessaryKeys';
   }
 }
 
@@ -117,7 +127,7 @@ void handleLangFiles(GenerateOptions options) async {
   }
 
   if (files.isNotEmpty) {
-    generateFile(files, outputPath, options.format);
+    generateFile(files, outputPath, options);
   } else {
     printError('Source path empty');
   }
@@ -132,8 +142,8 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
   return completer.future;
 }
 
-void generateFile(
-    List<FileSystemEntity> files, Directory outputPath, String? format) async {
+void generateFile(List<FileSystemEntity> files, Directory outputPath,
+    GenerateOptions options) async {
   var generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
@@ -141,12 +151,12 @@ void generateFile(
 
   var classBuilder = StringBuffer();
 
-  switch (format) {
+  switch (options.format) {
     case 'json':
       await _writeJson(classBuilder, files);
       break;
     case 'keys':
-      await _writeKeys(classBuilder, files);
+      await _writeKeys(classBuilder, files, options.skipUnnecessaryKeys);
       break;
     // case 'csv':
     //   await _writeCsv(classBuilder, files);
@@ -161,8 +171,8 @@ void generateFile(
   printInfo('All done! File generated in ${outputPath.path}');
 }
 
-Future _writeKeys(
-    StringBuffer classBuilder, List<FileSystemEntity> files) async {
+Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
+    bool? skipUnnecessaryKeys) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
@@ -174,31 +184,46 @@ abstract class  LocaleKeys {
   Map<String, dynamic> translations =
       json.decode(await fileData.readAsString());
 
-  file += _resolve(translations);
+  file += _resolve(translations, skipUnnecessaryKeys);
 
   classBuilder.writeln(file);
 }
 
-String _resolve(Map<String, dynamic> translations, [String? accKey]) {
+String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
+    [String? accKey]) {
   var fileContent = '';
 
   final sortedKeys = translations.keys.toList();
 
+  final canIgnoreKeys = skipUnnecessaryKeys == true;
+
+  bool containsPreservedKeywords(Map<String, dynamic> map) =>
+      map.keys.any((element) => _preservedKeywords.contains(element));
+
   for (var key in sortedKeys) {
+    var ignoreKey = false;
     if (translations[key] is Map) {
+      // If key does not contain keys for plural(), gender() etc. and option is enabled -> ignore it
+      ignoreKey = !containsPreservedKeywords(
+              translations[key] as Map<String, dynamic>) &&
+          canIgnoreKeys;
+
       var nextAccKey = key;
       if (accKey != null) {
         nextAccKey = '$accKey.$key';
       }
 
-      fileContent += _resolve(translations[key], nextAccKey);
+      fileContent +=
+          _resolve(translations[key], skipUnnecessaryKeys, nextAccKey);
     }
 
     if (!_preservedKeywords.contains(key)) {
-      accKey != null
+      accKey != null && !ignoreKey
           ? fileContent +=
-              '  static const ${accKey.replaceAll('.', '_')}\_$key = \'$accKey.$key\';\n'
-          : fileContent += '  static const $key = \'$key\';\n';
+              '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
+          : !ignoreKey
+              ? fileContent += '  static const $key = \'$key\';\n'
+              : null;
     }
   }
 
@@ -220,7 +245,7 @@ class CodegenLoader extends AssetLoader{
   const CodegenLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale ) {
+  Future<Map<String, dynamic>?> load(String path, Locale locale) {
     return Future.value(mapLocales[locale.toString()]);
   }
 
@@ -236,12 +261,12 @@ class CodegenLoader extends AssetLoader{
 
     Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
-    final mapString = JsonEncoder.withIndent('  ').convert(data);
+    final mapString = const JsonEncoder.withIndent('  ').convert(data);
     gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
   }
 
   gFile +=
-      'static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};';
+      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
   classBuilder.writeln(gFile);
 }
 
@@ -266,9 +291,9 @@ class CodegenLoader extends AssetLoader{
 // }
 
 void printInfo(String info) {
-  print('\u001b[32measy localization: $info\u001b[0m');
+  log('\u001b[32measy localization: $info\u001b[0m');
 }
 
 void printError(String error) {
-  print('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
+  log('\u001b[31m[ERROR] easy localization: $error\u001b[0m');
 }
