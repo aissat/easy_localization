@@ -65,8 +65,7 @@ class EasyLocalization extends StatefulWidget {
   /// Class loader for localization files.
   /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
   /// @Default value `const RootBundleAssetLoader()`
-  // ignore: prefer_typing_uninitialized_variables
-  final assetLoader;
+  final AssetLoader assetLoader;
 
   /// Save locale in device storage.
   /// @Default value true
@@ -195,9 +194,12 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
-  _EasyLocalizationProvider(this.parent, this._localeState,
-      {Key? key, required this.delegate})
-      : currentLocale = _localeState.locale,
+  _EasyLocalizationProvider(
+    this.parent,
+    this._localeState, {
+    Key? key,
+    required this.delegate,
+  })  : currentLocale = _localeState.locale,
         super(key: key, child: parent.child) {
     EasyLocalization.logger.debug('Init provider');
   }
@@ -245,8 +247,10 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate(
-      {this.localizationController, this.supportedLocales}) {
+  _EasyLocalizationDelegate({
+    this.localizationController,
+    this.supportedLocales,
+  }) {
     EasyLocalization.logger.debug('Init Localization Delegate');
   }
 
@@ -260,9 +264,12 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
       await localizationController!.loadTranslations();
     }
 
-    Localization.load(value,
-        translations: localizationController!.translations,
-        fallbackTranslations: localizationController!.fallbackTranslations);
+    Localization.load(
+      value,
+      translations: localizationController!.translations,
+      fallbackTranslations: localizationController!.fallbackTranslations,
+    );
+
     return Future.value(Localization.instance);
   }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+### [4.0.0]
+
+- **BREAKING:** `EasyLocalization.assetLoader` is now `AssetLoader` (was dynamic).
+
 ### [3.0.2]
 
 - support intl 18
