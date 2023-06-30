@@ -7,6 +7,7 @@ import 'package:easy_localization/src/localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/test_asset_loaders.dart';
 
@@ -103,6 +104,8 @@ void main() {
     test('localeFromString() succeeds', () async {
       expect(const Locale('ar'), 'ar'.toLocale());
       expect(const Locale('ar', 'DZ'), 'ar_DZ'.toLocale());
+      expect(const Locale.fromSubtags(languageCode: 'ar', scriptCode: 'Arab'),
+          'ar_Arab'.toLocale());
       expect(
           const Locale.fromSubtags(
               languageCode: 'ar', scriptCode: 'Arab', countryCode: 'DZ'),
@@ -136,6 +139,52 @@ void main() {
               translations: r2.translations),
           true);
       expect(Localization.instance.tr('path'), 'path/en-us.json');
+    });
+
+    test('controller loads saved locale', () async {
+      SharedPreferences.setMockInitialValues({
+        'locale': 'en',
+      });
+      await EasyLocalization.ensureInitialized();
+      final controller = EasyLocalizationController(
+        supportedLocales: const [Locale('en'), Locale('fb')],
+        fallbackLocale: const Locale('fb'),
+        path: 'path',
+        useOnlyLangCode: true,
+        useFallbackTranslations: true,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
+        saveLocale: true,
+        assetLoader: const JsonAssetLoader(),
+      );
+      expect(controller.locale, const Locale('en'));
+
+      SharedPreferences.setMockInitialValues({});
+    });
+
+    /// E.g. if user saved a locale that was removed in a later version
+    test('controller loads fallback if saved locale is not supported',
+        () async {
+      SharedPreferences.setMockInitialValues({
+        'locale': 'de',
+      });
+      await EasyLocalization.ensureInitialized();
+      final controller = EasyLocalizationController(
+        supportedLocales: const [Locale('en'), Locale('fb')],
+        fallbackLocale: const Locale('fb'),
+        path: 'path',
+        useOnlyLangCode: true,
+        useFallbackTranslations: true,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
+        saveLocale: true,
+        assetLoader: const JsonAssetLoader(),
+      );
+      expect(controller.locale, const Locale('fb'));
+
+      SharedPreferences.setMockInitialValues({});
     });
 
     group('locale', () {
@@ -495,6 +544,11 @@ void main() {
       group('string', () {
         test('tr', () {
           expect('test'.tr(), 'test');
+        });
+
+        test('trExists', () {
+          expect('test'.trExists(), true);
+          expect('xyz'.trExists(), false);
         });
 
         test('plural', () {

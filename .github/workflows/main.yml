@@ -9,18 +9,20 @@ on:
     branches: ['*']
     tags: ['v*','V*']
 
+  workflow_dispatch:
+
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
     - uses: subosito/flutter-action@v1
       with:
-        channel: 'dev' # or: 'dev' or 'beta'
+        channel: 'stable' # or: 'dev' or 'beta'
 
     - name: Install packages dependencies
       run: flutter pub get
@@ -33,11 +35,6 @@ jobs:
 
     - name: Run tests coverage
       run: flutter test --coverage
-
-    - name: Coveralls GitHub Action
-      uses: coverallsapp/github-action@1.1.3
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
     if: "(contains(github.event.head_commit.message, '[pub]') &&
@@ -53,28 +50,27 @@ jobs:
           github.ref)"
 
     name: Publish
+    permissions:
+      id-token: write # This is required for authentication using OIDC
     needs: [test]
     runs-on: ubuntu-latest
-
-    container:
-      image:  google/dart:latest
+    timeout-minutes: 5
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Run a one-line script
+        id: vars
+        run: echo "pkg_tag=$(cat pubspec.yaml | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')" >> $GITHUB_OUTPUT
+      - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
 
-    - name: Dry run pub publish
-      run: dart pub publish --dry-run || true
-
-    - name: Setup credentials
-      run: |
-        pwd
-        mkdir -p ~/.pub-cache
-        cat <<EOF> ~/.pub-cache/credentials.json
-        {"accessToken":"${{ secrets.OAUTH_ACCESS_TOKEN }}","refreshToken":"${{ secrets.OAUTH_REFRESH_TOKEN }}","idToken":"${{ secrets.OAUTH_ID_TOKEN }}","tokenEndpoint":"https://accounts.google.com/o/oauth2/token","scopes":["openid","https://www.googleapis.com/auth/userinfo.email"],"expiration":1609800070574}
-        EOF
-
-    - name: code format
-      run: dart format lib/*/*.dart lib/*.dart
-    - name: Publish pkg
-      run: dart pub publish --force
+      - name: Add pub token
+        run: echo ${{secrets.OAUTH_ACCESS_TOKEN}} | dart pub token add https://pub.dev
+      - name: Install dependencies
+        run: dart pub get
+      - name: code format
+        run: dart format lib/*/*.dart lib/*.dart
+      - name: Publish pkg
+        run: dart pub publish --server=https://pub.dartlang.org -f
