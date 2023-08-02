@@ -30,7 +30,7 @@ bool _isHelpCommand(List<String> args) {
 
 void _printHelperDisplay() {
   var parser = _generateArgParser(null);
-  stdout.write(parser.usage);
+  stdout.writeln(parser.usage);
 }
 
 GenerateOptions _generateOption(List<String> args) {
@@ -108,7 +108,7 @@ void handleLangFiles(GenerateOptions options) async {
       Directory(path.join(current.path, output.path, options.outputFile));
 
   if (!await sourcePath.exists()) {
-    stderr.write('Source path does not exist');
+    stderr.writeln('Source path does not exist');
     return;
   }
 
@@ -116,7 +116,7 @@ void handleLangFiles(GenerateOptions options) async {
   if (options.sourceFile != null) {
     final sourceFile = File(path.join(source.path, options.sourceFile));
     if (!await sourceFile.exists()) {
-      stderr.write('Source file does not exist (${sourceFile.toString()})');
+      stderr.writeln('Source file does not exist (${sourceFile.toString()})');
       return;
     }
     files = [sourceFile];
@@ -128,7 +128,7 @@ void handleLangFiles(GenerateOptions options) async {
   if (files.isNotEmpty) {
     generateFile(files, outputPath, options);
   } else {
-    stderr.write('Source path empty');
+    stderr.writeln('Source path empty');
   }
 }
 
@@ -161,13 +161,13 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath,
     //   await _writeCsv(classBuilder, files);
     // break;
     default:
-      stderr.write('Format not support');
+      stderr.writeln('Format not supported');
   }
 
   classBuilder.writeln('}');
   generatedFile.writeAsStringSync(classBuilder.toString());
 
-  stdout.write('All done! File generated in ${outputPath.path}');
+  stdout.writeln('All done! File generated in ${outputPath.path}');
 }
 
 Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
