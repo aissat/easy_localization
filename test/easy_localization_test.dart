@@ -99,6 +99,7 @@ void main() {
         },
         saveLocale: false,
         assetLoader: const ImmutableJsonAssetLoader(),
+        nestedKeysDisabled: true,
       ).loadTranslations();
     });
 
