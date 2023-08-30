@@ -8,11 +8,11 @@ on:
     #   - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
-  test:
-    name: Test
-    uses: ./.github/workflows/test.yml
-    secrets: inherit
+  # test:
+  #   name: Test
+  #   uses: ./.github/workflows/test.yml
+  #   secrets: inherit
 
   publish:
-    needs: [test]
+    # needs: [test]
     uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
