@@ -3,8 +3,9 @@ name: Release to pub.dev
 on:
   workflow_dispatch:
   push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+*'
+    # TODO: Re-enable
+    # tags:
+    #   - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
   test:
@@ -13,4 +14,5 @@ jobs:
     secrets: inherit
 
   publish:
+    needs: [test]
     uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
