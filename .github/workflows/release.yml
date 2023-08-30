@@ -7,13 +7,13 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
-  # test:
-  #   name: Test
-  #   uses: ./.github/workflows/test.yml
-  #   secrets: inherit
+  test:
+    name: Test
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
 
   publish:
-    # needs: [test]
+    needs: [test]
     name: Publish
     permissions:
       id-token: write # This is required for authentication using OIDC
