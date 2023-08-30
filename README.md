@@ -192,6 +192,8 @@ Text('title').tr() //Text widget
 print('title'.tr()); //String
 
 var title = tr('title') //Static function
+
+Text(context.tr('title')) //Extension on BuildContext
 ```
 
 #### Arguments:
@@ -292,6 +294,9 @@ print('day'.plural(21)); // output: 21 день
 
 //Static function
 var money = plural('money', 10.23) // output: You have 10.23 dollars
+
+//Text widget with plural BuildContext extension
+Text(context.plural('money', 10.23))
 
 //Static function with arguments
 var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars

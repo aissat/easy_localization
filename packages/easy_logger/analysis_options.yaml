@@ -2,8 +2,6 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  strong-mode:
-    implicit-casts: false
   errors:
     missing_required_param: warning
     missing_return: warning
