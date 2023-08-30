@@ -2,10 +2,9 @@ name: Release to pub.dev
 
 on:
   workflow_dispatch:
-  push: #todo:remove
-  release:
-    types: [ created ]
-
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
   test:
@@ -15,9 +14,7 @@ jobs:
 
   publish:
     name: Publish
-    permissions:
-      id-token: write # This is required for authentication using OIDC
-    needs: [test]
+    
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -30,14 +27,11 @@ jobs:
         with:
           channel: "stable"
 
-      - name: Add pub token
-        run: echo ${{secrets.OAUTH_ACCESS_TOKEN}} | dart pub token add https://pub.dev
-
       - name: Install dependencies
         run: dart pub get
 
       - name: code format
         run: dart format lib/*/*.dart lib/*.dart
 
-      - name: Publish pkg
-        run: dart pub publish --server=https://pub.dartlang.org -f
+      - name: Publish
+        uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
