@@ -1,4 +1,4 @@
-name: PR Checlk
+name: PR Check
 
 on:
   workflow_dispatch:
