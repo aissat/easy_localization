@@ -13,25 +13,4 @@ jobs:
     secrets: inherit
 
   publish:
-    name: Publish
-    
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: dart-lang/setup-dart@v1
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
-
-      - name: Install dependencies
-        run: dart pub get
-
-      - name: code format
-        run: dart format lib/*/*.dart lib/*.dart
-
-      - name: Publish
-        uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
