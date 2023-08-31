@@ -395,7 +395,7 @@ Get device locale
 Example:
 
 ```dart
-print(${context.deviceLocale.toString()}) // OUTPUT: en_US
+print(context.deviceLocale.toString()) // OUTPUT: en_US
 ```
 
 ### 🔥 Delete save locale `deleteSaveLocale()`
