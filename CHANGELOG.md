@@ -1,6 +1,6 @@
 # Changelog
 
-### [3.0.3]
+### [3.0.3-dev.1]
 
 - replace log() with stdout.writeln()
 
