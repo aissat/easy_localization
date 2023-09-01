@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+
+    - name: Install packages dependencies
+      run: flutter pub get
+
+    - name: Analyze the project's Dart code
+      run: flutter analyze
+
+    - name: Run tests
+      run: flutter test
+
+    - name: Run tests coverage
+      run: flutter test --coverage

@@ -1,8 +1,9 @@
 # Changelog
 
-### [4.0.0]
+### [3.0.3-dev.1]
 
 - **BREAKING:** `EasyLocalization.assetLoader` is now `AssetLoader` (was dynamic).
+- replace log() with stdout.writeln()
 
 ### [3.0.2]
 
