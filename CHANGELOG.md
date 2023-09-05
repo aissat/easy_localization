@@ -1,5 +1,9 @@
 # Changelog
 
+### [3.0.3]
+
+- replace log() with stdout.writeln()
+
 ### [3.0.2]
 
 - support intl 18
