@@ -14,7 +14,7 @@ publish_to: none
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0-0 <3.0.0"
+  sdk: ">=2.12.0-0 <4.0.0"
 
 dependencies:
   flutter:
@@ -28,8 +28,9 @@ dependencies:
   font_awesome_flutter: 9.0.0-nullsafety
 
   #custom loaders
-  easy_localization_loader:
-    git: https://github.com/aissat/easy_localization_loader.git
+#fixme(DartAndrik): Commented due to [easy_localization_loader] package dependencies issue, uncomment after resolving.
+#  easy_localization_loader:
+#    git: https://github.com/aissat/easy_localization_loader.git
 
 dev_dependencies:
   flutter_test:
