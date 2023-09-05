@@ -469,12 +469,12 @@ void main() {
         expect(Localization.instance.plural('hat_other', 1), 'other hats');
       });
 
-      test('other as fallback and fallback translations priority',
+      test('two as fallback and fallback translations priority',
           overridePrint(() {
         printLog = [];
         expect(
           Localization.instance.plural('test_fallback_plurals', 2),
-          '2 seconds', // isNot('fallback two'),
+          'fallback two',
         );
         expect(printLog, isEmpty);
       }));
