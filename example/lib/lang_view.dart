@@ -12,7 +12,7 @@ class LanguageView extends StatelessWidget {
           '',
           style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
       ),
@@ -29,7 +29,7 @@ class LanguageView extends StatelessWidget {
               child: Text(
                 'Choose language',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
@@ -98,10 +98,11 @@ class _SwitchListTileMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 10, right: 10, top: 5),
+      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 24),
       decoration: BoxDecoration(
-        border:
-            isSelected(context) ? Border.all(color: Colors.blueAccent) : null,
+        border: isSelected(context)
+            ? Border.all(color: Theme.of(context).primaryColor)
+            : null,
       ),
       child: ListTile(
           dense: true,

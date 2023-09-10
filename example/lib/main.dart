@@ -8,22 +8,8 @@ import 'lang_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-
-  runApp(EasyLocalization(
-    supportedLocales: [
-      Locale('en', 'US'),
-      Locale('ar', 'DZ'),
-      Locale('de', 'DE'),
-      Locale('ru', 'RU')
-    ],
-    path: 'resources/langs',
-    child: MyApp(),
-    // fallbackLocale: Locale('en', 'US'),
-    // startLocale: Locale('de', 'DE'),
-    // saveLocale: false,
-    // useOnlyLangCode: true,
-
+  await EasyLocalization.ensureInitialized(
+    assetLoader: RootBundleAssetLoader(path: 'resources/langs/json'),
     // optional assetLoader default used is RootBundleAssetLoader which uses flutter's assetloader
     // install easy_localization_loader for enable custom loaders
     // assetLoader: RootBundleAssetLoader()
@@ -35,18 +21,30 @@ void main() async {
     // assetLoader: XmlAssetLoader() //multiple files
     // assetLoader: XmlSingleAssetLoader() //single file
     // assetLoader: CodegenLoader()
-  ));
+  );
+
+  runApp(
+    EasyLocalization(
+      child: MyApp(),
+      // fallbackLocale: Locale('en', 'US'),
+      // startLocale: Locale('ar', 'DZ'),
+      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+      saveLocale: false,
+      // useOnlyLangCode: true,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('supportedLocales => ${context.supportedLocales}');
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: true,
       ),
       home: MyHomePage(title: 'Easy localization'),
     );
@@ -94,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: Icon(
               Icons.language,
-              color: Colors.white,
+              // color: Colors.white,
             ),
           ),
         ],

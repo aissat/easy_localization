@@ -6,11 +6,11 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
 
-class CodegenLoader extends AssetLoader {
+class CodegenLoader implements AssetLoader {
   const CodegenLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
+  Future<Map<String, dynamic>> load(Locale locale) {
     return Future.value(mapLocales[locale.toString()]);
   }
 
@@ -310,4 +310,8 @@ class CodegenLoader extends AssetLoader {
     "ru_RU": ru_RU,
     "ru": ru
   };
+
+  @override
+  // TODO: implement path
+  String get path => throw UnimplementedError();
 }
