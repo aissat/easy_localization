@@ -113,6 +113,19 @@ class Localization {
     return pluralRules[locale];
   }
 
+  static PluralCase _pluralCaseFallback(num value) {
+    switch (value) {
+      case 0:
+        return PluralCase.ZERO;
+      case 1:
+        return PluralCase.ONE;
+      case 2:
+        return PluralCase.TWO;
+      default:
+        return PluralCase.OTHER;
+    }
+  }
+
   String plural(
     String key,
     num value, {
@@ -121,22 +134,12 @@ class Localization {
     String? name,
     NumberFormat? format,
   }) {
-    late PluralCase pluralCase;
+
     late String res;
-    var pluralRule = _pluralRule(_locale.languageCode, value);
-    switch (value) {
-      case 0:
-        pluralCase = PluralCase.ZERO;
-        break;
-      case 1:
-        pluralCase = PluralCase.ONE;
-        break;
-      case 2:
-        pluralCase = PluralCase.TWO;
-        break;
-      default:
-        pluralCase = pluralRule!();
-    }
+
+    final pluralRule = _pluralRule(_locale.languageCode, value);
+    final pluralCase = pluralRule != null ? pluralRule!() : _pluralCaseFallback(value);
+
     switch (pluralCase) {
       case PluralCase.ZERO:
         res = _resolvePlural(key, 'zero');
