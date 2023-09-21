@@ -423,8 +423,8 @@ void main() {
 
     group('plural', () {
       var r = EasyLocalizationController(
-          forceLocale: const Locale('en'),
-          supportedLocales: const [Locale('en'), Locale('fb')],
+          forceLocale: const Locale('fb'),
+          supportedLocales: [const Locale('fb')],
           fallbackLocale: const Locale('fb'),
           path: 'path',
           useOnlyLangCode: true,
@@ -437,7 +437,7 @@ void main() {
 
       setUpAll(() async {
         await r.loadTranslations();
-        Localization.load(const Locale('en'),
+        Localization.load(const Locale('fb'),
             translations: r.translations,
             fallbackTranslations: r.fallbackTranslations);
       });
