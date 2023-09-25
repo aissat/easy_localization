@@ -2,11 +2,23 @@ import 'dart:ui';
 
 import 'package:easy_localization/src/asset_loader.dart';
 
-class ImmutableJsonAssetLoader extends AssetLoader {
-  const ImmutableJsonAssetLoader();
+class ImmutableAssetLoader extends AssetLoader {
+  const ImmutableAssetLoader();
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
+  Future<Map<String, dynamic>> load({Locale? locale}) {
+    return Future.value(const {
+      'test': 'test',
+    });
+  }
+}
+
+class ImmutableJsonAssetLoader extends AssetLoader {
+  const ImmutableJsonAssetLoader(List<Locale> sLocales)
+      : super(supportedLocales: sLocales);
+
+  @override
+  Future<Map<String, dynamic>> load({Locale? locale}) {
     return Future.value(const {
       'test': 'test',
     });
@@ -14,10 +26,11 @@ class ImmutableJsonAssetLoader extends AssetLoader {
 }
 
 class JsonAssetLoader extends AssetLoader {
-  const JsonAssetLoader();
+  const JsonAssetLoader(List<Locale> sLocales)
+      : super(supportedLocales: sLocales);
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
+  Future<Map<String, dynamic>> load({Locale? locale}) {
     return Future.value({
       'test': 'test',
       'test_replace_one': 'test replace {}',
@@ -84,10 +97,10 @@ class JsonAssetLoader extends AssetLoader {
           }
         }
       },
-      'path': fullPath,
+      'path': 'path/$locale.json',
       'test_missing_fallback':
-          (locale.languageCode == 'fb' ? 'fallback!' : null),
-      'test_fallback_plurals': (locale.languageCode == 'fb'
+          (locale?.languageCode == 'fb' ? 'fallback!' : null),
+      'test_fallback_plurals': (locale?.languageCode == 'fb'
           ? {
               'zero': 'fallback zero',
               'one': 'fallback one',
