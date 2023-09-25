@@ -244,7 +244,7 @@ class CodegenLoader extends AssetLoader{
   const CodegenLoader();
 
   @override
-  Future<Map<String, dynamic>?> load(String path, Locale locale) {
+  Future<Map<String, dynamic>> load({Locale? locale}) {
     return Future.value(mapLocales[locale.toString()]);
   }
 
