@@ -6,7 +6,16 @@ import 'package:flutter/services.dart';
 
 /// Abstract class for loading assets.
 abstract class AssetLoader {
+  /// Path to the assets directory.
+  /// Example:
+  /// ```dart
+  /// path: 'assets/translations',
+  /// path: 'assets/translations/lang.csv',
+  /// ```
   final String? path;
+
+  /// List of supported locales.
+  /// {@macro flutter.widgets.widgetsApp.supportedLocales}
   final List<Locale>? supportedLocales;
 
   /// Constructor for [AssetLoader].
