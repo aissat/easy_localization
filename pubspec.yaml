@@ -1,28 +1,55 @@
 name: easy_localization
-description: Easy and Fast internationalizing and localization your Flutter Apps, this package simplify the internationalizing process .
+description: Easy and Fast internationalizing and localization your Flutter
+  Apps, this package simplify the internationalizing process .
 # author: AISSAT abdelwahab <mr.aissat@gmail.com>
 homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
 # publish_to: none
+version: 4.0.0-dev.0
 
-version: 3.0.3
+topics:
+  - i18n
+  - json
+  - csv
+  - translation
+  - internationalization
+  - localization
+  - json-files
+  - locale
+  - flutter
+  - locale-gen
+  - localization-tool
+  - globalization
+  - locales
+  - locales-translation
+  - json-localization
+  - localization-using-json-files
+  - localization-kit
+  - flutter-apps
+  - i18n-alternative
+  - translated-keys
 
 environment:
-  sdk: '>=2.12.0 <4.0.0'
+  sdk: '>=3.1.0 <4.0.0'
 
 dependencies:
+  args: ^2.3.1
+  easy_logger: ^0.0.2
   flutter:
     sdk: flutter
-  shared_preferences: '>=2.0.0 <3.0.0'
-  intl: '>=0.17.0-0 <=0.18.1'
-  args: ^2.3.1
-  path: ^1.8.1
-  easy_logger: ^0.0.2
   flutter_localizations:
     sdk: flutter
-
+  intl: ">=0.17.0-0 <=0.18.1"
+  path: ^1.8.1
+  shared_preferences: ">=2.0.0 <3.0.0"
 
 dev_dependencies:
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+
+flutter:
+  assets:
+    - ./i18n/
+    - ./i18n/ar/
+    - ./i18n/ar_en/
