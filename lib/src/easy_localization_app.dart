@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization/src/easy_localization_controller.dart';
+
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'asset_loader.dart';
 import 'localization.dart';
+import 'easy_localization_controller.dart';
 
 part 'utils.dart';
 
@@ -17,19 +17,12 @@ part 'utils.dart';
 ///  void main(){
 ///    runApp(EasyLocalization(
 ///      child: MyApp(),
-///      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-///      path: 'resources/langs/langs.csv',
-///      assetLoader: CsvAssetLoader()
 ///    ));
 ///  }
 ///  ```
 class EasyLocalization extends StatefulWidget {
   /// Place for your main page widget.
   final Widget child;
-
-  /// List of supported locales.
-  /// {@macro flutter.widgets.widgetsApp.supportedLocales}
-  final List<Locale> supportedLocales;
 
   /// Locale when the locale is not in the list
   final Locale? fallbackLocale;
@@ -54,20 +47,6 @@ class EasyLocalization extends StatefulWidget {
   /// ```
   final bool useFallbackTranslations;
 
-  /// Path to your folder with localization files.
-  /// Example:
-  /// ```dart
-  /// path: 'assets/translations',
-  /// path: 'assets/translations/lang.csv',
-  /// ```
-  final String path;
-
-  /// Class loader for localization files.
-  /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
-  /// @Default value `const RootBundleAssetLoader()`
-  // ignore: prefer_typing_uninitialized_variables
-  final assetLoader;
-
   /// Save locale in device storage.
   /// @Default value true
   final bool saveLocale;
@@ -79,18 +58,13 @@ class EasyLocalization extends StatefulWidget {
   EasyLocalization({
     Key? key,
     required this.child,
-    required this.supportedLocales,
-    required this.path,
     this.fallbackLocale,
     this.startLocale,
     this.useOnlyLangCode = false,
     this.useFallbackTranslations = false,
-    this.assetLoader = const RootBundleAssetLoader(),
-    this.saveLocale = true,
+    this.saveLocale = false,
     this.errorWidget,
-  })  : assert(supportedLocales.isNotEmpty),
-        assert(path.isNotEmpty),
-        super(key: key) {
+  }) : super(key: key) {
     EasyLocalization.logger.debug('Start');
   }
 
@@ -105,8 +79,12 @@ class EasyLocalization extends StatefulWidget {
   /// ensureInitialized needs to be called in main
   /// so that savedLocale is loaded and used from the
   /// start.
-  static Future<void> ensureInitialized() async =>
-      await EasyLocalizationController.initEasyLocation();
+  static Future<void> ensureInitialized({
+    AssetLoader assetLoader = const RootBundleAssetLoader('resources/langs'),
+    IEasyLocalizationStorage? storage,
+  }) async =>
+      await EasyLocalizationController.initEasyLocation(assetLoader,
+          storage: storage);
 
   /// Customizable logger
   static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
@@ -123,12 +101,12 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     localizationController = EasyLocalizationController(
       saveLocale: widget.saveLocale,
       fallbackLocale: widget.fallbackLocale,
-      supportedLocales: widget.supportedLocales,
+      // supportedLocales: widget.supportedLocales,
       startLocale: widget.startLocale,
-      assetLoader: widget.assetLoader,
+      // assetLoader: widget.assetLoader,
       useOnlyLangCode: widget.useOnlyLangCode,
       useFallbackTranslations: widget.useFallbackTranslations,
-      path: widget.path,
+      // path: widget.path,
       onLoadError: (FlutterError e) {
         setState(() {
           translationsLoadError = e;
@@ -161,7 +139,6 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       localizationController!,
       delegate: _EasyLocalizationDelegate(
         localizationController: localizationController,
-        supportedLocales: widget.supportedLocales,
       ),
     );
   }
@@ -191,7 +168,8 @@ class _EasyLocalizationProvider extends InheritedWidget {
       ];
 
   /// Get List of supported locales
-  List<Locale> get supportedLocales => parent.supportedLocales;
+  List<Locale> get supportedLocales =>
+      EasyLocalizationController.supportedLocales;
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
@@ -213,7 +191,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   Future<void> setLocale(Locale locale) async {
     // Check old locale
     if (locale != _localeState.locale) {
-      assert(parent.supportedLocales.contains(locale));
+      assert(EasyLocalizationController.supportedLocales.contains(locale));
       await _localeState.setLocale(locale);
     }
   }
@@ -239,19 +217,18 @@ class _EasyLocalizationProvider extends InheritedWidget {
 }
 
 class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
-  final List<Locale>? supportedLocales;
   final EasyLocalizationController? localizationController;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate(
-      {this.localizationController, this.supportedLocales}) {
+  _EasyLocalizationDelegate({this.localizationController}) {
     EasyLocalization.logger.debug('Init Localization Delegate');
   }
 
   @override
-  bool isSupported(Locale locale) => supportedLocales!.contains(locale);
+  bool isSupported(Locale locale) =>
+      EasyLocalizationController.supportedLocales.contains(locale);
 
   @override
   Future<Localization> load(Locale value) async {
