@@ -11,16 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/test_asset_loaders.dart';
 
-var printLog = [];
-
-dynamic overridePrint(Function() testFn) => () {
-      var spec = ZoneSpecification(print: (_, __, ___, String msg) {
-        // Add to log instead of printing to stdout
-        printLog.add(msg);
-      });
-      return Zone.current.fork(specification: spec).run(testFn);
-    };
-
 void main() {
     group('language-specific-plurals', () {
       var r = EasyLocalizationController(

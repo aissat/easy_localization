@@ -9,17 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'easy_localization_utils_test.dart';
 import 'utils/test_asset_loaders.dart';
-
-var printLog = [];
-
-dynamic overridePrint(Function() testFn) => () {
-      var spec = ZoneSpecification(print: (_, __, ___, String msg) {
-        // Add to log instead of printing to stdout
-        printLog.add(msg);
-      });
-      return Zone.current.fork(specification: spec).run(testFn);
-    };
 
 void main() {
   group('localization', () {
