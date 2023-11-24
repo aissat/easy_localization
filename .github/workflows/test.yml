@@ -12,9 +12,10 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
-    - uses: subosito/flutter-action@v1
+
+    - uses: subosito/flutter-action@v2
       with:
-        channel: 'stable'
+        version: "3.13.9"
 
     - name: Install packages dependencies
       run: flutter pub get
