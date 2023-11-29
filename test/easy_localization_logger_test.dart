@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'easy_localization_test.dart';
 import 'easy_localization_utils_test.dart';
 
 void main() async {

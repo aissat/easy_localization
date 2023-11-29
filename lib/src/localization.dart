@@ -138,7 +138,7 @@ class Localization {
     late String res;
 
     final pluralRule = _pluralRule(_locale.languageCode, value);
-    final pluralCase = pluralRule != null ? pluralRule!() : _pluralCaseFallback(value);
+    final pluralCase = pluralRule != null ? pluralRule() : _pluralCaseFallback(value);
 
     switch (pluralCase) {
       case PluralCase.ZERO:
