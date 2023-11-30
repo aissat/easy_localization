@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -9,17 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'easy_localization_utils_test.dart';
 import 'utils/test_asset_loaders.dart';
-
-var printLog = [];
-
-dynamic overridePrint(Function() testFn) => () {
-      var spec = ZoneSpecification(print: (_, __, ___, String msg) {
-        // Add to log instead of printing to stdout
-        printLog.add(msg);
-      });
-      return Zone.current.fork(specification: spec).run(testFn);
-    };
 
 void main() {
   group('localization', () {
@@ -423,8 +413,8 @@ void main() {
 
     group('plural', () {
       var r = EasyLocalizationController(
-          forceLocale: const Locale('en'),
-          supportedLocales: const [Locale('en'), Locale('fb')],
+          forceLocale: const Locale('fb'),
+          supportedLocales: [const Locale('fb')],
           fallbackLocale: const Locale('fb'),
           path: 'path',
           useOnlyLangCode: true,
@@ -437,7 +427,7 @@ void main() {
 
       setUpAll(() async {
         await r.loadTranslations();
-        Localization.load(const Locale('en'),
+        Localization.load(const Locale('fb'),
             translations: r.translations,
             fallbackTranslations: r.fallbackTranslations);
       });

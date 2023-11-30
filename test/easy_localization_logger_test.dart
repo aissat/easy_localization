@@ -1,17 +1,8 @@
-import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-List<String> printLog = [];
-dynamic overridePrint(Function() testFn) => () {
-      var spec = ZoneSpecification(print: (_, __, ___, String msg) {
-        // Add to log instead of printing to stdout
-        printLog.add(msg);
-      });
-      return Zone.current.fork(specification: spec).run(testFn);
-    };
+import 'easy_localization_utils_test.dart';
 
 void main() async {
   group('Logger testing', () {

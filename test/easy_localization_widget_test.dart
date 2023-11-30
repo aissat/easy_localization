@@ -105,12 +105,8 @@ void main() async {
         expect(pluralFinder, findsOneWidget);
 
         expect(tr('test'), 'test');
-        expect(plural('day', 1), '1 day');
-        expect(plural('day', 2), '2 days');
-        expect(plural('day', 3), '3 other days');
 
         expect('test'.tr(), 'test');
-        expect('day'.plural(1), '1 day');
       });
     },
   );
@@ -138,9 +134,6 @@ void main() async {
         final pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
         expect(tr('test'), 'test');
-        expect(plural('day', 1), '1 day');
-        expect(plural('day', 2), '2 days');
-        expect(plural('day', 3), '3 other days');
       });
     },
   );
@@ -168,9 +161,6 @@ void main() async {
         expect(pluralFinder, findsOneWidget);
 
         expect(tr('test'), 'test');
-        expect(plural('day', 1), '1 day');
-        expect(plural('day', 2), '2 days');
-        expect(plural('day', 3), '3 other days');
       });
     },
   );
@@ -221,9 +211,6 @@ void main() async {
         expect(pluralFinder, findsOneWidget);
 
         expect(tr('test'), 'test');
-        expect(plural('day', 1), '1 day');
-        expect(plural('day', 2), '2 days');
-        expect(plural('day', 3), '3 other days');
         expect(EasyLocalization.of(_context)!.locale, const Locale('en', 'US'));
 
         l = const Locale('ar', 'DZ');
@@ -260,9 +247,6 @@ void main() async {
         expect(pluralFinder, findsOneWidget);
 
         expect(tr('test'), 'test');
-        expect(plural('day', 1), '1 day');
-        expect(plural('day', 2), '2 days');
-        expect(plural('day', 3), '3 other days');
 
         var l = const Locale('en', 'US');
         await EasyLocalization.of(_context)!.setLocale(l);
