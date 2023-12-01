@@ -37,6 +37,9 @@ class EasyLocalization extends StatefulWidget {
   /// Overrides device locale.
   final Locale? startLocale;
 
+  /// Overrides device locale.
+  final Locale? startSecondLocale;
+
   /// Trigger for using only language code for reading localization files.
   /// @Default value false
   /// Example:
@@ -72,6 +75,10 @@ class EasyLocalization extends StatefulWidget {
   /// @Default value true
   final bool saveLocale;
 
+  /// Save second locale in device storage.
+  /// @Default value true
+  final bool saveSecondLocale;
+
   /// Shows a custom error widget when an error is encountered instead of the default error widget.
   /// @Default value `errorWidget = ErrorWidget()`
   final Widget Function(FlutterError? message)? errorWidget;
@@ -83,10 +90,12 @@ class EasyLocalization extends StatefulWidget {
     required this.path,
     this.fallbackLocale,
     this.startLocale,
+    this.startSecondLocale,
     this.useOnlyLangCode = false,
     this.useFallbackTranslations = false,
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
+    this.saveSecondLocale = true,
     this.errorWidget,
   })  : assert(supportedLocales.isNotEmpty),
         assert(path.isNotEmpty),
@@ -99,14 +108,12 @@ class EasyLocalization extends StatefulWidget {
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
   // ignore: library_private_types_in_public_api
-  static _EasyLocalizationProvider? of(BuildContext context) =>
-      _EasyLocalizationProvider.of(context);
+  static _EasyLocalizationProvider? of(BuildContext context) => _EasyLocalizationProvider.of(context);
 
   /// ensureInitialized needs to be called in main
   /// so that savedLocale is loaded and used from the
   /// start.
-  static Future<void> ensureInitialized() async =>
-      await EasyLocalizationController.initEasyLocation();
+  static Future<void> ensureInitialized() async => await EasyLocalizationController.initEasyLocation();
 
   /// Customizable logger
   static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
@@ -122,9 +129,11 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     EasyLocalization.logger.debug('Init state');
     localizationController = EasyLocalizationController(
       saveLocale: widget.saveLocale,
+      saveSecondLocale: widget.saveSecondLocale,
       fallbackLocale: widget.fallbackLocale,
       supportedLocales: widget.supportedLocales,
       startLocale: widget.startLocale,
+      startSecondLocale: widget.startSecondLocale,
       assetLoader: widget.assetLoader,
       useOnlyLangCode: widget.useOnlyLangCode,
       useFallbackTranslations: widget.useFallbackTranslations,
@@ -152,9 +161,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
   Widget build(BuildContext context) {
     EasyLocalization.logger.debug('Build');
     if (translationsLoadError != null) {
-      return widget.errorWidget != null
-          ? widget.errorWidget!(translationsLoadError)
-          : ErrorWidget(translationsLoadError!);
+      return widget.errorWidget != null ? widget.errorWidget!(translationsLoadError) : ErrorWidget(translationsLoadError!);
     }
     return _EasyLocalizationProvider(
       widget,
@@ -171,6 +178,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalization parent;
   final EasyLocalizationController _localeState;
   final Locale? currentLocale;
+  final Locale? currentSecondLocale;
   final _EasyLocalizationDelegate delegate;
 
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
@@ -195,15 +203,17 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
-  _EasyLocalizationProvider(this.parent, this._localeState,
-      {Key? key, required this.delegate})
+  _EasyLocalizationProvider(this.parent, this._localeState, {Key? key, required this.delegate})
       : currentLocale = _localeState.locale,
+        currentSecondLocale = _localeState.secondLocale,
         super(key: key, child: parent.child) {
     EasyLocalization.logger.debug('Init provider');
   }
 
   /// Get current locale
   Locale get locale => _localeState.locale;
+
+  Locale get secondLocale => _localeState.secondLocale;
 
   /// Get fallback locale
   Locale? get fallbackLocale => parent.fallbackLocale;
@@ -215,6 +225,14 @@ class _EasyLocalizationProvider extends InheritedWidget {
     if (locale != _localeState.locale) {
       assert(parent.supportedLocales.contains(locale));
       await _localeState.setLocale(locale);
+    }
+  }
+
+  Future<void> setSecondLocale(Locale secondLocale) async {
+    // Check old locale
+    if (secondLocale != _localeState.secondLocale) {
+      assert(parent.supportedLocales.contains(secondLocale));
+      await _localeState.setSecondLocale(secondLocale);
     }
   }
 
@@ -234,8 +252,10 @@ class _EasyLocalizationProvider extends InheritedWidget {
     return oldWidget.currentLocale != locale;
   }
 
-  static _EasyLocalizationProvider? of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
+  static _EasyLocalizationProvider? of(BuildContext context) {
+    final widget = context.getElementForInheritedWidgetOfExactType<_EasyLocalizationProvider>()?.widget;
+    return widget is _EasyLocalizationProvider ? widget : null;
+  }
 }
 
 class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
@@ -245,8 +265,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate(
-      {this.localizationController, this.supportedLocales}) {
+  _EasyLocalizationDelegate({this.localizationController, this.supportedLocales}) {
     EasyLocalization.logger.debug('Init Localization Delegate');
   }
 
@@ -260,9 +279,8 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
       await localizationController!.loadTranslations();
     }
 
-    Localization.load(value,
-        translations: localizationController!.translations,
-        fallbackTranslations: localizationController!.fallbackTranslations);
+    Localization.load(value, localizationController!.secondLocale,
+        translations: localizationController!.translations, secondTranslations: localizationController!.secondTranslations, fallbackTranslations: localizationController!.fallbackTranslations);
     return Future.value(Localization.instance);
   }
 

@@ -87,9 +87,7 @@ void main() async {
             saveLocale: false,
             useOnlyLangCode: true,
             // fallbackLocale:Locale('en') ,
-            supportedLocales: const [
-              Locale('ar')
-            ], // Locale('en', 'US'), Locale('ar','DZ')
+            supportedLocales: const [Locale('ar')], // Locale('en', 'US'), Locale('ar','DZ')
             child: const MyApp(),
           ));
           // await tester.idle();
@@ -117,10 +115,7 @@ void main() async {
             await tester.pumpWidget(EasyLocalization(
               path: '../../i18n',
               // fallbackLocale:Locale('en') ,
-              supportedLocales: const [
-                Locale('en', 'US'),
-                Locale('ar', 'DZ')
-              ], // Locale('en', 'US'), Locale('ar','DZ')
+              supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')], // Locale('en', 'US'), Locale('ar','DZ')
               child: const MyApp(),
             ));
             // await tester.idle();
@@ -140,10 +135,7 @@ void main() async {
             await tester.pumpWidget(EasyLocalization(
               path: '../../i18n',
               // fallbackLocale:Locale('en') ,
-              supportedLocales: const [
-                Locale('en', 'US'),
-                Locale('ar', 'DZ')
-              ], // Locale('en', 'US'), Locale('ar','DZ')
+              supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')], // Locale('en', 'US'), Locale('ar','DZ')
               child: const MyApp(),
             ));
             // await tester.idle();
@@ -161,10 +153,7 @@ void main() async {
           await tester.runAsync(() async {
             await tester.pumpWidget(EasyLocalization(
               path: '../../i18n',
-              supportedLocales: const [
-                Locale('en', 'US'),
-                Locale('ar', 'DZ')
-              ], // Locale('en', 'US'), Locale('ar','DZ')
+              supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')], // Locale('en', 'US'), Locale('ar','DZ')
               child: const MyApp(),
             ));
             // await tester.idle();
@@ -182,10 +171,7 @@ void main() async {
           await tester.runAsync(() async {
             await tester.pumpWidget(EasyLocalization(
               path: '../../i18n',
-              supportedLocales: const [
-                Locale('en', 'US'),
-                Locale('ar', 'DZ')
-              ], // Locale('en', 'US'), Locale('ar','DZ')
+              supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')], // Locale('en', 'US'), Locale('ar','DZ')
               startLocale: const Locale('ar', 'DZ'),
               child: const MyApp(),
             ));
@@ -208,10 +194,7 @@ void main() async {
           await tester.runAsync(() async {
             await tester.pumpWidget(EasyLocalization(
               path: '../../i18n',
-              supportedLocales: const [
-                Locale('en', 'US'),
-                Locale('ar', 'DZ')
-              ], // Locale('en', 'US'), Locale('ar','DZ')
+              supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')], // Locale('en', 'US'), Locale('ar','DZ')
               child: const MyApp(),
             ));
             await tester.idle();
@@ -229,10 +212,7 @@ void main() async {
           await tester.runAsync(() async {
             await tester.pumpWidget(EasyLocalization(
               path: '../../i18n',
-              supportedLocales: const [
-                Locale('en', 'US'),
-                Locale('ar', 'DZ')
-              ], // Locale('en', 'US'), Locale('ar','DZ')
+              supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')], // Locale('en', 'US'), Locale('ar','DZ')
               startLocale: const Locale('ar', 'DZ'),
               child: const MyApp(),
             ));

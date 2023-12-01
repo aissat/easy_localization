@@ -14,31 +14,26 @@ import 'public.dart' as ez;
 /// ```
 extension TextTranslateExtension on Text {
   /// {@macro tr}
-  Text tr(
-          {List<String>? args,
-          BuildContext? context,
-          Map<String, String>? namedArgs,
-          String? gender}) =>
-      Text(
-          ez.tr(
-            data ?? '',
-            context: context,
-            args: args,
-            namedArgs: namedArgs,
-            gender: gender,
-          ),
-          key: key,
-          style: style,
-          strutStyle: strutStyle,
-          textAlign: textAlign,
-          textDirection: textDirection,
-          locale: locale,
-          softWrap: softWrap,
-          overflow: overflow,
-          textScaleFactor: textScaleFactor,
-          maxLines: maxLines,
-          semanticsLabel: semanticsLabel,
-          textWidthBasis: textWidthBasis);
+  Text tr({List<String>? args, BuildContext? context, Map<String, String>? namedArgs, String? gender}) => Text(
+      ez.tr(
+        data ?? '',
+        context: context,
+        args: args,
+        namedArgs: namedArgs,
+        gender: gender,
+      ),
+      key: key,
+      style: style,
+      strutStyle: strutStyle,
+      textAlign: textAlign,
+      textDirection: textDirection,
+      locale: locale,
+      softWrap: softWrap,
+      overflow: overflow,
+      textScaleFactor: textScaleFactor,
+      maxLines: maxLines,
+      semanticsLabel: semanticsLabel,
+      textWidthBasis: textWidthBasis);
 
   /// {@macro plural}
   Text plural(
@@ -87,8 +82,7 @@ extension StringTranslateExtension on String {
     String? gender,
     BuildContext? context,
   }) =>
-      ez.tr(this,
-          context: context, args: args, namedArgs: namedArgs, gender: gender);
+      ez.tr(this, context: context, args: args, namedArgs: namedArgs, gender: gender);
 
   bool trExists() => ez.trExists(this);
 
@@ -129,19 +123,20 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   /// Get current locale
   Locale get locale => EasyLocalization.of(this)!.locale;
 
+  Locale get secondLocale => EasyLocalization.of(this)!.secondLocale;
+
   /// Change app locale
-  Future<void> setLocale(Locale val) async =>
-      EasyLocalization.of(this)!.setLocale(val);
+  Future<void> setLocale(Locale val) async => EasyLocalization.of(this)!.setLocale(val);
+
+  Future<void> setSecondLocale(Locale val) async => EasyLocalization.of(this)!.setSecondLocale(val);
 
   /// Old Change app locale
-  @Deprecated(
-      'This is the func used in the old version of EasyLocalization. The modern func is `setLocale(val)` . '
+  @Deprecated('This is the func used in the old version of EasyLocalization. The modern func is `setLocale(val)` . '
       'This feature was deprecated after v3.0.0')
   set locale(Locale val) => EasyLocalization.of(this)!.setLocale(val);
 
   /// Get List of supported locales.
-  List<Locale> get supportedLocales =>
-      EasyLocalization.of(this)!.supportedLocales;
+  List<Locale> get supportedLocales => EasyLocalization.of(this)!.supportedLocales;
 
   /// Get fallback locale
   Locale? get fallbackLocale => EasyLocalization.of(this)!.fallbackLocale;
@@ -156,12 +151,10 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   ///     GlobalCupertinoLocalizations.delegate
   ///   ],
   /// ```
-  List<LocalizationsDelegate> get localizationDelegates =>
-      EasyLocalization.of(this)!.delegates;
+  List<LocalizationsDelegate> get localizationDelegates => EasyLocalization.of(this)!.delegates;
 
   /// Clears a saved locale from device storage
-  Future<void> deleteSaveLocale() =>
-      EasyLocalization.of(this)!.deleteSaveLocale();
+  Future<void> deleteSaveLocale() => EasyLocalization.of(this)!.deleteSaveLocale();
 
   /// Getting device locale from platform
   Locale get deviceLocale => EasyLocalization.of(this)!.deviceLocale;
@@ -218,6 +211,26 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     );
   }
 
+  String trSecond(
+    String key, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? gender,
+  }) {
+    final localization = Localization.of(this);
+
+    if (localization == null) {
+      throw const LocalizationNotFoundException();
+    }
+
+    return localization.trSecond(
+      key,
+      args: args,
+      namedArgs: namedArgs,
+      gender: gender,
+    );
+  }
+
   String plural(
     String key,
     num number, {
@@ -233,6 +246,30 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     }
 
     return localization.plural(
+      key,
+      number,
+      args: args,
+      namedArgs: namedArgs,
+      name: name,
+      format: format,
+    );
+  }
+
+  String pluralSecond(
+    String key,
+    num number, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? name,
+    NumberFormat? format,
+  }) {
+    final localization = Localization.of(this);
+
+    if (localization == null) {
+      throw const LocalizationNotFoundException();
+    }
+
+    return localization.pluralSecond(
       key,
       number,
       args: args,
