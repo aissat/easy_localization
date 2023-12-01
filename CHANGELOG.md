@@ -2,6 +2,7 @@
 
 ### [3.0.3]
 
+- **BREAKING:** `EasyLocalization.assetLoader` is now `AssetLoader` (was dynamic).
 - replace log() with stdout.writeln()
 
 ### [3.0.2]
