@@ -110,23 +110,17 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  Future loadTranslations({Locale? localeToLoad, Locale? secondLocaleToLoad}) async {
-    await _loadTranslationsForLocale(localeToLoad ?? _locale);
-
-    await _loadTranslationsForSecondLocale(secondLocaleToLoad ?? _secondLocale);
-  }
-
-  Future _loadTranslationsForLocale(Locale locale) async {
+  Future loadTranslations() async {
     Map<String, dynamic> data;
     try {
-      data = Map.from(await loadTranslationData(locale));
+      data = Map.from(await loadTranslationData(_locale));
       _translations = Translations(data);
 
       if (useFallbackTranslations && _fallbackLocale != null) {
         Map<String, dynamic>? baseLangData;
 
-        if (locale.countryCode != null && locale.countryCode!.isNotEmpty) {
-          baseLangData = await loadBaseLangTranslationData(Locale(locale.languageCode));
+        if (_locale.countryCode != null && _locale.countryCode!.isNotEmpty) {
+          baseLangData = await loadBaseLangTranslationData(Locale(_locale.languageCode));
         }
 
         data = Map.from(await loadTranslationData(_fallbackLocale!));
@@ -146,13 +140,11 @@ class EasyLocalizationController extends ChangeNotifier {
     } catch (e) {
       onLoadError(FlutterError(e.toString()));
     }
-  }
 
-  Future _loadTranslationsForSecondLocale(Locale locale) async {
-    Map<String, dynamic> data;
+    Map<String, dynamic> secondData;
     try {
-      data = Map.from(await loadTranslationData(locale));
-      _secondTranslations = Translations(data);
+      secondData = Map.from(await loadTranslationData(_secondLocale));
+      _secondTranslations = Translations(secondData);
     } on FlutterError catch (e) {
       onLoadError(e);
     } catch (e) {
@@ -190,7 +182,7 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> setLocale(Locale l) async {
     _locale = l;
-    await loadTranslations(localeToLoad: l);
+    await loadTranslations();
     notifyListeners();
     EasyLocalization.logger('Locale $locale changed');
     await _saveLocale(_locale);
@@ -198,7 +190,7 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> setSecondLocale(Locale l) async {
     _secondLocale = l;
-    await loadTranslations(secondLocaleToLoad: l);
+    await loadTranslations();
     notifyListeners();
     EasyLocalization.logger('Second locale $secondLocale changed');
     await _saveSecondLocale(_secondLocale);

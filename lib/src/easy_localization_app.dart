@@ -252,10 +252,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
     return oldWidget.currentLocale != locale;
   }
 
-  static _EasyLocalizationProvider? of(BuildContext context) {
-    final widget = context.getElementForInheritedWidgetOfExactType<_EasyLocalizationProvider>()?.widget;
-    return widget is _EasyLocalizationProvider ? widget : null;
-  }
+  static _EasyLocalizationProvider? of(BuildContext context) => context.dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
 }
 
 class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
