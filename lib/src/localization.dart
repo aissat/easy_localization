@@ -74,7 +74,7 @@ class Localization {
     if (gender != null) {
       res = _gender(key, gender: gender);
     } else {
-      res = _resolve(key);
+      res = _secondResolve(key);
     }
 
     res = _replaceLinks(res);
@@ -257,6 +257,27 @@ class Localization {
 
   String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
+    if (resource == null) {
+      if (logging) {
+        EasyLocalization.logger.warning('Localization key [$key] not found');
+      }
+      if (_fallbackTranslations == null || !fallback) {
+        return key;
+      } else {
+        resource = _fallbackTranslations?.get(key);
+        if (resource == null) {
+          if (logging) {
+            EasyLocalization.logger.warning('Fallback localization key [$key] not found');
+          }
+          return key;
+        }
+      }
+    }
+    return resource;
+  }
+
+  String _secondResolve(String key, {bool logging = true, bool fallback = true}) {
+    var resource = _secondTranslations?.get(key);
     if (resource == null) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');

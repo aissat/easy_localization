@@ -35,6 +35,28 @@ extension TextTranslateExtension on Text {
       semanticsLabel: semanticsLabel,
       textWidthBasis: textWidthBasis);
 
+  /// {@macro tr}
+  Text trSecond({List<String>? args, BuildContext? context, Map<String, String>? namedArgs, String? gender}) => Text(
+      ez.trSecond(
+        data ?? '',
+        context: context,
+        args: args,
+        namedArgs: namedArgs,
+        gender: gender,
+      ),
+      key: key,
+      style: style,
+      strutStyle: strutStyle,
+      textAlign: textAlign,
+      textDirection: textDirection,
+      locale: locale,
+      softWrap: softWrap,
+      overflow: overflow,
+      textScaleFactor: textScaleFactor,
+      maxLines: maxLines,
+      semanticsLabel: semanticsLabel,
+      textWidthBasis: textWidthBasis);
+
   /// {@macro plural}
   Text plural(
     num value, {
@@ -46,6 +68,38 @@ extension TextTranslateExtension on Text {
   }) =>
       Text(
           ez.plural(
+            data ?? '',
+            value,
+            context: context,
+            args: args,
+            namedArgs: namedArgs,
+            name: name,
+            format: format,
+          ),
+          key: key,
+          style: style,
+          strutStyle: strutStyle,
+          textAlign: textAlign,
+          textDirection: textDirection,
+          locale: locale,
+          softWrap: softWrap,
+          overflow: overflow,
+          textScaleFactor: textScaleFactor,
+          maxLines: maxLines,
+          semanticsLabel: semanticsLabel,
+          textWidthBasis: textWidthBasis);
+
+  /// {@macro plural}
+  Text pluralSecond(
+    num value, {
+    BuildContext? context,
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? name,
+    NumberFormat? format,
+  }) =>
+      Text(
+          ez.pluralSecond(
             data ?? '',
             value,
             context: context,
@@ -84,7 +138,18 @@ extension StringTranslateExtension on String {
   }) =>
       ez.tr(this, context: context, args: args, namedArgs: namedArgs, gender: gender);
 
+  /// {@macro tr}
+  String trSecond({
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? gender,
+    BuildContext? context,
+  }) =>
+      ez.trSecond(this, context: context, args: args, namedArgs: namedArgs, gender: gender);
+
   bool trExists() => ez.trExists(this);
+
+  bool trSecondExists() => ez.trSecondExists(this);
 
   /// {@macro plural}
   String plural(
@@ -96,6 +161,25 @@ extension StringTranslateExtension on String {
     NumberFormat? format,
   }) =>
       ez.plural(
+        this,
+        value,
+        context: context,
+        args: args,
+        namedArgs: namedArgs,
+        name: name,
+        format: format,
+      );
+
+  /// {@macro pluralSecond}
+  String pluralSecond(
+    num value, {
+    List<String>? args,
+    BuildContext? context,
+    Map<String, String>? namedArgs,
+    String? name,
+    NumberFormat? format,
+  }) =>
+      ez.pluralSecond(
         this,
         value,
         context: context,
