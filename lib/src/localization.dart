@@ -72,9 +72,9 @@ class Localization {
     late String res;
 
     if (gender != null) {
-      res = _gender(key, gender: gender);
+      res = _genderSecond(key, gender: gender);
     } else {
-      res = _secondResolve(key);
+      res = _resolveSecond(key);
     }
 
     res = _replaceLinks(res);
@@ -209,22 +209,22 @@ class Localization {
 
     switch (pluralCase) {
       case PluralCase.ZERO:
-        res = _resolvePlural(key, 'zero');
+        res = _resolvePluralSecond(key, 'zero');
         break;
       case PluralCase.ONE:
-        res = _resolvePlural(key, 'one');
+        res = _resolvePluralSecond(key, 'one');
         break;
       case PluralCase.TWO:
-        res = _resolvePlural(key, 'two');
+        res = _resolvePluralSecond(key, 'two');
         break;
       case PluralCase.FEW:
-        res = _resolvePlural(key, 'few');
+        res = _resolvePluralSecond(key, 'few');
         break;
       case PluralCase.MANY:
-        res = _resolvePlural(key, 'many');
+        res = _resolvePluralSecond(key, 'many');
         break;
       case PluralCase.OTHER:
-        res = _resolvePlural(key, 'other');
+        res = _resolvePluralSecond(key, 'other');
         break;
       default:
         throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
@@ -244,6 +244,10 @@ class Localization {
     return _resolve('$key.$gender');
   }
 
+  String _genderSecond(String key, {required String gender}) {
+    return _resolveSecond('$key.$gender');
+  }
+
   String _resolvePlural(String key, String subKey) {
     if (subKey == 'other') return _resolve('$key.other');
 
@@ -251,6 +255,17 @@ class Localization {
     var resource = _resolve(tag, logging: false, fallback: _fallbackTranslations != null);
     if (resource == tag) {
       resource = _resolve('$key.other');
+    }
+    return resource;
+  }
+
+  String _resolvePluralSecond(String key, String subKey) {
+    if (subKey == 'other') return _resolve('$key.other');
+
+    final tag = '$key.$subKey';
+    var resource = _resolveSecond(tag, logging: false, fallback: _fallbackTranslations != null);
+    if (resource == tag) {
+      resource = _resolveSecond('$key.other');
     }
     return resource;
   }
@@ -276,7 +291,7 @@ class Localization {
     return resource;
   }
 
-  String _secondResolve(String key, {bool logging = true, bool fallback = true}) {
+  String _resolveSecond(String key, {bool logging = true, bool fallback = true}) {
     var resource = _secondTranslations?.get(key);
     if (resource == null) {
       if (logging) {
