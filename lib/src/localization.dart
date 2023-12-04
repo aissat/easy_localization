@@ -5,9 +5,9 @@ import 'plural_rules.dart';
 import 'translations.dart';
 
 class Localization {
-  Translations? _translations, _secondTranslations, _fallbackTranslations;
+  Translations? _translations, _subTranslations, _fallbackTranslations, _subFallbackTranslations;
   late Locale _locale;
-  late Locale _secondLocale;
+  late Locale _subLocale;
 
   final RegExp _replaceArgRegex = RegExp('{}');
   final RegExp _linkKeyMatcher = RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
@@ -27,17 +27,19 @@ class Localization {
 
   static bool load(
     Locale locale,
-    Locale? secondLocale, {
+    Locale? subLocale, {
     Translations? translations,
-    Translations? secondTranslations,
+    Translations? subTranslations,
     Translations? fallbackTranslations,
+    Translations? subFallbackTranslations,
   }) {
     instance._locale = locale;
     instance._translations = translations;
-    instance._secondTranslations = translations;
+    instance._subTranslations = translations;
     instance._fallbackTranslations = fallbackTranslations;
-    if (secondLocale != null) {
-      instance._secondLocale = secondLocale;
+    instance._subFallbackTranslations = subFallbackTranslations;
+    if (subLocale != null) {
+      instance._subLocale = subLocale;
     }
     return translations == null ? false : true;
   }
@@ -63,7 +65,7 @@ class Localization {
     return _replaceArgs(res, args);
   }
 
-  String trSecond(
+  String trSub(
     String key, {
     List<String>? args,
     Map<String, String>? namedArgs,
@@ -72,9 +74,9 @@ class Localization {
     late String res;
 
     if (gender != null) {
-      res = _genderSecond(key, gender: gender);
+      res = _genderSub(key, gender: gender);
     } else {
-      res = _resolveSecond(key);
+      res = _resolveSub(key);
     }
 
     res = _replaceLinks(res);
@@ -194,7 +196,7 @@ class Localization {
     return _replaceArgs(res, args ?? [formattedValue]);
   }
 
-  String pluralSecond(
+  String pluralSub(
     String key,
     num value, {
     List<String>? args,
@@ -204,27 +206,27 @@ class Localization {
   }) {
     late String res;
 
-    final pluralRule = _pluralRule(_secondLocale.languageCode, value);
+    final pluralRule = _pluralRule(_subLocale.languageCode, value);
     final pluralCase = pluralRule != null ? pluralRule() : _pluralCaseFallback(value);
 
     switch (pluralCase) {
       case PluralCase.ZERO:
-        res = _resolvePluralSecond(key, 'zero');
+        res = _resolvePluralSub(key, 'zero');
         break;
       case PluralCase.ONE:
-        res = _resolvePluralSecond(key, 'one');
+        res = _resolvePluralSub(key, 'one');
         break;
       case PluralCase.TWO:
-        res = _resolvePluralSecond(key, 'two');
+        res = _resolvePluralSub(key, 'two');
         break;
       case PluralCase.FEW:
-        res = _resolvePluralSecond(key, 'few');
+        res = _resolvePluralSub(key, 'few');
         break;
       case PluralCase.MANY:
-        res = _resolvePluralSecond(key, 'many');
+        res = _resolvePluralSub(key, 'many');
         break;
       case PluralCase.OTHER:
-        res = _resolvePluralSecond(key, 'other');
+        res = _resolvePluralSub(key, 'other');
         break;
       default:
         throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
@@ -244,8 +246,8 @@ class Localization {
     return _resolve('$key.$gender');
   }
 
-  String _genderSecond(String key, {required String gender}) {
-    return _resolveSecond('$key.$gender');
+  String _genderSub(String key, {required String gender}) {
+    return _resolveSub('$key.$gender');
   }
 
   String _resolvePlural(String key, String subKey) {
@@ -259,13 +261,13 @@ class Localization {
     return resource;
   }
 
-  String _resolvePluralSecond(String key, String subKey) {
+  String _resolvePluralSub(String key, String subKey) {
     if (subKey == 'other') return _resolve('$key.other');
 
     final tag = '$key.$subKey';
-    var resource = _resolveSecond(tag, logging: false, fallback: _fallbackTranslations != null);
+    var resource = _resolveSub(tag, logging: false, fallback: _subFallbackTranslations != null);
     if (resource == tag) {
-      resource = _resolveSecond('$key.other');
+      resource = _resolveSub('$key.other');
     }
     return resource;
   }
@@ -291,16 +293,16 @@ class Localization {
     return resource;
   }
 
-  String _resolveSecond(String key, {bool logging = true, bool fallback = true}) {
-    var resource = _secondTranslations?.get(key);
+  String _resolveSub(String key, {bool logging = true, bool fallback = true}) {
+    var resource = _subTranslations?.get(key);
     if (resource == null) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
-      if (_fallbackTranslations == null || !fallback) {
+      if (_subFallbackTranslations == null || !fallback) {
         return key;
       } else {
-        resource = _fallbackTranslations?.get(key);
+        resource = _subFallbackTranslations?.get(key);
         if (resource == null) {
           if (logging) {
             EasyLocalization.logger.warning('Fallback localization key [$key] not found');
@@ -316,7 +318,7 @@ class Localization {
     return _translations?.get(key) != null;
   }
 
-  bool existsSecond(String key) {
-    return _secondTranslations?.get(key) != null;
+  bool existsSub(String key) {
+    return _subTranslations?.get(key) != null;
   }
 }

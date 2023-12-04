@@ -121,6 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(LocaleKeys.msg).tr(args: ['aissat', 'Flutter']),
             Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+            Text("Sub language:"),
+            Text(LocaleKeys.msg).trSub(args: ['aissat', 'Flutter']),
             Text(LocaleKeys.clicked).plural(counter),
             TextButton(
               onPressed: () {

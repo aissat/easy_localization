@@ -15,20 +15,20 @@ void main() {
   group('localization', () {
     var r1 = EasyLocalizationController(
         forceLocale: const Locale('en'),
-        forceSecondLocale: const Locale('en'),
+        forceSubLocale: const Locale('en'),
         path: 'path/en.json',
         supportedLocales: const [Locale('en')],
         useOnlyLangCode: true,
         useFallbackTranslations: false,
         saveLocale: false,
-        saveSecondLocale: false,
+        saveSubLocale: false,
         onLoadError: (FlutterError e) {
           log(e.toString());
         },
         assetLoader: const JsonAssetLoader());
     var r2 = EasyLocalizationController(
         forceLocale: const Locale('en', 'us'),
-        forceSecondLocale: const Locale('en', 'us'),
+        forceSubLocale: const Locale('en', 'us'),
         supportedLocales: const [Locale('en', 'us')],
         path: 'path/en-us.json',
         useOnlyLangCode: false,
@@ -37,7 +37,7 @@ void main() {
           log(e.toString());
         },
         saveLocale: false,
-        saveSecondLocale: false,
+        saveSubLocale: false,
         assetLoader: const JsonAssetLoader());
     setUpAll(() async {
       EasyLocalization.logger.enableLevels = <LevelMessages>[
@@ -47,7 +47,7 @@ void main() {
 
       await r1.loadTranslations();
       await r2.loadTranslations();
-      Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, secondTranslations: r1.secondTranslations);
+      Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, subTranslations: r1.subTranslations);
     });
     test('is a localization object', () {
       expect(Localization.instance, isInstanceOf<Localization>());
@@ -61,17 +61,17 @@ void main() {
     });
 
     test('load() succeeds', () async {
-      expect(Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, secondTranslations: r1.secondTranslations), true);
+      expect(Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, subTranslations: r1.subTranslations), true);
     });
 
     test('load() with fallback succeeds', () async {
-      expect(Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, secondTranslations: r1.secondTranslations, fallbackTranslations: r2.translations), true);
+      expect(Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, subTranslations: r1.subTranslations, fallbackTranslations: r2.translations), true);
     });
 
     test('merge fallbackLocale with locale without country code succeeds', () async {
       await EasyLocalizationController(
         forceLocale: const Locale('es', 'AR'),
-        forceSecondLocale: const Locale('es', 'AR'),
+        forceSubLocale: const Locale('es', 'AR'),
         supportedLocales: const [Locale('en'), Locale('es'), Locale('es', 'AR')],
         path: 'path/en-us.json',
         useOnlyLangCode: false,
@@ -81,7 +81,7 @@ void main() {
           throw e;
         },
         saveLocale: false,
-        saveSecondLocale: false,
+        saveSubLocale: false,
         assetLoader: const ImmutableJsonAssetLoader(),
       ).loadTranslations();
     });
@@ -95,7 +95,7 @@ void main() {
 
     test('load() Failed assertion', () async {
       try {
-        Localization.load(const Locale('en'), const Locale('ru'), translations: null, secondTranslations: null);
+        Localization.load(const Locale('en'), const Locale('ru'), translations: null, subTranslations: null);
       } on AssertionError catch (e) {
         // throw  AssertionError('Expected ArgumentError');
         expect(e, isAssertionError);
@@ -103,7 +103,7 @@ void main() {
     });
 
     test('load() correctly sets locale path', () async {
-      expect(Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, secondTranslations: r1.secondTranslations), true);
+      expect(Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, subTranslations: r1.subTranslations), true);
       expect(Localization.instance.tr('path'), 'path/en.json');
     });
 
@@ -111,7 +111,7 @@ void main() {
       expect(Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations), true);
       expect(Localization.instance.tr('path'), 'path/en.json');
 
-      expect(Localization.load(const Locale('en', 'us'), const Locale('en', 'us'), translations: r2.translations, secondTranslations: r2.secondTranslations), true);
+      expect(Localization.load(const Locale('en', 'us'), const Locale('en', 'us'), translations: r2.translations, subTranslations: r2.subTranslations), true);
       expect(Localization.instance.tr('path'), 'path/en-us.json');
     });
 
@@ -130,7 +130,7 @@ void main() {
           log(e.toString());
         },
         saveLocale: true,
-        saveSecondLocale: true,
+        saveSubLocale: true,
         assetLoader: const JsonAssetLoader(),
       );
       expect(controller.locale, const Locale('en'));
@@ -154,7 +154,7 @@ void main() {
           log(e.toString());
         },
         saveLocale: true,
-        saveSecondLocale: true,
+        saveSubLocale: true,
         assetLoader: const JsonAssetLoader(),
       );
       expect(controller.locale, const Locale('fb'));
@@ -208,7 +208,7 @@ void main() {
     group('tr', () {
       var r = EasyLocalizationController(
           forceLocale: const Locale('en'),
-          forceSecondLocale: const Locale('en'),
+          forceSubLocale: const Locale('en'),
           supportedLocales: const [Locale('en'), Locale('fb')],
           fallbackLocale: const Locale('fb'),
           path: 'path',
@@ -218,12 +218,12 @@ void main() {
             log(e.toString());
           },
           saveLocale: false,
-          saveSecondLocale: false,
+          saveSubLocale: false,
           assetLoader: const JsonAssetLoader());
 
       setUpAll(() async {
         await r.loadTranslations();
-        Localization.load(const Locale('en'), const Locale('en'), translations: r.translations, secondTranslations: r.secondTranslations, fallbackTranslations: r.fallbackTranslations);
+        Localization.load(const Locale('en'), const Locale('en'), translations: r.translations, subTranslations: r.subTranslations, fallbackTranslations: r.fallbackTranslations);
       });
       test('finds and returns resource', () {
         expect(Localization.instance.tr('test'), 'test');
@@ -369,7 +369,7 @@ void main() {
     group('plural', () {
       var r = EasyLocalizationController(
           forceLocale: const Locale('fb'),
-          forceSecondLocale: const Locale('fb'),
+          forceSubLocale: const Locale('fb'),
           supportedLocales: [const Locale('fb')],
           fallbackLocale: const Locale('fb'),
           path: 'path',
@@ -379,12 +379,12 @@ void main() {
             log(e.toString());
           },
           saveLocale: false,
-          saveSecondLocale: false,
+          saveSubLocale: false,
           assetLoader: const JsonAssetLoader());
 
       setUpAll(() async {
         await r.loadTranslations();
-        Localization.load(const Locale('fb'), const Locale('fb'), translations: r.translations, secondTranslations: r.secondTranslations, fallbackTranslations: r.fallbackTranslations);
+        Localization.load(const Locale('fb'), const Locale('fb'), translations: r.translations, subTranslations: r.subTranslations, fallbackTranslations: r.fallbackTranslations);
       });
 
       test('zero', () {

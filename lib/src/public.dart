@@ -45,7 +45,7 @@ bool trExists(String key) {
   return Localization.instance.exists(key);
 }
 
-/// {@template trSecond}
+/// {@template trSub}
 /// Main function for translate your language keys
 /// [key] Localization key
 /// [BuildContext] The location in the tree where this widget builds
@@ -68,26 +68,24 @@ bool trExists(String key) {
 /// }
 /// ```
 /// ```dart
-/// Text('msg').trSecond(args: ['Easy localization', 'Dart']), // args
-/// Text('msg_named').trSecond(namedArgs: {'lang': 'Dart'}),   // namedArgs
-/// Text('msg_mixed').trSecond(args: ['Easy localization'], namedArgs: {'lang': 'Dart'}), // args and namedArgs
-/// Text('gender').trSecond(gender: _gender ? "female" : "male"), // gender
+/// Text('msg').trSub(args: ['Easy localization', 'Dart']), // args
+/// Text('msg_named').trSub(namedArgs: {'lang': 'Dart'}),   // namedArgs
+/// Text('msg_mixed').trSub(args: ['Easy localization'], namedArgs: {'lang': 'Dart'}), // args and namedArgs
+/// Text('gender').trSub(gender: _gender ? "female" : "male"), // gender
 /// ```
 /// {@endtemplate}
-String trSecond(
+String trSub(
   String key, {
   BuildContext? context,
   List<String>? args,
   Map<String, String>? namedArgs,
   String? gender,
 }) {
-  return context != null
-      ? Localization.of(context)!.trSecond(key, args: args, namedArgs: namedArgs, gender: gender)
-      : Localization.instance.trSecond(key, args: args, namedArgs: namedArgs, gender: gender);
+  return context != null ? Localization.of(context)!.trSub(key, args: args, namedArgs: namedArgs, gender: gender) : Localization.instance.trSub(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
-bool trSecondExists(String key) {
-  return Localization.instance.existsSecond(key);
+bool trSubExists(String key) {
+  return Localization.instance.existsSub(key);
 }
 
 /// {@template plural}
@@ -154,7 +152,7 @@ String plural(
       : Localization.instance.plural(key, value, args: args, namedArgs: namedArgs, name: name, format: format);
 }
 
-/// {@template plural}
+/// {@template pluralSub}
 /// function translate with pluralization
 /// [key] Localization key
 /// [value] Number value for pluralization
@@ -197,14 +195,14 @@ String plural(
 /// ```
 ///
 ///```dart
-/// Text('money').pluralSecond(1000000, format: NumberFormat.compact(locale: context.locale.toString())) // output: You have 1M dollars
-/// print('day'.pluralSecond(21)); // output: 21 день
-/// var money = pluralSecond('money', 10.23) // output: You have 10.23 dollars
-/// var money = pluralSecond('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
-/// var money = pluralSecond('money_named_args', 10.23, namedArgs: {'name': 'Jane'}, name: 'money')  // output: Jane has 10.23 dollars
+/// Text('money').pluralSub(1000000, format: NumberFormat.compact(locale: context.locale.toString())) // output: You have 1M dollars
+/// print('day'.pluralSub(21)); // output: 21 день
+/// var money = pluralSub('money', 10.23) // output: You have 10.23 dollars
+/// var money = pluralSub('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
+/// var money = pluralSub('money_named_args', 10.23, namedArgs: {'name': 'Jane'}, name: 'money')  // output: Jane has 10.23 dollars
 /// ```
 /// {@endtemplate}
-String pluralSecond(
+String pluralSub(
   String key,
   num value, {
   List<String>? args,
@@ -214,6 +212,6 @@ String pluralSecond(
   NumberFormat? format,
 }) {
   return context != null
-      ? Localization.of(context)!.pluralSecond(key, value, args: args, namedArgs: namedArgs, name: name, format: format)
-      : Localization.instance.pluralSecond(key, value, args: args, namedArgs: namedArgs, name: name, format: format);
+      ? Localization.of(context)!.pluralSub(key, value, args: args, namedArgs: namedArgs, name: name, format: format)
+      : Localization.instance.pluralSub(key, value, args: args, namedArgs: namedArgs, name: name, format: format);
 }

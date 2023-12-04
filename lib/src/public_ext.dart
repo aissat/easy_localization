@@ -35,9 +35,9 @@ extension TextTranslateExtension on Text {
       semanticsLabel: semanticsLabel,
       textWidthBasis: textWidthBasis);
 
-  /// {@macro tr}
-  Text trSecond({List<String>? args, BuildContext? context, Map<String, String>? namedArgs, String? gender}) => Text(
-      ez.trSecond(
+  /// {@macro trSub}
+  Text trSub({List<String>? args, BuildContext? context, Map<String, String>? namedArgs, String? gender}) => Text(
+      ez.trSub(
         data ?? '',
         context: context,
         args: args,
@@ -89,8 +89,8 @@ extension TextTranslateExtension on Text {
           semanticsLabel: semanticsLabel,
           textWidthBasis: textWidthBasis);
 
-  /// {@macro plural}
-  Text pluralSecond(
+  /// {@macro pluralSub}
+  Text pluralSub(
     num value, {
     BuildContext? context,
     List<String>? args,
@@ -99,7 +99,7 @@ extension TextTranslateExtension on Text {
     NumberFormat? format,
   }) =>
       Text(
-          ez.pluralSecond(
+          ez.pluralSub(
             data ?? '',
             value,
             context: context,
@@ -138,18 +138,18 @@ extension StringTranslateExtension on String {
   }) =>
       ez.tr(this, context: context, args: args, namedArgs: namedArgs, gender: gender);
 
-  /// {@macro tr}
-  String trSecond({
+  /// {@macro trSub}
+  String trSub({
     List<String>? args,
     Map<String, String>? namedArgs,
     String? gender,
     BuildContext? context,
   }) =>
-      ez.trSecond(this, context: context, args: args, namedArgs: namedArgs, gender: gender);
+      ez.trSub(this, context: context, args: args, namedArgs: namedArgs, gender: gender);
 
   bool trExists() => ez.trExists(this);
 
-  bool trSecondExists() => ez.trSecondExists(this);
+  bool trSubExists() => ez.trSubExists(this);
 
   /// {@macro plural}
   String plural(
@@ -170,8 +170,8 @@ extension StringTranslateExtension on String {
         format: format,
       );
 
-  /// {@macro pluralSecond}
-  String pluralSecond(
+  /// {@macro pluralSub}
+  String pluralSub(
     num value, {
     List<String>? args,
     BuildContext? context,
@@ -179,7 +179,7 @@ extension StringTranslateExtension on String {
     String? name,
     NumberFormat? format,
   }) =>
-      ez.pluralSecond(
+      ez.pluralSub(
         this,
         value,
         context: context,
@@ -207,12 +207,12 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
   /// Get current locale
   Locale get locale => EasyLocalization.of(this)!.locale;
 
-  Locale get secondLocale => EasyLocalization.of(this)!.secondLocale;
+  Locale get subLocale => EasyLocalization.of(this)!.subLocale;
 
   /// Change app locale
   Future<void> setLocale(Locale val) async => EasyLocalization.of(this)!.setLocale(val);
 
-  Future<void> setSecondLocale(Locale val) async => EasyLocalization.of(this)!.setSecondLocale(val);
+  Future<void> setSubLocale(Locale val) async => EasyLocalization.of(this)!.setSubLocale(val);
 
   /// Old Change app locale
   @Deprecated('This is the func used in the old version of EasyLocalization. The modern func is `setLocale(val)` . '
@@ -295,7 +295,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     );
   }
 
-  String trSecond(
+  String trSub(
     String key, {
     List<String>? args,
     Map<String, String>? namedArgs,
@@ -307,7 +307,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
       throw const LocalizationNotFoundException();
     }
 
-    return localization.trSecond(
+    return localization.trSub(
       key,
       args: args,
       namedArgs: namedArgs,
@@ -339,7 +339,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     );
   }
 
-  String pluralSecond(
+  String pluralSub(
     String key,
     num number, {
     List<String>? args,
@@ -353,7 +353,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
       throw const LocalizationNotFoundException();
     }
 
-    return localization.pluralSecond(
+    return localization.pluralSub(
       key,
       number,
       args: args,

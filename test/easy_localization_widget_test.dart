@@ -50,6 +50,23 @@ class MyWidget extends StatelessWidget {
   }
 }
 
+class MySubWidget extends StatelessWidget {
+  const MySubWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(context) {
+    _context = context;
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          const Text('test').trSub(),
+          const Text('day').pluralSub(1),
+        ],
+      ),
+    );
+  }
+}
+
 class MyLocalizedWidget extends StatelessWidget {
   const MyLocalizedWidget({Key? key}) : super(key: key);
 
@@ -219,7 +236,7 @@ void main() async {
   );
 
   testWidgets(
-    '[EasyLocalization] change second locale test',
+    '[EasyLocalization] change sub locale test',
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
@@ -232,12 +249,12 @@ void main() async {
         await tester.pump();
 
         expect(EasyLocalization.of(_context)!.supportedLocales, [const Locale('en', 'US')]);
-        expect(EasyLocalization.of(_context)!.secondLocale, const Locale('en', 'US'));
+        expect(EasyLocalization.of(_context)!.subLocale, const Locale('en', 'US'));
 
         var l = const Locale('en', 'US');
-        await EasyLocalization.of(_context)!.setSecondLocale(l);
+        await EasyLocalization.of(_context)!.setSubLocale(l);
         await tester.pump();
-        expect(EasyLocalization.of(_context)!.secondLocale, const Locale('en', 'US'));
+        expect(EasyLocalization.of(_context)!.subLocale, const Locale('en', 'US'));
 
         final trFinder = find.text('test');
         expect(trFinder, findsOneWidget);
@@ -249,10 +266,10 @@ void main() async {
 
         l = const Locale('ar', 'DZ');
         expect(() async {
-          await EasyLocalization.of(_context)!.setSecondLocale(l);
+          await EasyLocalization.of(_context)!.setSubLocale(l);
         }, throwsAssertionError);
         await tester.pump();
-        expect(EasyLocalization.of(_context)!.secondLocale, const Locale('en', 'US'));
+        expect(EasyLocalization.of(_context)!.subLocale, const Locale('en', 'US'));
       });
     },
   );
@@ -325,7 +342,7 @@ void main() async {
 
         expect(Localization.of(_context), isInstanceOf<Localization>());
         expect(EasyLocalization.of(_context)!.supportedLocales, [const Locale('en', 'US'), const Locale('ar', 'DZ')]);
-        expect(EasyLocalization.of(_context)!.secondLocale, const Locale('en', 'US'));
+        expect(EasyLocalization.of(_context)!.subLocale, const Locale('en', 'US'));
 
         var trFinder = find.text('test');
         expect(trFinder, findsOneWidget);
@@ -335,30 +352,30 @@ void main() async {
         expect(tr('test'), 'test');
 
         var l = const Locale('en', 'US');
-        await EasyLocalization.of(_context)!.setSecondLocale(l);
+        await EasyLocalization.of(_context)!.setSubLocale(l);
         await tester.pump();
-        expect(EasyLocalization.of(_context)!.secondLocale, l);
+        expect(EasyLocalization.of(_context)!.subLocale, l);
 
         l = const Locale('ar', 'DZ');
-        await EasyLocalization.of(_context)!.setSecondLocale(l);
+        await EasyLocalization.of(_context)!.setSubLocale(l);
         // await tester.idle();
         await tester.pump();
-        expect(EasyLocalization.of(_context)!.secondLocale, l);
+        expect(EasyLocalization.of(_context)!.subLocale, l);
 
         l = const Locale('en', 'US');
-        await EasyLocalization.of(_context)!.setSecondLocale(l);
+        await EasyLocalization.of(_context)!.setSubLocale(l);
         // await tester.idle();
         await tester.pump();
-        expect(EasyLocalization.of(_context)!.secondLocale, l);
+        expect(EasyLocalization.of(_context)!.subLocale, l);
 
         l = const Locale('en', 'UK');
-        expect(() async => {await EasyLocalization.of(_context)!.setSecondLocale(l)}, throwsAssertionError);
+        expect(() async => {await EasyLocalization.of(_context)!.setSubLocale(l)}, throwsAssertionError);
 
         l = const Locale('ar', 'DZ');
-        await EasyLocalization.of(_context)!.setSecondLocale(l);
+        await EasyLocalization.of(_context)!.setSubLocale(l);
         // await tester.idle();
         await tester.pump();
-        expect(EasyLocalization.of(_context)!.secondLocale, l);
+        expect(EasyLocalization.of(_context)!.subLocale, l);
       });
     },
   );
@@ -394,6 +411,47 @@ void main() async {
         expect(plural('day', 1), '1 يوم');
         expect(plural('day', 2), '2 أيام');
         expect(plural('day', 3), '3 أيام');
+
+        // var l = Locale('en', 'US');
+        // EasyLocalization.of(_context).locale = l;
+        // expect(EasyLocalization.of(_context).locale, l);
+      });
+    },
+  );
+
+  testWidgets(
+    '[EasyLocalization] sub locale ar_DZ test',
+    (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        await tester.pumpWidget(EasyLocalization(
+          path: '../../i18n',
+          supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')],
+          child: const MyApp(
+            child: MySubWidget(),
+          ),
+        ));
+
+        // await tester.idle();
+        // The async delegator load will require build on the next frame. Thus, pump
+        await tester.pump();
+
+        await EasyLocalization.of(_context)!.setSubLocale(const Locale('ar', 'DZ'));
+
+        await tester.pump();
+
+        expect(EasyLocalization.of(_context)!.supportedLocales, [const Locale('en', 'US'), const Locale('ar', 'DZ')]);
+        expect(EasyLocalization.of(_context)!.subLocale, const Locale('ar', 'DZ'));
+
+        var trFinder = find.text('اختبار');
+        expect(trFinder, findsOneWidget);
+        var pluralFinder = find.text('1 يوم');
+        expect(pluralFinder, findsOneWidget);
+
+        expect(Localization.of(_context), isInstanceOf<Localization>());
+        expect(trSub('test'), 'اختبار');
+        expect(pluralSub('day', 1), '1 يوم');
+        expect(pluralSub('day', 2), '2 أيام');
+        expect(pluralSub('day', 3), '3 أيام');
 
         // var l = Locale('en', 'US');
         // EasyLocalization.of(_context).locale = l;
@@ -790,7 +848,7 @@ void main() async {
       path: '../../i18n',
       supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')], // Locale('en', 'US'), Locale('ar','DZ')
       startLocale: const Locale('en', 'US'),
-      startSecondLocale: const Locale('en', 'US'),
+      startSubLocale: const Locale('en', 'US'),
       child: const MyApp(
         child: MyLocalizedWidget(),
       ),
