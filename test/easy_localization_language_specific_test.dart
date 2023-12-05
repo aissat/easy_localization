@@ -26,6 +26,7 @@ void main() {
 
     setUpAll(() async {
       await r.loadTranslations();
+      await r.loadSubTranslations();
     });
 
     test('english one', () async {

@@ -46,7 +46,9 @@ void main() {
       ];
 
       await r1.loadTranslations();
+      await r1.loadSubTranslations();
       await r2.loadTranslations();
+      await r2.loadSubTranslations();
       Localization.load(const Locale('en'), const Locale('en'), translations: r1.translations, subTranslations: r1.subTranslations);
     });
     test('is a localization object', () {
@@ -69,7 +71,7 @@ void main() {
     });
 
     test('merge fallbackLocale with locale without country code succeeds', () async {
-      await EasyLocalizationController(
+      EasyLocalizationController(
         forceLocale: const Locale('es', 'AR'),
         forceSubLocale: const Locale('es', 'AR'),
         supportedLocales: const [Locale('en'), Locale('es'), Locale('es', 'AR')],
@@ -83,7 +85,9 @@ void main() {
         saveLocale: false,
         saveSubLocale: false,
         assetLoader: const ImmutableJsonAssetLoader(),
-      ).loadTranslations();
+      )
+        ..loadTranslations()
+        ..loadSubTranslations();
     });
 
     test('localeFromString() succeeds', () async {

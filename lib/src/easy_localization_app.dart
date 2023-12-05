@@ -275,6 +275,9 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
     if (localizationController!.translations == null) {
       await localizationController!.loadTranslations();
     }
+    if (localizationController!.subTranslations == null) {
+      await localizationController!.loadSubTranslations();
+    }
 
     Localization.load(value, localizationController!.subLocale,
         translations: localizationController!.translations,

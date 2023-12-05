@@ -35,7 +35,7 @@ class Localization {
   }) {
     instance._locale = locale;
     instance._translations = translations;
-    instance._subTranslations = translations;
+    instance._subTranslations = subTranslations;
     instance._fallbackTranslations = fallbackTranslations;
     instance._subFallbackTranslations = subFallbackTranslations;
     if (subLocale != null) {
