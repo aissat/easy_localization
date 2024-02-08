@@ -236,7 +236,9 @@ String _processKeys(
   classContent +=
       nestedObject.isRootObject ? '' : '  const ${nestedObject.className}();\n';
   if (nestedObject.shouldHaveValueGetter) {
-    classContent += '  String val() => \'${nestedObject.value}\';\n';
+    classContent += '  String get key => \'${nestedObject.value}\';\n';
+    classContent += '  @override\n';
+    classContent += '  String toString() => \'${nestedObject.value}\';\n';
   }
 
   final translations = nestedObject.translations;
@@ -346,7 +348,8 @@ class CodegenLoader extends AssetLoader{
   }
 
   gFile +=
-      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
+      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};\n';
+  gFile += '}\n';
   classBuilder.writeln(gFile);
 }
 
