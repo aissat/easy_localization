@@ -14,6 +14,7 @@ class EasyLocalizationController extends ChangeNotifier {
   Locale? _fallbackLocale;
 
   final Function(FlutterError e) onLoadError;
+  // ignore: prefer_typing_uninitialized_variables
   final assetLoader;
   final String path;
   final bool useFallbackTranslations;
@@ -45,17 +46,36 @@ class EasyLocalizationController extends ChangeNotifier {
     // If saved locale then get
     else if (saveLocale && _savedLocale != null) {
       EasyLocalization.logger('Saved locale loaded ${_savedLocale.toString()}');
-      _locale = _savedLocale!;
+      _locale = selectLocaleFrom(
+        supportedLocales,
+        _savedLocale!,
+        fallbackLocale: fallbackLocale,
+      );
     } else {
       // From Device Locale
-      _locale = supportedLocales.firstWhere(
-          (locale) => _checkInitLocale(locale, _deviceLocale),
-          orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale));
+      _locale = selectLocaleFrom(
+        supportedLocales,
+        _deviceLocale,
+        fallbackLocale: fallbackLocale,
+      );
     }
   }
 
+  @visibleForTesting
+  static Locale selectLocaleFrom(
+    List<Locale> supportedLocales,
+    Locale deviceLocale, {
+    Locale? fallbackLocale,
+  }) {
+    final selectedLocale = supportedLocales.firstWhere(
+      (locale) => locale.supports(deviceLocale),
+      orElse: () => _getFallbackLocale(supportedLocales, fallbackLocale),
+    );
+    return selectedLocale;
+  }
+
   //Get fallback Locale
-  Locale _getFallbackLocale(
+  static Locale _getFallbackLocale(
       List<Locale> supportedLocales, Locale? fallbackLocale) {
     //If fallbackLocale not set then return first from supportedLocales
     if (fallbackLocale != null) {
@@ -65,22 +85,25 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  bool _checkInitLocale(Locale locale, Locale? _deviceLocale) {
-    // If supported locale not contain countryCode then check only languageCode
-    if (locale.countryCode == null) {
-      return (locale.languageCode == _deviceLocale!.languageCode);
-    } else {
-      return (locale == _deviceLocale);
-    }
-  }
-
   Future loadTranslations() async {
     Map<String, dynamic> data;
     try {
-      data = await loadTranslationData(_locale);
+      data = Map.from(await loadTranslationData(_locale));
       _translations = Translations(data);
       if (useFallbackTranslations && _fallbackLocale != null) {
-        data = await loadTranslationData(_fallbackLocale!);
+        Map<String, dynamic>? baseLangData;
+        if (_locale.countryCode != null && _locale.countryCode!.isNotEmpty) {
+          baseLangData =
+              await loadBaseLangTranslationData(Locale(locale.languageCode));
+        }
+        data = Map.from(await loadTranslationData(_fallbackLocale!));
+        if (baseLangData != null) {
+          try {
+            data.addAll(baseLangData);
+          } on UnsupportedError {
+            data = Map.of(data)..addAll(baseLangData);
+          }
+        }
         _fallbackTranslations = Translations(data);
       }
     } on FlutterError catch (e) {
@@ -90,12 +113,29 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  Future loadTranslationData(Locale locale) async {
-    if (useOnlyLangCode) {
-      return assetLoader.load(path, Locale(locale.languageCode));
-    } else {
-      return assetLoader.load(path, locale);
+  Future<Map<String, dynamic>?> loadBaseLangTranslationData(
+      Locale locale) async {
+    try {
+      return await loadTranslationData(Locale(locale.languageCode));
+    } on FlutterError catch (e) {
+      // Disregard asset not found FlutterError when attempting to load base language fallback
+      EasyLocalization.logger.warning(e.message);
     }
+    return null;
+  }
+
+  Future<Map<String, dynamic>> loadTranslationData(Locale locale) async {
+    late Map<String, dynamic>? data;
+
+    if (useOnlyLangCode) {
+      data = await assetLoader.load(path, Locale(locale.languageCode));
+    } else {
+      data = await assetLoader.load(path, locale);
+    }
+
+    if (data == null) return {};
+
+    return data;
   }
 
   Locale get locale => _locale;
@@ -110,24 +150,24 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> _saveLocale(Locale? locale) async {
     if (!saveLocale) return;
-    final _preferences = await SharedPreferences.getInstance();
-    await _preferences.setString('locale', locale.toString());
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString('locale', locale.toString());
     EasyLocalization.logger('Locale $locale saved');
   }
 
   static Future<void> initEasyLocation() async {
-    final _preferences = await SharedPreferences.getInstance();
-    final _strLocale = _preferences.getString('locale');
-    _savedLocale = _strLocale != null ? _strLocale.toLocale() : null;
-    final _foundPlatformLocale = await findSystemLocale();
-    _deviceLocale = _foundPlatformLocale.toLocale();
+    final preferences = await SharedPreferences.getInstance();
+    final strLocale = preferences.getString('locale');
+    _savedLocale = strLocale?.toLocale();
+    final foundPlatformLocale = await findSystemLocale();
+    _deviceLocale = foundPlatformLocale.toLocale();
     EasyLocalization.logger.debug('Localization initialized');
   }
 
   Future<void> deleteSaveLocale() async {
     _savedLocale = null;
-    final _preferences = await SharedPreferences.getInstance();
-    await _preferences.remove('locale');
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.remove('locale');
     EasyLocalization.logger('Saved locale deleted');
   }
 
@@ -137,5 +177,27 @@ class EasyLocalizationController extends ChangeNotifier {
     EasyLocalization.logger('Reset locale to platform locale $_deviceLocale');
 
     await setLocale(_deviceLocale);
+  }
+}
+
+@visibleForTesting
+extension LocaleExtension on Locale {
+  bool supports(Locale locale) {
+    if (this == locale) {
+      return true;
+    }
+    if (languageCode != locale.languageCode) {
+      return false;
+    }
+    if (countryCode != null &&
+        countryCode!.isNotEmpty &&
+        countryCode != locale.countryCode) {
+      return false;
+    }
+    if (scriptCode != null && scriptCode != locale.scriptCode) {
+      return false;
+    }
+
+    return true;
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 //import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';

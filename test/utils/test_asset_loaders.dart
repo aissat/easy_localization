@@ -2,6 +2,17 @@ import 'dart:ui';
 
 import 'package:easy_localization/src/asset_loader.dart';
 
+class ImmutableJsonAssetLoader extends AssetLoader {
+  const ImmutableJsonAssetLoader();
+
+  @override
+  Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
+    return Future.value(const {
+      'test': 'test',
+    });
+  }
+}
+
 class JsonAssetLoader extends AssetLoader {
   const JsonAssetLoader();
 
@@ -33,13 +44,16 @@ class JsonAssetLoader extends AssetLoader {
         'many': 'many hats',
         'other': 'other hats'
       },
-      'hat_other': {
-        'other': 'other hats'
-      },
+      'hat_other': {'other': 'other hats'},
       'money': {
         'zero': '{} has no money',
         'one': '{} has {} dollar',
         'other': '{} has {} dollars',
+      },
+      'money_named_args': {
+        'zero': '{name} has no money',
+        'one': '{name} has {money} dollar',
+        'other': '{name} has {money} dollars',
       },
       'nested_periods': {
         'Processing': 'Processing',
@@ -70,9 +84,22 @@ class JsonAssetLoader extends AssetLoader {
           }
         }
       },
-      'path': '$fullPath',
+      'path': fullPath,
       'test_missing_fallback':
           (locale.languageCode == 'fb' ? 'fallback!' : null),
+      'test_fallback_plurals': (locale.languageCode == 'fb'
+          ? {
+              'zero': 'fallback zero',
+              'one': 'fallback one',
+              'two': 'fallback two',
+              'few': 'fallback few',
+              'many': 'fallback many',
+              'other': 'fallback other',
+            }
+          : {
+              'one': '{} second',
+              'other': '{} seconds',
+            }),
     });
   }
 }

@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
+
 import 'plural_rules.dart';
 import 'translations.dart';
 
@@ -10,11 +8,11 @@ class Localization {
   Translations? _translations, _fallbackTranslations;
   late Locale _locale;
 
-  final RegExp _replaceArgRegex = RegExp(r'{}');
+  final RegExp _replaceArgRegex = RegExp('{}');
   final RegExp _linkKeyMatcher =
       RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
-  final RegExp _bracketsMatcher = RegExp(r'[()]');
+  final RegExp _bracketsMatcher = RegExp('[()]');
   final _modifiers = <String, String Function(String?)>{
     'upper': (String? val) => val!.toUpperCase(),
     'lower': (String? val) => val!.toLowerCase(),
@@ -97,7 +95,9 @@ class Localization {
 
   String _replaceArgs(String res, List<String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String str) => res = res.replaceFirst(_replaceArgRegex, str));
+    for (var str in args) {
+      res = res.replaceFirst(_replaceArgRegex, str);
+    }
     return res;
   }
 
@@ -113,24 +113,33 @@ class Localization {
     return pluralRules[locale];
   }
 
-  String plural(String key, num value,
-      {List<String>? args, NumberFormat? format}) {
-    late var pluralCase;
-    late var res;
-    var pluralRule = _pluralRule(_locale.languageCode, value);
+  static PluralCase _pluralCaseFallback(num value) {
     switch (value) {
       case 0:
-        pluralCase = PluralCase.ZERO;
-        break;
+        return PluralCase.ZERO;
       case 1:
-        pluralCase = PluralCase.ONE;
-        break;
+        return PluralCase.ONE;
       case 2:
-        pluralCase = PluralCase.TWO;
-        break;
+        return PluralCase.TWO;
       default:
-        pluralCase = pluralRule!();
+        return PluralCase.OTHER;
     }
+  }
+
+  String plural(
+    String key,
+    num value, {
+    List<String>? args,
+    Map<String, String>? namedArgs,
+    String? name,
+    NumberFormat? format,
+  }) {
+
+    late String res;
+
+    final pluralRule = _pluralRule(_locale.languageCode, value);
+    final pluralCase = pluralRule != null ? pluralRule() : _pluralCaseFallback(value);
+
     switch (pluralCase) {
       case PluralCase.ZERO:
         res = _resolvePlural(key, 'zero');
@@ -154,30 +163,38 @@ class Localization {
         throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
 
-    return _replaceArgs(
-        res, args ?? [format == null ? '$value' : format.format(value)]);
+    final formattedValue = format == null ? '$value' : format.format(value);
+
+    if (name != null) {
+      namedArgs = {...?namedArgs, name: formattedValue};
+    }
+    res = _replaceNamedArgs(res, namedArgs);
+
+    return _replaceArgs(res, args ?? [formattedValue]);
   }
 
   String _gender(String key, {required String gender}) {
-    return _resolve(key + '.$gender');
+    return _resolve('$key.$gender');
   }
 
   String _resolvePlural(String key, String subKey) {
+    if (subKey == 'other') return _resolve('$key.other');
+
     final tag = '$key.$subKey';
-    var resource = _resolve(tag);
-    if (resource == tag && subKey != 'other') {
+    var resource = _resolve(tag, logging: false, fallback: _fallbackTranslations != null);
+    if (resource == tag) {
       resource = _resolve('$key.other');
     }
     return resource;
   }
 
-  String _resolve(String key, {bool logging = true}) {
+  String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
     if (resource == null) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
-      if (_fallbackTranslations == null) {
+      if (_fallbackTranslations == null || !fallback) {
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);
@@ -191,5 +208,9 @@ class Localization {
       }
     }
     return resource;
+  }
+
+  bool exists(String key){
+    return _translations?.get(key) != null;
   }
 }

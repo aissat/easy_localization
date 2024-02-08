@@ -1,0 +1,39 @@
+name: Release to pub.dev
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  test:
+    name: Test
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  publish:
+    needs: [test]
+    name: Publish
+    permissions:
+      id-token: write # This is required for authentication using OIDC
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: dart-lang/setup-dart@v1
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.7.12"
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: code format
+        run: dart format lib/*/*.dart lib/*.dart
+
+      - name: Publish
+        run: dart pub publish --force

@@ -1,3 +1,5 @@
+[![Stand With Palestine](https://raw.githubusercontent.com/TheBSD/StandWithPalestine/main/banner-no-action.svg)](https://thebsd.github.io/StandWithPalestine)
+
 <p align="center"><img src="https://raw.githubusercontent.com/aissat/easy_localization/develop/logo/logo.svg?sanitize=true" width="600"/></p>
 <h1 align="center"> 
 Easy and Fast internationalization for your Flutter Apps
@@ -19,6 +21,7 @@ Easy and Fast internationalization for your Flutter Apps
 ![GitHub license](https://img.shields.io/github/license/aissat/easy_localization?style=flat-square)
 ![Sponsors](https://img.shields.io/opencollective/all/flutter_easy_localization?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
+[![StandWithPalestine](https://raw.githubusercontent.com/TheBSD/StandWithPalestine/main/badges/StandWithPalestine.svg)](https://github.com/TheBSD/StandWithPalestine/blob/main/docs/README.md)
 
 ## Why easy_localization?
 
@@ -192,6 +195,8 @@ Text('title').tr() //Text widget
 print('title'.tr()); //String
 
 var title = tr('title') //Static function
+
+Text(context.tr('title')) //Extension on BuildContext
 ```
 
 #### Arguments:
@@ -241,11 +246,13 @@ You can use extension methods of [String] or [Text] widget, you can also use `pl
 
 #### Arguments:
 
-| Name   | Type           | Description                                                                                                                  |
-| ------ | -------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| value  | `num`          | Number value for pluralization                                                                                               |
-| args   | `List<String>` | List of localized strings. Replaces `{}` left to right                                                                       |
-| format | `NumberFormat` | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
+| Name      | Type                  | Description                                                                                                                  |
+| --------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| value     | `num`                 | Number value for pluralization                                                                                               |
+| args      | `List<String>`        | List of localized strings. Replaces `{}` left to right                                                                       |
+| namedArgs | `Map<String, String>` | Map of localized strings. Replaces the name keys `{key_name}` according to its name                                          |
+| name      | `String`              | Name of number value. Replaces `{$name}` to value                                                                            |
+| format    | `NumberFormat`        | Formats a numeric value using a [NumberFormat](https://pub.dev/documentation/intl/latest/intl/NumberFormat-class.html) class |
 
 Example:
 
@@ -270,6 +277,12 @@ Example:
     "one": "{} has {} dollar",
     "many": "{} has {} dollars",
     "other": "{} has {} dollars"
+  },
+  "money_named_args": {
+    "zero": "{name} has no money",
+    "one": "{name} has {money} dollar",
+    "many": "{name} has {money} dollars",
+    "other": "{name} has {money} dollars"
   }
 }
 ```
@@ -285,8 +298,15 @@ print('day'.plural(21)); // output: 21 день
 //Static function
 var money = plural('money', 10.23) // output: You have 10.23 dollars
 
+//Text widget with plural BuildContext extension
+Text(context.plural('money', 10.23))
+
 //Static function with arguments
 var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
+
+//Static function with named arguments
+var money = plural('money_named_args', 10.23, namedArgs: {'name': 'Jane', 'money': '10.23'})  // output: Jane has 10.23 dollars
+var money = plural('money_named_args', 10.23, namedArgs: {'name': 'Jane'}, name: 'money')  // output: Jane has 10.23 dollars
 ```
 
 ### 🔥 Linked translations:
@@ -378,7 +398,7 @@ Get device locale
 Example:
 
 ```dart
-print(${context.deviceLocale.toString()}) // OUTPUT: en_US
+print(context.deviceLocale.toString()) // OUTPUT: en_US
 ```
 
 ### 🔥 Delete save locale `deleteSaveLocale()`
