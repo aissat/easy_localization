@@ -11,12 +11,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
-    supportedLocales: [
-      Locale('en', 'US'),
-      Locale('ar', 'DZ'),
-      Locale('de', 'DE'),
-      Locale('ru', 'RU')
-    ],
+    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ'), Locale('de', 'DE'), Locale('ru', 'RU')],
     path: 'resources/langs',
     child: MyApp(),
     // fallbackLocale: Locale('en', 'US'),
@@ -88,13 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (_) => LanguageView(), fullscreenDialog: true),
+                MaterialPageRoute(builder: (_) => LanguageView(), fullscreenDialog: true),
               );
             },
             child: Icon(
               Icons.language,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
         ],
@@ -108,17 +102,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               LocaleKeys.gender_with_arg,
-              style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 19, fontWeight: FontWeight.bold),
             ).tr(args: ['aissat'], gender: _gender ? 'female' : 'male'),
             Text(
               tr(LocaleKeys.gender, gender: _gender ? 'female' : 'male'),
-              style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Colors.grey.shade600, fontSize: 15, fontWeight: FontWeight.bold),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -132,8 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
             ),
             Text(LocaleKeys.msg).tr(args: ['aissat', 'Flutter']),
-            Text(LocaleKeys.msg_named)
-                .tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+            Text(LocaleKeys.msg_named).tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+            Text("Sub language:"),
+            Text(LocaleKeys.msg).trSub(args: ['aissat', 'Flutter']),
             Text(LocaleKeys.clicked).plural(counter),
             TextButton(
               onPressed: () {
@@ -144,14 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 15,
             ),
-            Text(
-                plural(LocaleKeys.amount, counter,
-                    format: NumberFormat.currency(
-                        locale: Intl.defaultLocale, symbol: '€')),
-                style: TextStyle(
-                    color: Colors.grey.shade900,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
+            Text(plural(LocaleKeys.amount, counter, format: NumberFormat.currency(locale: Intl.defaultLocale, symbol: '€')),
+                style: TextStyle(color: Colors.grey.shade900, fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(
               height: 20,
             ),

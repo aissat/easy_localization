@@ -36,27 +36,41 @@ class LanguageView extends StatelessWidget {
                 ),
               ),
             ),
-            _SwitchListTileMenuItem(
-                title: 'عربي',
-                subtitle: 'عربي',
-                locale:
-                    context.supportedLocales[1] //BuildContext extension method
+            _SwitchListTileMenuItem(title: 'عربي', subtitle: 'عربي', locale: context.supportedLocales[1] //BuildContext extension method
                 ),
             _Divider(),
-            _SwitchListTileMenuItem(
-                title: 'English',
-                subtitle: 'English',
-                locale: context.supportedLocales[0]),
+            _SwitchListTileMenuItem(title: 'English', subtitle: 'English', locale: context.supportedLocales[0]),
             _Divider(),
-            _SwitchListTileMenuItem(
-                title: 'German',
-                subtitle: 'German',
-                locale: context.supportedLocales[2]),
+            _SwitchListTileMenuItem(title: 'German', subtitle: 'German', locale: context.supportedLocales[2]),
             _Divider(),
-            _SwitchListTileMenuItem(
-                title: 'Русский',
-                subtitle: 'Русский',
-                locale: context.supportedLocales[3]),
+            _SwitchListTileMenuItem(title: 'Русский', subtitle: 'Русский', locale: context.supportedLocales[3]),
+            _Divider(),
+            SizedBox(
+              height: 250,
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 26),
+              margin: EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: Text(
+                'Choose sub language',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            _SwitchSubListTileMenuItem(title: 'عربي', subtitle: 'عربي', subLocale: context.supportedLocales[1] //BuildContext extension method
+                ),
+            _Divider(),
+            _SwitchSubListTileMenuItem(title: 'English', subtitle: 'English', subLocale: context.supportedLocales[0]),
+            _Divider(),
+            _SwitchSubListTileMenuItem(title: 'German', subtitle: 'German', subLocale: context.supportedLocales[2]),
+            _Divider(),
+            _SwitchSubListTileMenuItem(title: 'Русский', subtitle: 'Русский', subLocale: context.supportedLocales[3]),
             _Divider(),
           ],
         ),
@@ -100,8 +114,7 @@ class _SwitchListTileMenuItem extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10, top: 5),
       decoration: BoxDecoration(
-        border:
-            isSelected(context) ? Border.all(color: Colors.blueAccent) : null,
+        border: isSelected(context) ? Border.all(color: Colors.blueAccent) : null,
       ),
       child: ListTile(
           dense: true,
@@ -115,6 +128,45 @@ class _SwitchListTileMenuItem extends StatelessWidget {
           onTap: () async {
             log(locale.toString(), name: toString());
             await context.setLocale(locale); //BuildContext extension method
+            Navigator.pop(context);
+          }),
+    );
+  }
+}
+
+class _SwitchSubListTileMenuItem extends StatelessWidget {
+  const _SwitchSubListTileMenuItem({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.subLocale,
+  }) : super(key: key);
+
+  final String title;
+  final String subtitle;
+  final Locale subLocale;
+
+  bool isSelected(BuildContext context) => subLocale == context.subLocale;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10, top: 5),
+      decoration: BoxDecoration(
+        border: isSelected(context) ? Border.all(color: Colors.blueAccent) : null,
+      ),
+      child: ListTile(
+          dense: true,
+          // isThreeLine: true,
+          title: Text(
+            title,
+          ),
+          subtitle: Text(
+            subtitle,
+          ),
+          onTap: () async {
+            log(subLocale.toString(), name: toString());
+            await context.setSubLocale(subLocale); //BuildContext extension method
             Navigator.pop(context);
           }),
     );
