@@ -1,5 +1,10 @@
 # Changelog
 
+### [3.0.4]
+
+- determine plural cases based on the actual language rules (#620)
+- update intl to 0.19.0 (#638)
+
 ### [3.0.3]
 
 - replace log() with stdout.writeln()
