@@ -1,5 +1,9 @@
 # Changelog
 
+### [4.0.0]
+
+- [BREAKING] Improved the key generation process for nested keys. Now, instead of using the syntax LocalKeys.item1_item2, we have adopted a more intuitive structure that enhances code completion: LocalKeys.item1.item2.
+
 ### [3.0.4]
 
 - determine plural cases based on the actual language rules (#620)

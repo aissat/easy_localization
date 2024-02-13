@@ -107,14 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
             ),
             Text(
-              LocaleKeys.gender_with_arg,
+              LocaleKeys.gender.with_arg,
               style: TextStyle(
                   color: Colors.grey.shade600,
                   fontSize: 19,
                   fontWeight: FontWeight.bold),
             ).tr(args: ['aissat'], gender: _gender ? 'female' : 'male'),
             Text(
-              tr(LocaleKeys.gender, gender: _gender ? 'female' : 'male'),
+              tr(LocaleKeys.gender.val(), gender: _gender ? 'female' : 'male'),
               style: TextStyle(
                   color: Colors.grey.shade600,
                   fontSize: 15,
