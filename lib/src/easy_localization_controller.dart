@@ -20,6 +20,8 @@ class EasyLocalizationController extends ChangeNotifier {
   final bool useFallbackTranslations;
   final bool saveLocale;
   final bool useOnlyLangCode;
+  final Map<String, dynamic>? fallbackLocaleData;
+
   Translations? _translations, _fallbackTranslations;
   Translations? get translations => _translations;
   Translations? get fallbackTranslations => _fallbackTranslations;
@@ -32,6 +34,7 @@ class EasyLocalizationController extends ChangeNotifier {
     required this.path,
     required this.useOnlyLangCode,
     required this.onLoadError,
+    this.fallbackLocaleData,
     Locale? startLocale,
     Locale? fallbackLocale,
     Locale? forceLocale, // used for testing
@@ -58,6 +61,10 @@ class EasyLocalizationController extends ChangeNotifier {
         _deviceLocale,
         fallbackLocale: fallbackLocale,
       );
+    }
+
+    if (fallbackLocaleData != null) {
+      _translations = Translations(fallbackLocaleData);
     }
   }
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_logger/easy_logger.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -76,6 +77,10 @@ class EasyLocalization extends StatefulWidget {
   /// @Default value `errorWidget = ErrorWidget()`
   final Widget Function(FlutterError? message)? errorWidget;
 
+  /// Data for fallback localte that is also startup locale
+  /// Use this to fix startup black screen
+  final Map<String, dynamic>? fallbackLocaleData;
+
   EasyLocalization({
     Key? key,
     required this.child,
@@ -88,6 +93,7 @@ class EasyLocalization extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.errorWidget,
+    this.fallbackLocaleData,
   })  : assert(supportedLocales.isNotEmpty),
         assert(path.isNotEmpty),
         super(key: key) {
@@ -129,6 +135,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       useOnlyLangCode: widget.useOnlyLangCode,
       useFallbackTranslations: widget.useFallbackTranslations,
       path: widget.path,
+      fallbackLocaleData: widget.fallbackLocaleData,
       onLoadError: (FlutterError e) {
         setState(() {
           translationsLoadError = e;
@@ -254,16 +261,21 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   bool isSupported(Locale locale) => supportedLocales!.contains(locale);
 
   @override
-  Future<Localization> load(Locale value) async {
+  Future<Localization> load(Locale value) {
     EasyLocalization.logger.debug('Load Localization Delegate');
     if (localizationController!.translations == null) {
-      await localizationController!.loadTranslations();
+      return localizationController!.loadTranslations().then((value) {
+        Localization.load(value,
+            translations: localizationController!.translations,
+            fallbackTranslations: localizationController!.fallbackTranslations);
+        return Future.value(Localization.instance);
+      });
     }
 
     Localization.load(value,
         translations: localizationController!.translations,
         fallbackTranslations: localizationController!.fallbackTranslations);
-    return Future.value(Localization.instance);
+    return SynchronousFuture<Localization>(Localization.instance);
   }
 
   @override
