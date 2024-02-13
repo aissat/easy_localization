@@ -283,7 +283,7 @@ String _processKeys(
     }
   }
 
-  return classContent + '}\n\n';
+  return '$classContent}\n\n';
 }
 
 String _writeNestedObjectField({
@@ -296,7 +296,7 @@ String _writeNestedObjectField({
   field += name;
   field += ' = ';
   field += isRootObject ? '$className()' : 'const $className()';
-  return field + ';\n';
+  return '$field;\n';
 }
 
 String _writeKeyField({
@@ -309,7 +309,7 @@ String _writeKeyField({
   field += name;
   field += ' = ';
   field += "'$value'";
-  return field + ';\n';
+  return '$field;\n';
 }
 
 Future _writeJson(
