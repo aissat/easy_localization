@@ -5,7 +5,7 @@ homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
 # publish_to: none
 
-version: 3.0.4
+version: 3.0.5
 
 environment:
   sdk: '>=2.12.0 <4.0.0'
@@ -20,7 +20,6 @@ dependencies:
   easy_logger: ^0.0.2
   flutter_localizations:
     sdk: flutter
-
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,9 @@
 # Changelog
 
+### [3.0.5]
+
+- add 'extraAssetLoaders' to add more assets loaders if it is needed, for example, if you want to add packages localizations to your project.
+
 ### [3.0.4]
 
 - determine plural cases based on the actual language rules (#620)

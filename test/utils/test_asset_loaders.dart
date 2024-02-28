@@ -103,3 +103,29 @@ class JsonAssetLoader extends AssetLoader {
     });
   }
 }
+
+class ExternalAssetLoader extends AssetLoader {
+  const ExternalAssetLoader();
+
+  @override
+  Future<Map<String, dynamic>> load(String fullPath, Locale locale) =>
+      Future.value(const {
+        'package_value_01': 'package_value_01',
+        'package_value_02': 'package_value_02',
+        'package_value_03': 'package_value_03',
+      });
+}
+
+class NestedAssetLoader extends AssetLoader {
+  const NestedAssetLoader();
+
+  @override
+  Future<Map<String, dynamic>> load(String fullPath, Locale locale) =>
+      Future.value({
+        'nested': {
+          'super': {
+            'duper': {'nested': 'nested.super.duper.nested'}
+          }
+        },
+      });
+}

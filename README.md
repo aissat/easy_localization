@@ -141,6 +141,7 @@ class MyApp extends StatelessWidget {
 | supportedLocales        | true     |                           | List of supported locales.                                                                                                                                                    |
 | path                    | true     |                           | Path to your folder with localization files.                                                                                                                                  |
 | assetLoader             | false    | `RootBundleAssetLoader()` | Class loader for localization files. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
+| extraAssetLoaders       | false    | null                      | A List of asset loaders, in case of needing assets being loaded from a different module or package. (e.g. adding a package that uses [Easy Localization Loader]).             |
 | fallbackLocale          | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.                                                                                                     |
 | startLocale             | false    |                           | Overrides device locale.                                                                                                                                                      |
 | saveLocale              | false    | `true`                    | Save locale in device storage.                                                                                                                                                |
@@ -469,6 +470,25 @@ Steps:
   ```
   
 4. All done!
+
+### Localization support for multi module/package project
+
+If you want to add localization support from other modules and packages you can add them via extraAssetLoaders parameter:
+
+```dart
+  void main(){
+    runApp(EasyLocalization(
+      child: MyApp(),
+      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+      path: 'resources/langs',
+      assetLoader: CodegenLoader()
+      extraAssetLoaders: [
+        TranslationsLoader(packageName: 'package_example_1'),
+        TranslationsLoader(packageName: 'package_example_2'),
+      ],
+    ));
+  }
+```
 
 ### 🔑 Localization keys
 
