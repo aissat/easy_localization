@@ -66,7 +66,29 @@ class EasyLocalization extends StatefulWidget {
   /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
   /// @Default value `const RootBundleAssetLoader()`
   // ignore: prefer_typing_uninitialized_variables
-  final assetLoader;
+  final AssetLoader assetLoader;
+
+  /// Class loader for localization files that belong to other packages.
+  /// You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class.
+  /// Example:
+  /// ```dart
+  //   runApp(
+  //   EasyLocalization(
+  //     supportedLocales: const <Locale>[
+  //       Locale('en'),
+  //     ],
+  //     fallbackLocale: const Locale('en'),
+  //     assetLoader: const RootBundleAssetLoader(),
+  //     extraAssetLoaders: [
+  //         TranslationsLoader(packageName: 'package_example_1'),
+  //         TranslationsLoader(packageName: 'package_example_2'),
+  //     ],
+  //     path: 'lib/l10n/translations',
+  //     child: const MainApp(),
+  //   ),
+  // );
+  /// @Default value `null`
+  final List<AssetLoader>? extraAssetLoaders;
 
   /// Save locale in device storage.
   /// @Default value true
@@ -86,6 +108,7 @@ class EasyLocalization extends StatefulWidget {
     this.useOnlyLangCode = false,
     this.useFallbackTranslations = false,
     this.assetLoader = const RootBundleAssetLoader(),
+    this.extraAssetLoaders,
     this.saveLocale = true,
     this.errorWidget,
   })  : assert(supportedLocales.isNotEmpty),
@@ -126,6 +149,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       supportedLocales: widget.supportedLocales,
       startLocale: widget.startLocale,
       assetLoader: widget.assetLoader,
+      extraAssetLoaders: widget.extraAssetLoaders,
       useOnlyLangCode: widget.useOnlyLangCode,
       useFallbackTranslations: widget.useFallbackTranslations,
       path: widget.path,

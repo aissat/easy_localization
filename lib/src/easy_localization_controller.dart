@@ -14,12 +14,12 @@ class EasyLocalizationController extends ChangeNotifier {
   Locale? _fallbackLocale;
 
   final Function(FlutterError e) onLoadError;
-  // ignore: prefer_typing_uninitialized_variables
-  final assetLoader;
+  final AssetLoader assetLoader;
   final String path;
   final bool useFallbackTranslations;
   final bool saveLocale;
   final bool useOnlyLangCode;
+  List<AssetLoader>? extraAssetLoaders;
   Translations? _translations, _fallbackTranslations;
   Translations? get translations => _translations;
   Translations? get fallbackTranslations => _fallbackTranslations;
@@ -32,6 +32,7 @@ class EasyLocalizationController extends ChangeNotifier {
     required this.path,
     required this.useOnlyLangCode,
     required this.onLoadError,
+    this.extraAssetLoaders,
     Locale? startLocale,
     Locale? fallbackLocale,
     Locale? forceLocale, // used for testing
@@ -124,18 +125,46 @@ class EasyLocalizationController extends ChangeNotifier {
     return null;
   }
 
-  Future<Map<String, dynamic>> loadTranslationData(Locale locale) async {
-    late Map<String, dynamic>? data;
+  Future<Map<String, dynamic>> loadTranslationData(Locale locale) async =>
+      _combineAssetLoaders(
+        path: path,
+        locale: locale,
+        assetLoader: assetLoader,
+        useOnlyLangCode: useOnlyLangCode,
+        extraAssetLoaders: extraAssetLoaders,
+      );
 
-    if (useOnlyLangCode) {
-      data = await assetLoader.load(path, Locale(locale.languageCode));
-    } else {
-      data = await assetLoader.load(path, locale);
+  Future<Map<String, dynamic>> _combineAssetLoaders({
+    required String path,
+    required Locale locale,
+    required AssetLoader assetLoader,
+    required bool useOnlyLangCode,
+    List<AssetLoader>? extraAssetLoaders,
+  }) async {
+    final result = <String, dynamic>{};
+    final loaderFutures = <Future<Map<String, dynamic>?>>[];
+
+    final Locale desiredLocale =
+        useOnlyLangCode ? Locale(locale.languageCode) : locale;
+
+    List<AssetLoader> loaders = [
+      assetLoader,
+      if (extraAssetLoaders != null) ...extraAssetLoaders
+    ];
+
+    for (final loader in loaders) {
+      loaderFutures.add(loader.load(path, desiredLocale));
     }
 
-    if (data == null) return {};
+    await Future.wait(loaderFutures).then((List<Map<String, dynamic>?> value) {
+      for (final Map<String, dynamic>? map in value) {
+        if (map != null) {
+          result.addAllRecursive(map);
+        }
+      }
+    });
 
-    return data;
+    return result;
   }
 
   Locale get locale => _locale;
