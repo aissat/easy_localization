@@ -471,9 +471,9 @@ Steps:
   
 4. All done!
 
-### Localization support for multi module/package project
+### 📦 Localization support for multi module/package project
 
-If you want to add localization support from other modules and packages you can add them via extraAssetLoaders parameter:
+If you want to add localization support from other modules and packages you can add them via `extraAssetLoaders` parameter:
 
 ```dart
   void main(){
