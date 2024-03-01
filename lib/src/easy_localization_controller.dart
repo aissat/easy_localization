@@ -126,7 +126,7 @@ class EasyLocalizationController extends ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> loadTranslationData(Locale locale) async =>
-      _combineLoaders(
+      _combineAssetLoaders(
         path: path,
         locale: locale,
         assetLoader: assetLoader,
@@ -134,7 +134,7 @@ class EasyLocalizationController extends ChangeNotifier {
         extraAssetLoaders: extraAssetLoaders,
       );
 
-  Future<Map<String, dynamic>> _combineLoaders({
+  Future<Map<String, dynamic>> _combineAssetLoaders({
     required String path,
     required Locale locale,
     required AssetLoader assetLoader,
@@ -144,7 +144,7 @@ class EasyLocalizationController extends ChangeNotifier {
     final result = <String, dynamic>{};
     final loaderFutures = <Future<Map<String, dynamic>?>>[];
 
-    final Locale desieredLocale =
+    final Locale desiredLocale =
         useOnlyLangCode ? Locale(locale.languageCode) : locale;
 
     List<AssetLoader> loaders = [
@@ -153,13 +153,13 @@ class EasyLocalizationController extends ChangeNotifier {
     ];
 
     for (final loader in loaders) {
-      loaderFutures.add(loader.load(path, desieredLocale));
+      loaderFutures.add(loader.load(path, desiredLocale));
     }
 
     await Future.wait(loaderFutures).then((List<Map<String, dynamic>?> value) {
       for (final Map<String, dynamic>? map in value) {
         if (map != null) {
-          result.addAll(map);
+          result.addAllRecursive(map);
         }
       }
     });
