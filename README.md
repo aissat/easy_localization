@@ -184,11 +184,19 @@ context.setLocale(Locale('en', 'US'));
 print(context.locale.toString());
 ```
 
-### 🔥 Translate `tr()`
+### 🔥 Translate `context.tr()`
 
 Main function for translate your language keys
 
 You can use extension methods of [String] or [Text] widget, you can also use `tr()` as a static function.
+
+```dart
+Text(context.tr('title'))
+```
+
+You can also use tr() without [Context] as a static function.
+
+This is not recommend in build methods, because the widget won't rebuild when the language changes.
 
 ```dart
 Text('title').tr() //Text widget
@@ -196,8 +204,6 @@ Text('title').tr() //Text widget
 print('title'.tr()); //String
 
 var title = tr('title') //Static function
-
-Text(context.tr('title')) //Extension on BuildContext
 ```
 
 #### Arguments:
