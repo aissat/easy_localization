@@ -3,6 +3,7 @@
 ### [3.0.6]
 
 - add 'useFallbackTranslationsForEmptyResources' to be able to use fallback locales for empty resources.
+- add _supportedLocales in EasyLocalizationController; log and check the deviceLocale when resetLocale;
 
 ### [3.0.5]
 
