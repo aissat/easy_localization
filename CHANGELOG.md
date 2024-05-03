@@ -4,6 +4,7 @@
 
 - add 'useFallbackTranslationsForEmptyResources' to be able to use fallback locales for empty resources.
 - add _supportedLocales in EasyLocalizationController; log and check the deviceLocale when resetLocale;
+- add scriptCode to desiredLocale if useOnlyLangCode is true. scriptCode is needed sometimes, for example zh-Hans, zh-Hant
 
 ### [3.0.5]
 
