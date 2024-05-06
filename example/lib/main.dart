@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-//import 'package:easy_localization_loader/easy_localization_loader.dart'; // import custom loaders
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'generated/locale_keys.g.dart';
-import 'lang_view.dart';
+import 'language_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +16,7 @@ void main() async {
       Locale('ru', 'RU')
     ],
     path: 'resources/langs',
-    child: MyApp(),
+    child: _MyApp(),
     // fallbackLocale: Locale('en', 'US'),
     // startLocale: Locale('de', 'DE'),
     // saveLocale: false,
@@ -38,45 +36,32 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class _MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Easy localization'),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: _MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
+class _MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<_MyHomePage> {
   int counter = 0;
+
   bool _gender = true;
 
-  void incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
+  void _incrementCounter() => setState(() => counter++);
 
-  void switchGender(bool val) {
-    setState(() {
-      _gender = val;
-    });
-  }
+  void _switchGender(bool value) => setState(() => _gender = value);
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => LanguageView(), fullscreenDialog: true),
+                  builder: (_) => LanguageView(),
+                  fullscreenDialog: true,
+                ),
               );
             },
             child: Icon(
@@ -103,72 +90,69 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Spacer(
-              flex: 1,
-            ),
+            Spacer(flex: 1),
             Text(
               LocaleKeys.gender_with_arg,
               style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
+                color: Colors.grey.shade600,
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
             ).tr(args: ['aissat'], gender: _gender ? 'female' : 'male'),
             Text(
               tr(LocaleKeys.gender, gender: _gender ? 'female' : 'male'),
               style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
+                color: Colors.grey.shade600,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FaIcon(FontAwesomeIcons.male),
-                Switch(value: _gender, onChanged: switchGender),
-                FaIcon(FontAwesomeIcons.female),
+                Icon(Icons.male),
+                Switch(value: _gender, onChanged: _switchGender),
+                Icon(Icons.female),
               ],
             ),
-            Spacer(
-              flex: 1,
-            ),
+            Spacer(flex: 1),
             Text(LocaleKeys.msg).tr(args: ['aissat', 'Flutter']),
-            Text(LocaleKeys.msg_named)
-                .tr(namedArgs: {'lang': 'Dart'}, args: ['Easy localization']),
+            Text(LocaleKeys.msg_named).tr(
+              namedArgs: {'lang': 'Dart'},
+              args: ['Easy localization'],
+            ),
             Text(LocaleKeys.clicked).plural(counter),
             TextButton(
-              onPressed: () {
-                incrementCounter();
-              },
+              onPressed: () => _incrementCounter(),
               child: Text(LocaleKeys.clickMe).tr(),
             ),
-            SizedBox(
-              height: 15,
-            ),
+            SizedBox(height: 15),
             Text(
-                plural(LocaleKeys.amount, counter,
-                    format: NumberFormat.currency(
-                        locale: Intl.defaultLocale, symbol: '€')),
-                style: TextStyle(
-                    color: Colors.grey.shade900,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-            SizedBox(
-              height: 20,
+              plural(
+                LocaleKeys.amount,
+                counter,
+                format: NumberFormat.currency(
+                  locale: Intl.defaultLocale,
+                  symbol: '€',
+                ),
+              ),
+              style: TextStyle(
+                color: Colors.grey.shade900,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                context.resetLocale();
-              },
+              onPressed: () => context.resetLocale(),
               child: Text(LocaleKeys.reset_locale).tr(),
             ),
-            Spacer(
-              flex: 1,
-            ),
+            Spacer(flex: 1),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: incrementCounter,
+        onPressed: _incrementCounter,
         child: Text('+1'),
       ),
     );

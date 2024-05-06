@@ -70,24 +70,27 @@
 ### [example/lib/main.dart](https://github.com/aissat/easy_localization/blob/master/example/lib/main.dart)
 
 ```dart
-import 'dart:developer';
-
-import 'package:example/lang_view.dart';
-import 'package:example/my_flutter_app_icons.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 
-void main() async{
-  
-  // WidgetsFlutterBinding.ensureInitialized();
+import 'generated/locale_keys.g.dart';
+import 'language_view.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
   runApp(EasyLocalization(
-    child: MyApp(),
-    supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
+    supportedLocales: [
+      Locale('en', 'US'),
+      Locale('ar', 'DZ'),
+      Locale('de', 'DE'),
+      Locale('ru', 'RU')
+    ],
     path: 'resources/langs',
+    child: _MyApp(),
     // fallbackLocale: Locale('en', 'US'),
+    // startLocale: Locale('de', 'DE'),
     // saveLocale: false,
     // useOnlyLangCode: true,
 
@@ -96,80 +99,62 @@ void main() async{
     // assetLoader: RootBundleAssetLoader()
     // assetLoader: HttpAssetLoader()
     // assetLoader: FileAssetLoader()
-    assetLoader: CsvAssetLoader()
+    // assetLoader: CsvAssetLoader()
     // assetLoader: YamlAssetLoader() //multiple files
     // assetLoader: YamlSingleAssetLoader() //single file
     // assetLoader: XmlAssetLoader() //multiple files
     // assetLoader: XmlSingleAssetLoader() //single file
-    
-    // assetLoader: CodegenLoader() 
+    // assetLoader: CodegenLoader()
   ));
 }
 
-class MyApp extends StatelessWidget {
+class _MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    log( EasyLocalization.of(context).locale.toString(), name: this.toString()+"# locale" );
-    log( Intl.defaultLocale.toString(), name: this.toString()+"# Intl.defaultLocale" );
     return MaterialApp(
-      title: 'Flutter Demo',
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        EasyLocalization.of(context).delegate,
-      ],
-      supportedLocales: EasyLocalization.of(context).supportedLocales,
-      locale: EasyLocalization.of(context).locale,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Easy localization'),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: _MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
+class _MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<_MyHomePage> {
   int counter = 0;
+
   bool _gender = true;
 
-  incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
+  void _incrementCounter() => setState(() => counter++);
 
-  switchGender(bool val) {
-    setState(() {
-      _gender = val;
-    });
-  }
+  void _switchGender(bool value) => setState(() => _gender = value);
 
   @override
   Widget build(BuildContext context) {
-    log(tr("title"), name: this.toString() );
     return Scaffold(
       appBar: AppBar(
-        title: Text("title").tr(context: context),
-        //Text(AppLocalizations.of(context).tr('title')),
+        title: Text(LocaleKeys.title).tr(),
         actions: <Widget>[
-          FlatButton(
-            child: Icon(Icons.language),
+          TextButton(
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => LanguageView(), fullscreenDialog: true),
+                  builder: (_) => LanguageView(),
+                  fullscreenDialog: true,
+                ),
               );
             },
+            child: Icon(
+              Icons.language,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
@@ -177,66 +162,69 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Spacer(
-              flex: 1,
-            ),
+            Spacer(flex: 1),
             Text(
-              'switch.with_arg',
+              LocaleKeys.gender_with_arg,
               style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold),
-            ).tr(args: ["aissat"], gender: _gender ? "female" : "male"),
+                color: Colors.grey.shade600,
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
+            ).tr(args: ['aissat'], gender: _gender ? 'female' : 'male'),
             Text(
-              tr('switch', gender: _gender ? "female" : "male"),
+              tr(LocaleKeys.gender, gender: _gender ? 'female' : 'male'),
               style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold),
+                color: Colors.grey.shade600,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(MyFlutterApp.male_1),
-                Switch(value: _gender, onChanged: switchGender),
-                Icon(MyFlutterApp.female_1),
+                Icon(Icons.male),
+                Switch(value: _gender, onChanged: _switchGender),
+                Icon(Icons.female),
               ],
             ),
-            Spacer(
-              flex: 1,
+            Spacer(flex: 1),
+            Text(LocaleKeys.msg).tr(args: ['aissat', 'Flutter']),
+            Text(LocaleKeys.msg_named).tr(
+              namedArgs: {'lang': 'Dart'},
+              args: ['Easy localization'],
             ),
-            Text('msg').tr(args: ['aissat', 'Flutter']),
-            Text('clicked').plural(counter),
-            FlatButton(
-              onPressed: () {
-                incrementCounter();
-              },
-              child: Text('clickMe').tr(),
+            Text(LocaleKeys.clicked).plural(counter),
+            TextButton(
+              onPressed: () => _incrementCounter(),
+              child: Text(LocaleKeys.clickMe).tr(),
             ),
-            SizedBox(
-              height: 15,
-            ),
+            SizedBox(height: 15),
             Text(
-                plural('amount', counter,
-                    format: NumberFormat.currency(
-                        locale: Intl.defaultLocale,
-                        symbol: "€")),
-                style: TextStyle(
-                    color: Colors.grey.shade900,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-            SizedBox(
-              height: 20,
+              plural(
+                LocaleKeys.amount,
+                counter,
+                format: NumberFormat.currency(
+                  locale: Intl.defaultLocale,
+                  symbol: '€',
+                ),
+              ),
+              style: TextStyle(
+                color: Colors.grey.shade900,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            Text('profile.reset_password.title').tr(),
-            Spacer(
-              flex: 2,
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => context.resetLocale(),
+              child: Text(LocaleKeys.reset_locale).tr(),
             ),
+            Spacer(flex: 1),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: incrementCounter,
+        onPressed: _incrementCounter,
         child: Text('+1'),
       ),
     );
@@ -245,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ```
 
-### [example/lib/lang_view.dart](https://github.com/aissat/easy_localization/blob/master/example/lib/lang_view.dart)
+### [example/lib/lang_view.dart](https://github.com/aissat/easy_localization/blob/master/example/lib/language_view.dart)
 
 ```dart
 import 'dart:developer';
@@ -258,12 +246,7 @@ class LanguageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "",
-          style: TextStyle(color: Colors.black),
-        ),
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
       ),
       body: Container(
@@ -277,73 +260,90 @@ class LanguageView extends StatelessWidget {
                 horizontal: 24,
               ),
               child: Text(
-                "Language Menu",
+                'Choose language',
                 style: TextStyle(
-                  color: Color.fromARGB(255, 166, 166, 166),
-                  fontFamily: "Montserrat",
+                  color: Colors.blue,
+                  fontFamily: 'Montserrat',
                   fontWeight: FontWeight.w700,
-                  fontSize: 10,
+                  fontSize: 18,
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(top: 10, bottom: 25),
-              margin: EdgeInsets.symmetric(
-                horizontal: 24,
-              ),
-              child: Text(
-                "language",
-              ),
+            _SwitchListTileMenuItem(
+              title: 'عربي',
+              subtitle: 'عربي',
+              locale: context.supportedLocales[1],
             ),
-            buildDivider(),
-            buildSwitchListTileMenuItem(
-                context: context,
-                title: "عربي",
-                subtitle: "عربي",
-                locale: Locale("ar", "DZ")),
-            buildDivider(),
-            buildSwitchListTileMenuItem(
-                context: context,
-                title: "English",
-                subtitle: "English",
-                locale: Locale("en", "US")),
-            buildDivider(),
+            _Divider(),
+            _SwitchListTileMenuItem(
+              title: 'English',
+              subtitle: 'English',
+              locale: context.supportedLocales[0],
+            ),
+            _Divider(),
+            _SwitchListTileMenuItem(
+              title: 'German',
+              subtitle: 'German',
+              locale: context.supportedLocales[2],
+            ),
+            _Divider(),
+            _SwitchListTileMenuItem(
+              title: 'Русский',
+              subtitle: 'Русский',
+              locale: context.supportedLocales[3],
+            ),
+            _Divider(),
           ],
         ),
       ),
     );
   }
+}
 
-  Container buildDivider() => Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: 24,
-        ),
-        child: Divider(
-          color: Colors.grey,
-        ),
-      );
-
-  Container buildSwitchListTileMenuItem(
-      {BuildContext context, String title, String subtitle, Locale locale}) {
+class _Divider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-        left: 10,
-        right: 10,
-        top: 5,
+      margin: EdgeInsets.symmetric(horizontal: 24),
+      child: Divider(color: Colors.grey),
+    );
+  }
+}
+
+class _SwitchListTileMenuItem extends StatelessWidget {
+  final String title;
+
+  final String subtitle;
+
+  final Locale locale;
+
+  const _SwitchListTileMenuItem({
+    required this.title,
+    required this.subtitle,
+    required this.locale,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 10, right: 10, top: 5),
+      decoration: BoxDecoration(
+        border: locale == context.locale
+            ? Border.all(color: Colors.blueAccent)
+            : null,
       ),
       child: ListTile(
-          dense: true,
-          // isThreeLine: true,
-          title: Text(
-            title,
-          ),
-          subtitle: Text(
-            subtitle,
-          ),
-          onTap: () {
-            log(locale.toString(), name: this.toString());
-            EasyLocalization.of(context).locale = locale;
-          }),
+        dense: true,
+        title: Text(title),
+        subtitle: Text(subtitle),
+        onTap: () async {
+          log(locale.toString(), name: toString());
+
+          await context.setLocale(locale);
+
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }
