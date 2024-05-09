@@ -1,11 +1,14 @@
 # Changelog
 
-### [3.0.6]
+### [3.0.7]
 
-- add 'useFallbackTranslationsForEmptyResources' to be able to use fallback locales for empty resources.
 - add _supportedLocales in EasyLocalizationController; log and check the deviceLocale when resetLocale;
 - add scriptCode to desiredLocale if useOnlyLangCode is true. scriptCode is needed sometimes, for example zh-Hans, zh-Hant
 - add savedLocale get method for context. if context.savedLocale is null, then language option is `following system`, i can display the option in user selection form.
+
+### [3.0.6]
+
+- add 'useFallbackTranslationsForEmptyResources' to be able to use fallback locales for empty resources.
 
 ### [3.0.5]
 
