@@ -275,6 +275,15 @@ class _EasyLocalizationProvider extends InheritedWidget {
       assert(parent.supportedLocales.contains(locale));
       await _localeState.setLocale(locale);
     }
+    else {
+      // given current language en (option is following system, en is the system language)
+      // then set the locale to en won't change the locale
+      // but needs change the savedLocale
+      // savedLocale == null will give a language following the system
+      // savedLocale == Locale('en') will give english
+      assert(parent.supportedLocales.contains(locale));
+      await _localeState.storeLocale(locale);
+    }
   }
 
   /// Clears a saved locale from device storage
@@ -338,5 +347,5 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool shouldReload(LocalizationsDelegate<Localization> old) => false;
+  bool shouldReload(LocalizationsDelegate<Localization> old) => true;
 }

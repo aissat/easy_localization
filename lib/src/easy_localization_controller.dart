@@ -174,14 +174,20 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> setLocale(Locale l) async {
     _locale = l;
+    EasyLocalization.logger('Locale $locale changed');
+    await _saveLocale(_locale);
     await loadTranslations();
     notifyListeners();
-    EasyLocalization.logger('Locale $locale changed');
+  }
+
+  // avoid name conflict with the variable saveLocale
+  Future<void> storeLocale(Locale? locale) async {
     await _saveLocale(_locale);
   }
 
   Future<void> _saveLocale(Locale? locale) async {
     if (!saveLocale) return;
+    _savedLocale = locale;
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString('locale', locale.toString());
     EasyLocalization.logger('Locale $locale saved');

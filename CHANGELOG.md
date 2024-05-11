@@ -6,6 +6,9 @@
 - add _supportedLocales in EasyLocalizationController; log and check the deviceLocale when resetLocale;
 - add scriptCode to desiredLocale if useOnlyLangCode is true. scriptCode is needed sometimes, for example zh-Hans, zh-Hant
 - add savedLocale get method for context. if context.savedLocale is null, then language option is `following system`, i can display the option in user selection form.
+- fix the bug: _savedLocale not assigned in _saveLocale(), and notify listeners after _saveLocale() because _savedLocale might be needed
+- saveLocale even if the locale not changed, when using _savedLocale as `following system` option and currently system language is en, then change the locale from system to en, won't really change the locale but needs to store it to distinguish the difference of `system` and `english`
+- `shouldReload(LocalizationsDelegate<Localization> old)` return true, the LocalizationsDelegate does not reload when return false, tested in my current configuration.
 
 ### [3.0.5]
 
