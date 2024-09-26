@@ -105,7 +105,7 @@ void handleLangFiles(GenerateOptions options) async {
   final output = Directory.fromUri(Uri.parse(options.outputDir!));
   final sourcePath = Directory(path.join(current.path, source.path));
   final outputPath =
-      Directory(path.join(current.path, output.path, options.outputFile));
+  Directory(path.join(current.path, output.path, options.outputFile));
 
   if (!await sourcePath.exists()) {
     stderr.writeln('Source path does not exist');
@@ -157,9 +157,9 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath,
     case 'keys':
       await _writeKeys(classBuilder, files, options.skipUnnecessaryKeys);
       break;
-    // case 'csv':
-    //   await _writeCsv(classBuilder, files);
-    // break;
+  // case 'csv':
+  //   await _writeCsv(classBuilder, files);
+  // break;
     default:
       stderr.writeln('Format not supported');
   }
@@ -182,8 +182,11 @@ abstract class  LocaleKeys {
 
   final fileData = File(files.first.path);
 
-  Map<String, dynamic> translations =
-      json.decode(await fileData.readAsString());
+  final result = json.decode(await fileData.readAsString());
+
+  Map<String, dynamic> translations = result is List<dynamic>
+      ? convertJsonListToMap(result)
+      : result;
 
   file += _resolve(translations, skipUnnecessaryKeys);
 
@@ -206,7 +209,7 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
     if (translations[key] is Map) {
       // If key does not contain keys for plural(), gender() etc. and option is enabled -> ignore it
       ignoreKey = !containsPreservedKeywords(
-              translations[key] as Map<String, dynamic>) &&
+          translations[key] as Map<String, dynamic>) &&
           canIgnoreKeys;
 
       var nextAccKey = key;
@@ -221,10 +224,10 @@ String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
     if (!_preservedKeywords.contains(key)) {
       accKey != null && !ignoreKey
           ? fileContent +=
-              '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
+      '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
           : !ignoreKey
-              ? fileContent += '  static const $key = \'$key\';\n'
-              : null;
+          ? fileContent += '  static const $key = \'$key\';\n'
+          : null;
     }
   }
 
@@ -256,19 +259,36 @@ class CodegenLoader extends AssetLoader{
 
   for (var file in files) {
     final localeName =
-        path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
+    path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
     listLocales.add('"$localeName": $localeName');
     final fileData = File(file.path);
 
-    Map<String, dynamic>? data = json.decode(await fileData.readAsString());
+    final result = json.decode(await fileData.readAsString());
+
+
+
+    Map<String, dynamic>? data = result is List<dynamic>
+        ? convertJsonListToMap(result)
+        : result;
 
     final mapString = const JsonEncoder.withIndent('  ').convert(data);
     gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
   }
 
   gFile +=
-      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
+  'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
   classBuilder.writeln(gFile);
+}
+
+Map<String, dynamic> convertJsonListToMap(List<dynamic> data) {
+  final Map<String, dynamic> result = {};
+
+  for (dynamic rows in data) {
+    Map<String, dynamic> row = rows as Map<String, dynamic>;
+    result[row[row.keys.first]] = row;
+  }
+
+  return result;
 }
 
 // _writeCsv(StringBuffer classBuilder, List<FileSystemEntity> files) async {
