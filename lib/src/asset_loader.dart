@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_helper/easy_localization_helper.dart';
 import 'package:flutter/services.dart';
 
 /// abstract class used to building your Custom AssetLoader

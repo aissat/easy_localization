@@ -25,6 +25,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   easy_localization:
     path: ../
+  easy_localization_storage:
+    path: ../packages/easy_localization_storage
   font_awesome_flutter: 9.0.0-nullsafety
 
   #custom loaders

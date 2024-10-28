@@ -1,0 +1,3 @@
+library easy_localization_shared_preferences_storage;
+
+export 'src/easy_localization_shared_preferences_storage.dart';
