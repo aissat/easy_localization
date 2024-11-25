@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/easy_localization_controller.dart';
 import 'package:easy_localization/src/localization.dart';
+import 'package:easy_localization_helper/easy_localization_helper.dart';
+import 'package:easy_localization_storage/easy_localization_storage.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'easy_localization_utils_test.dart';
 import 'utils/test_asset_loaders.dart';
@@ -132,10 +133,8 @@ void main() {
     });
 
     test('controller loads saved locale', () async {
-      SharedPreferences.setMockInitialValues({
-        'locale': 'en',
-      });
-      await EasyLocalization.ensureInitialized();
+      await EasyLocalization.ensureInitialized(EasyLocalizationInMemoryStorage()
+        ..setLocale(value: const Locale('en')));
       final controller = EasyLocalizationController(
         supportedLocales: const [Locale('en'), Locale('fb')],
         fallbackLocale: const Locale('fb'),
@@ -149,17 +148,13 @@ void main() {
         assetLoader: const JsonAssetLoader(),
       );
       expect(controller.locale, const Locale('en'));
-
-      SharedPreferences.setMockInitialValues({});
     });
 
     /// E.g. if user saved a locale that was removed in a later version
     test('controller loads fallback if saved locale is not supported',
         () async {
-      SharedPreferences.setMockInitialValues({
-        'locale': 'de',
-      });
-      await EasyLocalization.ensureInitialized();
+      await EasyLocalization.ensureInitialized(EasyLocalizationInMemoryStorage()
+        ..setLocale(value: const Locale('de')));
       final controller = EasyLocalizationController(
         supportedLocales: const [Locale('en'), Locale('fb')],
         fallbackLocale: const Locale('fb'),
@@ -173,8 +168,6 @@ void main() {
         assetLoader: const JsonAssetLoader(),
       );
       expect(controller.locale, const Locale('fb'));
-
-      SharedPreferences.setMockInitialValues({});
     });
 
     group('locale', () {
@@ -226,7 +219,8 @@ void main() {
         );
       });
 
-      test('select best lenguage match if no perfect match exists', () { // #674
+      test('select best lenguage match if no perfect match exists', () {
+        // #674
         const userDeviceLocale = Locale('en', 'FR');
         const supportedLocale1 = Locale('en', 'US');
         const supportedLocale2 = Locale('zh', 'CN');
@@ -241,7 +235,8 @@ void main() {
         );
       });
 
-      test('select perfect match if exists', () { // #674
+      test('select perfect match if exists', () {
+        // #674
         const userDeviceLocale = Locale('en', 'GB');
         const supportedLocale1 = Locale('en', 'US');
         const supportedLocale2 = userDeviceLocale;
@@ -556,13 +551,13 @@ void main() {
 
       test('two as fallback and fallback translations priority',
           overridePrint(() {
-            printLog = [];
-            expect(
-              Localization.instance.plural('test_empty_fallback_plurals', 2),
-              '',
-            );
-            expect(printLog, isEmpty);
-          }));
+        printLog = [];
+        expect(
+          Localization.instance.plural('test_empty_fallback_plurals', 2),
+          '',
+        );
+        expect(printLog, isEmpty);
+      }));
 
       test('with number format', () {
         expect(
@@ -643,7 +638,8 @@ void main() {
         );
       });
 
-      test('two as fallback for empty resource and fallback translations priority',
+      test(
+          'two as fallback for empty resource and fallback translations priority',
           overridePrint(() {
         printLog = [];
         expect(
@@ -653,8 +649,7 @@ void main() {
         expect(printLog, isEmpty);
       }));
 
-      test('reports empty plural resource with fallback',
-          overridePrint(() {
+      test('reports empty plural resource with fallback', overridePrint(() {
         printLog = [];
         expect(
           Localization.instance.plural('test_empty_fallback_plurals', -1),
@@ -677,8 +672,10 @@ void main() {
         expect(logIterator.current,
             contains('Localization key [test_empty_plurals.other] not found'));
         logIterator.moveNext();
-        expect(logIterator.current,
-            contains('Fallback localization key [test_empty_plurals.other] not found'));
+        expect(
+            logIterator.current,
+            contains(
+                'Fallback localization key [test_empty_plurals.other] not found'));
       }));
     });
 

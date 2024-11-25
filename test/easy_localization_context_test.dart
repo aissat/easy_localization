@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_storage/easy_localization_storage.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 late BuildContext _context;
 
@@ -46,13 +46,12 @@ void main() async {
     LevelMessages.warning,
   ];
 
-  SharedPreferences.setMockInitialValues({});
   EasyLocalization.logger.enableLevels = <LevelMessages>[
     LevelMessages.error,
     LevelMessages.warning,
   ];
 
-  await EasyLocalization.ensureInitialized();
+  await EasyLocalization.ensureInitialized(EasyLocalizationInMemoryStorage());
 
   group('BuildContext', () {
     testWidgets(
@@ -105,10 +104,9 @@ void main() async {
 
     group('SharedPreferences deleteSaveLocale()', () {
       setUpAll(() async {
-        SharedPreferences.setMockInitialValues({
-          'locale': 'ar_DZ',
-        });
-        await EasyLocalization.ensureInitialized();
+        await EasyLocalization.ensureInitialized(
+            EasyLocalizationInMemoryStorage()
+              ..setLocale(value: const Locale('ar', 'DZ')));
       });
       testWidgets(
         '[EasyLocalization] deleteSaveLocale  test',

@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/exceptions.dart';
 import 'package:easy_localization/src/localization.dart';
+import 'package:easy_localization_storage/easy_localization_storage.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/test_asset_loaders.dart';
 
@@ -71,12 +71,11 @@ class MyLocalizedWidget extends StatelessWidget {
 }
 
 void main() async {
-  SharedPreferences.setMockInitialValues({});
   EasyLocalization.logger.enableLevels = <LevelMessages>[
     LevelMessages.error,
     LevelMessages.warning,
   ];
-  await EasyLocalization.ensureInitialized();
+  await EasyLocalization.ensureInitialized(EasyLocalizationInMemoryStorage());
 
   testWidgets(
     '[EasyLocalization with  JsonAssetLoader]  test',
@@ -424,11 +423,11 @@ void main() async {
   );
 
   group('SharedPreferences SavedLocale NULL', () {
-    setUp(() {
-      SharedPreferences.setMockInitialValues({
-        'locale': '',
-      });
-    });
+    // setUp(() {
+    //   SharedPreferences.setMockInitialValues({
+    //     'locale': '',
+    //   });
+    // });
 
     testWidgets(
       '[EasyLocalization] SavedLocale()  null locale without country code',
@@ -503,10 +502,8 @@ void main() async {
 
   group('SharedPreferences saveLocale', () {
     setUpAll(() async {
-      SharedPreferences.setMockInitialValues({
-        'locale': 'ar',
-      });
-      await EasyLocalization.ensureInitialized();
+      await EasyLocalization.ensureInitialized(EasyLocalizationInMemoryStorage()
+        ..setLocale(value: const Locale('ar', 'DZ')));
     });
 
     testWidgets(
@@ -536,10 +533,8 @@ void main() async {
 
   group('SharedPreferences saveLocale', () {
     setUpAll(() async {
-      SharedPreferences.setMockInitialValues({
-        'locale': 'ar_DZ',
-      });
-      await EasyLocalization.ensureInitialized();
+      await EasyLocalization.ensureInitialized(EasyLocalizationInMemoryStorage()
+        ..setLocale(value: const Locale('ar', 'DZ')));
     });
 
     testWidgets(
@@ -594,10 +589,8 @@ void main() async {
   });
   group('SharedPreferences deleteSaveLocale()', () {
     setUpAll(() async {
-      SharedPreferences.setMockInitialValues({
-        'locale': 'ar_DZ',
-      });
-      await EasyLocalization.ensureInitialized();
+      await EasyLocalization.ensureInitialized(EasyLocalizationInMemoryStorage()
+        ..setLocale(value: const Locale('ar', 'DZ')));
     });
     testWidgets(
       '[EasyLocalization] deleteSaveLocale  test',

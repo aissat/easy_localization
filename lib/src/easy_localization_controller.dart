@@ -1,18 +1,31 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_helper/easy_localization_helper.dart';
+import 'package:easy_localization_storage/easy_localization_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl_standalone.dart'
     if (dart.library.html) 'package:intl/intl_browser.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'translations.dart';
 
 class EasyLocalizationController extends ChangeNotifier {
   static Locale? _savedLocale;
   static late Locale _deviceLocale;
+  static EasyLocalizationStorage? _storage;
+  static EasyLocalizationStorage get storage {
+    if (_storage == null) {
+      throw StateError(
+          'EasyLocalizationController not initialized. Call initEasyLocation first.');
+    }
+    return _storage!;
+  }
+
+  static set storage(EasyLocalizationStorage storage) {
+    _storage = storage;
+  }
 
   late Locale _locale;
   Locale? _fallbackLocale;
-  List<Locale>? _supportedLocales;
+  late List<Locale> _supportedLocales;
 
   final Function(FlutterError e) onLoadError;
   final AssetLoader assetLoader;
@@ -161,9 +174,11 @@ class EasyLocalizationController extends ChangeNotifier {
     final result = <String, dynamic>{};
     final loaderFutures = <Future<Map<String, dynamic>?>>[];
 
-    // need scriptCode, it might be better to use ignoreCountryCode as the variable name of useOnlyLangCode 
-    final Locale desiredLocale =
-        useOnlyLangCode ? Locale.fromSubtags(languageCode: locale.languageCode, scriptCode: locale.scriptCode) : locale;
+    // need scriptCode, it might be better to use ignoreCountryCode as the variable name of useOnlyLangCode
+    final Locale desiredLocale = useOnlyLangCode
+        ? Locale.fromSubtags(
+            languageCode: locale.languageCode, scriptCode: locale.scriptCode)
+        : locale;
 
     List<AssetLoader> loaders = [
       assetLoader,
@@ -197,15 +212,13 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> _saveLocale(Locale? locale) async {
     if (!saveLocale) return;
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setString('locale', locale.toString());
+    await storage.setLocale(value: locale);
     EasyLocalization.logger('Locale $locale saved');
   }
 
-  static Future<void> initEasyLocation() async {
-    final preferences = await SharedPreferences.getInstance();
-    final strLocale = preferences.getString('locale');
-    _savedLocale = strLocale?.toLocale();
+  static Future<void> initEasyLocation(EasyLocalizationStorage storage) async {
+    EasyLocalizationController.storage = storage;
+    _savedLocale = await storage.getLocale();
     final foundPlatformLocale = await findSystemLocale();
     _deviceLocale = foundPlatformLocale.toLocale();
     EasyLocalization.logger.debug('Localization initialized');
@@ -213,8 +226,7 @@ class EasyLocalizationController extends ChangeNotifier {
 
   Future<void> deleteSaveLocale() async {
     _savedLocale = null;
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.remove('locale');
+    storage.setLocale();
     EasyLocalization.logger('Saved locale deleted');
   }
 
@@ -222,9 +234,11 @@ class EasyLocalizationController extends ChangeNotifier {
   Locale? get savedLocale => _savedLocale;
 
   Future<void> resetLocale() async {
-    final locale = selectLocaleFrom(_supportedLocales!, deviceLocale, fallbackLocale: _fallbackLocale);
+    final locale = selectLocaleFrom(_supportedLocales, deviceLocale,
+        fallbackLocale: _fallbackLocale);
 
-    EasyLocalization.logger('Reset locale to $locale while the platform locale is $_deviceLocale and the fallback locale is $_fallbackLocale');
+    EasyLocalization.logger(
+        'Reset locale to $locale while the platform locale is $_deviceLocale and the fallback locale is $_fallbackLocale');
     await setLocale(locale);
   }
 }
