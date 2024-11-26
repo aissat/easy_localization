@@ -1,5 +1,6 @@
 # Changelog
-
+### [3.0.8]
+- making the screenshots appears on the sidebar 
 ### [3.0.7]
 
 - add _supportedLocales in EasyLocalizationController; log and check the deviceLocale when resetLocale;

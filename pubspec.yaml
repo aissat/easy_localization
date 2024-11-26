@@ -5,7 +5,7 @@ homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
 # publish_to: none
 
-version: 3.0.7
+version: 3.0.8
 
 environment:
   sdk: '>=2.12.0 <4.0.0'
@@ -25,3 +25,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
+screenshots:
+  - description: The easy localization logo.
+    path: logo/logo.svg
+  - description: Arabic Example
+    path: screenshots/Screenshot_ar.png
+  - description: English Example
+    path: screenshots/Screenshot_en.png
+  - description: Err Example
+    path: screenshots/Screenshot_err.png
