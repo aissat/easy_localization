@@ -219,6 +219,22 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     );
   }
 
+  TextSpan trSpan(
+    String key, {
+    Map<String, TextSpan>? namedArgs,
+  }) {
+    final localization = Localization.of(this);
+
+    if (localization == null) {
+      throw const LocalizationNotFoundException();
+    }
+
+    return localization.trSpan(
+      key,
+      namedArgs: namedArgs,
+    );
+  }
+
   String plural(
     String key,
     num number, {

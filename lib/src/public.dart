@@ -45,9 +45,36 @@ String tr(
           .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
+/// {@template trSpan}
+/// function for translate your language keys
+/// [key] Localization key
+/// [BuildContext] The location in the tree where this widget builds
+/// [namedArgs] Map of localized strings. Replaces the name keys {key_name} with [TextSpan]
+///
+/// Example:
+///
+/// ```json
+/// {
+///    "msg_named":"Easy localization is written in the {lang} language"
+/// }
+/// ```
+/// ```dart
+/// Text.rich(trSpan('msg_named',namedArgs: {'lang': TextSpan(text: 'Dart')})),
+/// ```
+/// {@endtemplate}
+
+TextSpan trSpan(
+  String key, {
+  BuildContext? context,
+  Map<String, TextSpan>? namedArgs,
+}) {
+  return context != null
+      ? Localization.of(context)!.trSpan(key, namedArgs: namedArgs)
+      : Localization.instance.trSpan(key, namedArgs: namedArgs);
+}
+
 bool trExists(String key) {
-  return Localization.instance
-      .exists(key);
+  return Localization.instance.exists(key);
 }
 
 /// {@template plural}
