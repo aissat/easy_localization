@@ -219,6 +219,16 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     );
   }
 
+  bool trExists(String key) {
+    final localization = Localization.of(this);
+
+    if (localization == null) {
+      throw const LocalizationNotFoundException();
+    }
+
+    return localization.exists(key);
+  }
+
   String plural(
     String key,
     num number, {
