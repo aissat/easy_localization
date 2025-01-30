@@ -127,6 +127,10 @@ class EasyLocalization extends StatefulWidget {
   /// @Default value `errorWidget = ErrorWidget()`
   final Widget Function(FlutterError? message)? errorWidget;
 
+  /// A custom delegate implementation that allow to override the load function and define a custom [EasyLocalizationController]
+  /// To use this delegate Extend the [EasyLocalizationDelegate] and implement the override needed
+  final EasyLocalizationDelegate? delegate;
+
   EasyLocalization({
     Key? key,
     required this.child,
@@ -134,6 +138,7 @@ class EasyLocalization extends StatefulWidget {
     required this.path,
     this.fallbackLocale,
     this.startLocale,
+    this.delegate,
     this.useOnlyLangCode = false,
     this.useFallbackTranslations = false,
     this.useFallbackTranslationsForEmptyResources = false,
@@ -167,29 +172,30 @@ class EasyLocalization extends StatefulWidget {
 }
 
 class _EasyLocalizationState extends State<EasyLocalization> {
-  _EasyLocalizationDelegate? delegate;
+  EasyLocalizationDelegate? delegate;
   EasyLocalizationController? localizationController;
   FlutterError? translationsLoadError;
 
   @override
   void initState() {
     EasyLocalization.logger.debug('Init state');
-    localizationController = EasyLocalizationController(
-      saveLocale: widget.saveLocale,
-      fallbackLocale: widget.fallbackLocale,
-      supportedLocales: widget.supportedLocales,
-      startLocale: widget.startLocale,
-      assetLoader: widget.assetLoader,
-      extraAssetLoaders: widget.extraAssetLoaders,
-      useOnlyLangCode: widget.useOnlyLangCode,
-      useFallbackTranslations: widget.useFallbackTranslations,
-      path: widget.path,
-      onLoadError: (FlutterError e) {
-        setState(() {
-          translationsLoadError = e;
-        });
-      },
-    );
+    localizationController = widget.delegate?.localizationController ??
+        EasyLocalizationController(
+          saveLocale: widget.saveLocale,
+          fallbackLocale: widget.fallbackLocale,
+          supportedLocales: widget.supportedLocales,
+          startLocale: widget.startLocale,
+          assetLoader: widget.assetLoader,
+          extraAssetLoaders: widget.extraAssetLoaders,
+          useOnlyLangCode: widget.useOnlyLangCode,
+          useFallbackTranslations: widget.useFallbackTranslations,
+          path: widget.path,
+          onLoadError: (FlutterError e) {
+            setState(() {
+              translationsLoadError = e;
+            });
+          },
+        );
     // causes localization to rebuild with new language
     localizationController!.addListener(() {
       if (mounted) setState(() {});
@@ -214,13 +220,14 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     return _EasyLocalizationProvider(
       widget,
       localizationController!,
-      delegate: _EasyLocalizationDelegate(
-        localizationController: localizationController,
-        supportedLocales: widget.supportedLocales,
-        useFallbackTranslationsForEmptyResources:
-            widget.useFallbackTranslationsForEmptyResources,
-        ignorePluralRules: widget.ignorePluralRules,
-      ),
+      delegate: widget.delegate ??
+          EasyLocalizationDelegate(
+            localizationController: localizationController!,
+            supportedLocales: widget.supportedLocales,
+            useFallbackTranslationsForEmptyResources:
+                widget.useFallbackTranslationsForEmptyResources,
+            ignorePluralRules: widget.ignorePluralRules,
+          ),
     );
   }
 }
@@ -229,7 +236,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalization parent;
   final EasyLocalizationController _localeState;
   final Locale? currentLocale;
-  final _EasyLocalizationDelegate delegate;
+  final EasyLocalizationDelegate delegate;
 
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
   ///
@@ -298,19 +305,19 @@ class _EasyLocalizationProvider extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<_EasyLocalizationProvider>();
 }
 
-class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
+class EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   final List<Locale>? supportedLocales;
-  final EasyLocalizationController? localizationController;
+  final EasyLocalizationController localizationController;
   final bool useFallbackTranslationsForEmptyResources;
   final bool ignorePluralRules;
 
   ///  * use only the lang code to generate i18n file path like en.json or ar.json
   // final bool useOnlyLangCode;
 
-  _EasyLocalizationDelegate({
+  EasyLocalizationDelegate({
     required this.useFallbackTranslationsForEmptyResources,
     this.ignorePluralRules = true,
-    this.localizationController,
+    required this.localizationController,
     this.supportedLocales,
   }) {
     EasyLocalization.logger.debug('Init Localization Delegate');
@@ -322,14 +329,14 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   @override
   Future<Localization> load(Locale value) async {
     EasyLocalization.logger.debug('Load Localization Delegate');
-    if (localizationController!.translations == null) {
-      await localizationController!.loadTranslations();
+    if (localizationController.translations == null) {
+      await localizationController.loadTranslations();
     }
 
     Localization.load(
       value,
-      translations: localizationController!.translations,
-      fallbackTranslations: localizationController!.fallbackTranslations,
+      translations: localizationController.translations,
+      fallbackTranslations: localizationController.fallbackTranslations,
       useFallbackTranslationsForEmptyResources:
           useFallbackTranslationsForEmptyResources,
       ignorePluralRules: ignorePluralRules,
