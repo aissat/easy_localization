@@ -262,7 +262,14 @@ class CodegenLoader extends AssetLoader{
 
     Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
-    final mapString = const JsonEncoder.withIndent('  ').convert(data);
+    final mapString = StringBuffer();
+    mapString.write('{\n');
+    for (int i = 0; i < (data?.entries.length ?? 0); i++) {
+      final entry = data!.entries.elementAt(i);
+      mapString.write('\t"${entry.key}":"${entry.value}",\n');
+    }
+    mapString.write('}');
+    
     gFile += 'static const Map<String,dynamic> _$localeName = $mapString;\n';
   }
 
