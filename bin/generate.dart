@@ -177,7 +177,7 @@ Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
 ''';
 
   final fileData = File(files.first.path);
