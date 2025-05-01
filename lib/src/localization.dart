@@ -171,9 +171,7 @@ class Localization {
       case PluralCase.OTHER:
         res = _resolvePlural(key, 'other');
         break;
-      default:
-        throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
-    }
+      }
 
     final formattedValue = format == null ? '$value' : format.format(value);
 
