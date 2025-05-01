@@ -6,7 +6,6 @@ import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'asset_loader.dart';
 import 'localization.dart';
 
 part 'utils.dart';
@@ -128,7 +127,7 @@ class EasyLocalization extends StatefulWidget {
   final Widget Function(FlutterError? message)? errorWidget;
 
   EasyLocalization({
-    Key? key,
+    super.key,
     required this.child,
     required this.supportedLocales,
     required this.path,
@@ -143,8 +142,7 @@ class EasyLocalization extends StatefulWidget {
     this.saveLocale = true,
     this.errorWidget,
   })  : assert(supportedLocales.isNotEmpty),
-        assert(path.isNotEmpty),
-        super(key: key) {
+        assert(path.isNotEmpty) {
     EasyLocalization.logger.debug('Start');
   }
 
@@ -254,9 +252,9 @@ class _EasyLocalizationProvider extends InheritedWidget {
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
   _EasyLocalizationProvider(this.parent, this._localeState,
-      {Key? key, required this.delegate})
+      {required this.delegate})
       : currentLocale = _localeState.locale,
-        super(key: key, child: parent.child) {
+        super(child: parent.child) {
     EasyLocalization.logger.debug('Init provider');
   }
 

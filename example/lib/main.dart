@@ -124,9 +124,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FaIcon(FontAwesomeIcons.male),
+                FaIcon(FontAwesomeIcons.person),
                 Switch(value: _gender, onChanged: switchGender),
-                FaIcon(FontAwesomeIcons.female),
+                FaIcon(FontAwesomeIcons.personDress),
               ],
             ),
             Spacer(

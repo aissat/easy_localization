@@ -1,4 +1,4 @@
-library easy_localization;
+library;
 
 export 'package:easy_localization/src/easy_localization_app.dart';
 export 'package:easy_localization/src/asset_loader.dart';

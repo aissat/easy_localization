@@ -14,6 +14,8 @@
 /// * w	- number of visible fraction digits in n, without trailing zeros.
 /// * f	- visible fractional digits in n, with trailing zeros.
 /// * t	- visible fractional digits in n, without trailing zeros.
+library;
+
 
 // Suppress naming issues as changing them might be breaking.
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
