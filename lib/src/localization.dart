@@ -9,14 +9,17 @@ class Localization {
   late Locale _locale;
 
   final RegExp _replaceArgRegex = RegExp('{}');
-  final RegExp _linkKeyMatcher =
-      RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
+  final RegExp _namedArgMatcher = RegExp('({([a-zA-Z0-9_]+)})');
+  final RegExp _linkKeyMatcher = RegExp(
+    r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))',
+  );
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
   final RegExp _bracketsMatcher = RegExp('[()]');
   final _modifiers = <String, String Function(String?)>{
     'upper': (String? val) => val!.toUpperCase(),
     'lower': (String? val) => val!.toLowerCase(),
-    'capitalize': (String? val) => '${val![0].toUpperCase()}${val.substring(1)}'
+    'capitalize':
+        (String? val) => '${val![0].toUpperCase()}${val.substring(1)}',
   };
 
   bool _useFallbackTranslationsForEmptyResources = false;
@@ -68,6 +71,19 @@ class Localization {
     return _replaceArgs(res, args);
   }
 
+  TextSpan trSpan(String key, {Map<String, TextSpan>? namedArgs}) {
+    late String res;
+    late TextSpan span;
+
+    res = _resolve(key);
+
+    res = _replaceLinks(res);
+
+    span = _replaceSpanNamedArgs(res, namedArgs);
+
+    return span;
+  }
+
   String _replaceLinks(String res, {bool logging = true}) {
     // TODO: add recursion detection and a resolve stack.
     final matches = _linkKeyMatcher.allMatches(res);
@@ -80,8 +96,9 @@ class Localization {
       final formatterName = linkPrefixMatches.first[1];
 
       // Remove the leading @:, @.case: and the brackets
-      final linkPlaceholder =
-          link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
+      final linkPlaceholder = link
+          .replaceAll(linkPrefix, '')
+          .replaceAll(_bracketsMatcher, '');
 
       var translated = _resolve(linkPlaceholder);
 
@@ -91,13 +108,36 @@ class Localization {
         } else {
           if (logging) {
             EasyLocalization.logger.warning(
-                'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
+              'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}',
+            );
           }
         }
       }
 
       result =
           translated.isEmpty ? result : result.replaceAll(link, translated);
+    }
+
+    return result;
+  }
+
+  List<String> _splitTextWithNamedArg(String text) {
+    final matches = _namedArgMatcher.allMatches(text);
+
+    var lastIndex = 0;
+
+    final result = <String>[];
+
+    for (final match in matches) {
+      result
+        ..add(text.substring(lastIndex, match.start))
+        ..add(match.group(0) ?? '');
+
+      lastIndex = match.end;
+    }
+
+    if (lastIndex < text.length) {
+      result.add(text.substring(lastIndex));
     }
 
     return result;
@@ -113,9 +153,24 @@ class Localization {
 
   String _replaceNamedArgs(String res, Map<String, String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String key, String value) =>
-        res = res.replaceAll(RegExp('{$key}'), value));
+    args.forEach(
+      (String key, String value) =>
+          res = res.replaceAll(RegExp('{$key}'), value),
+    );
     return res;
+  }
+
+  TextSpan _replaceSpanNamedArgs(String res, Map<String, TextSpan>? args) {
+    if (args == null || args.isEmpty) return TextSpan(text: res);
+
+    final spans =
+        _splitTextWithNamedArg(res).map((part) {
+          final key = part.replaceAll(RegExp(r'^\{|\}$'), '');
+
+          return args[key] ?? TextSpan(text: part);
+        }).toList();
+
+    return TextSpan(children: spans);
   }
 
   static PluralRule? _pluralRule(String? locale, num howMany) {
@@ -150,7 +205,8 @@ class Localization {
     late String res;
 
     final pluralRule = _pluralRule(_locale.languageCode, value);
-    final pluralCase = pluralRule != null ? pluralRule() : _pluralCaseFallback(value);
+    final pluralCase =
+        pluralRule != null ? pluralRule() : _pluralCaseFallback(value);
 
     switch (pluralCase) {
       case PluralCase.ZERO:
@@ -171,7 +227,7 @@ class Localization {
       case PluralCase.OTHER:
         res = _resolvePlural(key, 'other');
         break;
-      }
+    }
 
     final formattedValue = format == null ? '$value' : format.format(value);
 
@@ -191,7 +247,11 @@ class Localization {
     if (subKey == 'other') return _resolve('$key.other');
 
     final tag = '$key.$subKey';
-    var resource = _resolve(tag, logging: false, fallback: _fallbackTranslations != null);
+    var resource = _resolve(
+      tag,
+      logging: false,
+      fallback: _fallbackTranslations != null,
+    );
     if (resource == tag) {
       resource = _resolve('$key.other');
     }
@@ -212,8 +272,9 @@ class Localization {
         if (resource == null ||
             (_useFallbackTranslationsForEmptyResources && resource.isEmpty)) {
           if (logging) {
-            EasyLocalization.logger
-                .warning('Fallback localization key [$key] not found');
+            EasyLocalization.logger.warning(
+              'Fallback localization key [$key] not found',
+            );
           }
           return key;
         }
