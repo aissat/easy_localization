@@ -129,11 +129,11 @@ void main() async {
             [const Locale('en', 'US')]);
         expect(EasyLocalization.of(_context)!.locale, const Locale('en', 'US'));
 
-        final trFinder = find.text('test');
+        final trFinder = find.text('test_en-US');
         expect(trFinder, findsOneWidget);
         final pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
-        expect(tr('test'), 'test');
+        expect(tr('test'), 'test_en-US');
       });
     },
   );
@@ -155,12 +155,12 @@ void main() async {
             [const Locale('en', 'US')]);
         expect(EasyLocalization.of(_context)!.locale, const Locale('en', 'US'));
 
-        final trFinder = find.text('test');
+        final trFinder = find.text('test_en-US');
         expect(trFinder, findsOneWidget);
         final pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
 
-        expect(tr('test'), 'test');
+        expect(tr('test'), 'test_en-US');
       });
     },
   );
@@ -205,12 +205,12 @@ void main() async {
         await tester.pump();
         expect(EasyLocalization.of(_context)!.locale, const Locale('en', 'US'));
 
-        final trFinder = find.text('test');
+        final trFinder = find.text('test_en-US');
         expect(trFinder, findsOneWidget);
         final pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
 
-        expect(tr('test'), 'test');
+        expect(tr('test'), 'test_en-US');
         expect(EasyLocalization.of(_context)!.locale, const Locale('en', 'US'));
 
         l = const Locale('ar', 'DZ');
@@ -224,7 +224,7 @@ void main() async {
   );
 
   testWidgets(
-    '[EasyLocalization] change loacle test',
+    '[EasyLocalization] change locale test',
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
@@ -241,12 +241,12 @@ void main() async {
             [const Locale('en', 'US'), const Locale('ar', 'DZ')]);
         expect(EasyLocalization.of(_context)!.locale, const Locale('en', 'US'));
 
-        var trFinder = find.text('test');
+        var trFinder = find.text('test_en-US');
         expect(trFinder, findsOneWidget);
         var pluralFinder = find.text('1 day');
         expect(pluralFinder, findsOneWidget);
 
-        expect(tr('test'), 'test');
+        expect(tr('test'), 'test_en-US');
 
         var l = const Locale('en', 'US');
         await EasyLocalization.of(_context)!.setLocale(l);
@@ -789,7 +789,7 @@ void main() async {
         await tester.runAsync(() async {
           await tester.pumpWidget(testWidget);
 
-          const expectedEnTranslateTextWidgetValue = 'test';
+          const expectedEnTranslateTextWidgetValue = 'test_en-US';
           const expectedArTranslateTextWidgetValue = 'اختبار';
           const expectedEnPluralTextWidgetValue = '1 day';
           const expectedArPluralTextWidgetValue = '1 يوم';
