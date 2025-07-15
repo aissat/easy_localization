@@ -542,6 +542,21 @@ print(LocaleKeys.title.tr()); //String
 Text(LocaleKeys.title).tr(); //Widget
 ```
 
+### ✅ Audit missing keys
+
+If you prefer to not generate keys you can see an audit of your translation keys to see the one present in your app code but not in your translations file by running the audit command.
+
+```
+flutter pub run easy_localization:audit
+```
+
+If you are not using the default translations folder path (assets/translations) or the lib folder for your code you can specify your custom paths : 
+
+| Arguments                    | Short | Default               | Description                                                                 |
+| ---------------------------- | ----- | --------------------- | --------------------------------------------------------------------------- |
+| --translations-dir           | -t    | assets/translations   | Folder containing localization files                                        |
+| --source-dir                 | -s    | lib                   | Folder containing the app code files                                        |
+
 ## 🖨️ Logger
 
 [Easy Localization] logger based on [Easy Logger]
