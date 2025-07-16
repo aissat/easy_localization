@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:args/args.dart';
 import 'audit/audit_command.dart';
 
@@ -8,9 +10,24 @@ void main(List<String> args) {
   parser.addOption('translations-dir', abbr: 't', defaultsTo: 'assets/translations');
   parser.addOption('source-dir', abbr: 's', defaultsTo: 'lib');
 
-  var argResults = parser.parse(actual);
-  AuditCommand().run(
-    transDir: argResults['translations-dir'],
-    srcDir: argResults['source-dir'],
-  );
+  try {
+    var argResults = parser.parse(actual);
+    final transDir = argResults['translations-dir'] as String;
+    final srcDir = argResults['source-dir'] as String;
+
+    if (!Directory(transDir).existsSync()) {
+      stderr.writeln('Error: Translation directory "$transDir" does not exist.');
+      exit(1);
+    }
+
+    if (!Directory(srcDir).existsSync()) {
+      stderr.writeln('Error: Source directory "$srcDir" does not exist.');
+      exit(1);
+    }
+
+    AuditCommand().run(transDir: transDir, srcDir: srcDir);
+  } catch (e) {
+    stderr.writeln('Error: $e');
+    exit(1);
+  }
 }

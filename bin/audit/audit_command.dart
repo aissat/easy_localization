@@ -5,10 +5,27 @@ import 'package:path/path.dart';
 
 class AuditCommand {
   void run({required String transDir, required String srcDir}) {
-    final allTranslations = _loadTranslations(Directory(transDir));
-    final usedKeys = _scanSourceForKeys(Directory(srcDir));
+    try {
+      final translationDir = Directory(transDir);
+      final sourceDir = Directory(srcDir);
 
-    _report(allTranslations, usedKeys);
+      if (!translationDir.existsSync()) {
+        stderr.writeln('Error: Translation directory "$transDir" does not exist.');
+        exit(1);
+      }
+
+      if (!sourceDir.existsSync()) {
+        stderr.writeln('Error: Source directory "$srcDir" does not exist.');
+        exit(1);
+      }
+
+      final allTranslations = _loadTranslations(translationDir);
+      final usedKeys = _scanSourceForKeys(sourceDir);
+
+      _report(allTranslations, usedKeys);
+    } catch (e) {
+      stderr.writeln('Error during audit: $e');
+    }
   }
 
   /// Walks [translationsDir], reads every `.json`, flattens nested maps
@@ -18,9 +35,14 @@ class AuditCommand {
     final result = <String, Set<String>>{};
     for (var file in translationsDir.listSync().whereType<File>()) {
       if (!file.path.endsWith('.json')) continue;
-      final langCode = basenameWithoutExtension(file.path);
-      final jsonMap = json.decode(file.readAsStringSync()) as Map<String, dynamic>;
-      result[langCode] = _flatten(jsonMap);
+
+      try {
+        final langCode = basenameWithoutExtension(file.path);
+        final jsonMap = json.decode(file.readAsStringSync()) as Map<String, dynamic>;
+        result[langCode] = _flatten(jsonMap);
+      } catch (e) {
+        stderr.writeln('Error reading ${file.path}: $e');
+      }
     }
     return result;
   }
@@ -39,6 +61,11 @@ class AuditCommand {
 
       if (value is Map<String, dynamic>) {
         keys.addAll(_flatten(value, newKey));
+        continue;
+      }
+
+      if (value is List || value is num || value is bool) {
+        keys.add(newKey);
       }
     }
     return keys;
@@ -57,19 +84,29 @@ class AuditCommand {
 
       // 4) generated keys: LocaleKeys.foo_bar (whitespace around the dot ok)
       RegExp(r"""LocaleKeys\s*\.\s*([A-Za-z0-9_]+)"""),
+
+      // 5) plural() calls
+      RegExp(r"""\bplural\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)"""),
+
+      // 6) context.plural() calls
+      RegExp(r"""context\s*\.\s*plural\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)"""),
     ];
 
     final used = <String>{};
 
     for (var file in srcDir.listSync(recursive: true).whereType<File>().where((f) => f.path.endsWith('.dart'))) {
-      final content = file.readAsStringSync();
-      for (var pattern in keyPatterns) {
-        final matches = pattern.allMatches(content);
-        for (var match in matches) {
-          if (match.groupCount > 0) {
-            used.add(match.group(1)!);
+      try {
+        final content = file.readAsStringSync();
+        for (var pattern in keyPatterns) {
+          final matches = pattern.allMatches(content);
+          for (var match in matches) {
+            if (match.groupCount > 0) {
+              used.add(match.group(1)!);
+            }
           }
         }
+      } catch (e) {
+        stderr.writeln('Error reading ${file.path}: $e');
       }
     }
 
