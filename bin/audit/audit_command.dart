@@ -11,12 +11,12 @@ class AuditCommand {
 
       if (!translationDir.existsSync()) {
         stderr.writeln('Error: Translation directory "$transDir" does not exist.');
-        exit(1);
+        return;
       }
 
       if (!sourceDir.existsSync()) {
         stderr.writeln('Error: Source directory "$srcDir" does not exist.');
-        exit(1);
+        return;
       }
 
       final allTranslations = _loadTranslations(translationDir);
@@ -101,7 +101,11 @@ class AuditCommand {
           final matches = pattern.allMatches(content);
           for (var match in matches) {
             if (match.groupCount > 0) {
-              used.add(match.group(1)!);
+              String key = match.group(1)!;
+              if (pattern.pattern.contains('LocaleKeys')) {
+                key = key.replaceAll('_', '.');
+              }
+              used.add(key);
             }
           }
         }
