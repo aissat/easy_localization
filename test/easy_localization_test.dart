@@ -225,6 +225,36 @@ void main() {
           zhHans,
         );
       });
+
+      test('select best lenguage match if no perfect match exists', () { // #674
+        const userDeviceLocale = Locale('en', 'FR');
+        const supportedLocale1 = Locale('en', 'US');
+        const supportedLocale2 = Locale('zh', 'CN');
+
+        expect(
+          EasyLocalizationController.selectLocaleFrom(
+            [supportedLocale1, supportedLocale2],
+            userDeviceLocale,
+            fallbackLocale: supportedLocale2,
+          ),
+          supportedLocale1,
+        );
+      });
+
+      test('select perfect match if exists', () { // #674
+        const userDeviceLocale = Locale('en', 'GB');
+        const supportedLocale1 = Locale('en', 'US');
+        const supportedLocale2 = userDeviceLocale;
+
+        expect(
+          EasyLocalizationController.selectLocaleFrom(
+            [supportedLocale1, supportedLocale2],
+            userDeviceLocale,
+            fallbackLocale: supportedLocale2,
+          ),
+          supportedLocale2,
+        );
+      });
     });
 
     group('tr', () {
@@ -685,6 +715,10 @@ void main() {
       group('string', () {
         test('tr', () {
           expect(tr('test'), 'test');
+        });
+        test('trExists', () {
+          expect(trExists('test'), true);
+          expect(trExists('xyz'), false);
         });
         test('plural', () {
           expect(plural('day', 0), '0 days');

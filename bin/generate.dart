@@ -175,6 +175,8 @@ Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
+// ignore_for_file: constant_identifier_names
+
 abstract class  LocaleKeys {
 ''';
 
@@ -234,7 +236,7 @@ Future _writeJson(
   var gFile = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters, constant_identifier_names
 
 import 'dart:ui';
 
@@ -255,13 +257,13 @@ class CodegenLoader extends AssetLoader{
   for (var file in files) {
     final localeName =
         path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
-    listLocales.add('"$localeName": $localeName');
+    listLocales.add('"$localeName": _$localeName');
     final fileData = File(file.path);
 
     Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
     final mapString = const JsonEncoder.withIndent('  ').convert(data);
-    gFile += 'static const Map<String,dynamic> $localeName = $mapString;\n';
+    gFile += 'static const Map<String,dynamic> _$localeName = $mapString;\n';
   }
 
   gFile +=
