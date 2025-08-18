@@ -716,6 +716,10 @@ void main() {
         test('tr', () {
           expect(tr('test'), 'test');
         });
+        test('trExists', () {
+          expect(trExists('test'), true);
+          expect(trExists('xyz'), false);
+        });
         test('plural', () {
           expect(plural('day', 0), '0 days');
         });

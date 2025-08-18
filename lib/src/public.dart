@@ -45,9 +45,12 @@ String tr(
           .tr(key, args: args, namedArgs: namedArgs, gender: gender);
 }
 
-bool trExists(String key) {
-  return Localization.instance
-      .exists(key);
+bool trExists(String key, {BuildContext? context}) {
+  return context != null
+      ? Localization.of(context)!
+	      .exists(key)
+      : Localization.instance
+	      .exists(key);
 }
 
 /// {@template plural}

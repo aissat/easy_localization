@@ -6,7 +6,6 @@ import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'asset_loader.dart';
 import 'localization.dart';
 
 part 'utils.dart';
@@ -230,6 +229,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   final EasyLocalizationController _localeState;
   final Locale? currentLocale;
   final _EasyLocalizationDelegate delegate;
+  final bool _translationsLoaded;
 
   /// {@macro flutter.widgets.widgetsApp.localizationsDelegates}
   ///
@@ -256,6 +256,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
   _EasyLocalizationProvider(this.parent, this._localeState,
       {Key? key, required this.delegate})
       : currentLocale = _localeState.locale,
+        _translationsLoaded = _localeState.translations != null,
         super(key: key, child: parent.child) {
     EasyLocalization.logger.debug('Init provider');
   }
@@ -291,7 +292,8 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_EasyLocalizationProvider oldWidget) {
-    return oldWidget.currentLocale != locale;
+    return oldWidget.currentLocale != locale
+        || oldWidget._translationsLoaded != _translationsLoaded;
   }
 
   static _EasyLocalizationProvider? of(BuildContext context) =>

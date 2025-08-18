@@ -90,7 +90,7 @@ extension StringTranslateExtension on String {
       ez.tr(this,
           context: context, args: args, namedArgs: namedArgs, gender: gender);
 
-  bool trExists() => ez.trExists(this);
+  bool trExists({BuildContext? context}) => ez.trExists(this, context: context);
 
   /// {@macro plural}
   String plural(
@@ -217,6 +217,16 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
       namedArgs: namedArgs,
       gender: gender,
     );
+  }
+
+  bool trExists(String key) {
+    final localization = Localization.of(this);
+
+    if (localization == null) {
+      throw const LocalizationNotFoundException();
+    }
+
+    return localization.exists(key);
   }
 
   String plural(
