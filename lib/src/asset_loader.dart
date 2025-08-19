@@ -24,6 +24,9 @@ abstract class AssetLoader {
 /// default used is RootBundleAssetLoader which uses flutter's assetloader
 ///
 class RootBundleAssetLoader extends AssetLoader {
+  // Place inside class RootBundleAssetLoader
+  static const int _maxLinkedDepth = 32;
+
   const RootBundleAssetLoader();
 
   String getLocalePath(String basePath, Locale locale) {
@@ -35,28 +38,58 @@ class RootBundleAssetLoader extends AssetLoader {
   }
 
   Future<Map<String, dynamic>> _getLinkedTranslationFileDataFromBaseJson(
-      String basePath, Locale locale, Map<String, dynamic> baseJson,
-      {List<String> fileLoaded = const []}) async {
-    Map<String, dynamic> fullJson = Map<String, dynamic>.from(baseJson);
+    String basePath,
+    Locale locale,
+    Map<String, dynamic> baseJson, {
+    required Set<String> visited,
+    int depth = 0,
+  }) async {
+    if (depth > _maxLinkedDepth) {
+      throw StateError('Maximum linked files depth ($_maxLinkedDepth) exceeded for $locale at $basePath.');
+    }
 
-    for (var entry in baseJson.entries) {
-      var key = entry.key;
+    final Map<String, dynamic> fullJson = Map<String, dynamic>.from(baseJson);
+
+    for (final entry in baseJson.entries) {
+      final key = entry.key;
       var value = entry.value;
 
       if (value is String && value.startsWith(':/')) {
-        String filePath = value.substring(2);
+        final rawPath = value.substring(2).trim();
+        final linkedAssetPath = _getLinkedLocalePath(basePath, rawPath, locale);
 
-        if (fileLoaded.contains(filePath)) {
-          throw Exception('Circular reference detected: $filePath is loaded multiple times');
+        if (visited.contains(linkedAssetPath)) {
+          throw StateError('Cyclic linked files detected at "$linkedAssetPath" (key: "$key").');
         }
 
-        fileLoaded.add(filePath);
-        value = json.decode(await rootBundle.loadString(_getLinkedLocalePath(basePath, filePath, locale)));
+        final Map<String, dynamic> linkedJson =
+            json.decode(await rootBundle.loadString(linkedAssetPath)) as Map<String, dynamic>;
+
+        visited.add(linkedAssetPath);
+        try {
+          final resolved = await _getLinkedTranslationFileDataFromBaseJson(
+            basePath,
+            locale,
+            linkedJson,
+            visited: visited,
+            depth: depth + 1,
+          );
+          fullJson[key] = resolved;
+        } catch (e) {
+          throw StateError(
+            'Error resolving linked file "$linkedAssetPath" for key "$key": $e',
+          );
+        }
       }
 
       if (value is Map<String, dynamic>) {
-        fullJson[key] =
-            await _getLinkedTranslationFileDataFromBaseJson(basePath, locale, value, fileLoaded: fileLoaded);
+        fullJson[key] = await _getLinkedTranslationFileDataFromBaseJson(
+          basePath,
+          locale,
+          value,
+          visited: visited,
+          depth: depth + 1,
+        );
       }
     }
 
@@ -69,6 +102,11 @@ class RootBundleAssetLoader extends AssetLoader {
     EasyLocalization.logger.debug('Load asset from $path');
 
     Map<String, dynamic> baseJson = json.decode(await rootBundle.loadString(localePath));
-    return await _getLinkedTranslationFileDataFromBaseJson(path, locale, baseJson);
+    return await _getLinkedTranslationFileDataFromBaseJson(
+      path,
+      locale,
+      baseJson,
+      visited: <String>{},
+    );
   }
 }
