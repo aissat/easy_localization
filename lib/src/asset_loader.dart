@@ -35,7 +35,8 @@ class RootBundleAssetLoader extends AssetLoader {
   }
 
   Future<Map<String, dynamic>> _getLinkedTranslationFileDataFromBaseJson(
-      String basePath, Locale locale, Map<String, dynamic> baseJson) async {
+      String basePath, Locale locale, Map<String, dynamic> baseJson,
+      {List<String> fileLoaded = const []}) async {
     Map<String, dynamic> fullJson = {};
 
     for (var entry in baseJson.entries) {
@@ -44,11 +45,18 @@ class RootBundleAssetLoader extends AssetLoader {
 
       if (value is String && value.startsWith(':/')) {
         String filePath = value.substring(2);
+
+        if (fileLoaded.contains(filePath)) {
+          throw Exception('Circular reference detected: $filePath is loaded multiple times');
+        }
+
+        fileLoaded.add(filePath);
         value = json.decode(await rootBundle.loadString(_getLinkedLocalePath(basePath, filePath, locale)));
       }
 
       if (value is Map<String, dynamic>) {
-        fullJson[key] = await _getLinkedTranslationFileDataFromBaseJson(basePath, locale, value);
+        fullJson[key] =
+            await _getLinkedTranslationFileDataFromBaseJson(basePath, locale, value, fileLoaded: fileLoaded);
         continue;
       }
 
