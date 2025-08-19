@@ -35,8 +35,9 @@ class RootBundleAssetLoader extends AssetLoader {
   }
 
   Future<Map<String, dynamic>> _getLinkedTranslationFileDataFromBaseJson(
-      String basePath, Locale locale, Map<String, dynamic> baseJson) async {
-    Map<String, dynamic> fullJson = {};
+      String basePath, Locale locale, Map<String, dynamic> baseJson,
+      {List<String> fileLoaded = const []}) async {
+    Map<String, dynamic> fullJson = Map<String, dynamic>.from(baseJson);
 
     for (var entry in baseJson.entries) {
       var key = entry.key;
@@ -44,15 +45,19 @@ class RootBundleAssetLoader extends AssetLoader {
 
       if (value is String && value.startsWith(':/')) {
         String filePath = value.substring(2);
+
+        if (fileLoaded.contains(filePath)) {
+          throw Exception('Circular reference detected: $filePath is loaded multiple times');
+        }
+
+        fileLoaded.add(filePath);
         value = json.decode(await rootBundle.loadString(_getLinkedLocalePath(basePath, filePath, locale)));
       }
 
       if (value is Map<String, dynamic>) {
-        fullJson[key] = await _getLinkedTranslationFileDataFromBaseJson(basePath, locale, value);
-        continue;
+        fullJson[key] =
+            await _getLinkedTranslationFileDataFromBaseJson(basePath, locale, value, fileLoaded: fileLoaded);
       }
-
-      fullJson[key] = value;
     }
 
     return fullJson;
@@ -64,6 +69,6 @@ class RootBundleAssetLoader extends AssetLoader {
     EasyLocalization.logger.debug('Load asset from $path');
 
     Map<String, dynamic> baseJson = json.decode(await rootBundle.loadString(localePath));
-    return _getLinkedTranslationFileDataFromBaseJson(path, locale, baseJson);
+    return await _getLinkedTranslationFileDataFromBaseJson(path, locale, baseJson);
   }
 }
