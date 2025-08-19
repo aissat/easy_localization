@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -30,17 +31,23 @@ class RootBundleAssetLoader extends AssetLoader {
     return '$basePath/${locale.toStringWithSeparator(separator: "-")}.json';
   }
 
-  Future<Map<String, dynamic>> _getLinkedTranslationFileDataFromBaseJson(Map<String, dynamic> baseJson) async {
+  String _getLinkedLocalePath(String basePath, String filePath, Locale locale) {
+    return '$basePath/${locale.toStringWithSeparator(separator: "-")}/$filePath';
+  }
+
+  Future<Map<String, dynamic>> _getLinkedTranslationFileDataFromBaseJson(
+      String basePath, Locale locale, Map<String, dynamic> baseJson) async {
     Map<String, dynamic> fullJson = {};
 
     for (var entry in baseJson.entries) {
       var key = entry.key;
       var value = entry.value;
 
-      if (value.startsWith(':/')) {
+      if (value is String && value.startsWith(':/')) {
         String filePath = value.substring(2);
-        baseJson[key] = json.decode(await rootBundle.loadString(filePath));
-        fullJson.addAll(baseJson[key]);
+        Map<String, dynamic> linkedJson =
+            json.decode(await rootBundle.loadString(_getLinkedLocalePath(basePath, filePath, locale)));
+        fullJson.addAll({key: linkedJson});
         continue;
       }
 
@@ -56,6 +63,6 @@ class RootBundleAssetLoader extends AssetLoader {
     EasyLocalization.logger.debug('Load asset from $path');
 
     Map<String, dynamic> baseJson = json.decode(await rootBundle.loadString(localePath));
-    return _getLinkedTranslationFileDataFromBaseJson(baseJson);
+    return _getLinkedTranslationFileDataFromBaseJson(path, locale, baseJson);
   }
 }
