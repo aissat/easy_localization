@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -45,13 +44,15 @@ class RootBundleAssetLoader extends AssetLoader {
 
       if (value is String && value.startsWith(':/')) {
         String filePath = value.substring(2);
-        Map<String, dynamic> linkedJson =
-            json.decode(await rootBundle.loadString(_getLinkedLocalePath(basePath, filePath, locale)));
-        fullJson.addAll({key: linkedJson});
+        value = json.decode(await rootBundle.loadString(_getLinkedLocalePath(basePath, filePath, locale)));
+      }
+
+      if (value is Map<String, dynamic>) {
+        fullJson[key] = await _getLinkedTranslationFileDataFromBaseJson(basePath, locale, value);
         continue;
       }
 
-      fullJson[key] = baseJson[key];
+      fullJson[key] = value;
     }
 
     return fullJson;
