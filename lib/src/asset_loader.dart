@@ -30,10 +30,32 @@ class RootBundleAssetLoader extends AssetLoader {
     return '$basePath/${locale.toStringWithSeparator(separator: "-")}.json';
   }
 
+  Future<Map<String, dynamic>> _getLinkedTranslationFileDataFromBaseJson(Map<String, dynamic> baseJson) async {
+    Map<String, dynamic> fullJson = {};
+
+    for (var entry in baseJson.entries) {
+      var key = entry.key;
+      var value = entry.value;
+
+      if (value.startsWith(':/')) {
+        String filePath = value.substring(2);
+        baseJson[key] = json.decode(await rootBundle.loadString(filePath));
+        fullJson.addAll(baseJson[key]);
+        continue;
+      }
+
+      fullJson[key] = baseJson[key];
+    }
+
+    return fullJson;
+  }
+
   @override
   Future<Map<String, dynamic>?> load(String path, Locale locale) async {
     var localePath = getLocalePath(path, locale);
     EasyLocalization.logger.debug('Load asset from $path');
-    return json.decode(await rootBundle.loadString(localePath));
+
+    Map<String, dynamic> baseJson = json.decode(await rootBundle.loadString(localePath));
+    return _getLinkedTranslationFileDataFromBaseJson(baseJson);
   }
 }
