@@ -17,7 +17,7 @@ void main() async {
       test('should load single linked file', () async {
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en', 'linked'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en', 'linked')],
           useOnlyLangCode: false,
           useFallbackTranslations: false,
@@ -25,7 +25,7 @@ void main() async {
           onLoadError: (FlutterError e) {
             log(e.toString());
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         await controller.loadTranslations();
@@ -41,7 +41,7 @@ void main() async {
       test('should load multiple linked files', () async {
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en', 'linked'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en', 'linked')],
           useOnlyLangCode: false,
           useFallbackTranslations: false,
@@ -49,7 +49,7 @@ void main() async {
           onLoadError: (FlutterError e) {
             log(e.toString());
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         await controller.loadTranslations();
@@ -68,7 +68,7 @@ void main() async {
       test('should load nested linked files', () async {
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en', 'linked'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en', 'linked')],
           useOnlyLangCode: false,
           useFallbackTranslations: false,
@@ -76,7 +76,7 @@ void main() async {
           onLoadError: (FlutterError e) {
             log(e.toString());
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         await controller.loadTranslations();
@@ -91,7 +91,7 @@ void main() async {
       test('should load deeply nested linked files', () async {
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en', 'linked'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en', 'linked')],
           useOnlyLangCode: false,
           useFallbackTranslations: false,
@@ -99,7 +99,7 @@ void main() async {
           onLoadError: (FlutterError e) {
             log(e.toString());
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         await controller.loadTranslations();
@@ -114,7 +114,7 @@ void main() async {
       test('should preserve original structure with linked files', () async {
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en', 'linked'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en', 'linked')],
           useOnlyLangCode: false,
           useFallbackTranslations: false,
@@ -122,7 +122,7 @@ void main() async {
           onLoadError: (FlutterError e) {
             log(e.toString());
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         await controller.loadTranslations();
@@ -145,7 +145,7 @@ void main() async {
       test('should throw error for cyclic linked files', () async {
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en', 'cyclic'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en', 'cyclic')],
           useOnlyLangCode: false,
           useFallbackTranslations: false,
@@ -154,7 +154,7 @@ void main() async {
             // Don't just log, rethrow the error so we can catch it in tests
             throw e;
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         try {
@@ -169,7 +169,7 @@ void main() async {
       test('should throw error for missing linked file', () async {
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en', 'missing'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en', 'missing')],
           useOnlyLangCode: false,
           useFallbackTranslations: false,
@@ -178,7 +178,7 @@ void main() async {
             // Don't just log, rethrow the error so we can catch it in tests
             throw e;
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         try {
@@ -195,7 +195,7 @@ void main() async {
         // Test with a simple locale using useOnlyLangCode
         final controller = EasyLocalizationController(
           forceLocale: const Locale('en'),
-          path: '../../i18n',
+          path: 'i18n',
           supportedLocales: const [Locale('en')],
           useOnlyLangCode: true,
           useFallbackTranslations: false,
@@ -203,7 +203,7 @@ void main() async {
           onLoadError: (FlutterError e) {
             log(e.toString());
           },
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromIOFile(),
         );
 
         await controller.loadTranslations();
