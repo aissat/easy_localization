@@ -411,8 +411,6 @@ print('example.emptyNameError'.tr()); //Output: Please fill in your full name
 
 ### 🔥 Linked files:
 
-> ⚠ This is only available for the default asset loader (on Json Files).
-
 You can split translations for a single locale into multiple files by using linked files. This helps keep your JSON clean and maintainable.
 
 To link an external file, set the key’s value to a path prefixed with `:/`, relative to your translations directory. For example, with default path `assets/translations` and locale `en-US`:
@@ -435,7 +433,7 @@ assets
         └── notifications.json  
 ```
 
-Each linked file must contain a valid JSON object of translation keys.  
+Each linked file must contain a valid object of translation keys (of the file type you are using [Other file types](#-loading-translations-from-other-resources)).  
 
 Don't forget to add your linked files (or linked files folder, here assets/translations/en-US/), to your pubspec.yaml : [See installation](#-installation).
 

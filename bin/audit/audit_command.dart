@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:easy_localization/src/linked_file_resolver.dart';
 import 'package:path/path.dart';
+import '../../lib/src/file_loaders/io_file_loader.dart';
 
 class AuditCommand {
-  void run({required String transDir, required String srcDir}) {
+  void run({required String transDir, required String srcDir}) async {
     try {
       final translationDir = Directory(transDir);
       final sourceDir = Directory(srcDir);
@@ -19,7 +20,7 @@ class AuditCommand {
         return;
       }
 
-      final allTranslations = _loadTranslations(translationDir);
+      final allTranslations = await _loadTranslations(translationDir);
       final usedKeys = _scanSourceForKeys(sourceDir);
 
       _report(allTranslations, usedKeys);
@@ -31,15 +32,30 @@ class AuditCommand {
   /// Walks [translationsDir], reads every `.json`, flattens nested maps
   /// into dot‑separated keys, and returns a map:
   ///   { 'en': {'home.title', 'home.subtitle', …}, 'fr': { … } }
-  Map<String, Set<String>> _loadTranslations(Directory translationsDir) {
+  /// Also handles linked translation files (those containing ':/file.json' references)
+  Future<Map<String, Set<String>>> _loadTranslations(Directory translationsDir) async {
     final result = <String, Set<String>>{};
+    const IOFileLoader fileLoader = IOFileLoader();
+    const LinkedFileResolver linkedFileResolver = JsonLinkedFileResolver(fileLoader: fileLoader);
+
     for (var file in translationsDir.listSync().whereType<File>()) {
       if (!file.path.endsWith('.json')) continue;
 
       try {
-        final langCode = basenameWithoutExtension(file.path);
+        final local = basenameWithoutExtension(file.path);
+        final langCode = local.split('-').first;
+        final hasCountryCode = local.split('-').length > 1;
+        final countryCode = hasCountryCode ? local.split('-').last : null;
         final jsonMap = json.decode(file.readAsStringSync()) as Map<String, dynamic>;
-        result[langCode] = _flatten(jsonMap);
+
+        // Process linked files if present using the shared resolver
+        final resolvedJson = await linkedFileResolver.resolveLinkedFiles(
+          basePath: translationsDir.path,
+          languageCode: langCode,
+          baseJson: jsonMap,
+          countryCode: countryCode,
+        );
+        result[local] = _flatten(resolvedJson);
       } catch (e) {
         stderr.writeln('Error reading ${file.path}: $e');
       }
