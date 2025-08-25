@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 import 'package:easy_localization/src/file_loaders/io_file_loader.dart';
 
 class AuditCommand {
-  void run({required String transDir, required String srcDir}) async {
+  Future<void> run({required String transDir, required String srcDir}) async {
     try {
       final translationDir = Directory(transDir);
       final sourceDir = Directory(srcDir);

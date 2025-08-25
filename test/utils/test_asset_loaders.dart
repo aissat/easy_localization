@@ -5,7 +5,9 @@ import 'package:easy_localization/easy_localization.dart'
 
 class ImmutableJsonAssetLoader extends AssetLoader {
   const ImmutableJsonAssetLoader()
-      : super(linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()));
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
@@ -16,7 +18,10 @@ class ImmutableJsonAssetLoader extends AssetLoader {
 }
 
 class JsonAssetLoader extends AssetLoader {
-  const JsonAssetLoader() : super(linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()));
+  const JsonAssetLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
@@ -138,8 +143,10 @@ class JsonAssetLoader extends AssetLoader {
 }
 
 class ExternalAssetLoader extends AssetLoader {
-  const ExternalAssetLoader()
-      : super(linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()));
+  ExternalAssetLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale) => Future.value(const {
@@ -150,8 +157,10 @@ class ExternalAssetLoader extends AssetLoader {
 }
 
 class NestedAssetLoader extends AssetLoader {
-  const NestedAssetLoader()
-      : super(linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()));
+  NestedAssetLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale) => Future.value({
