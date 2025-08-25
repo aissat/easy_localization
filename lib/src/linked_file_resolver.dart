@@ -87,7 +87,7 @@ class JsonLinkedFileResolver extends LinkedFileResolver {
           languageCode: languageCode,
           baseJson: value,
           visited: visited,
-          depth: depth + 1,
+          depth: depth,
           countryCode: countryCode,
         );
       }

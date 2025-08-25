@@ -116,7 +116,7 @@ void main() async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
           path: '../../i18n',
-          assetLoader: const RootBundleAssetLoader(),
+          assetLoader: RootBundleAssetLoader.fromRootBundle(),
           supportedLocales: const [Locale('en', 'US')],
           child: const MyApp(),
         ));
