@@ -44,45 +44,35 @@ GenerateOptions _generateOption(List<String> args) {
 ArgParser _generateArgParser(GenerateOptions? generateOptions) {
   var parser = ArgParser();
 
-  parser.addOption(
-    'source-dir',
-    abbr: 'S',
-    defaultsTo: 'resources/langs',
-    callback: (String? x) => generateOptions!.sourceDir = x,
-    help: 'Folder containing localization files',
-  );
+  parser.addOption('source-dir',
+      abbr: 'S',
+      defaultsTo: 'resources/langs',
+      callback: (String? x) => generateOptions!.sourceDir = x,
+      help: 'Folder containing localization files');
 
-  parser.addOption(
-    'source-file',
-    abbr: 's',
-    callback: (String? x) => generateOptions!.sourceFile = x,
-    help: 'File to use for localization',
-  );
+  parser.addOption('source-file',
+      abbr: 's',
+      callback: (String? x) => generateOptions!.sourceFile = x,
+      help: 'File to use for localization');
 
-  parser.addOption(
-    'output-dir',
-    abbr: 'O',
-    defaultsTo: 'lib/generated',
-    callback: (String? x) => generateOptions!.outputDir = x,
-    help: 'Output folder stores for the generated file',
-  );
+  parser.addOption('output-dir',
+      abbr: 'O',
+      defaultsTo: 'lib/generated',
+      callback: (String? x) => generateOptions!.outputDir = x,
+      help: 'Output folder stores for the generated file');
 
-  parser.addOption(
-    'output-file',
-    abbr: 'o',
-    defaultsTo: 'codegen_loader.g.dart',
-    callback: (String? x) => generateOptions!.outputFile = x,
-    help: 'Output file name',
-  );
+  parser.addOption('output-file',
+      abbr: 'o',
+      defaultsTo: 'codegen_loader.g.dart',
+      callback: (String? x) => generateOptions!.outputFile = x,
+      help: 'Output file name');
 
-  parser.addOption(
-    'format',
-    abbr: 'f',
-    defaultsTo: 'json',
-    callback: (String? x) => generateOptions!.format = x,
-    help: 'Support json or keys formats',
-    allowed: ['json', 'keys'],
-  );
+  parser.addOption('format',
+      abbr: 'f',
+      defaultsTo: 'json',
+      callback: (String? x) => generateOptions!.format = x,
+      help: 'Support json, yaml, or keys formats',
+      allowed: ['json', 'yaml', 'keys']);
 
   parser.addFlag(
     'skip-unnecessary-keys',
@@ -115,9 +105,8 @@ void handleLangFiles(GenerateOptions options) async {
   final source = Directory.fromUri(Uri.parse(options.sourceDir!));
   final output = Directory.fromUri(Uri.parse(options.outputDir!));
   final sourcePath = Directory(path.join(current.path, source.path));
-  final outputPath = Directory(
-    path.join(current.path, output.path, options.outputFile),
-  );
+  final outputPath =
+      Directory(path.join(current.path, output.path, options.outputFile));
 
   if (!await sourcePath.exists()) {
     stderr.writeln('Source path does not exist');
@@ -133,10 +122,8 @@ void handleLangFiles(GenerateOptions options) async {
     }
     files = [sourceFile];
   } else {
-    // Filter for .yml and .yaml files
-    files = files
-        .where((f) => f.path.endsWith('.yml') || f.path.endsWith('.yaml'))
-        .toList();
+    //filtering format
+    files = files.where((f) => f.path.contains(RegExp(r'\.(json|yaml|yml)$'))).toList();
   }
 
   if (files.isNotEmpty) {
@@ -150,18 +137,13 @@ Future<List<FileSystemEntity>> dirContents(Directory dir) {
   var files = <FileSystemEntity>[];
   var completer = Completer<List<FileSystemEntity>>();
   var lister = dir.list(recursive: false);
-  lister.listen(
-    (file) => files.add(file),
-    onDone: () => completer.complete(files),
-  );
+  lister.listen((file) => files.add(file),
+      onDone: () => completer.complete(files));
   return completer.future;
 }
 
-void generateFile(
-  List<FileSystemEntity> files,
-  Directory outputPath,
-  GenerateOptions options,
-) async {
+void generateFile(List<FileSystemEntity> files, Directory outputPath,
+    GenerateOptions options) async {
   var generatedFile = File(outputPath.path);
   if (!generatedFile.existsSync()) {
     generatedFile.createSync(recursive: true);
@@ -172,6 +154,9 @@ void generateFile(
   switch (options.format) {
     case 'json':
       await _writeJson(classBuilder, files);
+      break;
+    case 'yaml':
+      await _writeYaml(classBuilder, files);
       break;
     case 'keys':
       await _writeKeys(classBuilder, files, options.skipUnnecessaryKeys);
@@ -186,36 +171,28 @@ void generateFile(
   stdout.writeln('All done! File generated in ${outputPath.path}');
 }
 
-Future _writeKeys(
-  StringBuffer classBuilder,
-  List<FileSystemEntity> files,
-  bool? skipUnnecessaryKeys,
-) async {
+Future _writeKeys(StringBuffer classBuilder, List<FileSystemEntity> files,
+    bool? skipUnnecessaryKeys) async {
   var file = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
 ''';
 
   final fileData = File(files.first.path);
 
-  // Parse YAML file
-  final yamlString = await fileData.readAsString();
-  final yamlData = loadYaml(yamlString);
-  Map<String, dynamic> translations = _yamlToMap(yamlData);
+  Map<String, dynamic> translations =
+      json.decode(json.encode(loadYaml(await fileData.readAsString())));
 
   file += _resolve(translations, skipUnnecessaryKeys);
 
   classBuilder.writeln(file);
 }
 
-String _resolve(
-  Map<String, dynamic> translations,
-  bool? skipUnnecessaryKeys, [
-  String? accKey,
-]) {
+String _resolve(Map<String, dynamic> translations, bool? skipUnnecessaryKeys,
+    [String? accKey]) {
   var fileContent = '';
 
   final sortedKeys = translations.keys.toList();
@@ -229,10 +206,8 @@ String _resolve(
     var ignoreKey = false;
     if (translations[key] is Map) {
       // If key does not contain keys for plural(), gender() etc. and option is enabled -> ignore it
-      ignoreKey =
-          !containsPreservedKeywords(
-            translations[key] as Map<String, dynamic>,
-          ) &&
+      ignoreKey = !containsPreservedKeywords(
+              translations[key] as Map<String, dynamic>) &&
           canIgnoreKeys;
 
       var nextAccKey = key;
@@ -240,20 +215,17 @@ String _resolve(
         nextAccKey = '$accKey.$key';
       }
 
-      fileContent += _resolve(
-        translations[key],
-        skipUnnecessaryKeys,
-        nextAccKey,
-      );
+      fileContent +=
+          _resolve(translations[key], skipUnnecessaryKeys, nextAccKey);
     }
 
     if (!_preservedKeywords.contains(key)) {
       accKey != null && !ignoreKey
           ? fileContent +=
-                '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
+              '  static const ${accKey.replaceAll('.', '_')}_$key = \'$accKey.$key\';\n'
           : !ignoreKey
-          ? fileContent += '  static const $key = \'$key\';\n'
-          : null;
+              ? fileContent += '  static const $key = \'$key\';\n'
+              : null;
     }
   }
 
@@ -261,9 +233,7 @@ String _resolve(
 }
 
 Future _writeJson(
-  StringBuffer classBuilder,
-  List<FileSystemEntity> files,
-) async {
+    StringBuffer classBuilder, List<FileSystemEntity> files) async {
   var gFile = '''
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
@@ -273,7 +243,47 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart' show AssetLoader;
 
-class CodegenLoader extends AssetLoader {
+class CodegenLoader extends AssetLoader{
+  const CodegenLoader();
+
+  @override
+  Future<Map<String, dynamic>?> load(String path, Locale locale) {
+    return Future.value(mapLocales[locale.toString()]);
+  }
+
+  ''';
+
+  final listLocales = [];
+
+  for (var file in files) {
+    final localeName =
+        path.basename(file.path).replaceFirst('.json', '').replaceAll('-', '_');
+    listLocales.add('"$localeName": _$localeName');
+    final fileData = File(file.path);
+
+    Map<String, dynamic>? data = json.decode(await fileData.readAsString());
+
+    final mapString = const JsonEncoder.withIndent('  ').convert(data);
+    gFile += 'static const Map<String,dynamic> _$localeName = $mapString;\n';
+  }
+
+  gFile +=
+      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
+  classBuilder.writeln(gFile);
+}
+
+Future _writeYaml(
+    StringBuffer classBuilder, List<FileSystemEntity> files) async {
+  var gFile = '''
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters, constant_identifier_names
+
+import 'dart:ui';
+
+import 'package:easy_localization/easy_localization.dart' show AssetLoader;
+
+class CodegenLoader extends AssetLoader{
   const CodegenLoader();
 
   @override
@@ -288,16 +298,12 @@ class CodegenLoader extends AssetLoader {
   for (var file in files) {
     final localeName = path
         .basename(file.path)
-        .replaceFirst(RegExp(r'\.ya?ml$'), '')
+        .replaceFirst(RegExp(r'\.(yaml|yml)'), '')
         .replaceAll('-', '_');
     listLocales.add('"$localeName": _$localeName');
     final fileData = File(file.path);
 
-    // Parse YAML file
-    final yamlString = await fileData.readAsString();
-    final yamlData = loadYaml(yamlString);
-    Map<String, dynamic> data = _yamlToMap(yamlData);
-
+    var data = loadYaml(await fileData.readAsString());
     final mapString = const JsonEncoder.withIndent('  ').convert(data);
     gFile += 'static const Map<String,dynamic> _$localeName = $mapString;\n';
   }
@@ -305,19 +311,4 @@ class CodegenLoader extends AssetLoader {
   gFile +=
       'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
   classBuilder.writeln(gFile);
-}
-
-// Helper function to convert YamlMap to Map<String, dynamic>
-Map<String, dynamic> _yamlToMap(dynamic yaml) {
-  if (yaml is YamlMap) {
-    return yaml.map((key, value) {
-      if (value is YamlMap || value is YamlList) {
-        return MapEntry(key.toString(), _yamlToMap(value));
-      }
-      return MapEntry(key.toString(), value);
-    });
-  } else if (yaml is YamlList) {
-    return {'': yaml.map((e) => _yamlToMap(e)).toList()};
-  }
-  return {};
 }
