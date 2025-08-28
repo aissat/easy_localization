@@ -161,6 +161,9 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath,
     case 'keys':
       await _writeKeys(classBuilder, files, options.skipUnnecessaryKeys);
       break;
+    // case 'csv':
+    //   await _writeCsv(classBuilder, files);
+    // break;
     default:
       stderr.writeln('Format not supported');
   }
@@ -312,3 +315,23 @@ class CodegenLoader extends AssetLoader{
       'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
   classBuilder.writeln(gFile);
 }
+
+// _writeCsv(StringBuffer classBuilder, List<FileSystemEntity> files) async {
+//   List<String> listLocales = List();
+//   final fileData = File(files.first.path);
+
+//   // CSVParser csvParser = CSVParser(await fileData.readAsString());
+
+//   // List listLangs = csvParser.getLanguages();
+//   for(String localeName in listLangs){
+//     listLocales.add('"$localeName": $localeName');
+//     String mapString = JsonEncoder.withIndent("  ").convert(csvParser.getLanguageMap(localeName)) ;
+
+//     classBuilder.writeln(
+//       '  static const Map<String,dynamic> $localeName = ${mapString};\n');
+//   }
+
+//   classBuilder.writeln(
+//       '  static const Map<String, Map<String,dynamic>> mapLocales = \{${listLocales.join(', ')}\};');
+
+// }
