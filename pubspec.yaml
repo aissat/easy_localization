@@ -17,6 +17,7 @@ dependencies:
   intl: '>=0.17.0-0 <0.21.0'
   args: ^2.3.1
   path: ^1.8.1
+  yaml: ^3.1.2
   easy_logger: ^0.0.2
   flutter_localizations:
     sdk: flutter
