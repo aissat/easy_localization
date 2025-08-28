@@ -1,5 +1,10 @@
 # Changelog
 
+
+### [3.0.9]
+
+- added .yaml support for transaltion files in the :generate script
+ 
 ### [3.0.8]
 
 - code audit and maintenance updates
