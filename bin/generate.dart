@@ -85,8 +85,8 @@ ArgParser _generateArgParser(GenerateOptions? generateOptions) {
     'class-name',
     abbr: 'c',
     defaultsTo: 'LocaleKeys',
-    callback: (String? x) => generateOptions!.className = x!,
-    help: 'Custom class name for generated file',
+    callback: (String? x) => generateOptions!.className = x,
+    help: 'Custom class name for generated keys class (keys format)',
   );
 
   return parser;
@@ -104,7 +104,13 @@ class GenerateOptions {
 
   @override
   String toString() {
-    return 'format: $format sourceDir: $sourceDir sourceFile: $sourceFile outputDir: $outputDir outputFile: $outputFile skipUnnecessaryKeys: $skipUnnecessaryKeys';
+    return 'format: $format '
+        'sourceDir: $sourceDir '
+        'sourceFile: $sourceFile '
+        'outputDir: $outputDir '
+        'outputFile: $outputFile '
+        'skipUnnecessaryKeys: $skipUnnecessaryKeys '
+        'className: $className';
   }
 }
 
@@ -194,7 +200,7 @@ Future _writeKeys(
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  $className {
+abstract class $className {
 ''';
 
   final fileData = File(files.first.path);
