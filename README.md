@@ -475,6 +475,7 @@ Code generation supports only json files, for more information run in terminal `
 | --output-dir                 | -O    | lib/generated         | Output folder stores for the generated file                                 |
 | --output-file                | -o    | codegen_loader.g.dart | Output file name                                                            |
 | --format                     | -f    | json                  | Support json or keys formats                                                |
+| --class-name                 | -c    | LocaleKeys            | Custom class name for generated keys class                                  |
 | --[no-]skip-unnecessary-keys | -u    | false                 | Ignores keys defining nested object except for pluarl(), gender() keywords. |
 
 ### 🔌 Localization asset loader class

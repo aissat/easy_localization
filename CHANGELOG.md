@@ -1,5 +1,9 @@
 # Changelog
 
+### [3.0.9]
+
+- Added custom class name option for code generation (`--class-name` or `-c` parameter)
+
 ### [3.0.8]
 
 - code audit and maintenance updates
@@ -51,9 +55,11 @@
 - **BREAKING**: removed context parameter from `plural()` and `tr()`
 - Added Formatting linked translations [more](https://github.com/aissat/easy_localization#linked-translations)
 - Updated `plural()` function, with arguments [more](https://github.com/aissat/easy_localization#linked-translations)
+
   ```dart
     var money = plural('money_args', 10.23, args: ['John', '10.23'])  // output: John has 10.23 dollars
   ```
+
 - Removed preloader widget ~~`preloaderWidget`~~
 - fixed many issues.
 - customizable logger [EasyLogger]
@@ -84,6 +90,7 @@
 ```dart
 context.locale = locale;
 ```
+
 :information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
 ### [2.2.2]
