@@ -1,5 +1,10 @@
 # Changelog
 
+### [3.0.9]
+
+- Added support for linked files feature
+- Enhanced localization file loading capabilities
+
 ### [3.0.8]
 
 - code audit and maintenance updates
