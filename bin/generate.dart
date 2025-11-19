@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:path/path.dart' as path;
+import 'package:yaml/yaml.dart';
 
 const _preservedKeywords = [
   'few',
@@ -70,8 +71,8 @@ ArgParser _generateArgParser(GenerateOptions? generateOptions) {
       abbr: 'f',
       defaultsTo: 'json',
       callback: (String? x) => generateOptions!.format = x,
-      help: 'Support json or keys formats',
-      allowed: ['json', 'keys']);
+      help: 'Support json, yaml, or keys formats',
+      allowed: ['json', 'yaml', 'keys']);
 
   parser.addFlag(
     'skip-unnecessary-keys',
@@ -122,7 +123,7 @@ void handleLangFiles(GenerateOptions options) async {
     files = [sourceFile];
   } else {
     //filtering format
-    files = files.where((f) => f.path.contains('.json')).toList();
+    files = files.where((f) => f.path.contains(RegExp(r'\.(json|yaml|yml)$'))).toList();
   }
 
   if (files.isNotEmpty) {
@@ -154,6 +155,9 @@ void generateFile(List<FileSystemEntity> files, Directory outputPath,
     case 'json':
       await _writeJson(classBuilder, files);
       break;
+    case 'yaml':
+      await _writeYaml(classBuilder, files);
+      break;
     case 'keys':
       await _writeKeys(classBuilder, files, options.skipUnnecessaryKeys);
       break;
@@ -183,7 +187,7 @@ abstract class  LocaleKeys {
   final fileData = File(files.first.path);
 
   Map<String, dynamic> translations =
-      json.decode(await fileData.readAsString());
+      json.decode(json.encode(loadYaml(await fileData.readAsString())));
 
   file += _resolve(translations, skipUnnecessaryKeys);
 
@@ -262,6 +266,47 @@ class CodegenLoader extends AssetLoader{
 
     Map<String, dynamic>? data = json.decode(await fileData.readAsString());
 
+    final mapString = const JsonEncoder.withIndent('  ').convert(data);
+    gFile += 'static const Map<String,dynamic> _$localeName = $mapString;\n';
+  }
+
+  gFile +=
+      'static const Map<String, Map<String,dynamic>> mapLocales = {${listLocales.join(', ')}};';
+  classBuilder.writeln(gFile);
+}
+
+Future _writeYaml(
+    StringBuffer classBuilder, List<FileSystemEntity> files) async {
+  var gFile = '''
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters, constant_identifier_names
+
+import 'dart:ui';
+
+import 'package:easy_localization/easy_localization.dart' show AssetLoader;
+
+class CodegenLoader extends AssetLoader{
+  const CodegenLoader();
+
+  @override
+  Future<Map<String, dynamic>?> load(String path, Locale locale) {
+    return Future.value(mapLocales[locale.toString()]);
+  }
+
+  ''';
+
+  final listLocales = [];
+
+  for (var file in files) {
+    final localeName = path
+        .basename(file.path)
+        .replaceFirst(RegExp(r'\.(yaml|yml)'), '')
+        .replaceAll('-', '_');
+    listLocales.add('"$localeName": _$localeName');
+    final fileData = File(file.path);
+
+    var data = loadYaml(await fileData.readAsString());
     final mapString = const JsonEncoder.withIndent('  ').convert(data);
     gFile += 'static const Map<String,dynamic> _$localeName = $mapString;\n';
   }
