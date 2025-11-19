@@ -137,7 +137,10 @@ class EasyLocalization extends StatefulWidget {
     this.useFallbackTranslations = false,
     this.useFallbackTranslationsForEmptyResources = false,
     this.ignorePluralRules = true,
-    this.assetLoader = const RootBundleAssetLoader(),
+    this.assetLoader = const RootBundleAssetLoader(
+      fileLoader: RootBundleFileLoader(),
+      linkedFileResolver: JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+    ),
     this.extraAssetLoaders,
     this.saveLocale = true,
     this.errorWidget,
@@ -152,14 +155,12 @@ class EasyLocalization extends StatefulWidget {
   _EasyLocalizationState createState() => _EasyLocalizationState();
 
   // ignore: library_private_types_in_public_api
-  static _EasyLocalizationProvider? of(BuildContext context) =>
-      _EasyLocalizationProvider.of(context);
+  static _EasyLocalizationProvider? of(BuildContext context) => _EasyLocalizationProvider.of(context);
 
   /// ensureInitialized needs to be called in main
   /// so that savedLocale is loaded and used from the
   /// start.
-  static Future<void> ensureInitialized() async =>
-      await EasyLocalizationController.initEasyLocation();
+  static Future<void> ensureInitialized() async => await EasyLocalizationController.initEasyLocation();
 
   /// Customizable logger
   static EasyLogger logger = EasyLogger(name: '🌎 Easy Localization');
@@ -216,8 +217,7 @@ class _EasyLocalizationState extends State<EasyLocalization> {
       delegate: _EasyLocalizationDelegate(
         localizationController: localizationController,
         supportedLocales: widget.supportedLocales,
-        useFallbackTranslationsForEmptyResources:
-            widget.useFallbackTranslationsForEmptyResources,
+        useFallbackTranslationsForEmptyResources: widget.useFallbackTranslationsForEmptyResources,
         ignorePluralRules: widget.ignorePluralRules,
       ),
     );
@@ -253,8 +253,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   // _EasyLocalizationDelegate get delegate => parent.delegate;
 
-  _EasyLocalizationProvider(this.parent, this._localeState,
-      {Key? key, required this.delegate})
+  _EasyLocalizationProvider(this.parent, this._localeState, {Key? key, required this.delegate})
       : currentLocale = _localeState.locale,
         _translationsLoaded = _localeState.translations != null,
         super(key: key, child: parent.child) {
@@ -292,8 +291,7 @@ class _EasyLocalizationProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_EasyLocalizationProvider oldWidget) {
-    return oldWidget.currentLocale != locale
-        || oldWidget._translationsLoaded != _translationsLoaded;
+    return oldWidget.currentLocale != locale || oldWidget._translationsLoaded != _translationsLoaded;
   }
 
   static _EasyLocalizationProvider? of(BuildContext context) =>
@@ -332,8 +330,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
       value,
       translations: localizationController!.translations,
       fallbackTranslations: localizationController!.fallbackTranslations,
-      useFallbackTranslationsForEmptyResources:
-          useFallbackTranslationsForEmptyResources,
+      useFallbackTranslationsForEmptyResources: useFallbackTranslationsForEmptyResources,
       ignorePluralRules: ignorePluralRules,
     );
     return Future.value(Localization.instance);

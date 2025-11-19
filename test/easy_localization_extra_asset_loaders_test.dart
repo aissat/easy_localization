@@ -29,8 +29,7 @@ void main() {
       expect(result.entries.length, 1);
     });
 
-    test('load assets from external loader and merge with asset loader',
-        () async {
+    test('load assets from external loader and merge with asset loader', () async {
       final EasyLocalizationController controller = EasyLocalizationController(
         forceLocale: const Locale('en'),
         path: 'path/en.json',
@@ -42,11 +41,10 @@ void main() {
           log(e.toString());
         },
         assetLoader: const ImmutableJsonAssetLoader(),
-        extraAssetLoaders: [const ExternalAssetLoader()],
+        extraAssetLoaders: [ExternalAssetLoader()],
       );
 
-      final Map<String, dynamic> result =
-          await controller.loadTranslationData(const Locale('en'));
+      final Map<String, dynamic> result = await controller.loadTranslationData(const Locale('en'));
 
       expect(result, {
         'test': 'test',
@@ -57,9 +55,7 @@ void main() {
       expect(result.entries.length, 4);
     });
 
-    test(
-        'load assets from external loader with nested translations and merge with asset loader',
-        () async {
+    test('load assets from external loader with nested translations and merge with asset loader', () async {
       final EasyLocalizationController controller = EasyLocalizationController(
         forceLocale: const Locale('en'),
         path: 'path/en.json',
@@ -71,11 +67,10 @@ void main() {
           log(e.toString());
         },
         assetLoader: const ImmutableJsonAssetLoader(),
-        extraAssetLoaders: [const NestedAssetLoader()],
+        extraAssetLoaders: [NestedAssetLoader()],
       );
 
-      final Map<String, dynamic> result =
-          await controller.loadTranslationData(const Locale('en'));
+      final Map<String, dynamic> result = await controller.loadTranslationData(const Locale('en'));
 
       expect(result, {
         'test': 'test',
@@ -90,9 +85,7 @@ void main() {
       expect(result.entries.length, 2);
     });
 
-    test(
-        'load assets from external loader and merge duplicates with asset loader',
-        () async {
+    test('load assets from external loader and merge duplicates with asset loader', () async {
       final EasyLocalizationController controller = EasyLocalizationController(
         forceLocale: const Locale('en'),
         path: 'path/en.json',
@@ -107,8 +100,7 @@ void main() {
         extraAssetLoaders: [const ImmutableJsonAssetLoader()],
       );
 
-      final Map<String, dynamic> result =
-          await controller.loadTranslationData(const Locale('en'));
+      final Map<String, dynamic> result = await controller.loadTranslationData(const Locale('en'));
 
       expect(result, {'test': 'test'});
       expect(result.entries.length, 1);

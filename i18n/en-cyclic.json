@@ -1,0 +1,4 @@
+{
+  "test": "cyclic_test",
+  "cycle_start": ":/cycle_file1.json"
+}
