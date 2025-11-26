@@ -72,6 +72,7 @@ flutter:
   assets:
     - assets/translations/
 ```
+[![Stand With Palestine](https://github.com/vsabenin-private/easy_localization/blob/0551f1a8f72daf46e8440e1ca933e06c7e7119b1/logo/loki-loki-promo.png)](https://lokiloki.tech/)
 
 
 
