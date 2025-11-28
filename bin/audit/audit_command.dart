@@ -154,6 +154,7 @@ class AuditCommand {
         }
 
         stderr.writeln('\n');
+        exit(1);
       }
 
       if (missingWithVariables.isNotEmpty) {
