@@ -5,13 +5,21 @@ import 'package:path/path.dart';
 import 'package:easy_localization/src/file_loaders/io_file_loader.dart';
 
 enum KeyPatternType {
-  trFunction(pattern: r"""\btr\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)"""),
-  contextTrFunction(pattern: r"""context\s*\.\s*tr\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)"""),
-  stringTrMethod(pattern: r"""['"]([^'"]+)['"]\s*\.\s*tr\s*\(\s*[^)]*\)"""),
+  trFunction(pattern: r"""\btr\s*\(\s*['"]([^'"]+)['"](?:(?!gender\s*:)[^)])*\)"""),
+  contextTrFunction(pattern: r"""context\s*\.\s*tr\s*\(\s*['"]([^'"]+)['"](?:(?!gender\s*:)[^)])*\)"""),
+  stringTrMethod(pattern: r""""([^"]+)"\s*\.tr\s*\((?:(?!gender\s*:)[^)])*\)"""),
   localeKeys(pattern: r"""LocaleKeys\s*\.\s*([A-Za-z0-9_]+)"""),
+  // plural
   pluralFunction(pattern: r"""\bplural\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)""", keywords: ['other']),
   contextPluralFunction(
-      pattern: r"""context\s*\.\s*plural\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)""", keywords: ['other']);
+      pattern: r"""context\s*\.\s*plural\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)""", keywords: ['other']),
+  // gender
+  trFunctionWithGender(
+      pattern: r"""\btr\s*\(\s*['"]([^'"]+)['"]\s*,\s*gender\s*:\s*[^)]*\)""", keywords: ["male", "female"]),
+  contextTrFunctionWithGender(
+      pattern: r"""context\s*\.\s*tr\s*\(\s*['"]([^'"]+)['"]\s*,\s*gender\s*:\s*[^)]*\)""",
+      keywords: ["male", "female"]),
+  stringTrMethodWithGender(pattern: r""""([^"]+)"\s*\.tr\s*\(\s*gender\s*:\s*[^)]*\)""", keywords: ["male", "female"]);
 
   const KeyPatternType({required this.pattern, this.keywords = const []});
 
@@ -94,8 +102,8 @@ class KeyParser {
 
             if (patternType.keywords.isNotEmpty) {
               for (var keyword in patternType.keywords) {
-                key += '.$keyword';
-                used.add(key);
+                String keyWithKeyword = '$key.$keyword';
+                used.add(keyWithKeyword);
               }
 
               continue;
