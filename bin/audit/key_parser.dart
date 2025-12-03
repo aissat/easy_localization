@@ -7,7 +7,7 @@ import 'package:easy_localization/src/file_loaders/io_file_loader.dart';
 enum KeyPatternType {
   trFunction(pattern: r"""\btr\s*\(\s*['"]([^'"]+)['"](?:(?!gender\s*:)[^)])*\)"""),
   contextTrFunction(pattern: r"""context\s*\.\s*tr\s*\(\s*['"]([^'"]+)['"](?:(?!gender\s*:)[^)])*\)"""),
-  stringTrMethod(pattern: r""""([^"]+)"\s*\.tr\s*\((?:(?!gender\s*:)[^)])*\)"""),
+  stringTrMethod(pattern: r""""([^'"]+)"\s*\.tr\s*\((?:(?!gender\s*:)[^)])*\)"""),
   localeKeys(pattern: r"""LocaleKeys\s*\.\s*([A-Za-z0-9_]+)"""),
   // plural
   pluralFunction(pattern: r"""\bplural\s*\(\s*['"]([^'"]+)['"](?:\s*,[^)]*)?\)""", keywords: ['other']),
@@ -19,7 +19,7 @@ enum KeyPatternType {
   contextTrFunctionWithGender(
       pattern: r"""context\s*\.\s*tr\s*\(\s*['"]([^'"]+)['"]\s*,\s*gender\s*:\s*[^)]*\)""",
       keywords: ["male", "female"]),
-  stringTrMethodWithGender(pattern: r""""([^"]+)"\s*\.tr\s*\(\s*gender\s*:\s*[^)]*\)""", keywords: ["male", "female"]);
+  stringTrMethodWithGender(pattern: r""""([^'"]+)"\s*\.tr\s*\(\s*gender\s*:\s*[^)]*\)""", keywords: ["male", "female"]);
 
   const KeyPatternType({required this.pattern, this.keywords = const []});
 
