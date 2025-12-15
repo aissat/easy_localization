@@ -91,7 +91,12 @@ class KeyParser {
       final content = file.readAsStringSync();
 
       // remove all comments to avoid false positives
-      final commentPattern = RegExp(r'\/\/.*?$|\/\*.*?\*/', multiLine: true, dotAll: true);
+      // remove single-line comments that start the line (optionally preceded by whitespace)
+      // and multi-line /* ... */ blocks
+      final commentPattern = RegExp(
+        r'^[ \t]*//.*?$|/\*[\s\S]*?\*/',
+        multiLine: true,
+      );
       final commentRemovedContent = content.replaceAll(commentPattern, '');
 
       for (var patternType in KeyPatternType.values) {
