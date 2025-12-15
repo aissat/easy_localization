@@ -89,9 +89,14 @@ class KeyParser {
         srcDir.listSync(recursive: true).whereType<File>().where((f) => f.path.endsWith('.dart')).toList();
     for (var file in files) {
       final content = file.readAsStringSync();
+
+      // remove all comments to avoid false positives
+      final commentPattern = RegExp(r'\/\/.*?$|\/\*.*?\*/', multiLine: true, dotAll: true);
+      final commentRemovedContent = content.replaceAll(commentPattern, '');
+
       for (var patternType in KeyPatternType.values) {
         final pattern = RegExp(patternType.pattern);
-        final matches = pattern.allMatches(content);
+        final matches = pattern.allMatches(commentRemovedContent);
 
         for (var match in matches) {
           if (match.groupCount > 0) {
