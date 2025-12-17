@@ -2,7 +2,7 @@ import 'dart:io';
 import 'key_parser.dart';
 
 class AuditCommand {
-  Future<void> run({required String transDir, required String srcDir}) async {
+  Future<void> run({required String transDir, required String srcDir, required bool showWarnings}) async {
     try {
       final translationDir = Directory(transDir);
       final sourceDir = Directory(srcDir);
@@ -21,13 +21,13 @@ class AuditCommand {
       final allTranslations = await keyParser.parseKeysInTranslationsDir(translationDir);
       final usedKeys = keyParser.parseKeysInSourceDir(sourceDir);
 
-      _report(allTranslations, usedKeys);
+      _report(allTranslations, usedKeys, showWarnings: showWarnings);
     } catch (e) {
       stderr.writeln('Error during audit: $e');
     }
   }
 
-  void _report(Map<String, Set<String>> allTranslations, Set<String> usedKeys) {
+  void _report(Map<String, Set<String>> allTranslations, Set<String> usedKeys, {required bool showWarnings}) {
     stderr.writeln('=== Keys Audit ===');
 
     for (var lang in allTranslations.keys) {
@@ -37,7 +37,7 @@ class AuditCommand {
       final missingWithoutVariables = missing.where((key) => !key.contains('\$')).toList();
 
       stderr.writeln('\nLanguage: $lang');
-      if (missingWithVariables.isEmpty && missingWithoutVariables.isEmpty) {
+      if ((missingWithVariables.isEmpty || !showWarnings) && missingWithoutVariables.isEmpty) {
         stderr.writeln('  ✅ all good!');
       }
 
@@ -51,7 +51,7 @@ class AuditCommand {
         exit(1);
       }
 
-      if (missingWithVariables.isNotEmpty) {
+      if (missingWithVariables.isNotEmpty && showWarnings) {
         stderr.writeln('  🟡 Missing with variables (${missingWithVariables.length}):');
         stderr.writeln('    These keys may not be missing as they contain variables that cannot be verified.');
         for (var key in missingWithVariables) {

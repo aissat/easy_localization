@@ -588,6 +588,7 @@ If you are not using the default translations folder path (assets/translations) 
 | ---------------------------- | ----- | --------------------- | --------------------------------------------------------------------------- |
 | --translations-dir           | -t    | assets/translations   | Folder containing localization files                                        |
 | --source-dir                 | -s    | lib                   | Folder containing the app code files                                        |
+| --show-warnings              | -w    | false                 | show the warning (keys that contains variables and thus cannot be verified) |
 
 ### Errors : 
 
