@@ -9,8 +9,7 @@ class Localization {
   late Locale _locale;
 
   final RegExp _replaceArgRegex = RegExp('{}');
-  final RegExp _linkKeyMatcher =
-      RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
+  final RegExp _linkKeyMatcher = RegExp(r'(?:@(?:\.[a-z]+)?:(?:[\w\-_|.]+|\([\w\-_|.]+\)))');
   final RegExp _linkKeyPrefixMatcher = RegExp(r'^@(?:\.([a-z]+))?:');
   final RegExp _bracketsMatcher = RegExp('[()]');
   final _modifiers = <String, String Function(String?)>{
@@ -28,8 +27,7 @@ class Localization {
 
   static Localization get instance => _instance ?? (_instance = Localization());
 
-  static Localization? of(BuildContext context) =>
-      Localizations.of<Localization>(context, Localization);
+  static Localization? of(BuildContext context) => Localizations.of<Localization>(context, Localization);
 
   static bool load(
     Locale locale, {
@@ -41,8 +39,7 @@ class Localization {
     instance._locale = locale;
     instance._translations = translations;
     instance._fallbackTranslations = fallbackTranslations;
-    instance._useFallbackTranslationsForEmptyResources =
-        useFallbackTranslationsForEmptyResources;
+    instance._useFallbackTranslationsForEmptyResources = useFallbackTranslationsForEmptyResources;
     instance._ignorePluralRules = ignorePluralRules;
     return translations == null ? false : true;
   }
@@ -80,8 +77,7 @@ class Localization {
       final formatterName = linkPrefixMatches.first[1];
 
       // Remove the leading @:, @.case: and the brackets
-      final linkPlaceholder =
-          link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
+      final linkPlaceholder = link.replaceAll(linkPrefix, '').replaceAll(_bracketsMatcher, '');
 
       var translated = _resolve(linkPlaceholder);
 
@@ -90,14 +86,17 @@ class Localization {
           translated = _modifiers[formatterName]!(translated);
         } else {
           if (logging) {
-            EasyLocalization.logger.warning(
-                'Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
+            EasyLocalization.logger
+                .warning('Undefined modifier $formatterName, available modifiers: ${_modifiers.keys.toString()}');
           }
         }
       }
 
-      result =
-          translated.isEmpty ? result : result.replaceAll(link, translated);
+      result = translated.isEmpty ? result : result.replaceAll(link, translated);
+    }
+
+    if (_linkKeyMatcher.hasMatch(result)) {
+      result = _replaceLinks(result, logging: logging);
     }
 
     return result;
@@ -113,8 +112,7 @@ class Localization {
 
   String _replaceNamedArgs(String res, Map<String, String>? args) {
     if (args == null || args.isEmpty) return res;
-    args.forEach((String key, String value) =>
-        res = res.replaceAll(RegExp('{$key}'), value));
+    args.forEach((String key, String value) => res = res.replaceAll(RegExp('{$key}'), value));
     return res;
   }
 
@@ -202,8 +200,7 @@ class Localization {
 
   String _resolve(String key, {bool logging = true, bool fallback = true}) {
     var resource = _translations?.get(key);
-    if (resource == null ||
-        (_useFallbackTranslationsForEmptyResources && resource.isEmpty)) {
+    if (resource == null || (_useFallbackTranslationsForEmptyResources && resource.isEmpty)) {
       if (logging) {
         EasyLocalization.logger.warning('Localization key [$key] not found');
       }
@@ -211,11 +208,9 @@ class Localization {
         return key;
       } else {
         resource = _fallbackTranslations?.get(key);
-        if (resource == null ||
-            (_useFallbackTranslationsForEmptyResources && resource.isEmpty)) {
+        if (resource == null || (_useFallbackTranslationsForEmptyResources && resource.isEmpty)) {
           if (logging) {
-            EasyLocalization.logger
-                .warning('Fallback localization key [$key] not found');
+            EasyLocalization.logger.warning('Fallback localization key [$key] not found');
           }
           return key;
         }
