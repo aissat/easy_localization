@@ -1,9 +1,13 @@
 import 'dart:ui';
 
-import 'package:easy_localization/src/asset_loader.dart';
+import 'package:easy_localization/easy_localization.dart'
+    show AssetLoader, JsonLinkedFileResolver, RootBundleFileLoader;
 
 class ImmutableJsonAssetLoader extends AssetLoader {
-  const ImmutableJsonAssetLoader();
+  const ImmutableJsonAssetLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
@@ -14,7 +18,10 @@ class ImmutableJsonAssetLoader extends AssetLoader {
 }
 
 class JsonAssetLoader extends AssetLoader {
-  const JsonAssetLoader();
+  const JsonAssetLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
@@ -25,10 +32,7 @@ class JsonAssetLoader extends AssetLoader {
       'test_replace_two': 'test replace {} {}',
       'test_replace_named': 'test named replace {arg1} {arg2}',
       'gender': {'male': 'Hi man ;)', 'female': 'Hello girl :)'},
-      'gender_and_replace': {
-        'male': 'Hi {} man ;)',
-        'female': 'Hello {} girl :)'
-      },
+      'gender_and_replace': {'male': 'Hi {} man ;)', 'female': 'Hello {} girl :)'},
       'day': {
         'zero': '{} days',
         'one': '{} day',
@@ -80,14 +84,12 @@ class JsonAssetLoader extends AssetLoader {
           'duper': {
             'nested': 'nested.super.duper.nested',
             'nested_with_arg': 'nested.super.duper.nested_with_arg {}',
-            'nested_with_named_arg':
-                'nested.super.duper.nested_with_named_arg {arg}'
+            'nested_with_named_arg': 'nested.super.duper.nested_with_named_arg {arg}'
           }
         }
       },
       'path': fullPath,
-      'test_missing_fallback':
-          (locale.languageCode == 'fb' ? 'fallback!' : null),
+      'test_missing_fallback': (locale.languageCode == 'fb' ? 'fallback!' : null),
       'test_empty_fallback': (locale.languageCode == 'fb' ? 'fallback!' : ''),
       'test_fallback_plurals': (locale.languageCode == 'fb'
           ? {
@@ -121,31 +123,33 @@ class JsonAssetLoader extends AssetLoader {
             }),
       'test_empty_plurals': (locale.languageCode == 'fb'
           ? {
-        'zero': '',
-        'one': '',
-        'two': '',
-        'few': '',
-        'many': '',
-        'other': '',
-      }
+              'zero': '',
+              'one': '',
+              'two': '',
+              'few': '',
+              'many': '',
+              'other': '',
+            }
           : {
-        'zero': '',
-        'one': '',
-        'two': '',
-        'few': '',
-        'many': '',
-        'other': '',
-      })
+              'zero': '',
+              'one': '',
+              'two': '',
+              'few': '',
+              'many': '',
+              'other': '',
+            })
     });
   }
 }
 
 class ExternalAssetLoader extends AssetLoader {
-  const ExternalAssetLoader();
+  ExternalAssetLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale) =>
-      Future.value(const {
+  Future<Map<String, dynamic>> load(String fullPath, Locale locale) => Future.value(const {
         'package_value_01': 'package_value_01',
         'package_value_02': 'package_value_02',
         'package_value_03': 'package_value_03',
@@ -153,11 +157,13 @@ class ExternalAssetLoader extends AssetLoader {
 }
 
 class NestedAssetLoader extends AssetLoader {
-  const NestedAssetLoader();
+  NestedAssetLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
-  Future<Map<String, dynamic>> load(String fullPath, Locale locale) =>
-      Future.value({
+  Future<Map<String, dynamic>> load(String fullPath, Locale locale) => Future.value({
         'nested': {
           'super': {
             'duper': {'nested': 'nested.super.duper.nested'}

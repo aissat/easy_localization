@@ -1,0 +1,5 @@
+{
+  "not_found": "Multiple resource not found",
+  "server_error": "Multiple internal server error",
+  "invalid_input": "Multiple invalid input provided"
+}

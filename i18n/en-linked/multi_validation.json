@@ -1,0 +1,6 @@
+{
+  "required": "Multiple field is required",
+  "email": "Multiple valid email address required",
+  "min_length": "Multiple minimum length is {min} characters",
+  "max_length": "Multiple maximum length is {max} characters"
+}

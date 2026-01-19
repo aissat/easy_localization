@@ -4,10 +4,14 @@
 
 import 'dart:ui';
 
-import 'package:easy_localization/easy_localization.dart' show AssetLoader;
+import 'package:easy_localization/easy_localization.dart'
+    show AssetLoader, JsonLinkedFileResolver, RootBundleFileLoader;
 
 class CodegenLoader extends AssetLoader {
-  const CodegenLoader();
+  const CodegenLoader()
+      : super(
+            linkedFileResolver: const JsonLinkedFileResolver(fileLoader: RootBundleFileLoader()),
+            fileLoader: const RootBundleFileLoader());
 
   @override
   Future<Map<String, dynamic>> load(String fullPath, Locale locale) {
@@ -20,11 +24,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} مكتوبة باللغة {lang}",
     "clickMe": "إضغط هنا",
     "profile": {
-      "reset_password": {
-        "label": "اعادة تعين كلمة السر",
-        "username": "المستخدم",
-        "password": "كلمة السر"
-      }
+      "reset_password": {"label": "اعادة تعين كلمة السر", "username": "المستخدم", "password": "كلمة السر"}
     },
     "clicked": {
       "zero": "لم تنقر بعد!",
@@ -55,11 +55,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} مكتوبة باللغة {lang}",
     "clickMe": "إضغط هنا",
     "profile": {
-      "reset_password": {
-        "label": "اعادة تعين كلمة السر",
-        "username": "المستخدم",
-        "password": "كلمة السر"
-      }
+      "reset_password": {"label": "اعادة تعين كلمة السر", "username": "المستخدم", "password": "كلمة السر"}
     },
     "clicked": {
       "zero": "لم تنقر بعد!",
@@ -90,11 +86,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} ist in {lang} geschrieben",
     "clickMe": "Click mich",
     "profile": {
-      "reset_password": {
-        "label": "Password zurücksetzten",
-        "username": "Name",
-        "password": "Password"
-      }
+      "reset_password": {"label": "Password zurücksetzten", "username": "Name", "password": "Password"}
     },
     "clicked": {
       "zero": "Du hast {} mal geklickt",
@@ -125,11 +117,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} ist in {lang} geschrieben",
     "clickMe": "Click mich",
     "profile": {
-      "reset_password": {
-        "label": "Password zurücksetzten",
-        "username": "Name",
-        "password": "Password"
-      }
+      "reset_password": {"label": "Password zurücksetzten", "username": "Name", "password": "Password"}
     },
     "clicked": {
       "zero": "Du hast {} mal geklickt",
@@ -160,11 +148,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} are written in the {lang} language",
     "clickMe": "Click me",
     "profile": {
-      "reset_password": {
-        "label": "Reset Password",
-        "username": "Username",
-        "password": "password"
-      }
+      "reset_password": {"label": "Reset Password", "username": "Username", "password": "password"}
     },
     "clicked": {
       "zero": "You clicked {} times!",
@@ -195,11 +179,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} are written in the {lang} language",
     "clickMe": "Click me",
     "profile": {
-      "reset_password": {
-        "label": "Reset Password",
-        "username": "Username",
-        "password": "password"
-      }
+      "reset_password": {"label": "Reset Password", "username": "Username", "password": "password"}
     },
     "clicked": {
       "zero": "You clicked {} times!",
@@ -230,11 +210,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} написан на языке {lang}",
     "clickMe": "Нажми на меня",
     "profile": {
-      "reset_password": {
-        "label": "Сбросить пароль",
-        "username": "Логин",
-        "password": "Пароль"
-      }
+      "reset_password": {"label": "Сбросить пароль", "username": "Логин", "password": "Пароль"}
     },
     "clicked": {
       "zero": "Ты кликнул {} раз!",
@@ -255,10 +231,7 @@ class CodegenLoader extends AssetLoader {
     "gender": {
       "male": "Привет мужык ;) ",
       "female": "Привет девчуля :)",
-      "with_arg": {
-        "male": "Привет мужык ;) {}",
-        "female": "Привет девчуля :) {}"
-      }
+      "with_arg": {"male": "Привет мужык ;) {}", "female": "Привет девчуля :) {}"}
     },
     "reset_locale": "Сбросить язык"
   };
@@ -268,11 +241,7 @@ class CodegenLoader extends AssetLoader {
     "msg_named": "{} написан на языке {lang}",
     "clickMe": "Нажми на меня",
     "profile": {
-      "reset_password": {
-        "label": "Сбросить пароль",
-        "username": "Логин",
-        "password": "Пароль"
-      }
+      "reset_password": {"label": "Сбросить пароль", "username": "Логин", "password": "Пароль"}
     },
     "clicked": {
       "zero": "Ты кликнул {} раз!",
@@ -293,10 +262,7 @@ class CodegenLoader extends AssetLoader {
     "gender": {
       "male": "Привет мужык ;) ",
       "female": "Привет девчуля :)",
-      "with_arg": {
-        "male": "Привет мужык ;) {}",
-        "female": "Привет девчуля :) {}"
-      }
+      "with_arg": {"male": "Привет мужык ;) {}", "female": "Привет девчуля :) {}"}
     },
     "reset_locale": "Сбросить язык"
   };

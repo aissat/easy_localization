@@ -1,5 +1,15 @@
 # Changelog
 
+### [3.0.9]
+
+- Added support for linked files feature
+- Enhanced localization file loading capabilities
+
+### [3.0.8]
+
+- code audit and maintenance updates
+- improved project structure and CI/CD workflows
+
 ### [3.0.7]
 
 - add _supportedLocales in EasyLocalizationController; log and check the deviceLocale when resetLocale;

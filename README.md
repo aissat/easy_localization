@@ -73,6 +73,8 @@ flutter:
     - assets/translations/
 ```
 
+
+
 ### 🔌 Loading translations from other resources
 
 You can use JSON,CSV,HTTP,XML,Yaml files, etc.
@@ -407,6 +409,34 @@ Output:
 print('example.emptyNameError'.tr()); //Output: Please fill in your full name
 ```
 
+### 🔥 Linked files:
+
+You can split translations for a single locale into multiple files by using linked files. This helps keep your JSON clean and maintainable.
+
+To link an external file, set the key’s value to a path prefixed with `:/`, relative to your translations directory. For example, with default path `assets/translations` and locale `en-US`:
+
+```json
+{
+  "errors": ":/errors.json",
+  "validation": ":/validation.json",
+  "notifications": ":/notifications.json"
+}
+```
+
+At runtime, Easy Localization will load:
+```
+assets
+└── translations
+    └── en-US
+        ├── errors.json 
+        ├── validation.json  
+        └── notifications.json  
+```
+
+Each linked file must contain a valid object of translation keys (of the file type you are using [Other file types](#-loading-translations-from-other-resources)).  
+
+Don't forget to add your linked files (or linked files folder, here assets/translations/en-US/), to your pubspec.yaml : [See installation](#-installation).
+
 ### 🔥 Reset locale `resetLocale()`
 
 Reset locale to device locale
@@ -541,6 +571,21 @@ print(LocaleKeys.title.tr()); //String
 //or
 Text(LocaleKeys.title).tr(); //Widget
 ```
+
+### ✅ Audit missing keys
+
+If you prefer to not generate keys you can see an audit of your translation keys to see the one present in your app code but not in your translations file by running the audit command.
+
+```
+flutter pub run easy_localization:audit
+```
+
+If you are not using the default translations folder path (assets/translations) or the lib folder for your code you can specify your custom paths : 
+
+| Arguments                    | Short | Default               | Description                                                                 |
+| ---------------------------- | ----- | --------------------- | --------------------------------------------------------------------------- |
+| --translations-dir           | -t    | assets/translations   | Folder containing localization files                                        |
+| --source-dir                 | -s    | lib                   | Folder containing the app code files                                        |
 
 ## 🖨️ Logger
 

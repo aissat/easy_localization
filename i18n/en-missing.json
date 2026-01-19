@@ -1,0 +1,4 @@
+{
+  "test": "missing_file_test",
+  "missing": ":/nonexistent.json"
+}

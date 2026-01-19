@@ -1,0 +1,19 @@
+{
+  "test": "test_linked_en",
+  "hello": "Hello",
+  "app": {
+    "name": "Test App",
+    "errors": ":/errors.json"
+  },
+  "validation": ":/validation.json",
+  "nested": {
+    "module": {
+      "messages": ":/nested/messages.json"
+    }
+  },
+  "multiple": {
+    "errors": ":/multi_errors.json",
+    "validation": ":/multi_validation.json"
+  },
+  "deep_nested": ":/deep/level1.json"
+}

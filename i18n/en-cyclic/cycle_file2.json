@@ -1,0 +1,4 @@
+{
+  "file2_value": "This is file 2",
+  "link_back_to_file1": ":/cycle_file1.json"
+}
