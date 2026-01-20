@@ -35,6 +35,7 @@ class Translations {
     /// If we found the value, cache it. If the value is null then
     /// we're not going to cache it, and returning null instead.
     if (value != null) {
+      if(value.runtimeType != String) throw Exception('The requested key has more nested keys.');
       cacheNestedKey(key, value);
     }
 
