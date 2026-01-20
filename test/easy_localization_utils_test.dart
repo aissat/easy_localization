@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-var printLog = [];
+List<String> printLog = [];
 dynamic overridePrint(Function() testFn) => () {
       var spec = ZoneSpecification(print: (_, __, ___, String msg) {
         // Add to log instead of printing to stdout
@@ -14,6 +14,7 @@ dynamic overridePrint(Function() testFn) => () {
     };
 
 void main() {
+  
   group('Utils', () {
     group('Locales', () {
       test('localeFromString only language code', () {
@@ -106,6 +107,72 @@ void main() {
           },
         });
       });
+
+      test('should warn if possibly multiple values are lost', overridePrint(() {
+          printLog = [];
+          final Map<String, dynamic> map1 = {
+            'key1': 'value1',
+            'key2': 'value2',
+          };
+
+          final Map<String, dynamic> map2 = {
+            'key2': {
+              'key3': 'value3',
+              'key4': 'value4',
+            },
+          };
+
+          map1.addAllRecursive(map2);
+
+          expect(printLog.length, 1);
+
+          expect(printLog.first.contains('[WARNING]'), true);
+          expect(printLog.first.contains('The key "key2" exists as a map and as a value. Overwriting it. Number of lost entries: 1'), true);
+        },
+      ));
+
+      test('should warn if possibly multiple values are lost', overridePrint(() {
+          printLog = [];
+          final Map<String, dynamic> map1 = {
+            'key2': {
+              'key3': 'value3',
+              'key4': 'value4',
+            },
+          };
+
+          final Map<String, dynamic> map2 = {
+            'key1': 'value1',
+            'key2': 'value2',
+          };
+
+          map1.addAllRecursive(map2);
+
+          expect(printLog.length, 1);
+
+          expect(printLog.first.contains('[WARNING]'), true);
+          expect(printLog.first.contains('The key "key2" exists as a map and as a value. Overwriting it. Number of lost entries: 2'), true);
+        },
+      ));
+
+      test('should warn if values are overwritten', overridePrint(() {
+          printLog = [];
+          final Map<String, dynamic> map1 = {
+            'key1': 'value1',
+            'key2': 'value2',
+          };
+
+          final Map<String, dynamic> map2 = {
+            'key2': 'new_value2',
+          };
+
+          map1.addAllRecursive(map2);
+
+          expect(printLog.length, 1);
+
+          expect(printLog.first.contains('[WARNING]'), true);
+          expect(printLog.first.contains('The key "key2" already exists in the map. Overwriting it.'), true);
+        },
+      ));
     });
   });
 }
