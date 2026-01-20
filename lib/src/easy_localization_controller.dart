@@ -42,7 +42,7 @@ class EasyLocalizationController extends ChangeNotifier {
     _supportedLocales = supportedLocales;
     if (forceLocale != null) {
       _locale = forceLocale;
-    } else if (_savedLocale == null && startLocale != null) {
+    } else if ((!saveLocale || _savedLocale == null) && startLocale != null) {
       _locale = _getFallbackLocale(supportedLocales, startLocale);
       EasyLocalization.logger('Start locale loaded ${_locale.toString()}');
     }
