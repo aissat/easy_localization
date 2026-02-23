@@ -103,7 +103,7 @@ class EasyLocalizationController extends ChangeNotifier {
     }
   }
 
-  Future loadTranslations() async {
+  Future loadTranslations([bool notify = true]) async {
     Map<String, dynamic> data;
     try {
       data = Map.from(await loadTranslationData(_locale));
@@ -124,7 +124,7 @@ class EasyLocalizationController extends ChangeNotifier {
         }
         _fallbackTranslations = Translations(data);
       }
-      notifyListeners();
+      if (notify) notifyListeners();
     } on FlutterError catch (e) {
       onLoadError(e);
     } catch (e) {
