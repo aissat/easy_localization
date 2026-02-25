@@ -124,7 +124,6 @@ class EasyLocalizationController extends ChangeNotifier {
         }
         _fallbackTranslations = Translations(data);
       }
-      notifyListeners();
     } on FlutterError catch (e) {
       onLoadError(e);
     } catch (e) {
