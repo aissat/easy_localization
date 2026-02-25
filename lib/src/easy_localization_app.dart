@@ -323,7 +323,7 @@ class _EasyLocalizationDelegate extends LocalizationsDelegate<Localization> {
   Future<Localization> load(Locale value) async {
     EasyLocalization.logger.debug('Load Localization Delegate');
     if (localizationController!.translations == null) {
-      await localizationController!.loadTranslations(false);
+      await localizationController!.loadTranslations();
     }
 
     Localization.load(
