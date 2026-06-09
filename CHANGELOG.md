@@ -5,6 +5,9 @@
 - **BREAKING**: Moved `path` and `supportedLocales` into `AssetLoader` instead of `EasyLocalization` widget
 - **BREAKING**: `AssetLoader.load()` signature changed from `load(String path, Locale locale)` to `load({Locale? locale})`
 - **BREAKING**: `ensureInitialized()` now takes `assetLoader` and optional `storage` instead of no params
+- **BREAKING**: Removed `useFallbackTranslationsForEmptyResources` (v4 always falls back for empty keys; use `useFallbackTranslations` to control the behavior at the feature level)
+- **BREAKING**: Removed `ignorePluralRules` (plural rules are now always applied; override by returning a single form in your translations if needed)
+- **BREAKING**: Removed `extraAssetLoaders` (compose multiple sources in a custom `AssetLoader` instead)
 - Added `IEasyLocalizationStorage` interface with `SharedPreferencesStorage` and `InMemoryStorage` implementations
 - Added `CachedAssetLoader` and `OptimizedAssetLoader` with built-in caching
 - Fixed fallback translations bug: base-locale `null` entries no longer overwrite real fallback values

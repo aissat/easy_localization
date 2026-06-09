@@ -5,7 +5,7 @@ description: Easy and Fast internationalizing and localization your Flutter
 homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
 # publish_to: none
-version: 4.0.0-dev
+version: 4.0.0-dev.0
 
 topics:
   - i18n
