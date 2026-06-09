@@ -28,17 +28,21 @@ class SharedPreferencesStorage implements IEasyLocalizationStorage {
   }
 
   @override
-  Future<String?> getValue(String key) async =>
-      _prefs?.getString(key);
+  Future<String?> getValue(String key) async {
+    if (_prefs == null) throw StateError('SharedPreferences not initialized; call init()');
+    return _prefs!.getString(key);
+  }
 
   @override
   Future<void> setValue(String key, String value) async {
-    await _prefs?.setString(key, value);
+    if (_prefs == null) throw StateError('SharedPreferences not initialized; call init()');
+    await _prefs!.setString(key, value);
   }
 
   @override
   Future<void> removeValue(String key) async {
-    await _prefs?.remove(key);
+    if (_prefs == null) throw StateError('SharedPreferences not initialized; call init()');
+    await _prefs!.remove(key);
   }
 
   @override

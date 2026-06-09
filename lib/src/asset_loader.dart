@@ -34,7 +34,7 @@ abstract class AssetLoader {
 }
 
 /// Base asset loader with optional caching mechanism
-class CachedAssetLoader extends AssetLoader {
+class CachedAssetLoader extends RootBundleAssetLoader {
   const CachedAssetLoader({required super.path});
 
   static final Map<Locale, Map<String, dynamic>> _translationCache = {};
@@ -66,7 +66,9 @@ class CachedAssetLoader extends AssetLoader {
       return _translationCache[locale]!;
     }
 
-    return {};
+    final data = await super.load(locale: locale);
+    _translationCache[locale] = data;
+    return data;
   }
 }
 
@@ -114,28 +116,14 @@ class RootBundleAssetLoader extends AssetLoader {
 
 /// Optimized Root Bundle Asset Loader with built-in caching
 ///
-/// Wraps [RootBundleAssetLoader] with its own translation cache.
-/// Prefer using [RootBundleAssetLoader] directly — it now includes caching.
+/// Uses [RootBundleAssetLoader]'s built-in cache — no duplicate storage.
 class OptimizedAssetLoader extends RootBundleAssetLoader {
-  static final Map<Locale, Map<String, dynamic>> _cache = {};
-
   OptimizedAssetLoader({required String path}) : super(path: path);
 
   @override
   Future<Map<String, dynamic>> load({Locale? locale}) async {
     if (locale == null) throw ArgumentError.notNull('locale');
 
-    if (_cache.containsKey(locale)) {
-      EasyLocalization.logger.debug('Using cached translations for $locale');
-      return _cache[locale]!;
-    }
-
-    final translations = await super.load(locale: locale);
-    _cache[locale] = translations;
-    return translations;
+    return await super.load(locale: locale);
   }
-
-  /// Clear the internal cache (useful for testing or hot-reload).
-  @visibleForTesting
-  static void clearCache() => _cache.clear();
 }

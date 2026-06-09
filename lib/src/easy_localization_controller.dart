@@ -138,7 +138,7 @@ class EasyLocalizationController extends ChangeNotifier {
   }
 
   Future<void> _saveLocale(Locale? locale) async {
-    if (!saveLocale && _storage == null) return;
+    if (!saveLocale || _storage == null) return;
 
     await _storage?.setValue('locale', locale.toString());
     EasyLocalization.logger('Locale $locale saved');
