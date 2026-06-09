@@ -12,7 +12,6 @@ topics:
   - localization
   - internationalization
   - localization-tool
-  - localization-kit
   - translated-keys
 
 environment:
