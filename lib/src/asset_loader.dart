@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 /// Abstract class for loading assets.
@@ -32,36 +33,106 @@ abstract class AssetLoader {
   Future<Map<String, dynamic>> load({Locale? locale});
 }
 
+/// Base asset loader with optional caching mechanism
+class CachedAssetLoader extends AssetLoader {
+  static final Map<Locale, Map<String, dynamic>> _translationCache = {};
+
+  /// Provide read access to the cache for other loaders (e.g. [OptimizedAssetLoader]).
+  @visibleForTesting
+  static Map<Locale, Map<String, dynamic>> get translationCache =>
+      _translationCache;
+
+  /// Cache translations for a locale
+  void cacheTranslations(Locale locale, Map<String, dynamic> translations) {
+    _translationCache[locale] = translations;
+  }
+
+  /// Get cached translations for a locale
+  Map<String, dynamic>? getCachedTranslations(Locale locale) =>
+      _translationCache[locale];
+
+  /// Check if a locale's translations are cached
+  bool isCached(Locale locale) => _translationCache.containsKey(locale);
+
+  @override
+  Future<Map<String, dynamic>> load({Locale? locale}) async {
+    if (locale == null) {
+      throw ArgumentError.notNull('locale');
+    }
+
+    if (_translationCache.containsKey(locale)) {
+      return _translationCache[locale]!;
+    }
+
+    return {};
+  }
+}
+
 ///
 /// The `RootBundleAssetLoader` class is a subclass of `AssetLoader` that uses Flutter's asset loader
 /// to load localized JSON files.
 ///
 class RootBundleAssetLoader extends AssetLoader {
-  // A custom asset loader that loads assets from the root bundle
+  final bool useOnlyLangCode;
 
-  const RootBundleAssetLoader(String path) : super(path: path);
+  static final Map<Locale, Map<String, dynamic>> _cache = {};
 
-  /// Returns the path for the specified locale
-  ///
-  /// The [locale] parameter represents the desired locale.
-  /// The returned path is based on the [path] of the asset loader
-  /// and the [locale] with a separator ("-") between language and country.
+  const RootBundleAssetLoader({
+    required String path,
+    this.useOnlyLangCode = false,
+    List<Locale>? supportedLocales,
+  }) : super(path: path, supportedLocales: supportedLocales);
+
   String getLocalePath(Locale locale) {
-    return '$path/${locale.toStringWithSeparator(separator: "-")}.json';
+    if (useOnlyLangCode) {
+      return '$path/${locale.languageCode}.json';
+    } else {
+      return '$path/${locale.toStringWithSeparator(separator: "-")}.json';
+    }
   }
 
-  ///
-  /// Loads the localized JSON file for the given `locale`.
-  ///
-  /// Throws an `ArgumentError` if the `locale` is `null`.
-  ///
+  @override
+  Future<Map<String, dynamic>> load({Locale? locale}) async {
+    final l = locale!;
+    if (_cache.containsKey(l)) return _cache[l]!;
+
+    final localePath = getLocalePath(l);
+    EasyLocalization.logger.debug('Loading asset: $localePath');
+    final data = json.decode(await rootBundle.loadString(localePath))
+        as Map<String, dynamic>;
+    _cache[l] = data;
+    return data;
+  }
+
+  /// Clear the internal cache (useful for testing or hot-reload).
+  @visibleForTesting
+  static void clearCache() => _cache.clear();
+}
+
+/// Optimized Root Bundle Asset Loader with built-in caching
+///
+/// Wraps [RootBundleAssetLoader] with its own translation cache.
+/// Prefer using [RootBundleAssetLoader] directly — it now includes caching.
+class OptimizedAssetLoader extends RootBundleAssetLoader {
+  static final Map<Locale, Map<String, dynamic>> _cache = {};
+
+  OptimizedAssetLoader({required String path}) : super(path: path);
+
   @override
   Future<Map<String, dynamic>> load({Locale? locale}) async {
     if (locale == null) throw ArgumentError.notNull('locale');
-    var localePath = getLocalePath(locale);
-    EasyLocalization.logger.debug('Load asset from $path');
 
-    // Load the asset as a string and decode it as JSON
-    return json.decode(await rootBundle.loadString(localePath));
+    if (_cache.containsKey(locale)) {
+      EasyLocalization.logger.debug('Using cached translations for $locale');
+      return _cache[locale]!;
+    }
+
+    final translations = await super.load(locale: locale);
+    _cache[locale] = translations;
+    return translations;
   }
+
+  /// Clear the internal cache (useful for testing or hot-reload).
+  @visibleForTesting
+  static void clearCache() => _cache.clear();
 }
