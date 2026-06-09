@@ -75,7 +75,15 @@ void main() async {
   //   LevelMessages.warning,
   // ];
   await EasyLocalization.ensureInitialized(
-    assetLoader: const RootBundleAssetLoader(path: 'i18n/'),
+    assetLoader: const RootBundleAssetLoader(
+      path: 'i18n/',
+      supportedLocales: [
+        Locale("ar", "DZ"),
+        Locale("en"),
+        Locale("ar"),
+        Locale("en", "US"),
+      ],
+    ),
   );
 
   testWidgets(
@@ -135,6 +143,7 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
+          startLocale: const Locale('en'),
           child: const MyApp(),
         ));
         // await tester.idle();
@@ -174,8 +183,7 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          // path: '../../i18n',
-          // supportedLocales: const [Locale('en', 'US'), Locale('ar', 'DZ')],
+          startLocale: const Locale('en'),
           child: const MyApp(),
         ));
         // await tester.idle();
@@ -270,10 +278,9 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          // path: '../../i18n',
+          startLocale: const Locale('en'),
           saveLocale: false,
           useOnlyLangCode: true,
-          // supportedLocales: const [Locale('en'), Locale('ar')],
           child: const MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
         ));
         // await tester.idle();
@@ -294,10 +301,9 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(EasyLocalization(
-          // path: '../../i18n',
+          startLocale: const Locale('en'),
           saveLocale: false,
           useOnlyLangCode: true,
-          // supportedLocales: const [Locale('en'), Locale('ar')],
           child: const MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
         ));
         // await tester.idle();
@@ -318,13 +324,15 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await EasyLocalization.ensureInitialized(
-          assetLoader: const RootBundleAssetLoader(path: 'i18n/ar'),
+          assetLoader: const RootBundleAssetLoader(
+            path: 'i18n/ar',
+            useOnlyLangCode: true,
+            supportedLocales: [Locale('ar')],
+          ),
         );
         await tester.pumpWidget(EasyLocalization(
-          // path: '../../i18n',
           saveLocale: false,
           useOnlyLangCode: true,
-          // supportedLocales: const [Locale('ar')],
           fallbackLocale: const Locale('ar'),
           child: const MyApp(),
         ));
@@ -344,12 +352,16 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await EasyLocalization.ensureInitialized(
-          assetLoader: const RootBundleAssetLoader(path: 'i18n/ar'),
+          assetLoader: const RootBundleAssetLoader(
+            path: 'i18n/ar',
+            useOnlyLangCode: true,
+            supportedLocales: [Locale('ar')],
+          ),
         );
         await tester.pumpWidget(EasyLocalization(
           saveLocale: false,
           useOnlyLangCode: true,
-          child: const MyApp(), // Locale('en', 'US'), Locale('ar','DZ')
+          child: const MyApp(),
         ));
         // await tester.idle();
         // The async delegator load will require build on the next frame. Thus, pump
@@ -677,7 +689,18 @@ void main() async {
 
   group('Context extensions tests', () {
     late Widget testWidget;
-    setUp(() {
+    setUp(() async {
+      await EasyLocalization.ensureInitialized(
+        assetLoader: const RootBundleAssetLoader(
+          path: 'i18n/',
+          supportedLocales: [
+            Locale("ar", "DZ"),
+            Locale("en"),
+            Locale("ar"),
+            Locale("en", "US"),
+          ],
+        ),
+      );
       testWidget = EasyLocalization(
         startLocale: const Locale('en', 'US'),
         child: const MyApp(
@@ -749,7 +772,7 @@ void main() async {
             true,
           );
 
-          EasyLocalization.of(_context)?.setLocale(arabyLocale);
+          await EasyLocalization.of(_context)!.setLocale(arabyLocale);
 
           await tester.pumpAndSettle();
 
