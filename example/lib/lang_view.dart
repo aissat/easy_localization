@@ -97,27 +97,41 @@ class _SwitchListTileMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 24),
-      decoration: BoxDecoration(
-        border: isSelected(context)
-            ? Border.all(color: Theme.of(context).primaryColor)
-            : null,
+    return Material(
+      type: MaterialType.transparency,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 2, horizontal: 24),
+        decoration: BoxDecoration(
+          border: isSelected(context)
+              ? Border.all(color: Theme.of(context).primaryColor)
+              : null,
+        ),
+        child: ListTile(
+            dense: true,
+            title: Text(
+              title,
+            ),
+            subtitle: Text(
+              subtitle,
+            ),
+            onTap: () async {
+              log(locale.toString(), name: toString());
+              final sw = Stopwatch()..start();
+              await context.setLocale(locale); //BuildContext extension method
+              sw.stop();
+              final ms = sw.elapsedMicroseconds / 1000;
+              debugPrint('BENCH\tswitch (interactive: ${locale.toString().padRight(8)})\t${ms.toStringAsFixed(2)} ms');
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Switch time: ${ms.toStringAsFixed(2)} ms'),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+                Navigator.pop(context);
+              }
+            }),
       ),
-      child: ListTile(
-          dense: true,
-          // isThreeLine: true,
-          title: Text(
-            title,
-          ),
-          subtitle: Text(
-            subtitle,
-          ),
-          onTap: () async {
-            log(locale.toString(), name: toString());
-            await context.setLocale(locale); //BuildContext extension method
-            Navigator.pop(context);
-          }),
     );
   }
 }
