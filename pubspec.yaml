@@ -5,28 +5,14 @@ description: Easy and Fast internationalizing and localization your Flutter
 homepage: https://github.com/aissat/easy_localization
 issue_tracker: https://github.com/aissat/easy_localization/issues
 # publish_to: none
-version: 4.0.0-dev.0
+version: 4.0.0-dev
 
 topics:
   - i18n
-  - json
-  - csv
-  - translation
-  - internationalization
   - localization
-  - json-files
-  - locale
-  - flutter
-  - locale-gen
+  - internationalization
   - localization-tool
-  - globalization
-  - locales
-  - locales-translation
-  - json-localization
-  - localization-using-json-files
   - localization-kit
-  - flutter-apps
-  - i18n-alternative
   - translated-keys
 
 environment:

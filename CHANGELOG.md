@@ -73,6 +73,7 @@
 ```dart
 context.locale = locale;
 ```
+
 :information_source: No breaking changes, you can use old the static method `EasyLocalization.of(context)`
 
 ### [2.2.2]
@@ -98,6 +99,7 @@ context.locale = locale;
   ```
 
 - Added support Custom assets loaders [Easy Localization Loader](https://github.com/aissat/easy_localization_loader).
+
   - Added support CSV files.
 
     ```dart
@@ -147,7 +149,7 @@ context.locale = locale;
 
     ```json
     {
-      "msg_named": "{} مكتوبة باللغة {lang}",
+      "msg_named": "{} مكتوبة باللغة {lang}"
     }
     ```
 
@@ -166,7 +168,7 @@ context.locale = locale;
     ```
 
   - generate the json Loader in a dart class
-  
+
     ```cmd
     flutter pub run easy_localization:generate
     ```
@@ -211,7 +213,7 @@ this version came with many updates, here are the main ones:
 - Hiding `EasyLocalizationProvider`
 - refactor and update approach localization for more details see [example:](https://github.com/aissat/easy_localization/tree/master/example)
 
-  ``` dart
+  ```dart
   // Now V2.0.0
   runApp(EasyLocalization(
     child: MyApp(),
@@ -234,10 +236,10 @@ this version came with many updates, here are the main ones:
 
 - added Support for context
 
-    ``` dart
-    tr("key", context: context),
-    plural("key", 1 , context: context),
-    ```
+  ```dart
+  tr("key", context: context),
+  plural("key", 1 , context: context),
+  ```
 
 ## [1.4.1]
 
@@ -245,7 +247,7 @@ this version came with many updates, here are the main ones:
 - fixed many issues
 - added extension for Strings
 
-  ``` dart
+  ```dart
   // after 1.4.1
   Text('title'.tr()),
   Text('switch'.tr( gender: _gender ? "female" : "male")),
@@ -256,14 +258,14 @@ this version came with many updates, here are the main ones:
 
 - refactor code changed call ~~`AppLocalizations.of(context).tr()`~~ ~~`AppLocalizations.of(context).plural()`~~ to `tr()` and `plural()`
 
-  ``` dart
+  ```dart
   // after 1.4.0
   Text(
     tr('switch', gender: _gender ? "female" : "male"),
   ),
   ```
 
-  ``` dart
+  ```dart
   // before 1.4.0
   Text(
     AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
@@ -272,7 +274,7 @@ this version came with many updates, here are the main ones:
 
 - added Flutter extension for Text widget
 
-  ``` dart
+  ```dart
   // after 1.4.0
   Text('switch').tr( gender: _gender ? "female" : "male"),
   Text('counter').plural(counter),
@@ -280,67 +282,69 @@ this version came with many updates, here are the main ones:
 
 ## [1.3.5]
 
-- merge  `gender()`  and `tr()`  .
+- merge `gender()` and `tr()` .
 
-  ``` json
+  ```json
   {
-    "gender":{
+    "gender": {
       "male": "Hi man ;)",
       "female": "Hello girl :)"
     }
   }
   ```
 
-  ``` dart
+  ```dart
   new Text(
     AppLocalizations.of(context).tr('switch', gender: _gender ? "female" : "male"),
   ),
   ```
 
 - use parameters `args` for gender.
-  
-  ``` json
+
+  ```json
   {
-    "gender":{
+    "gender": {
       "male": "Hi man ;) {}",
       "female": "Hello girl :) {}"
     }
   }
   ```
 
-  ``` dart
+  ```dart
   new Text(
     AppLocalizations.of(context).tr('switch', args:["Naama"] gender: _gender ? "female" : "male"),
   ),
+  ```
 
 ## [1.3.4]
 
-- adeed Gender [female,male]  `gender()`  .
+- adeed Gender [female,male] `gender()` .
 
-  ``` json
+  ```json
   {
-    "gender":{
+    "gender": {
       "male": "Hi man ;)",
       "female": "Hello girl :)"
     }
   }
   ```
 
-  ``` dart
+  ```dart
   new Text(
     AppLocalizations.of(context).gender('switch', _gender ? "female" : "male"),
   ),
   `
+  ```
 
 ## [1.3.3+1]
 
-- updated  `plural()` thanks [shushper](https://github.com/shushper) .
+- updated `plural()` thanks [shushper](https://github.com/shushper) .
 
-  ``` json
+  ```json
   {
     "text": {
       "day": {
-        "zero":"{} дней",
+        "zero": "{} дней",
         "one": "{} день",
         "two": "{} дня",
         "few": "{} дня",
@@ -353,7 +357,7 @@ this version came with many updates, here are the main ones:
 
 ## [1.3.3]
 
-- removed  `data.savedLocale` .
+- removed `data.savedLocale` .
 - optimized and clean code
 - fixed many issues
 
@@ -361,20 +365,19 @@ this version came with many updates, here are the main ones:
 
 - `plural()` added property resolver for nested key translations
 
-  ``` json
+  ```json
   {
-  "text": {
-    "day": {
-      "zero": "day",
-      "one": "day",
-      "other": "days"
+    "text": {
+      "day": {
+        "zero": "day",
+        "one": "day",
+        "other": "days"
       }
     }
   }
-
   ```
 
-  ``` dart
+  ```dart
   new Text(
     AppLocalizations.of(context).plural("text.day", 2),
   ),
@@ -401,7 +404,7 @@ this version came with many updates, here are the main ones:
 - Added property resolver for nested key translations
 - return translate key if the element or path not exist
 
-``` json
+```json
 {
   "title": "Hello",
   "msg": "Hello {} in the {} world ",
