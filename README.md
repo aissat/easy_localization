@@ -32,6 +32,7 @@ Easy and Fast internationalization for your Flutter Apps
 - 💻 Code generation for localization files and keys.
 - 🛡️ Null safety
 - 🖨️ Customizable logger.
+- 🗄️ Pluggable storage (`SharedPreferencesStorage`, `InMemoryStorage`, or custom).
 
 ## Getting Started
 
@@ -102,14 +103,17 @@ import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  
+  await EasyLocalization.ensureInitialized(
+    assetLoader: RootBundleAssetLoader(
+      path: 'assets/translations',
+      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
+    ),
+  );
+
   runApp(
     EasyLocalization(
-      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
-      path: 'assets/translations', // <-- change the path of the translation files 
       fallbackLocale: Locale('en', 'US'),
-      child: MyApp()
+      child: MyApp(),
     ),
   );
 }
@@ -135,9 +139,7 @@ class MyApp extends StatelessWidget {
 | ----------------------- | -------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | key                     | false    |                           | Widget key.                                                                                                                                                                   |
 | child                   | true     |                           | Place for your main page widget.                                                                                                                                              |
-| supportedLocales        | true     |                           | List of supported locales.                                                                                                                                                    |
-| path                    | true     |                           | Path to your folder with localization files.                                                                                                                                  |
-| assetLoader             | false    | `RootBundleAssetLoader()` | Class loader for localization files. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
+| assetLoader             | true     |                           | Class loader for localization files. Passes `path` and `supportedLocales` via `RootBundleAssetLoader`. You can use custom loaders from [Easy Localization Loader](https://github.com/aissat/easy_localization_loader) or create your own class. |
 | fallbackLocale          | false    |                           | Returns the locale when the locale is not in the list `supportedLocales`.                                                                                                     |
 | startLocale             | false    |                           | Overrides device locale.                                                                                                                                                      |
 | saveLocale              | false    | `true`                    | Save locale in device storage.                                                                                                                                                |
@@ -149,20 +151,97 @@ class MyApp extends StatelessWidget {
 
 ### 🔥 Initialize library
 
-Call `EasyLocalization.ensureInitialized()` in your main before runApp.
+Call `EasyLocalization.ensureInitialized()` in your main before runApp. Pass an `assetLoader` with your translation `path` and `supportedLocales`.
 
 ```dart
-void main() async{
-  // ...
-  // Needs to be called so that we can await for EasyLocalization.ensureInitialized();
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await EasyLocalization.ensureInitialized();
-  // ...
-  runApp(....)
-  // ...
+  await EasyLocalization.ensureInitialized(
+    assetLoader: RootBundleAssetLoader(
+      path: 'assets/translations',
+      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
+    ),
+  );
+
+  runApp(EasyLocalization(
+    fallbackLocale: Locale('en', 'US'),
+    child: MyApp(),
+  ));
 }
 ```
+
+### 🗄️ Storage
+
+The selected locale can be persisted across app restarts using a pluggable storage backend.
+
+#### `IEasyLocalizationStorage`
+
+Abstract interface with two implementations:
+
+| Implementation | Backend | Use case |
+|---|---|---|
+| `SharedPreferencesStorage` | `shared_preferences` | Production (default when omitted) |
+| `InMemoryStorage` | In-memory map | Tests, ephemeral use |
+
+Pass storage to `ensureInitialized()`:
+
+```dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await EasyLocalization.ensureInitialized(
+    assetLoader: RootBundleAssetLoader(
+      path: 'assets/translations',
+      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
+    ),
+    storage: SharedPreferencesStorage(), // optional
+  );
+
+  runApp(EasyLocalization(
+    fallbackLocale: Locale('en', 'US'),
+    child: MyApp(),
+  ));
+}
+```
+
+#### Custom storage
+
+Implement `IEasyLocalizationStorage` for any backend:
+
+```dart
+class MyStorage implements IEasyLocalizationStorage {
+  @override
+  Future<void> init() async { /* open connection */ }
+
+  @override
+  Future<String?> getValue(String key) async { /* read */ }
+
+  @override
+  Future<void> setValue(String key, String value) async { /* write */ }
+
+  @override
+  Future<void> removeValue(String key) async { /* delete */ }
+
+  @override
+  Future<void> close() async { /* cleanup */ }
+}
+```
+
+#### Testing with `InMemoryStorage`
+
+```dart
+final storage = InMemoryStorage();
+await EasyLocalization.ensureInitialized(
+  assetLoader: const RootBundleAssetLoader(path: 'assets/translations'),
+  storage: storage,
+);
+
+// In-memory — no mock setup needed
+print(await storage.getValue('locale')); // null
+```
+
+---
 
 ### 🔥 Change or get locale
 
@@ -417,7 +496,7 @@ RaisedButton(
 
 At any time, you can take the main [properties](#-easy-localization-widget-properties) of the Easy localization widget using [BuildContext].
 
-Are supported: supportedLocales, fallbackLocale, localizationDelegates.
+Are supported: supportedLocales, fallbackLocale, localizationDelegates, assetLoader.
 
 Example:
 
@@ -454,12 +533,14 @@ Steps:
   ```dart
   import 'generated/codegen_loader.g.dart';
   ...
-  void main(){
+  void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await EasyLocalization.ensureInitialized(
+      assetLoader: CodegenLoader(),
+    );
     runApp(EasyLocalization(
       child: MyApp(),
-      supportedLocales: [Locale('en', 'US'), Locale('ar', 'DZ')],
-      path: 'resources/langs',
-      assetLoader: CodegenLoader()
+      fallbackLocale: Locale('en', 'US'),
     ));
   }
   ...
