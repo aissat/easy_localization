@@ -35,6 +35,8 @@ abstract class AssetLoader {
 
 /// Base asset loader with optional caching mechanism
 class CachedAssetLoader extends AssetLoader {
+  const CachedAssetLoader({required super.path});
+
   static final Map<Locale, Map<String, dynamic>> _translationCache = {};
 
   /// Provide read access to the cache for other loaders (e.g. [OptimizedAssetLoader]).

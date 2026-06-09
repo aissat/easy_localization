@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Translations {
   final Map<String, dynamic>? _translations;
   final Map<String, dynamic> _nestedKeysCache;
@@ -47,4 +49,7 @@ class Translations {
 
   bool isNestedKey(String key) =>
       _translations != null && !_translations!.containsKey(key) && key.contains('.');
+
+  @visibleForTesting
+  Map<String, dynamic>? get rawData => _translations;
 }

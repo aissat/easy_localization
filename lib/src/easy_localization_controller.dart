@@ -99,7 +99,11 @@ class EasyLocalizationController extends ChangeNotifier {
           final baseLang = Locale(_locale.languageCode);
           if (baseLang != _locale && supportedLocales.contains(baseLang)) {
             final baseData = await loadTranslationData(baseLang);
-            fallbackData.addAll(baseData);
+            baseData.forEach((k, v) {
+              if (v != null) {
+                fallbackData.putIfAbsent(k, () => v);
+              }
+            });
           }
         } catch (e) {
           EasyLocalization.logger
@@ -109,6 +113,7 @@ class EasyLocalizationController extends ChangeNotifier {
         _fallbackTranslations = Translations(fallbackData);
       }
     } on TranslationLoadException catch (e) {
+      EasyLocalization.logger.error('TranslationLoadException caught: ${e.locale}');
       onLoadError(FlutterError('Failed to load translations: ${e.locale}'));
     }
   }
