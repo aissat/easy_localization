@@ -218,6 +218,7 @@ extension BuildContextEasyLocalizationExtension on BuildContext {
     );
   }
 
+  /// {@macro plural}
   String plural(
     String key,
     num number, {

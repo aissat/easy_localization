@@ -1,3 +1,4 @@
+/// Easy and Fast internationalizing and localization your Flutter Apps.
 library easy_localization;
 
 export 'package:easy_localization/src/easy_localization_app.dart';
@@ -6,4 +7,4 @@ export 'package:easy_localization/src/public.dart';
 export 'package:easy_localization/src/public_ext.dart';
 export 'package:easy_localization/src/easy_localization_storage_interface.dart';
 export 'package:easy_localization/src/compatibility.dart';
-export 'package:intl/intl.dart';
+export 'package:intl/intl.dart' show Intl, DateFormat, NumberFormat;
