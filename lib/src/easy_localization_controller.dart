@@ -140,7 +140,7 @@ class EasyLocalizationController extends ChangeNotifier {
   Future<void> _saveLocale(Locale? locale) async {
     if (!saveLocale && _storage == null) return;
 
-    await _storage?.setValue<String>('locale', locale.toString());
+    await _storage?.setValue('locale', locale.toString());
     EasyLocalization.logger('Locale $locale saved');
   }
 
@@ -153,9 +153,9 @@ class EasyLocalizationController extends ChangeNotifier {
       {IEasyLocalizationStorage? storage}) async {
     _storage = storage;
     _assetLoader = assetLoader;
-    storage?.init();
+    await storage?.init();
 
-    final strLocale = storage?.getValue<String>('locale');
+    final strLocale = storage != null ? await storage.getValue('locale') : null;
     _savedLocale = strLocale?.toLocale();
 
     final foundPlatformLocale = await findSystemLocale();
