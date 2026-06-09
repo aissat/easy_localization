@@ -10,7 +10,7 @@ void main() {
     const testPath = 'assets/translations';
 
     setUp(() {
-      OptimizedAssetLoader.clearCache();
+      RootBundleAssetLoader.clearCache();
     });
 
     test('creates with path', () {

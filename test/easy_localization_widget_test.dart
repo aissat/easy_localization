@@ -322,6 +322,19 @@ void main() async {
   testWidgets(
     '[EasyLocalization] _getFallbackLocale() fallbackLocale!=null test',
     (WidgetTester tester) async {
+      addTearDown(() async {
+        await EasyLocalization.ensureInitialized(
+          assetLoader: const RootBundleAssetLoader(
+            path: 'i18n/',
+            supportedLocales: [
+              Locale("ar", "DZ"),
+              Locale("en"),
+              Locale("ar"),
+              Locale("en", "US"),
+            ],
+          ),
+        );
+      });
       await tester.runAsync(() async {
         await EasyLocalization.ensureInitialized(
           assetLoader: const RootBundleAssetLoader(
@@ -350,6 +363,19 @@ void main() async {
   testWidgets(
     '[EasyLocalization] _getFallbackLocale()  fallbackLocale==null test',
     (WidgetTester tester) async {
+      addTearDown(() async {
+        await EasyLocalization.ensureInitialized(
+          assetLoader: const RootBundleAssetLoader(
+            path: 'i18n/',
+            supportedLocales: [
+              Locale("ar", "DZ"),
+              Locale("en"),
+              Locale("ar"),
+              Locale("en", "US"),
+            ],
+          ),
+        );
+      });
       await tester.runAsync(() async {
         await EasyLocalization.ensureInitialized(
           assetLoader: const RootBundleAssetLoader(
