@@ -95,7 +95,8 @@ class RootBundleAssetLoader extends AssetLoader {
 
   @override
   Future<Map<String, dynamic>> load({Locale? locale}) async {
-    final l = locale!;
+    if (locale == null) throw ArgumentError.notNull('locale');
+    final l = locale;
     if (_cache.containsKey(l)) return _cache[l]!;
 
     final localePath = getLocalePath(l);
