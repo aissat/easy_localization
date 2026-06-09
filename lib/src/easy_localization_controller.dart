@@ -1,6 +1,5 @@
+import 'dart:ui' show PlatformDispatcher;
 import 'package:flutter/material.dart';
-import 'package:intl/intl_standalone.dart'
-    if (dart.library.html) 'package:intl/intl_browser.dart';
 
 import 'asset_loader.dart';
 import 'easy_localization_app.dart';
@@ -158,8 +157,8 @@ class EasyLocalizationController extends ChangeNotifier {
     final strLocale = storage != null ? await storage.getValue('locale') : null;
     _savedLocale = strLocale?.toLocale();
 
-    final foundPlatformLocale = await findSystemLocale();
-    _deviceLocale = foundPlatformLocale.toLocale();
+    final foundPlatformLocale = PlatformDispatcher.instance.locale;
+    _deviceLocale = foundPlatformLocale;
 
     await _loadSupportedLocalesData(assetLoader);
 

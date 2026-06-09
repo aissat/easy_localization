@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+library plural_rules;
+
 /// Provides locale-specific plural rules. Based on pluralrules.js from Closure.
 ///
 /// Each function does the calculation for one or more locales. These are done in terms of
