@@ -1,5 +1,18 @@
 # Changelog
 
+### [4.0.0-dev]
+
+- **BREAKING**: Moved `path` and `supportedLocales` into `AssetLoader` instead of `EasyLocalization` widget
+- **BREAKING**: `AssetLoader.load()` signature changed from `load(String path, Locale locale)` to `load({Locale? locale})`
+- **BREAKING**: `ensureInitialized()` now takes `assetLoader` and optional `storage` instead of no params
+- Added `IEasyLocalizationStorage` interface with `SharedPreferencesStorage` and `InMemoryStorage` implementations
+- Added `CachedAssetLoader` and `OptimizedAssetLoader` with built-in caching
+- Fixed fallback translations bug: base-locale `null` entries no longer overwrite real fallback values
+- Fixed `useOnlyLangCode` with country-code locales (static `_locale` race condition)
+- Fixed `ListTile` ink-splash warnings in example app
+- Added `EasyLocalizationCompat` extension with `withConfig()` and `migrateAssetLoader()` helpers for v3→v4 migration
+- Updated README and example for v4 API
+
 ### [3.0.3]
 
 - replace log() with stdout.writeln()
