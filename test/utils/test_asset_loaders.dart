@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:easy_localization/src/asset_loader.dart';
 
 class ImmutableAssetLoader extends AssetLoader {
-  const ImmutableAssetLoader();
+  const ImmutableAssetLoader() : super(path: '');
 
   @override
   Future<Map<String, dynamic>> load({Locale? locale}) {

@@ -12,7 +12,8 @@ void main() {
     late RootBundleAssetLoader assetLoader;
 
     setUp(() async {
-      assetLoader = const RootBundleAssetLoader(path);
+      assetLoader = const RootBundleAssetLoader(path: path)
+;
       await assetLoader.load(locale: locale);
     });
 
@@ -24,7 +25,8 @@ void main() {
     });
 
     test('load throws an error when the locale is null', () {
-      assetLoader = const RootBundleAssetLoader(path);
+      assetLoader = const RootBundleAssetLoader(path: path)
+;
       expect(() => assetLoader.load(locale: null), throwsArgumentError);
     });
   });

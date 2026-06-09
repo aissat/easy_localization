@@ -75,7 +75,7 @@ void main() async {
   //   LevelMessages.warning,
   // ];
   await EasyLocalization.ensureInitialized(
-    assetLoader: const RootBundleAssetLoader('i18n/'),
+    assetLoader: const RootBundleAssetLoader(path: 'i18n/'),
   );
 
   testWidgets(
@@ -318,7 +318,7 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await EasyLocalization.ensureInitialized(
-          assetLoader: const RootBundleAssetLoader('i18n/ar'),
+          assetLoader: const RootBundleAssetLoader(path: 'i18n/ar'),
         );
         await tester.pumpWidget(EasyLocalization(
           // path: '../../i18n',
@@ -344,7 +344,7 @@ void main() async {
     (WidgetTester tester) async {
       await tester.runAsync(() async {
         await EasyLocalization.ensureInitialized(
-          assetLoader: const RootBundleAssetLoader('i18n/ar'),
+          assetLoader: const RootBundleAssetLoader(path: 'i18n/ar'),
         );
         await tester.pumpWidget(EasyLocalization(
           saveLocale: false,

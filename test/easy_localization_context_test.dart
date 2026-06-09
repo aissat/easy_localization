@@ -41,7 +41,10 @@ void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   await EasyLocalization.ensureInitialized(
-      assetLoader: const RootBundleAssetLoader('i18n'));
+      assetLoader: const RootBundleAssetLoader(
+        path: 'i18n',
+        supportedLocales: [Locale('en'), Locale('de'), Locale('ar'), Locale('ru')],
+      ));
 
   group('BuildContext', () {
     testWidgets(

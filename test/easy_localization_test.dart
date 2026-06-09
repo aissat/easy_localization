@@ -35,7 +35,7 @@ void main() async {
     );
 
     setUp(() async {
-      await EasyLocalizationController.initEasyLocation(ImmutableAssetLoader());
+      await EasyLocalizationController.initEasyLocation(const ImmutableAssetLoader());
     });
 
     test('is Assertion Error when path and supportedLocales null', () async {
@@ -59,7 +59,7 @@ void main() async {
     );
     setUp(() async {
       await EasyLocalizationController.initEasyLocation(
-          const RootBundleAssetLoader('wrong/path'));
+          const RootBundleAssetLoader(path: 'wrong/path'));
     });
     test('is Assertion Error when wrong path ', () async {
       try {
@@ -71,30 +71,8 @@ void main() async {
   });
 
   group('localization', () {
-    var r1 = EasyLocalizationController(
-      forceLocale: const Locale('en'),
-      // path: 'path/en.json',
-      // supportedLocales: const [Locale('en')],
-      useOnlyLangCode: true,
-      useFallbackTranslations: false,
-      saveLocale: false,
-      onLoadError: (FlutterError e) {
-        log(e.toString());
-      },
-      // assetLoader: const JsonAssetLoader()
-    );
-    var r2 = EasyLocalizationController(
-      forceLocale: const Locale('en', 'us'),
-      // supportedLocales: const [Locale('en', 'us')],
-      // path: 'path/en-us.json',
-      useOnlyLangCode: false,
-      useFallbackTranslations: false,
-      onLoadError: (FlutterError e) {
-        log(e.toString());
-      },
-      saveLocale: false,
-      // assetLoader: const JsonAssetLoader()
-    );
+    late EasyLocalizationController r1;
+    late EasyLocalizationController r2;
     setUpAll(() async {
       await EasyLocalizationController.initEasyLocation(
           const JsonAssetLoader([Locale('en')]));
@@ -103,8 +81,28 @@ void main() async {
         LevelMessages.warning,
       ];
 
+      r1 = EasyLocalizationController(
+        forceLocale: const Locale('en'),
+        useOnlyLangCode: true,
+        useFallbackTranslations: false,
+        saveLocale: false,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
+      );
       await r1.loadTranslations();
+
+      r2 = EasyLocalizationController(
+        forceLocale: const Locale('en', 'us'),
+        useOnlyLangCode: false,
+        useFallbackTranslations: false,
+        saveLocale: false,
+        onLoadError: (FlutterError e) {
+          log(e.toString());
+        },
+      );
       await r2.loadTranslations();
+
       Localization.load(const Locale('en'), translations: r1.translations);
     });
     test('is a localization object', () {
@@ -182,13 +180,13 @@ void main() async {
           Localization.load(const Locale('en', 'US'),
               translations: r1.translations),
           true);
-      expect(Localization.instance.tr('path'), 'path/en-us.json');
+      expect(Localization.instance.tr('path'), 'path/en.json');
 
       expect(
           Localization.load(const Locale('en', 'us'),
               translations: r2.translations),
           true);
-      expect(Localization.instance.tr('path'), 'path/en-us.json');
+      expect(Localization.instance.tr('path'), 'path/en_us.json');
     });
 
     // test('controller loads saved locale', () async {
@@ -290,6 +288,7 @@ void main() async {
 
     group('tr', () {
       setUp(() async {
+        EasyLocalization.logger.enableLevels = LevelMessages.values.toList();
         await EasyLocalizationController.initEasyLocation(
             const JsonAssetLoader([Locale('en'), Locale('fb')]));
       });
