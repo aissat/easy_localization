@@ -1,24 +1,18 @@
 class Translations {
   final Map<String, dynamic>? _translations;
-  final Map<String?, dynamic> _nestedKeysCache;
+  final Map<String, dynamic> _nestedKeysCache;
 
   Translations(this._translations) : _nestedKeysCache = {};
   String? get(String key) {
-    String? returnValue;
+    if (!key.contains('.')) return _translations?[key];
 
-    /// Try to look it up as a nested key
-    if (isNestedKey(key)) {
-      returnValue = getNested(key);
-    }
+    if (_translations?.containsKey(key) ?? false) return _translations![key];
 
-    /// If we failed to find the key as a nested key, then fall back
-    /// to looking it up like normal.
-    returnValue ??= _translations?[key];
-
-    return returnValue;
+    return getNested(key);
   }
 
   String? getNested(String key) {
+    if (_translations == null) return null;
     if (isNestedCached(key)) return _nestedKeysCache[key];
 
     final keys = key.split('.');
@@ -26,14 +20,10 @@ class Translations {
 
     var value = _translations![kHead];
 
-    // print(value);
-
     for (var i = 1; i < keys.length; i++) {
       if (value is Map<String, dynamic>) value = value[keys[i]];
     }
 
-    /// If we found the value, cache it. If the value is null then
-    /// we're not going to cache it, and returning null instead.
     if (value != null) {
       cacheNestedKey(key, value);
     }
@@ -56,5 +46,5 @@ class Translations {
   }
 
   bool isNestedKey(String key) =>
-      !_translations!.containsKey(key) && key.contains('.');
+      _translations != null && !_translations!.containsKey(key) && key.contains('.');
 }

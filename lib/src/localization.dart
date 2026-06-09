@@ -59,6 +59,7 @@ class Localization {
   }
 
   String _replaceLinks(String res, {bool logging = true}) {
+    if (!res.contains('@')) return res;
     // TODO: add recursion detection and a resolve stack.
     final matches = _linkKeyMatcher.allMatches(res);
     var result = res;
@@ -108,9 +109,9 @@ class Localization {
     return res;
   }
 
-  static PluralRule? _pluralRule(String? locale, num howMany) {
+  static PluralRule _pluralRule(String? locale, num howMany) {
     startRuleEvaluation(howMany);
-    return pluralRules[locale];
+    return pluralRules[locale] ?? pluralRules['default']!;
   }
 
   String plural(
@@ -135,7 +136,7 @@ class Localization {
         pluralCase = PluralCase.TWO;
         break;
       default:
-        pluralCase = pluralRule!();
+        pluralCase = pluralRule();
     }
     switch (pluralCase) {
       case PluralCase.ZERO:
@@ -156,8 +157,6 @@ class Localization {
       case PluralCase.OTHER:
         res = _resolvePlural(key, 'other');
         break;
-      default:
-        throw ArgumentError.value(value, 'howMany', 'Invalid plural argument');
     }
 
     final formattedValue = format == null ? '$value' : format.format(value);
@@ -207,7 +206,8 @@ class Localization {
     return resource;
   }
 
-  bool exists(String key){
-    return _translations?.get(key) != null;
+  bool exists(String key) {
+    if (_translations?.get(key) != null) return true;
+    return _fallbackTranslations?.get(key) != null;
   }
 }

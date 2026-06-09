@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class FutureErrorWidget extends StatelessWidget {
   final String msg;
-  const FutureErrorWidget({Key? key, this.msg = 'Loading ...'})
+  const FutureErrorWidget({Key? key, this.msg = 'An error occurred'})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

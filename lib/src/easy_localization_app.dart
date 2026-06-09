@@ -80,7 +80,7 @@ class EasyLocalization extends StatefulWidget {
   /// so that savedLocale is loaded and used from the
   /// start.
   static Future<void> ensureInitialized({
-    AssetLoader assetLoader = const RootBundleAssetLoader('resources/langs'),
+    AssetLoader assetLoader = const RootBundleAssetLoader(path: 'resources/langs'),
     IEasyLocalizationStorage? storage,
   }) async =>
       await EasyLocalizationController.initEasyLocation(assetLoader,
@@ -101,12 +101,9 @@ class _EasyLocalizationState extends State<EasyLocalization> {
     localizationController = EasyLocalizationController(
       saveLocale: widget.saveLocale,
       fallbackLocale: widget.fallbackLocale,
-      // supportedLocales: widget.supportedLocales,
       startLocale: widget.startLocale,
-      // assetLoader: widget.assetLoader,
       useOnlyLangCode: widget.useOnlyLangCode,
       useFallbackTranslations: widget.useFallbackTranslations,
-      // path: widget.path,
       onLoadError: (FlutterError e) {
         setState(() {
           translationsLoadError = e;
