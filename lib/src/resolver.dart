@@ -26,7 +26,8 @@ const _modifiers = <String, String Function(String)>{
 
 String _upper(String val) => val.toUpperCase();
 String _lower(String val) => val.toLowerCase();
-String _capitalize(String val) => '${val[0].toUpperCase()}${val.substring(1)}';
+String _capitalize(String val) =>
+    val.isEmpty ? val : '${val[0].toUpperCase()}${val.substring(1)}';
 
 // ── Public API ─────────────────────────────────────────────────────────────
 
