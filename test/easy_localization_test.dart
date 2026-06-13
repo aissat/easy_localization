@@ -35,7 +35,8 @@ void main() async {
     );
 
     setUp(() async {
-      await EasyLocalizationController.initEasyLocation(const ImmutableAssetLoader());
+      await EasyLocalizationController.initEasyLocation(
+          const ImmutableAssetLoader());
     });
 
     test('is Assertion Error when path and supportedLocales null', () async {
@@ -188,53 +189,6 @@ void main() async {
           true);
       expect(Localization.instance.tr('path'), 'path/en_us.json');
     });
-
-    // test('controller loads saved locale', () async {
-    //   await EasyLocalizationController.initEasyLocation(
-    //       const JsonAssetLoader([Locale('en'), Locale('fb')]));
-    //   SharedPreferences.setMockInitialValues({
-    //     'locale': 'en',
-    //   });
-
-    //   final controller = EasyLocalizationController(
-    //     fallbackLocale: const Locale('fb'),
-    //     // path: 'path',
-    //     useOnlyLangCode: true,
-    //     useFallbackTranslations: true,
-    //     onLoadError: (FlutterError e) {
-    //       log(e.toString());
-    //     },
-    //     saveLocale: true,
-    //     // assetLoader: const JsonAssetLoader(),
-    //   );
-    //   expect(controller.locale, const Locale('en'));
-
-    //   SharedPreferences.setMockInitialValues({});
-    // });
-
-    /// E.g. if user saved a locale that was removed in a later version
-    // test('controller loads fallback if saved locale is not supported',
-    //     () async {
-    //   await EasyLocalizationController.initEasyLocation(
-    //       const JsonAssetLoader([Locale('en'), Locale('fb')]));
-    //   SharedPreferences.setMockInitialValues({
-    //     'locale': 'de',
-    //   });
-
-    //   final controller = EasyLocalizationController(
-    //     fallbackLocale: const Locale('fb'),
-    //     useOnlyLangCode: true,
-    //     useFallbackTranslations: true,
-    //     onLoadError: (FlutterError e) {
-    //       log(e.toString());
-    //     },
-    //     saveLocale: true,
-    //     // assetLoader: const JsonAssetLoader(),
-    //   );
-    //   expect(controller.locale, const Locale('fb'));
-
-    //   SharedPreferences.setMockInitialValues({});
-    // });
 
     group('locale', () {
       test('locale supports device locale', () {
@@ -429,12 +383,6 @@ void main() async {
         );
       });
 
-      test(
-          'should raise exception if provided arguments length is different from the count of {} in the resource',
-          () {
-        // @TODO
-      });
-
       test('return resource and replaces named argument', () {
         expect(
           Localization.instance.tr('test_replace_named',
@@ -515,14 +463,6 @@ void main() async {
         expect(Localization.instance.plural('hat', 2), 'two hats');
       });
 
-      test('few', () {
-        // @TODO not sure how this works
-      });
-
-      test('many', () {
-        // @TODO not sure how this works
-      });
-
       test('other', () {
         expect(Localization.instance.plural('hat', -1), 'other hats');
       });
@@ -597,12 +537,6 @@ void main() async {
     });
 
     group('extensions', () {
-      // setUpAll(() async {
-      //   await Localization.load(Locale('en'),
-      //       path: 'path',
-      //       useOnlyLangCode: true,
-      //       assetLoader: JsonAssetLoader());
-      // });
       group('string', () {
         test('tr', () {
           expect('test'.tr(), 'test');
@@ -620,12 +554,6 @@ void main() async {
     });
 
     group('extensions', () {
-      // setUpAll(() async {
-      //   await Localization.load(Locale('en'),
-      //       path: 'path',
-      //       useOnlyLangCode: true,
-      //       assetLoader: JsonAssetLoader());
-      // });
       group('string', () {
         test('tr', () {
           expect(tr('test'), 'test');

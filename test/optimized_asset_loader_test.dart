@@ -20,7 +20,7 @@ void main() {
 
     test('caches translations across loads', () async {
       final loader = OptimizedAssetLoader(path: testPath);
-      final locale = const Locale('en', 'US');
+      const locale = Locale('en', 'US');
 
       // Loading non-existent file should throw — that's fine
       // We verify the cache by checking load() is called at most once per locale
@@ -32,8 +32,8 @@ void main() {
 
     test('handles different locales independently', () async {
       final loader = OptimizedAssetLoader(path: testPath);
-      final localeUS = const Locale('en', 'US');
-      final localeFR = const Locale('fr', 'FR');
+      const localeUS = Locale('en', 'US');
+      const localeFR = Locale('fr', 'FR');
 
       // Both should throw (no real assets in test)
       await expectLater(
@@ -71,7 +71,8 @@ void main() {
       loader.cacheTranslations(testLocale, testTranslations);
 
       expect(loader.isCached(testLocale), isTrue);
-      expect(loader.getCachedTranslations(testLocale), equals(testTranslations));
+      expect(
+          loader.getCachedTranslations(testLocale), equals(testTranslations));
     });
   });
 }

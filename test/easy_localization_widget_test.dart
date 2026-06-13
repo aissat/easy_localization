@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization/src/exceptions.dart';
 import 'package:easy_localization/src/localization.dart';

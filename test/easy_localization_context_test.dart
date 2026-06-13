@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
@@ -42,9 +41,9 @@ void main() async {
 
   await EasyLocalization.ensureInitialized(
       assetLoader: const RootBundleAssetLoader(
-        path: 'i18n',
-        supportedLocales: [Locale('en'), Locale('de'), Locale('ar'), Locale('ru')],
-      ));
+    path: 'i18n',
+    supportedLocales: [Locale('en'), Locale('de'), Locale('ar'), Locale('ru')],
+  ));
 
   group('BuildContext', () {
     testWidgets(

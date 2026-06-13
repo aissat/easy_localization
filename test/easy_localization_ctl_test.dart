@@ -18,7 +18,10 @@ void main() {
   group('EasyLocalizationController', () {
     group('selectLocaleFrom', () {
       test('should return the correct selected locale', () {
-        final supportedLocales = [const Locale('en', 'US'), const Locale('fr', 'FR')];
+        final supportedLocales = [
+          const Locale('en', 'US'),
+          const Locale('fr', 'FR')
+        ];
         const deviceLocale = Locale('en', 'US');
         const fallbackLocale = Locale('en', 'US');
 
@@ -33,7 +36,10 @@ void main() {
 
       test('should return the fallback locale if no supported locale matches',
           () {
-        final supportedLocales = [const Locale('en', 'US'), const Locale('fr', 'FR')];
+        final supportedLocales = [
+          const Locale('en', 'US'),
+          const Locale('fr', 'FR')
+        ];
         const deviceLocale = Locale('es', 'ES');
         const fallbackLocale = Locale('en', 'US');
 
