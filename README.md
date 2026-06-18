@@ -679,3 +679,25 @@ We need your support. Projects like this can not be successful without support f
 
 ![contributors](https://contributors-img.firebaseapp.com/image?repo=aissat/easy_localization)
 <a href="https://github.com/aissat/easy_localization/graphs/contributors"></a>
+---
+
+## Repository Overview
+
+**What it is:** A forked Flutter/Dart localization package used by Macadam.CarCheck for multi-language support.
+
+**What it does:**
+- Easy translations for many languages (JSON, CSV, YAML, XML)
+- Supports plurals, gender, nesting, RTL locales, fallback keys
+- Persists locale changes across app restarts
+- Code generation for localization keys
+- Null safety support
+
+**Tech Stack:** Dart · Flutter package · pubspec.yaml
+
+**Key Components:**
+- `lib/` — package source
+- `i18n/` — example translation files
+- `packages/` — sub-packages
+- `example/` — usage example app
+
+**Notes:** Fork of the public `easy_localization` package. Macadam-specific customizations are applied on top of upstream.
